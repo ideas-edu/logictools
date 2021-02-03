@@ -6,18 +6,18 @@
     @property {string} formula The formula.
     @property {string} rule The applied rule.
  */
-function OneWayStep(formulaText, rule) {
-    "use strict";
-    this.formula = formulaText;
-    this.rule = rule;
-    this.isValid = false;
-    this.isSyntaxValid = true;
-    this.syntaxError = "";
-    this.isRuleValid = false;
-    this.isBuggy = false;
-    this.isCorrect = true;
-    this.isSimilar = true;
-    this.buggyRule = "";
-    this.isReady = false;
-    this.strategyStatus = "[]";
+function OneWayStep (formulaText, rule) {
+  'use strict'
+  this.formula = formulaText
+  this.rule = rule
+  this.isValid = false
+  this.isSyntaxValid = true
+  this.syntaxError = ''
+  this.isRuleValid = false
+  this.isBuggy = false
+  this.isCorrect = true
+  this.isSimilar = true
+  this.buggyRule = ''
+  this.isReady = false
+  this.strategyStatus = '[]'
 }
