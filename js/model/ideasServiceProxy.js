@@ -14,7 +14,7 @@ var IdeasServiceProxy = {
     post: function (input, onSuccess, onError) {
         "use strict";
         var request = {},
-            url = "http://ideas.cs.uu.nl/cgi-bin/ideas-logex.cgi";
+            url = "https://ideas.science.uu.nl/cgi-bin/ideas-logex.cgi";
         request.input = JSON.stringify(input);
         request.input = unescape(request.input.replace(/\\u/g, '%u'));
         request.path = "/cgi-bin/ideas-logex.cgi";
@@ -25,7 +25,7 @@ var IdeasServiceProxy = {
             //url = "proxy.php";
             // url = "http://localhost/ideas-logex.cgi";
         }
-        
+
         $.support.cors = true;
         $.ajax({
             type: "POST",
@@ -35,87 +35,87 @@ var IdeasServiceProxy = {
             error: onError
         });
     },
-    
+
 
     post2: function (method, params, onSuccess, onError, requestinfo) {
     	  var input = {
            "source": config.source,
            "method": method,
-           "params": params,           
+           "params": params,
 		   "requestinfo": requestinfo,
 		   "logging": "v2"
         };
-        
+
         var onError3 = function (jqXHR, textStatus, errorThrown) {
            onError();
         };
-    	
+
         IdeasServiceProxy.post(input, onSuccess, onError3);
-    },	
-    
+    },
+
     /* -----------------------------------------------------
        Feedback services for the outer loop
     ----------------------------------------------------- */
-    
+
     // generate :: Exercise, Difficulty, UserId -> State
-    generate: function (exerciseId, difficulty, userId, onSuccess, onError) {		  
-    	var params = [exerciseId, difficulty, userId];		
+    generate: function (exerciseId, difficulty, userId, onSuccess, onError) {
+    	var params = [exerciseId, difficulty, userId];
         IdeasServiceProxy.post2("generate", params, onSuccess, onError);
     },
-    
+
     // example :: Exercise, Int, UserId -> State
     example: function (exerciseId, exerciseNr, userId, onSuccess, onError) {
-		var params = [exerciseId, exerciseNr, userId];	
+		var params = [exerciseId, exerciseNr, userId];
         IdeasServiceProxy.post2("example", params, onSuccess, onError);
     },
-    
+
     // create :: Exercise, String -> State
-    create: function (exerciseId, formula, userId, onSuccess, onError) {		 
-    	var params = [exerciseId, formula, userId];		 
+    create: function (exerciseId, formula, userId, onSuccess, onError) {
+    	var params = [exerciseId, formula, userId];
         IdeasServiceProxy.post2("create", params, onSuccess, onError);
     },
-    
+
     /* -----------------------------------------------------
        Feedback services for the inner loop
     ----------------------------------------------------- */
-    
+
     // onefirst :: State -> StepInfo, State
-    onefirst: function (state, requestinfo, onSuccess, onError) {		
-		state.push(LogEXSession.getIdentifiers(state[0]));			
+    onefirst: function (state, requestinfo, onSuccess, onError) {
+		state.push(LogEXSession.getIdentifiers(state[0]));
         IdeasServiceProxy.post2("onefirst", [state], onSuccess, onError, requestinfo);
     },
-    
+
     // derivation :: State -> Derivation
-    derivation: function (state, onSuccess, onError) {			
-		state.push(LogEXSession.getIdentifiers(state[0]));				
-        IdeasServiceProxy.post2("derivation", [state], onSuccess, onError);		
+    derivation: function (state, onSuccess, onError) {
+		state.push(LogEXSession.getIdentifiers(state[0]));
+        IdeasServiceProxy.post2("derivation", [state], onSuccess, onError);
     },
-    
+
     // derivationtext :: State -> Derivation
-    derivationtext: function (state, onSuccess, onError) {			
-		state.push(LogEXSession.getIdentifiers(state[0]));			
+    derivationtext: function (state, onSuccess, onError) {
+		state.push(LogEXSession.getIdentifiers(state[0]));
         IdeasServiceProxy.post2("derivationtext", [state], onSuccess, onError);
     },
-    
+
     // diagnose-string :: State, Context, (Rule)Id -> Diagnosis
-    diagnose: function (state, formula, rule, onSuccess, onError) {		  
+    diagnose: function (state, formula, rule, onSuccess, onError) {
 		state.push(LogEXSession.getIdentifiers(state[0]));
     	var params = [state, formula, rule];
     	if (rule === null) {
     	    params = [state, formula];
-    	} 			
+    	}
         IdeasServiceProxy.post2("diagnose-string", params, onSuccess, onError);
-    },	
-	
+    },
+
 	// ready:: State -> Boolean
-    ready: function (state, onSuccess, onError) {		
-		state.push(LogEXSession.getIdentifiers(state[0])); 				
+    ready: function (state, onSuccess, onError) {
+		state.push(LogEXSession.getIdentifiers(state[0]));
         IdeasServiceProxy.post2("ready", [state], onSuccess, onError);
     },
-	
+
 	// log:: ? -> Empty
-    log: function (state, requestinfo) {		
-		state.push(LogEXSession.getIdentifiers(state[0]));			
+    log: function (state, requestinfo) {
+		state.push(LogEXSession.getIdentifiers(state[0]));
         IdeasServiceProxy.post2("log", [state], null, null, requestinfo);
     }
 
