@@ -1,4 +1,7 @@
 /* global Equation */
+
+import { Equation } from './equation.js'
+
 /**
     Represents a proof step.
     @constructor

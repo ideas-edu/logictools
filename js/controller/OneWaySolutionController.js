@@ -1,19 +1,9 @@
 /* global document, OneWaySolutionController, OneWayStep, OneWayExercise, OneWayExerciseSolver, OneWayExerciseValidator, SyntaxValidator, jQuery, LogEXSession, $, Resources, KeyBindings, Rules, setTimeout, OneWayExerciseGenerator, formula, window */
 
-// import { BTN_OK, BTN_SHOW_NEXT_STEP, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, SWITCH_RULE, VAL_SETONLABEL, VALSETOFFLABEL, LBL_RULEJUSTIFICATION, SWITCH_VALIDATION, LBL_STEPVALIDATION, BTN_SHOWHINT, BTN_SOLVEEXERCISE, BTN_VALIDATESTEP } from '../constants.js'
-// import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
-// import { KeyBindings } from '../keyBindings.js'
-// import { OneWayExerciseGenerator } from '../model/oneway/exerciseGenerator.js'
-// import { OneWayExerciseCreator } from '../model/oneway/exerciseCreator.js'
 import { OneWayExerciseSolver } from '../model/oneway/exerciseSolver.js'
-// import { OneWayExerciseValidator } from '../model/oneway/exerciseValidator.js'
-// import { OneWayStep } from '../model/oneway/step.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
-// import { SyntaxValidator } from '../model/syntaxValidator.js'
-// import { Rules } from '../model/rules.js'
-// import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 
 (function ($) {
   'use strict'

@@ -1,4 +1,21 @@
 /* global document, window, TwoWayController, TwoWayStep, jQuery, LogEXSession, Resources, $, KeyBindings, Rules, setTimeout, TwoWayExerciseGenerator, Equation, TwoWayExercise, TwoWayExerciseSolver, TwoWayExerciseValidator, SyntaxValidator */
+
+import { BTN_SHOW_NEXT_STEP, BTN_SHOWDERIVATION, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, VAL_SETONLABEL, VALSETOFFLABEL, SWITCH_VALIDATION, LBL_STEPVALIDATION, BTN_SHOWHINT, BTN_SOLVEEXERCISE } from '../constants.js'
+import { config } from '../config.js'
+import { LogEXSession } from '../logEXSession.js'
+import { Resources } from '../resources.js'
+import { KeyBindings } from '../keyBindings.js'
+import { TwoWayExerciseGenerator } from '../model/twoway/exerciseGenerator.js'
+import { TwoWayExerciseCreator } from '../model/twoway/exerciseCreator.js'
+import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
+import { TwoWayExerciseValidator } from '../model/twoway/exerciseValidator.js'
+import { TwoWayStep } from '../model/twoway/step.js'
+import { TwoWayExercise } from '../model/twoway/exercise.js'
+import { SyntaxValidator } from '../model/syntaxValidator.js'
+import { Rules } from '../model/rules.js'
+import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
+import { showdiff } from '../showdiff.js'
+
 (function ($) {
   'use strict'
 

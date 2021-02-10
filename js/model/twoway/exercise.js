@@ -1,4 +1,9 @@
 /* global Equation, TwoWayStepCollection, TwoWayStep */
+
+import { Equation } from './equation.js'
+import { TwoWayStep } from './step.js'
+import { TwoWayStepCollection } from './stepCollection.js'
+
 /**
     Represents a two way exercise.
     @constructor

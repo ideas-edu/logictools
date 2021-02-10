@@ -1,4 +1,9 @@
 /* global LogEXSession, TwoWayStepCollection, TwoWayStep, jQuery, IdeasServiceProxy, Rules */
+
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { TwoWayStepCollection } from './stepCollection.js'
+import { TwoWayStep } from './step.js'
+
 /**
     TwoWayExerciseSolver is responsible for solving exercises.
     @constructor

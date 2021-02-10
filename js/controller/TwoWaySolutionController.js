@@ -1,4 +1,20 @@
 /* global document, window, TwoWaySolutionController, TwoWayStep, jQuery, LogEXSession, Resources, $, KeyBindings, Rules, setTimeout, TwoWayExerciseGenerator, Equation, TwoWayExercise, TwoWayExerciseSolver, TwoWayExerciseValidator, SyntaxValidator */
+
+// import { BTN_OK, BTN_SHOW_NEXT_STEP, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, SWITCH_RULE, VAL_SETONLABEL, VALSETOFFLABEL, LBL_RULEJUSTIFICATION, SWITCH_VALIDATION, LBL_STEPVALIDATION, BTN_SHOWHINT, BTN_SOLVEEXERCISE, BTN_VALIDATESTEP } from '../constants.js'
+// import { config } from '../config.js'
+import { LogEXSession } from '../logEXSession.js'
+import { Resources } from '../resources.js'
+// import { KeyBindings } from '../keyBindings.js'
+// import { OneWayExerciseGenerator } from '../model/oneway/exerciseGenerator.js'
+// import { OneWayExerciseCreator } from '../model/oneway/exerciseCreator.js'
+import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
+// import { OneWayExerciseValidator } from '../model/oneway/exerciseValidator.js'
+// import { OneWayStep } from '../model/oneway/step.js'
+import { TwoWayExercise } from '../model/twoway/exercise.js'
+// import { SyntaxValidator } from '../model/syntaxValidator.js'
+// import { Rules } from '../model/rules.js'
+// import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
+
 (function ($) {
   'use strict'
 
@@ -98,7 +114,7 @@ function TwoWaySolutionController () {
         @param rows - The proof step rows
      */
   this.colorRows = function (rows) {
-    if (rows === null) {
+    if (rows === undefined) {
       this.colorRows($('.exercise-step-added-top'))
       this.colorRows($($('.exercise-step-added-bottom').get().reverse()))
 
@@ -106,6 +122,7 @@ function TwoWaySolutionController () {
     }
 
     let toggle = -1
+
     rows.each(function () {
       if (toggle < 0) {
         $(this).addClass('oneven')

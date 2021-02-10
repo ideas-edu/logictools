@@ -1,4 +1,10 @@
 /* global Resources, LogEXSession, TwoWayExercise, IdeasServiceProxy */
+
+import { Resources } from '../../resources.js'
+import { LogEXSession } from '../../logEXSession.js'
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { TwoWayExercise } from './exercise.js'
+
 /**
     ExerciseGenerator is responsible for generating exercises.
     @constructor

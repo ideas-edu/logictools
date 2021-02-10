@@ -1,4 +1,7 @@
 /* global jQuery, Rules */
+
+import { Rules } from '../rules.js'
+
 /**
     TwoWayStepCollection is an ordered list of proof steps.
     @constructor
