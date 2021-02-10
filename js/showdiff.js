@@ -1,11 +1,11 @@
-function showdiff (active, oldString, newString) {
+export function showdiff (active, oldString, newString) {
   // alert(oldString);
 
   if (active) {
     // alert("Checking...");
     // onderzoek hoeveel tekens er aan het begin van de string gelijk zijn
-    i = 0
-    equalHead = 0
+    let i = 0
+    let equalHead = 0
     while ((i < oldString.length) && (oldString.charAt(i) === newString.charAt(i))) {
       equalHead++
       i++
@@ -15,9 +15,9 @@ function showdiff (active, oldString, newString) {
 
     // onderzoek hoeveel tekens er aan het eind van de string gelijk zijn
     i = oldString.length - 1
-    j = newString.length - 1
-    equalTail = 0
-    while ((i > 0) && (oldString.charAt(i) == newString.charAt(j))) {
+    let j = newString.length - 1
+    let equalTail = 0
+    while ((i > 0) && (oldString.charAt(i) === newString.charAt(j))) {
       equalTail++
       i--
       j--
@@ -25,7 +25,7 @@ function showdiff (active, oldString, newString) {
 
     // alert(equalTail);
 
-    s = ''
+    let s = ''
 
     // als er aan het begin tekens gelijk zijn zetten we die in s
     if (equalHead > 0) {
@@ -45,10 +45,9 @@ function showdiff (active, oldString, newString) {
     if (equalTail > 0) {
       s = s + oldString.substr(oldString.length - equalTail, equalTail)
     }
+    return s
   } else {
     // als showdiff niet actief is, wordt de oude tekst teruggegeven
-    s = oldString
+    return oldString
   }
-
-  return s
 }

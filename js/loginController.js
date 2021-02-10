@@ -1,4 +1,8 @@
 /* global document, LoginController, jQuery, LogEXSession, window, $, Resources */
+
+import { LogEXSession } from './logEXSession.js'
+import { Resources } from './resources.js'
+
 (function ($) {
   'use strict'
 
@@ -21,7 +25,7 @@
     LoginController is responsible for handling the user interaction and manipulation of the user interface with respect to the login process.
     @constructor
  */
-function LoginController () {
+export function LoginController () {
   'use strict'
 
   const self = this
@@ -92,7 +96,7 @@ function LoginController () {
      */
   this.validate = function () {
     const id = $('#login-student-id').val()
-    if (isNaN(id) || parseInt(id, 10) !== id || id <= 0) {
+    if (isNaN(id) || id <= 0) {
       self.showErrorToolTip($('#login-student-id'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalid-student-number'), 'bottom')
       return false
     }

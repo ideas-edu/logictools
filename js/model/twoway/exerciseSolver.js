@@ -3,7 +3,7 @@
     TwoWayExerciseSolver is responsible for solving exercises.
     @constructor
  */
-function TwoWayExerciseSolver () {
+export function TwoWayExerciseSolver () {
   'use strict'
 
   /**

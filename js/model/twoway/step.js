@@ -9,7 +9,7 @@
     @property {Boolean} isTopStep True if the step is applied to the top formula, false otherwise.
     @property {Boolean} isBottomStep True if the step is applied to the bottom formula, false otherwise.
  */
-function TwoWayStep (equationText, rule) {
+export function TwoWayStep (equationText, rule) {
   'use strict'
 
   this.equation = new Equation(equationText)

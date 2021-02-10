@@ -1,9 +1,13 @@
 /* global unescape, location, $, jQuery */
+
+import { config } from '../config.js'
+import { LogEXSession } from '../logEXSession.js'
+
 /**
     IdeasServiceProxy is responsible for talking to the IDEAS web services.
     @constructor
  */
-var IdeasServiceProxy = {
+export var IdeasServiceProxy = {
 
   /**
         Posts the requests to the IDEAS web services.

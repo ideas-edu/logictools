@@ -1,4 +1,7 @@
 /* global OneWayStepCollection, OneWayStep */
+
+import { OneWayStep } from './step.js'
+import { OneWayStepCollection } from './stepCollection.js'
 /**
     Represents a one way exercise.
     @constructor
@@ -6,7 +9,7 @@
     @param {string} exerciseType - The type of the formula. ("DNV","CNV",...)
     @property {OneWayStepCollection} steps The collection of oneway steps.
  */
-function OneWayExercise (formulaText, exerciseType, ruleJustification, stepValidation) {
+export function OneWayExercise (formulaText, exerciseType, ruleJustification, stepValidation) {
   'use strict'
 
   this.type = exerciseType

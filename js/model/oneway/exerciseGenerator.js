@@ -1,5 +1,11 @@
 /* global Resources, LogEXSession, OneWayExercise, IdeasServiceProxy */
-function OneWayExerciseGenerator () {
+
+import { Resources } from '../../resources.js'
+import { LogEXSession } from '../../logEXSession.js'
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { OneWayExercise } from './exercise.js'
+
+export function OneWayExerciseGenerator () {
   'use strict'
 
   /**

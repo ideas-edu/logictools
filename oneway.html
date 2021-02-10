@@ -12,23 +12,23 @@
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
 		<link href="css/font-awesome.css" rel="stylesheet">
-		<link rel="stylesheet" href="css/ideas.css">	
+		<link rel="stylesheet" href="css/ideas.css">
 
-		<!-- Jquery van CDN, met locale escape als niet beschikbaar --> 
+		<!-- Jquery van CDN, met locale escape als niet beschikbaar -->
 		<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
 		<!-- <script>window.jQuery || document.write('<script src="js/lib/jquery-1.10.2.min.js"><\/script>');</script> -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/lib/jquery-1.8.2.min.js"><\/script>');</script>
-		<script src="js/constants.js" type="text/javascript"></script>
-		
-		<script src="js/model/rules.js" type="text/javascript"></script>
-		<script src="js/model/exerciseTypes.js" type="text/javascript"></script>
-		<script src="js/resources.js"></script>		
-		<script src="js/config.js"></script>
+		<!-- <script src="js/constants.js" type="text/javascript"></script> -->
+
+		<!-- <script src="js/model/rules.js" type="text/javascript"></script> -->
+		<!-- <script src="js/model/exerciseTypes.js" type="text/javascript"></script> -->
+		<!-- <script src="js/resources.js"></script> -->
+		<!-- <script src="js/config.js"></script> -->
 		<!-- doh: css voor bootstrap=switch -->
-		<link rel="stylesheet" href="css/bootstrap-switch.css" /
+		<link rel="stylesheet" href="css/bootstrap-switch.css">
 		<script src="js/lib/modernizr-2.6.1-respond-1.1.0.min.js"></script>
-		<script src="js/logEXSession.js" type="text/javascript"></script>
+		<!-- <script src="js/logEXSession.js" type="text/javascript"></script> -->
     </head>
         <body class="logexiframe">
         <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
         <![endif]-->
             <div class="row">
                 <div class="span3">
-					<div class="v-center">	
+					<div class="v-center">
 						<div class="btn-group pull-left">
 							<button class="btn btn-primary btn-large" id="generate-exercise"><div id="newexercise"></div></button>
 							<button class="btn btn-primary btn-large dropdown-toggle" id="new-exercise-dropdown" data-toggle="dropdown">
@@ -46,14 +46,14 @@
 							</ul>
 						</div>
 					</div>
-                </div>		
+                </div>
 				<div class="span2 cell">
-					<div class="v-center">					
+					<div class="v-center">
 						<label id="lblRuleJustification" value=""/>
 					</div>
-					
-				</div>	
-				<div class="span2">	
+
+				</div>
+				<div class="span2">
 					<div class="v-center">
 						<div id="ruleswitch" class="make-switch switch-large" data-on-label="AAN" data-off-label="UIT">
 							<input type="checkbox" checked="checked">
@@ -64,9 +64,9 @@
 					<div class="v-center">
 						<label id="lblStepValidation" value=""/>
 					</div>
-				</div>	
-				<div class="span2">	
-					<div class="v-center">	
+				</div>
+				<div class="span2">
+					<div class="v-center">
 						<div id="stepvalidationswitch" class="make-switch switch-large" data-on-label="AAN" data-off-label="UIT">
 							<input type="checkbox" checked="checked">
 						</div>
@@ -84,7 +84,7 @@
 					</p>
                 </div>
             </div>
-            
+
             <hr>
 
             <div class="row">
@@ -96,7 +96,7 @@
 						  <span class="oneway-formula" id="exercise-left-formula"></span>
 						</div>
 					</div>
-                </div>			
+                </div>
             </div>
 
             <div id="exercise-steps" class="row">
@@ -108,7 +108,7 @@
                             </div>
 							<div class="span6">
 								<form class="form-inline padded-left">
-									
+
 								    <input type="text" class="input-xlarge" id="formula">
 									<input type="hidden" id="formulaoriginal">
 									<div class="btn-group">
@@ -125,11 +125,11 @@
 						   </div>
 							<div class="span2">
 								<form class="form-inline pull-right">
-									<button type="button" id="validate-step" class="btn btn-success"><div id="ok"> </div></button>			
+									<button type="button" id="validate-step" class="btn btn-success"><div id="ok"> </div></button>
 								</form>
 						   </div>
 
-						   
+
 						</div>
 					</div>
 			   </div>
@@ -139,22 +139,22 @@
 				<div class="span1">
 				</div>
                 <div class="span11">
-					<button type="button" id="solve-exercise" class="btn btn-warning pull-left"><div id="showderivation"> </div></button>	
+					<button type="button" id="solve-exercise" class="btn btn-warning pull-left"><div id="showderivation"> </div></button>
 					<button type="button" id="validate-exercise" class="btn btn-success pull-right"><div id="derivationdone"></div></button>
                 </div>
 
-         		
-				
-				
-            </div>		
-		
-		<script src="js/showdiff.js" type="text/javascript"></script>		
+
+
+
+            </div>
+
+		<!-- <script src="js/showdiff.js" type="text/javascript"></script> -->
 		<script src="js/lib/jsrender.js"></script>
         <script src="js/lib/bootstrap.min.js"></script>
-		<script src="js/lib/bootstrap-switch.min.js"></script>		
-		<script src="js/controller/OneWayController.js" type="text/javascript"></script>	
-        <script src="js/model/buggyRules.js" type="text/javascript"></script>
-		<script src="js/model/ideasServiceProxy.js" type="text/javascript"></script>
+		<script src="js/lib/bootstrap-switch.min.js"></script>
+		<script type="module" src="js/controller/OneWayController.js" type="text/javascript"></script>
+        <!-- <script src="js/model/buggyRules.js" type="text/javascript"></script> -->
+<!-- 		<script src="js/model/ideasServiceProxy.js" type="text/javascript"></script>
 		<script src="js/model/oneway/exercise.js" type="text/javascript"></script>
 		<script src="js/model/oneway/exerciseGenerator.js" type="text/javascript"></script>
 		<script src="js/model/oneway/exerciseSolver.js" type="text/javascript"></script>
@@ -162,14 +162,14 @@
 		<script src="js/model/oneway/exerciseValidator.js" type="text/javascript"></script>
 		<script src="js/model/oneway/exerciseCreator.js" type="text/javascript"></script>
 		<script src="js/model/syntaxValidator.js" type="text/javascript"></script>
-		<script src="js/model/oneway/stepCollection.js" type="text/javascript"></script>	
+		<script src="js/model/oneway/stepCollection.js" type="text/javascript"></script> -->
 		<script src="shared/kbinput/kbinput.js"></script>
-		<script src="js/texts.js"></script>
-		<script src="js/keyBindings.js"></script>
-		
-		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and 
+		<!-- <script src="js/texts.js"></script> -->
+		<!-- <script src="js/keyBindings.js"></script> -->
+
+		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and
 			http://msdn.microsoft.com/en-us/magazine/hh975379.aspx
-			
+
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-step-template" type="text/x-jsrender">
@@ -192,7 +192,7 @@
                                 {{if isWrong && ruleJustification && false }}
                                     <select class='retryRule'>
                                         {{:ruleCombobox}}
-                                    </select> 
+                                    </select>
                                 {{else}}
                                     <span>{{>rule}}</span>
                                 {{/if}}
@@ -226,10 +226,10 @@
 							  {{if hasRule}}<label class="equation-sign"></label>{{/if}}
 						</div>
 					</div>
-				</div>	
-			</div>		
+				</div>
+			</div>
 		</script>
-		
+
 		<script id="exercise-last-step-template" type="text/x-jsrender">
 			<div class="exercise-step-even last-step">
 				<div class="row">
@@ -241,10 +241,10 @@
 							  <img src="img/tick.png" />
 						</div>
 					</div>
-				</div>	
-			</div>		
-		</script>	
-		
+				</div>
+			</div>
+		</script>
+
 		<script id="new-exercise-template" type="text/x-jsrender">
 			<div id="new-exercise-content">
 				<div class="row">
@@ -252,18 +252,18 @@
 						<div class="exercise-step-even">
 								<form class="form-inline padded-left">
 									  <input type="text" class="input-xlarge" id="formula" />
-									 
+
 									  <!-- <input type="text" class="input-xlarge" id="formula2" rel="popover" /> -->
-									  <button type="button" id="create-exercise-button" class="btn btn-success"><div id="create-exercise-button-content"> </div></button>		
+									  <button type="button" id="create-exercise-button" class="btn btn-success"><div id="create-exercise-button-content"> </div></button>
 								</form>
 						</div>
 					</div>
-				</div>	
-			</div>		
-		</script>		
-	
-		<script src="js/lib/iframeResizer.contentWindow.min.js"></script>	
-	
+				</div>
+			</div>
+		</script>
+
+		<script src="js/lib/iframeResizer.contentWindow.min.js"></script>
+
 <!-- google analytics -->
 <!--         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

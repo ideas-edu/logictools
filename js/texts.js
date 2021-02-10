@@ -1,7 +1,7 @@
 /**
     Texts contains a dictionary of all the culture specific user interface elements in Dutch and English.
  */
-const Texts = {}// 0 = NL, 1=EN
+export const Texts = {}// 0 = NL, 1=EN
 
 // buttons inlog.html
 Texts['login-submit'] = ['Inloggen', 'Log in']

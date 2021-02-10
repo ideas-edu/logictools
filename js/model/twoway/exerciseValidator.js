@@ -3,7 +3,7 @@
     TwoWayExerciseValidator is responsible for validating exercises.
     @constructor
  */
-function TwoWayExerciseValidator () {
+export function TwoWayExerciseValidator () {
   'use strict'
 
   /**

@@ -1,7 +1,7 @@
 /**
     Rules is a dictionary of all the possible rules and their translations.
  */
-const Rules = {} // 0 = NL, 1=EN
+export const Rules = {} // 0 = NL, 1=EN
 Rules[''] = ['Regel..', 'Rule..']
 
 // basisarray's die hieronder hergebruikt worden

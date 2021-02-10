@@ -1,7 +1,7 @@
 /**
     Configuration options
  */
-const config = {
+export const config = {
 
   // Example exercises
   exampleExercises: {

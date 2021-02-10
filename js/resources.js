@@ -1,9 +1,14 @@
 /* global BuggyRules, Rules, Texts, exerciseTypes */
+
+import { Texts } from './texts.js'
+import { Rules } from './model/rules.js'
+import { exerciseTypes } from './model/exerciseTypes.js'
+
 /**
     Resources contains the logic for returning user interface resources in the correct culture.
     @constructor
  */
-const Resources = {
+export const Resources = {
 
   /**
         Gets the index number of the specified language.

@@ -1,9 +1,13 @@
 /* global Resources, LogEXSession, OneWayExercise, IdeasServiceProxy */
+
+import { LogEXSession } from '../../logEXSession.js'
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+
 /**
     OneWayExerciseCreator is responsible for handling manually created exercises.
     @constructor
  */
-function OneWayExerciseCreator () {
+export function OneWayExerciseCreator () {
   'use strict'
 
   /**

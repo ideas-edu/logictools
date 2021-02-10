@@ -6,7 +6,7 @@
     @property {string} formula1 The first formula.
     @property {string} formula2 The second formula.
  */
-function Equation (text) {
+export function Equation (text) {
   'use strict'
   if (text !== undefined) {
     const formulae = text.split('==')

@@ -1,5 +1,10 @@
 /* global MainFrameController,LogEXSession,jQuery,$,Resources,window,document, LoginController */
 
+import { BTN_LOGOUT } from './constants.js'
+import { LoginController } from './loginController.js'
+import { LogEXSession } from './logEXSession.js'
+import { Resources } from './resources.js'
+
 (function ($) {
   'use strict'
 
@@ -35,7 +40,7 @@
   })
 })(jQuery)
 
-function MainFrameController () {
+export function MainFrameController () {
   'use strict'
 
   const self = this

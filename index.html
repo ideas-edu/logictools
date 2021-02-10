@@ -10,38 +10,38 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=1020">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">	
+        <link rel="stylesheet" href="css/bootstrap.min.css">
 		<link href="css/font-awesome.css" rel="stylesheet">
 		<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" href="css/ideas.css">	
+		<link rel="stylesheet" href="css/ideas.css">
 
-		<!-- Jquery van CDN, met locale escape als niet beschikbaar --> 
+		<!-- Jquery van CDN, met locale escape als niet beschikbaar -->
 		<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
 		<!-- <script>window.jQuery || document.write('<script src="js/lib/jquery-1.10.2.min.js"><\/script>');</script> -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/lib/jquery-1.8.2.min.js"><\/script>');</script>
-		<script src="js/constants.js" type="text/javascript"></script>
+		<!-- <script type="module" src="js/constants.js" type="text/javascript"></script> -->
         <script src="js/lib/modernizr-2.6.1-respond-1.1.0.min.js"></script>
-		<script src="js/logEXSession.js" type="text/javascript"></script>
 		<script src="js/lib/bootstrap.min.js"></script>
+		<script type="module" src="js/logEXSession.js"></script>
 		<script src="shared/kbinput/kbinput.js"></script>
-		<script src="js/loginController.js"></script>	
-		<script src="js/mainFrameController.js" type="text/javascript"></script>
-		
+		<script type="module" src="js/loginController.js"></script>
+		<script type="module" src="js/mainFrameController.js" type="text/javascript"></script>
+
     </head>
     <body>
         <!--[if lt IE 9]>
             <p class="alert alert-error">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
         <![endif]-->
 
-		<div id="login" class="modal hide fade in" data-backdrop="static" style="display: none; ">  
-			<div class="modal-header">  
+		<div id="login" class="modal hide fade in" data-backdrop="static" style="display: none; ">
+			<div class="modal-header">
 				<div>
-					<h3>Ideas - LogEX</h3>  
-				</div>	
-			</div>  
+					<h3>Ideas - LogEX</h3>
+				</div>
+			</div>
 			<form id="login-form" class="form-inline padded-left" action="">
-			    <div class="modal-body">  
+			    <div class="modal-body">
 				    <div class="navbar">
 					    <div class="navbar-inner">
 						    <a href="#" class="brand" id="login-welcome">Welkom</a>
@@ -59,26 +59,26 @@
 					</fieldset>
 
 				    <div>
-					    <div id="void"></div>	
-					    <span id="loginhelptext1">	
+					    <div id="void"></div>
+					    <span id="loginhelptext1">
 					    LogEX is sneller te bedienen door gebruik te maken van sneltoetsen.
 					    </span>
 					    <span id="loginhelptext2">
 					    Een overzicht van de te gebruiken toetsen staat in het <a href="LogEX_manual_NL.pdf" target="_new">Help</a>-bestand.
 					    </span>
-					    <span id="loginhelptext3" rel="popover">					
+					    <span id="loginhelptext3" rel="popover">
 					    Tijdens een oefening is de help altijd op te vragen door rechtsboven op Help te klikken.
 					    </span>
-					    <span id="loginhelptext4" rel="popover">					
+					    <span id="loginhelptext4" rel="popover">
 					    Tijdens een oefening is de help altijd op te vragen door rechtsboven op Help te klikken.
 					    </span>
 				    </div>
-			    </div>  
-			    <div class="modal-footer">  
-				    <button type="submit" id="login-submit" type="button" href="#" class="btn btn-success">Ok</button>  
-			    </div>  
+			    </div>
+			    <div class="modal-footer">
+				    <button type="submit" id="login-submit" type="button" href="#" class="btn btn-success">Ok</button>
+			    </div>
 			</form>
-		</div>  
+		</div>
 
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
@@ -95,12 +95,12 @@
 							<li id="button-EN"><a href="#" id="lang2-EN">EN</a></li>
 							<li><a href="" target="_new" id="help"> </a></li>
 							<li><a href="#" id="logout"> </a></li>
-						</ul>	
+						</ul>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
         </div>
-		
+
         <div class="container">
 			<div class="row">
 				<div class="span14">
@@ -127,11 +127,11 @@
 		</div>
 
 		<script src="js/lib/jsrender.js"></script>
-		<script src="js/texts.js"></script>
-		<script src="js/resources.js"></script>
-		<script src="js/keyBindings.js"></script>
-		<script src="js/lib/jquery.iframeResizer.min.js"></script> 
-		
+		<script type="module" src="js/texts.js"></script>
+		<script type="module" src="js/resources.js"></script>
+		<script type="module" src="js/keyBindings.js"></script>
+		<script src="js/lib/jquery.iframeResizer.min.js"></script>
+
 	    <script type="application/javascript">
 			$('iframe').iFrameSizer({
 				log: false,
@@ -141,11 +141,11 @@
 				interval:250
 			});
 		</script>
-		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and 
+		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and
 			http://msdn.microsoft.com/en-us/magazine/hh975379.aspx
 			-->
-		
-		
+
+
 <!-- google analytics -->
 <!--         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

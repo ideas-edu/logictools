@@ -12,20 +12,20 @@
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
 		<link href="css/font-awesome.css" rel="stylesheet">
-		<link rel="stylesheet" href="css/ideas.css">	
+		<link rel="stylesheet" href="css/ideas.css">
 
-		<!-- Jquery van CDN, met locale escape als niet beschikbaar --> 
+		<!-- Jquery van CDN, met locale escape als niet beschikbaar -->
 		<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
 		<!-- <script>window.jQuery || document.write('<script src="js/lib/jquery-1.10.2.min.js"><\/script>');</script> -->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="js/lib/jquery-1.8.2.min.js"><\/script>');</script>
-				
-		<script src="js/constants.js" type="text/javascript"></script>
+
+		<!-- <script src="js/constants.js" type="text/javascript"></script> -->
 		<script src="js/model/rules.js" type="text/javascript"></script>
 		<script src="js/model/exerciseTypes.js" type="text/javascript"></script>
-		<script src="js/resources.js"></script>		
+		<script src="js/resources.js"></script>
 		<script src="js/config.js"></script>
-		
+
 		<link rel="stylesheet" href="css/bootstrap-switch.css" />
         <script src="js/lib/modernizr-2.6.1-respond-1.1.0.min.js"></script>
 		<script src="js/logEXSession.js" type="text/javascript"></script>
@@ -44,7 +44,7 @@
                                 <button class="btn btn-primary btn-large dropdown-toggle" id="new-exercise-dropdown" data-toggle="dropdown">
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu"  id="new-exercise-menu">									
+                                <ul class="dropdown-menu"  id="new-exercise-menu">
                                 </ul>
                             </div>
                          </div>
@@ -65,17 +65,17 @@
                         &nbsp;
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="span12">
-                        <div class="bar">		
+                        <div class="bar">
                             <p>
                                 <img id="wait-exercise" src="img/animated_loading.gif" />
                             </p>
-                        </div>	
-                    </div>			
+                        </div>
+                    </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="span2 cell">
                         &nbsp;
@@ -89,7 +89,7 @@
                         &nbsp;
                     </div>
                 </div>
-            
+
                 <div id="exercise-steps" class="row">
                     <div class="span12 cell">
                         <div id="active-step-top" class="exercise-step-even" style="display: none;">
@@ -214,8 +214,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>            
-                </div>     
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="span2 cell">
@@ -231,7 +231,7 @@
                     </div>
                 </div>
                 <hr>
-                            
+
                 <div class="row" id="bottom">
                     <div class="span4">
                         <button type="button" id="solve-exercise" class="btn btn-warning pull-left"><div id="showproof"> </div></button>
@@ -246,16 +246,16 @@
                         <button type="button" id="validate-exercise" class="btn btn-success pull-right"><div id="proofdone"></div></button>
                     </div>
                     <div class="span1 cell">
-                        
-                    </div>					
-					
-                </div>		
+
+                    </div>
+
+                </div>
             </div>
         <!-- /container -->
-        
-		
-		<script src="js/showdiff.js" type="text/javascript"></script>	
-		<!-- <script src="js/stepsremaining.js" type="text/javascript"></script>	-->		
+
+
+		<script src="js/showdiff.js" type="text/javascript"></script>
+		<!-- <script src="js/stepsremaining.js" type="text/javascript"></script>	-->
 		<script src="js/lib/jsrender.js"></script>
         <script src="js/lib/bootstrap.min.js"></script>
 		<script src="js/lib/bootstrap-switch.min.js"></script>
@@ -271,11 +271,11 @@
         <script src="js/model/twoway/exerciseCreator.js" type="text/javascript"></script>
 		<script src="js/model/syntaxValidator.js" type="text/javascript"></script>
 		<script src="js/model/twoway/exercise.js" type="text/javascript"></script>
-		<script src="js/model/twoway/stepCollection.js" type="text/javascript"></script>		
+		<script src="js/model/twoway/stepCollection.js" type="text/javascript"></script>
 		<script src="shared/kbinput/kbinput.js"></script>
 		<script src="js/keyBindings.js"></script>
-		
-		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and 
+
+		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and
 			http://msdn.microsoft.com/en-us/magazine/hh975379.aspx
 			-->
 		<script id="exercise-top-step-template" type="text/x-jsrender">
@@ -324,7 +324,7 @@
 								{{else}}
 									{{:stepsremaining}}
                                 {{/if}}
-								
+
                             </div>
                         </div>
                         <div class="row">
@@ -346,8 +346,8 @@
                 </div>
             </div>
 		</script>
-        
-        
+
+
 		<script id="exercise-bottom-step-template" type="text/x-jsrender">
 			<div class="exercise-step-even exercise-step-added-bottom bar">
 				<div class="row">
@@ -381,7 +381,7 @@
 								{{else}}
 									{{:stepsremaining}}
                                 {{/if}}
-								
+
                             </div>
                         </div>
                         <div class="row">
@@ -417,8 +417,8 @@
                         </div>
                     </div>
                 </div>
-			</div>		
-		</script>		
+			</div>
+		</script>
 		<script id="exercise-last-step-template" type="text/x-jsrender">
 			<div class="exercise-step-even last-step">
 				<div class="row">
@@ -436,10 +436,10 @@
                             </div>
                         </div>
 					</div>
-				</div>	
+				</div>
 			</div>
-		</script>	
-		
+		</script>
+
 		<script id="new-exercise-template" type="text/x-jsrender">
 			<div id="new-exercise-content">
 				<div class="row">
@@ -449,15 +449,15 @@
 									  <input type="text" class="input-xlarge" id="formula1" />
 									  <span><img id="equivsign" src="img/equivsign.png" width="18" /></span>
 									  <input type="text" class="input-xlarge" id="formula2" rel="popover" />
-									  <button type="button" id="create-exercise-button" class="btn btn-success"><div id="create-exercise-button-content"> </div></button>		
+									  <button type="button" id="create-exercise-button" class="btn btn-success"><div id="create-exercise-button-content"> </div></button>
 								</form>
 						</div>
 					</div>
-				</div>	
-			</div>		
-		</script>		
-		<script src="js/lib/iframeResizer.contentWindow.min.js"></script>	
-	
+				</div>
+			</div>
+		</script>
+		<script src="js/lib/iframeResizer.contentWindow.min.js"></script>
+
 <!-- google analytics -->
 <!--         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

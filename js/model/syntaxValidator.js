@@ -3,7 +3,7 @@
     SyntaxValidator is responsible for validating the syntax of a formula.
     @constructor
  */
-function SyntaxValidator () {
+export function SyntaxValidator () {
   'use strict'
 
   /**

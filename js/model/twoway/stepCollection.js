@@ -4,7 +4,7 @@
     @constructor
     @param {ProofStep} baseStep - The first proof step.
  */
-function TwoWayStepCollection (baseStep) {
+export function TwoWayStepCollection (baseStep) {
   'use strict'
 
   this.steps = []

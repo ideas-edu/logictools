@@ -6,7 +6,7 @@
     @property {string} formula The formula.
     @property {string} rule The applied rule.
  */
-function OneWayStep (formulaText, rule) {
+export function OneWayStep (formulaText, rule) {
   'use strict'
   this.formula = formulaText
   this.rule = rule

@@ -3,7 +3,7 @@
     TwoWayExerciseCreator is responsible for handling manually created exercises.
     @constructor
  */
-function TwoWayExerciseCreator () {
+export function TwoWayExerciseCreator () {
   'use strict'
 
   /**

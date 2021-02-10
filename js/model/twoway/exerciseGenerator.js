@@ -3,7 +3,7 @@
     ExerciseGenerator is responsible for generating exercises.
     @constructor
  */
-function TwoWayExerciseGenerator () {
+export function TwoWayExerciseGenerator () {
   'use strict'
 
   /**

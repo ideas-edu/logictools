@@ -4,7 +4,7 @@
     @constructor
     @param {LogEQController} logEQController - The ideas controller
  */
-function KeyBindings (logEQController) {
+export function KeyBindings (logEQController) {
   'use strict'
   this.logEQController = logEQController
 

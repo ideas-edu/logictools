@@ -1,9 +1,12 @@
 /* global LogEXSession, IdeasServiceProxy */
+
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+
 /**
     OneWayExerciseValidator is responsible for validating one way exercises.
     @constructor
  */
-function OneWayExerciseValidator () {
+export function OneWayExerciseValidator () {
   'use strict'
 
   /**

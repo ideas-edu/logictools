@@ -6,7 +6,7 @@
     @property {Equation} equation The equation.
     @property {ProofStepCollection} steps The collection of proof steps.
  */
-function TwoWayExercise (equationText, exerciseType, stepValidation) {
+export function TwoWayExercise (equationText, exerciseType, stepValidation) {
   'use strict'
 
   this.type = exerciseType

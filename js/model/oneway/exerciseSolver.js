@@ -1,9 +1,14 @@
 /* global LogEXSession, OneWayStepCollection, OneWayStep, jQuery, IdeasServiceProxy, Rules */
+
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { OneWayStepCollection } from './stepCollection.js'
+import { OneWayStep } from './step.js'
+
 /**
     OneWayExerciseSolver is responsible for solving one way exercises.
     @constructor
  */
-function OneWayExerciseSolver () {
+export function OneWayExerciseSolver () {
   'use strict'
 
   /**

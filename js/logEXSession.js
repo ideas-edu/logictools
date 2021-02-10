@@ -3,7 +3,7 @@
     LogEXSession contains the session information, namely the student number of the logged in student, the language chosen, and the chosen level of difficulty of the exercises. LogEQSession is a thin layer over the HTML localStorage object. Using the localStorage object data temporarily can be stored in the web browser, see http://diveintohtml5.info/storage.html.
     @constructor
  */
-const LogEXSession = {
+export const LogEXSession = {
 
   /**
         Initializes the session.

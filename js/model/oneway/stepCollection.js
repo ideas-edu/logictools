@@ -1,10 +1,12 @@
 /* global Rules */
+import { Rules } from '../rules.js'
+
 /**
     OneWayStepCollection is an ordered list of conversion steps.
     @constructor
     @param {ProofStep} baseStep - The first proof step.
  */
-function OneWayStepCollection (baseStep) {
+export function OneWayStepCollection (baseStep) {
   'use strict'
 
   this.steps = []

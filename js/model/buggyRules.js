@@ -1,7 +1,7 @@
 /**
     BuggyRules is a dictionary of all the known buggy rules and their translations.
  */
-const BuggyRules = {}
+export const BuggyRules = {}
 BuggyRules['logic.propositional.buggy.absor'] = ['U heeft absorptie niet correct toegepast.', 'You have applied absorption incorrectly.']
 BuggyRules['logic.propositional.buggy.absor2'] = ['U heeft absorptie niet correct toegepast: let op welke subformule u overhoudt.', 'You have applied absorption incorrectly: pay attention to which subformula you keep.']
 BuggyRules['logic.propositional.buggy.andcompl'] = ['U heeft een complement regel niet correct toegepast.', 'You have applied a complement rule incorrectly.']
