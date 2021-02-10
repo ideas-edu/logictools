@@ -4,6 +4,7 @@
   "description": "Logic tools",
   "main": "index.js",
   "dependencies": {
+    "jquery": "^1.8.2"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
@@ -11,10 +12,13 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "jshint": "^2.12.0",
-    "jslint": "^0.12.1",
+    "html-webpack-plugin": "^5.0.0",
     "jsdoc": "^3.6.6",
-    "jshint-html-reporter": "^0.2.5"
+    "jshint": "^2.12.0",
+    "jshint-html-reporter": "^0.2.5",
+    "jslint": "^0.12.1",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
   },
   "scripts": {
     "test": "eslint ."
