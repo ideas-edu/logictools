@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 
 /**
@@ -154,7 +155,7 @@ export function OneWayExerciseValidator () {
     $('#validate-step').hide()
     $('#validate-exercise').hide()
     $('#validate-exercise').removeClass('error')
-    $('#validate-exercise').tooltip('destroy')
+    $('#validate-exercise').tooltip('dispose')
     $('#equivsign').hide()
     $('#formula').hide()
   }

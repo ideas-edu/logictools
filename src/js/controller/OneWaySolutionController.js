@@ -1,3 +1,4 @@
+import 'jsrender'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
 import { OneWayExerciseSolver } from '../model/oneway/exerciseSolver.js'

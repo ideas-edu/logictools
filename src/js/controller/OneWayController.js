@@ -1,3 +1,11 @@
+import $ from 'jquery'
+import jsrender from 'jsrender'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'
+import 'bootstrap-switch'
+import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
+
 import { BTN_OK, BTN_SHOW_NEXT_STEP, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, SWITCH_RULE, VAL_SETONLABEL, VALSETOFFLABEL, LBL_RULEJUSTIFICATION, SWITCH_VALIDATION, LBL_STEPVALIDATION, BTN_SHOWHINT, BTN_SOLVEEXERCISE, BTN_VALIDATESTEP } from '../constants.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
@@ -14,16 +22,16 @@ import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
 
-(function ($) {
-  'use strict'
+jsrender($); // load JsRender jQuery plugin methods
 
-  // we can now rely on $ within the safety of our "bodyguard" function
+(function () {
   $(document).ready(function () {
     const controller = new OneWayController()
     controller.getExerciseType()
     controller.initializeRuleJustification()
     controller.initializeStepValidation()
     controller.initializeButtons()
+    controller.initializeInput()
     controller.setExampleExercises()
     controller.initializeLabels()
     controller.initializeRules($('#rule'))
@@ -34,7 +42,7 @@ import { showdiff } from '../showdiff.js'
       controller.useExercise(0)
     }
   })
-})(jQuery)
+})()
 
 const UITranslator = {
   translate: function (exerciseType) {
@@ -68,12 +76,12 @@ const UITranslator = {
     }
 
     $(LBL_RULEJUSTIFICATION).html(Resources.getText(language, 'rulejustification'))
-    $(SWITCH_RULE).bootstrapSwitch(VAL_SETONLABEL, Resources.getText(language, 'on')) // sets the text of the "on" label
-    $(SWITCH_RULE).bootstrapSwitch(VALSETOFFLABEL, Resources.getText(language, 'off')) // sets the text of the "off" label
+    $(SWITCH_RULE).bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
+    $(SWITCH_RULE).bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
 
     $(LBL_STEPVALIDATION).html(Resources.getText(language, 'stepvalidation'))
-    $(SWITCH_VALIDATION).bootstrapSwitch(VAL_SETONLABEL, Resources.getText(language, 'on')) // sets the text of the "on" label
-    $(SWITCH_VALIDATION).bootstrapSwitch(VALSETOFFLABEL, Resources.getText(language, 'off')) // sets the text of the "off" label
+    $(SWITCH_VALIDATION).bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
+    $(SWITCH_VALIDATION).bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
   }
 }
 
@@ -91,6 +99,7 @@ function OneWayController () {
   this.dummyExercise = null // wordt gebruikt om te testen of de laatste stap equivalent is met de opgave bij shownextstep met validatie per stap af.
   this.isFormulaValid = true
   this.keyBindings = new KeyBindings(this)
+  this.formulaPopover = null
   this.exampleExercises = null
 
   /**
@@ -130,13 +139,62 @@ function OneWayController () {
   }
 
   /**
+        Creates the popover for the input of symbols
+    */
+  this.initializeInput = function () {
+    const characterOptions = [
+      {
+        char: '¬',
+        triggers: ['-', 'n', '~', '1']
+      },
+      {
+        char: '∧',
+        triggers: ['a', '7', '6'],
+        spaces: true
+      },
+      {
+        char: '∨',
+        triggers: ['o', 'v', '|'],
+        spaces: true
+      },
+      {
+        char: '→',
+        triggers: ['i', '.'],
+        spaces: true
+      },
+      {
+        char: '↔',
+        triggers: ['=', 'e'],
+        spaces: true
+      },
+      { char: 'p' },
+      { char: 'q' },
+      { char: 'r' },
+      { char: 's' },
+      {
+        char: '(',
+        triggers: ['9']
+      },
+      {
+        char: ')',
+        triggers: ['0']
+      }
+    ]
+    const formulaOptions = {
+      id: 1,
+      characters: characterOptions
+    }
+    this.formulaPopover = new FormulaPopover(document.getElementById('formula'), formulaOptions)
+  }
+
+  /**
         Sets the example exercises
     */
   this.setExampleExercises = function () {
     this.exampleExercises = config.exampleExercises[self.exerciseType]
 
     // inserts the example exercises
-    for (let i = 0; i < self.exampleExercises.length; i++) {
+    for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = self.exampleExercises[i] + 1
       const id = 'exercise' + nr
       $('#new-exercise-menu').append('<li><a href="#" id="' + id + '"></a></li>')
@@ -187,7 +245,7 @@ function OneWayController () {
         Initializes rule justification
      */
   this.initializeRuleJustification = function () {
-    $(SWITCH_RULE).bootstrapSwitch('setState', config.useRuleJustification)
+    $(SWITCH_RULE).bootstrapSwitch('state', config.useRuleJustification)
     if (!config.displayRuleJustification) {
       $(LBL_RULEJUSTIFICATION).hide()
       $(SWITCH_RULE).hide()
@@ -198,7 +256,7 @@ function OneWayController () {
         Initializes step validation
      */
   this.initializeStepValidation = function () {
-    $(SWITCH_VALIDATION).bootstrapSwitch('setState', config.useStepValidation)
+    $(SWITCH_VALIDATION).bootstrapSwitch('state', config.useStepValidation)
     if (!config.displayStepValidation) {
       $(LBL_STEPVALIDATION).hide()
       $(SWITCH_VALIDATION).hide()
@@ -250,9 +308,7 @@ function OneWayController () {
     let rule
     let ruleTranslation
     let renderedCombobox = ''
-    let i
 
-    // for (i = 0; i < Rules.length; i += 1) {
     for (rule in Rules) {
       ruleTranslation = Resources.getRule(language, rule)
       if (previousRule !== ruleTranslation) {
@@ -296,20 +352,20 @@ function OneWayController () {
      */
   this.clearErrors = function () {
     $('#validate-exercise').removeClass('error')
-    $('#validate-exercise').tooltip('destroy')
+    $('#validate-exercise').tooltip('dispose')
 
     $('#formula').removeClass('error')
     $('#rule').removeClass('error')
     $('#formul1').removeClass('success')
-    $('#formula').tooltip('destroy')
-    $('#rule').tooltip('destroy')
-    $('#equivsign').tooltip('destroy')
-    $('#new-exercise-dropdown').tooltip('destroy')
-    $(BTN_SOLVEEXERCISE).tooltip('destroy')
+    $('#formula').tooltip('dispose')
+    $('#rule').tooltip('dispose')
+    $('#equivsign').tooltip('dispose')
+    $('#new-exercise-dropdown').tooltip('dispose')
+    $(BTN_SOLVEEXERCISE).tooltip('dispose')
     $(BTN_SHOW_NEXT_STEP).removeClass('error')
-    $(BTN_SHOW_NEXT_STEP).tooltip('destroy')
-    $(BTN_SHOWHINT).tooltip('destroy')
-    $(BTN_VALIDATESTEP).tooltip('destroy')
+    $(BTN_SHOW_NEXT_STEP).tooltip('dispose')
+    $(BTN_SHOWHINT).tooltip('dispose')
+    $(BTN_VALIDATESTEP).tooltip('dispose')
 
     $('#equivsign').attr('src', 'img/equivsignok.png')
   }
@@ -341,9 +397,9 @@ function OneWayController () {
      */
   this.reset = function () {
     this.clearErrors()
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
     $('#formula').blur()
-    $('#formula').val('')
+    // $('#formula').val('')
     $('#exercise').hide()
     $('#exercise-left-formula').html('')
     $('#exercise-right-formula').html('')
@@ -375,8 +431,8 @@ function OneWayController () {
      */
 
   this.useExercise = function (exnr) {
-    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('status')
-    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('status')
+    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
+    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state')
 
     this.reset()
     this.disableUI(true)
@@ -389,8 +445,8 @@ function OneWayController () {
         Generates an exercise.
      */
   this.generateExercise = function () {
-    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('status')
-    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('status')
+    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
+    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state')
 
     this.reset()
     this.disableUI(true)
@@ -419,22 +475,22 @@ function OneWayController () {
 
     $('#formula').bind('paste cut', function () {
       setTimeout(function () {
-        $('#formula').kbinput('tidy')
+        // $('#formula').kbinput('tidy')
         $('#equivsign').attr('src', 'img/equivsignok.png')
         $('#formula').removeClass('error')
-        $('#formula').tooltip('destroy')
+        $('#formula').tooltip('dispose')
       }, 100)
     })
 
-    $('#formula').kbinput({
-      chars: 'logic',
-      onValueChanged: function () {
-        $('#equivsign').attr('src', 'img/equivsignok.png')
-        $('#equivsign').tooltip('destroy')
-        $('#formula').removeClass('error')
-        $('#formula').tooltip('destroy')
-      }
-    })
+    // $('#formula').kbinput({
+    //   chars: 'logic',
+    //   onValueChanged: function () {
+    //     $('#equivsign').attr('src', 'img/equivsignok.png')
+    //     $('#equivsign').tooltip('dispose')
+    //     $('#formula').removeClass('error')
+    //     $('#formula').tooltip('dispose')
+    //   }
+    // })
 
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
@@ -452,8 +508,8 @@ function OneWayController () {
 
   this.createExercise = function () {
     const exerciseMethod = Resources.getExerciseMethod(self.exerciseType)
-    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('status') // true || false
-    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('status') // true || false
+    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state') // true || false
+    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state') // true || false
 
     self.disableUI(true)
     LogEXSession.setDifficulty('normal')
@@ -466,8 +522,8 @@ function OneWayController () {
 
     this.createExercise = function () {
         var exerciseMethod = Resources.getExerciseMethod(self.exerciseType), // vertaal naar servicenaam
-            ruleJustification = true, // $(SWITCH_RULE).bootstrapSwitch('status'), // true || false
-            stepValidation = true; // $(SWITCH_VALIDATION).bootstrapSwitch('status'); // true || false
+            ruleJustification = true, // $(SWITCH_RULE).bootstrapSwitch().state, // true || false
+            stepValidation = true; // $(SWITCH_VALIDATION).bootstrapSwitch().state; // true || false
 
         self.disableUI(true);
         LogEXSession.setDifficulty("normal");
@@ -496,7 +552,7 @@ function OneWayController () {
     $('#exercise-left-formula').text(self.exercise.formula)
 
     $('#formula').val(self.exercise.formula)
-    $('#formula').kbinput('setPreviousValue', $('#formula').val())
+    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
 
     self.disableUI(false)
@@ -525,7 +581,7 @@ function OneWayController () {
     $('#rule').val('')
 
     // doh: zorg dat regelverantwoording niet undefined kan zijn
-    self.exercise.usesRuleJustification = $(SWITCH_RULE).bootstrapSwitch('status')
+    self.exercise.usesRuleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
 
     // rvl: Check if rule justification is needed
     if (self.exercise.usesRuleJustification) {
@@ -534,7 +590,7 @@ function OneWayController () {
       $('#rule').hide()
     }
 
-    $(SWITCH_VALIDATION).bootstrapSwitch('setActive', true) // true || false
+    $(SWITCH_VALIDATION).bootstrapSwitch('disabled', true) // true || false
   }
 
   /**
@@ -602,7 +658,7 @@ function OneWayController () {
 
     if (nextStep !== null) {
       self.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
-      $(SWITCH_VALIDATION).bootstrapSwitch('setActive', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
+      $(SWITCH_VALIDATION).bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
 
       self.exercise.steps.push(nextStep)
       self.insertStep(nextStep, true)
@@ -611,7 +667,7 @@ function OneWayController () {
 
       // bij auto step is formula nog niet goed gevuld
       $('#formula').val(nextStep.formula)
-      $('#formula').kbinput('setPreviousValue', $('#formula').val())
+      // $('#formula').kbinput('setPreviousValue', $('#formula').val())
       $('#formulaoriginal').val($('#formula').val())
 
       // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
@@ -650,7 +706,7 @@ function OneWayController () {
     const formula = $('#formula')
     const step = self.exercise.getCurrentStep()
     const state = [self.exercise.type, step.strategyStatus, step.formula, '']
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
 
     if (Rules[nextOneWayStep.rule] !== null) {
       helpText = '<div id="hint1">' + Resources.getUseRuleMessage(language, nextOneWayStep.rule) + '<br/><a href="#" id="toggle-hint1">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
@@ -668,7 +724,7 @@ function OneWayController () {
     $('#toggle-hint1').on('click', function () {
       const oldFormula = formula.val()
       const newFormula = nextOneWayStep.formula
-      formula.popover('destroy')
+      formula.popover('dispose')
       helpText = '<div id="hint2">' + Resources.getFullHintMessage(language, nextOneWayStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button></div>'
 
       formula.popover({
@@ -681,7 +737,7 @@ function OneWayController () {
       formula.popover('show')
 
       $('#auto-step').on('click', function () {
-        $('#formula').popover('destroy')
+        $('#formula').popover('dispose')
         self.disableUI(true)
         self.showNextStep()
       })
@@ -822,7 +878,7 @@ function OneWayController () {
     self.reset()
     $.each(self.exercise.steps.steps, function () {
       let rule = ''
-      const stepTemplate = $('#exercise-step-template')
+      const stepTemplate = $.templates('#exercise-step-template')
       let error = ''
       let exerciseStepHtml
 
@@ -876,11 +932,11 @@ function OneWayController () {
     })
 
     $('#formula').val(self.exercise.getCurrentStep().formula)
-    $('#formula').kbinput('setPreviousValue', $('#formula').val())
+    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
     self.colorRows()
     $('#formula').blur()
-    $('.retryFormula').kbinput('hide')
+    // $('.retryFormula').kbinput('hide')
     self.disableUI(false)
 
     if (!isReady) {
@@ -902,7 +958,7 @@ function OneWayController () {
     let errorPlace
 
     self.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
-    $(SWITCH_VALIDATION).bootstrapSwitch('setActive', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
+    $(SWITCH_VALIDATION).bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
 
     // de stap is niet valid en gebruikt stap validatie
     if (!currentStep.isValid && self.exercise.usesStepValidation) {
@@ -938,7 +994,7 @@ function OneWayController () {
 
       // bij auto step is formula nog niet goed gevuld
       $('#formula').val(currentStep.formula)
-      $('#formula').kbinput('setPreviousValue', $('#formula').val())
+      // $('#formula').kbinput('setPreviousValue', $('#formula').val())
       $('#formulaoriginal').val($('#formula').val())
 
       self.disableUI(false)
@@ -1033,8 +1089,7 @@ function OneWayController () {
 
   this.renderStep = function (step, canDelete) {
     let rule = ''
-    const stepTemplate = $('#exercise-step-template')
-    let exerciseStepHtml
+    const stepTemplate = $.templates('#exercise-step-template')
     const error = ''
 
     // nog te doen:
@@ -1048,7 +1103,7 @@ function OneWayController () {
       rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
     }
 
-    exerciseStepHtml = stepTemplate.render({
+    const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
       formula: step.formula,
@@ -1083,7 +1138,7 @@ function OneWayController () {
     })
     this.clearErrors()
 
-    $(SWITCH_VALIDATION).bootstrapSwitch('setActive', true) // true || false
+    $(SWITCH_VALIDATION).bootstrapSwitch('disabled', true) // true || false
   }
 
   /**
@@ -1104,7 +1159,7 @@ function OneWayController () {
     allExerciseSteps.slice(index).remove()
 
     $('#formula').val(this.exercise.getCurrentStep().formula)
-    $('#formula').kbinput('setPreviousValue', $('#formula').val())
+    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
     this.colorRows()
 
@@ -1147,7 +1202,7 @@ function OneWayController () {
     allExerciseSteps.slice(0, allExerciseSteps.index(parent) + 1).remove()
 
     $('#formula').val(this.exercise.getCurrentStep().equation.formula)
-    $('#formula').kbinput('setPreviousValue', $('#formula').val())
+    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
     this.colorRows()
 
@@ -1209,22 +1264,22 @@ function OneWayController () {
   })
 
   $(BTN_VALIDATESTEP).click(function () {
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
     self.validateStep()
   })
 
   $('#validate-exercise').click(function () {
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
     self.validateExercise()
   })
 
   $(BTN_SHOW_NEXT_STEP).click(function () {
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
     self.showNextStep()
   })
 
   $('body').on('click', 'button.remove-top-step', function () {
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
     self.removeTopStep($(this))
   })
 
@@ -1260,15 +1315,15 @@ function OneWayController () {
 
   $('#formula').bind('paste cut', function () {
     setTimeout(function () {
-      $('#formula').kbinput('tidy')
+      // $('#formula').kbinput('tidy')
       $('#equivsign').attr('src', 'img/equivsignok.png')
       $('#formula').removeClass('error')
-      $('#formula').tooltip('destroy')
+      $('#formula').tooltip('dispose')
     }, 100)
   })
 
   $(BTN_SHOWHINT).click(function () {
-    $('#formula').popover('destroy')
+    $('#formula').popover('dispose')
     self.showHint()
   })
 
@@ -1283,8 +1338,8 @@ function OneWayController () {
     }
   }
 
-  $(SWITCH_RULE).on('switch-change', function (e, data) {
-    self.changeRuleJustification(data.value)
+  $(SWITCH_RULE).on('switchChange.bootstrapSwitch', function (e, data) {
+    self.changeRuleJustification(data)
   })
 
   this.changeStepValidation = function (stepValidation) {
@@ -1293,8 +1348,8 @@ function OneWayController () {
     }
   }
 
-  $(SWITCH_VALIDATION).on('switch-change', function (e, data) {
-    self.changeStepValidation(data.value)
+  $(SWITCH_VALIDATION).on('switchChange.bootstrapSwitch', function (e, data) {
+    self.changeStepValidation(data)
   })
 
   // key bindings

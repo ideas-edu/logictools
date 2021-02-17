@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 
@@ -5,8 +7,7 @@ import { LogEXSession } from '../logEXSession.js'
     IdeasServiceProxy is responsible for talking to the IDEAS web services.
     @constructor
  */
-export var IdeasServiceProxy = {
-
+export const IdeasServiceProxy = {
   /**
         Posts the requests to the IDEAS web services.
         @param input - The JSON request
@@ -33,7 +34,7 @@ export var IdeasServiceProxy = {
     $.ajax({
       type: 'POST',
       url: url,
-      data: jQuery.param(request),
+      data: $.param(request),
       success: onSuccess,
       error: onError
     })
