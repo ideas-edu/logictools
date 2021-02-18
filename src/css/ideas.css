@@ -27,7 +27,7 @@ body {
   	font-family: "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: small;
 	line-height: 16px;
-	
+
 	margin: auto;
     xmargin-left: 120px;
 	padding-top: 60px;
@@ -103,10 +103,10 @@ input[type="text"] {
 
 
 
-.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+/*.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
 	width: 1020px;
 }
-
+*/
 .cell{
     display:table;
     //border:1px solid gray;
@@ -162,10 +162,10 @@ input[type="text"] {
 	margin-bottom: 0px;
 }
 
-.kbinput-popover-content .navbar .nav > li > a {
+/*.kbinput-popover-content .navbar .nav > li > a {
 	padding: 2px 5px 2px;
 }
-
+*/
 .backspace {
   background-color: black;
   font-weight: bold;
@@ -186,8 +186,8 @@ input[type="text"] {
 
 .backspace::before {
   content: " ";
-  width: 0; 
-	height: 0; 
+  width: 0;
+	height: 0;
 	border-bottom: 5px solid transparent;  /* left arrow slant */
 	border-top: 5px solid transparent; /* right arrow slant */
 	border-right: 5px solid black; /* bottom, add background color here */

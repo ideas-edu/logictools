@@ -1,7 +1,7 @@
 import $ from 'jquery'
 import 'bootstrap'
 import { iframeResize } from 'iframe-resizer'
-// import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { LogEXSession } from './logEXSession.js'
 import { Resources } from './resources.js'
@@ -27,7 +27,7 @@ import { Resources } from './resources.js'
     })
 
     iframeResize({
-      log: true,
+      log: false,
       contentWindowBodyMargin: 8,
       doHeight: true,
       doWidth: false,
@@ -37,10 +37,7 @@ import { Resources } from './resources.js'
 })()
 
 export function MainFrameController () {
-  'use strict'
-
   const self = this
-  this.isStudentIdPopoverSelected = false
 
   /**
         Initializes the language to the user settings or falls back to the browser language.
@@ -70,9 +67,9 @@ export function MainFrameController () {
     $('#button-' + language).addClass('active')
 
     $('#exercisetype').html(Resources.getText(language, 'extype'))
-    $('#exercise-logeq').html(Resources.getText(language, 'exlogeq'))
-    $('#exercise-dnv').html(Resources.getText(language, 'exdnv'))
-    $('#exercise-cnv').html(Resources.getText(language, 'excnv'))
+    $('#tab-logeq').html(Resources.getText(language, 'exlogeq'))
+    $('#tab-dnv').html(Resources.getText(language, 'exdnv'))
+    $('#tab-cnv').html(Resources.getText(language, 'excnv'))
     $('#help').html("<i class='icon-question-sign'></i> " + Resources.getText(language, 'help'))
     $('#help').attr('href', 'LogEX_manual_' + language + '.pdf').attr('target', '_new')
   }
