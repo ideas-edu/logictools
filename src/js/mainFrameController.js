@@ -1,32 +1,22 @@
-import { BTN_LOGOUT } from './constants.js'
-import { LoginController } from './loginController.js'
+import $ from 'jquery'
+import 'bootstrap'
+import { iframeResize } from 'iframe-resizer'
+// import 'bootstrap/dist/css/bootstrap.min.css'
+
 import { LogEXSession } from './logEXSession.js'
 import { Resources } from './resources.js'
 
-(function ($) {
-  'use strict'
-
-  // we can now rely on $ within the safety of our "bodyguard" function
+(function () {
   $(document).ready(function () {
     const mainFrameController = new MainFrameController()
     let paneID
     let src
-    const loginController = new LoginController()
 
     mainFrameController.initializeLanguage()
     mainFrameController.initializeLabels()
 
-    $('#login-student-id').popover('destroy')
-    $('#login-student-id').blur()
-
-    if (!(LogEXSession.getStudentId() > 0)) {
-      $('#login').modal('show')
-      $('#login-student-id').focus()
-      $('#login-student-id').kbinput('hide')
-    }
-
     // Make sure tabs are only loaded when they are clicked for the first time.
-    $('#myTabs').bind('show', function (e) {
+    $('#myTabs').on('shown.bs.tab', function (e) {
       paneID = $(e.target).attr('href')
       src = $(paneID).attr('data-src')
 
@@ -35,8 +25,16 @@ import { Resources } from './resources.js'
         $(paneID + ' iframe').attr('src', src)
       }
     })
+
+    iframeResize({
+      log: true,
+      contentWindowBodyMargin: 8,
+      doHeight: true,
+      doWidth: false,
+      interval: 250
+    }, 'iframe')
   })
-})(jQuery)
+})()
 
 export function MainFrameController () {
   'use strict'
@@ -77,17 +75,6 @@ export function MainFrameController () {
     $('#exercise-cnv').html(Resources.getText(language, 'excnv'))
     $('#help').html("<i class='icon-question-sign'></i> " + Resources.getText(language, 'help'))
     $('#help').attr('href', 'LogEX_manual_' + language + '.pdf').attr('target', '_new')
-    $(BTN_LOGOUT).html("<i class='icon-signout'></i> " + Resources.getText(language, 'logout'))
-    $('#welcome').html(Resources.getText(language, 'welcome'))
-    $('#loginhelptext1').html(Resources.getText(language, 'loginhelptext1'))
-    $('#loginhelptext2').html(Resources.getText(language, 'loginhelptext2'))
-    $('#loginhelptext3').html(Resources.getText(language, 'loginhelptext3'))
-    $('#loginhelptext4').html(Resources.getText(language, 'loginhelptext4'))
-
-    $('#login-submit').html("<i id='login-submit'></i> " + Resources.getText(language, 'login-submit'))
-    $('#login-welcome').html(Resources.getText(language, 'welcome'))
-    $('#login-header').html(Resources.getText(language, 'login-header'))
-    $('#login-student-id-label').html(Resources.getText(language, 'login-student-id-label'))
   }
 
   $('#lang-NL').click(function () {
@@ -171,18 +158,4 @@ export function MainFrameController () {
     $('#lang2-EN').addClass('active')
     $('#lang2-NL').removeClass('active')
   })
-
-  $(BTN_LOGOUT).click(function () {
-    LogEXSession.logout()
-    LogEXSession.setStudentId($('#login-student-id').val())
-    $('#login-student-id').val('')
-
-    // doh: parameters zorgen ervoor dat modal niet gesloten wordt als er buiten de modal geklikt wordt
-    $('#login').modal({ backdrop: 'static', keyboard: false })
-    $('#login-student-id').focus()
-    $('#login-student-id').kbinput('hide')
-  })
-
-  // doh: alleen voor test-doeleinden; waarom verschijnen de tooltips niet boven een modalform?
-  // $('body').on('hover', 'a[rel=tooltip], a[rel=popover]', showZIndex);
 }

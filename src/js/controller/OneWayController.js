@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import jsrender from 'jsrender'
 import 'bootstrap'
+import 'iframe-resizer'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'
 import 'bootstrap-switch'
