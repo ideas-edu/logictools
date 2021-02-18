@@ -198,21 +198,21 @@ function OneWayController () {
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = self.exampleExercises[i] + 1
       const id = 'exercise' + nr
-      $('#new-exercise-menu').append('<li><a href="#" id="' + id + '"></a></li>')
+      $('#new-exercise-menu').append('<a class="dropdown-item" href="#" id="' + id + '"></a>')
     }
 
     // inserts the randomly generated exercises
     if (config.randomExercises) {
-      $('#new-exercise-menu').append('<li class="divider"></li>')
-      $('#new-exercise-menu').append('<li><a href="#" id="' + 'generate-exercise-easy' + '"></a></li>')
-      $('#new-exercise-menu').append('<li><a href="#" id="' + 'generate-exercise-normal' + '"></a></li>')
-      $('#new-exercise-menu').append('<li><a href="#" id="' + 'generate-exercise-difficult' + '"></a></li>')
+      $('#new-exercise-menu').append('<div class="dropdown-divider"></div>')
+      $('#new-exercise-menu').append('<a class="dropdown-item" href="#" id="' + 'generate-exercise-easy' + '"></a>')
+      $('#new-exercise-menu').append('<a class="dropdown-item" href="#" id="' + 'generate-exercise-normal' + '"></a>')
+      $('#new-exercise-menu').append('<a class="dropdown-item" href="#" id="' + 'generate-exercise-difficult' + '"></a>')
     }
 
     // inserts own input exercises
     if (config.inputOwnExercise) {
-      $('#new-exercise-menu').append('<li class="divider"></li>')
-      $('#new-exercise-menu').append('<li><a href="#" id="' + 'new-exercise' + '"></a></li>')
+      $('#new-exercise-menu').append('<div class="dropdown-divider"></div>')
+      $('#new-exercise-menu').append('<a class="dropdown-item" href="#" id="' + 'new-exercise' + '"></a>')
     }
 
     // installs event handlers
