@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 /**
     KeyBindings is responsible for handling the key strokes of the user.
     @constructor

@@ -166,10 +166,8 @@ export function OneWayExerciseValidator () {
         @param onValidated - The callback function that is called after validation. The callback function expects 1 parameter, the exercise.
         @param onErrorValidatingStep - The callback function that is called if there is a problem validating the step.
      */
-  this.validateStep = function (exerciseType, checkRule, step1, step2, onValidated, onErrorValidatingStep) {
+  this.validateStep = function (exercise, checkRule, step1, step2, onValidated, onErrorValidatingStep) {
     const self = this
-    let state
-    let formula
     let rule = null
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
@@ -238,8 +236,8 @@ export function OneWayExerciseValidator () {
 
     self.initializeStepStatus(step2)
 
-    state = [exerciseType, step1.strategyStatus, step1.formula, '']
-    formula = step2.formula
+    const state = [exercise.type, step1.strategyStatus, step1.formula, '']
+    const formula = step2.formula
     if (checkRule) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
     }

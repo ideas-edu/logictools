@@ -7,7 +7,7 @@ import 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'
 import 'bootstrap-switch'
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
-import { BTN_OK, BTN_SHOW_NEXT_STEP, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, SWITCH_RULE, VAL_SETONLABEL, VALSETOFFLABEL, LBL_RULEJUSTIFICATION, SWITCH_VALIDATION, LBL_STEPVALIDATION, BTN_SHOWHINT, BTN_SOLVEEXERCISE, BTN_VALIDATESTEP } from '../constants.js'
+import { BTN_OK, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, SWITCH_RULE, LBL_RULEJUSTIFICATION, SWITCH_VALIDATION, LBL_STEPVALIDATION } from '../constants.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
@@ -53,7 +53,7 @@ const UITranslator = {
     $('#button-' + language).addClass('active')
 
     $(BTN_OK).html("<i class='icon-ok'></i> " + Resources.getText(language, 'send'))
-    $(BTN_SHOW_NEXT_STEP).html(Resources.getText(language, 'step'))
+    $('#show-next-step').html(Resources.getText(language, 'step'))
     $(BTN_SHOWDERIVATION).html("<i class='icon-key'> </i> " + Resources.getText(language, 'showderivation'))
     $(BTN_DERIVATIONDONE).html("<i class='icon-ok'></i> " + Resources.getText(language, 'derivationdone'))
     $(BTN_NEWEXERCISE).html("<i class='icon-refresh'></i> " + Resources.getText(language, 'newexercise'))
@@ -91,22 +91,131 @@ const UITranslator = {
     @constructor
  */
 
-function OneWayController () {
-  'use strict'
+class OneWayController {
+  constructor () {
+    this.exerciseType = ''
+    this.exercise = null
+    this.dummyExercise = null // wordt gebruikt om te testen of de laatste stap equivalent is met de opgave bij shownextstep met validatie per stap af.
+    this.isFormulaValid = true
+    this.keyBindings = new KeyBindings(this)
+    this.formulaPopover = null
+    this.exampleExercises = null
+    this.exerciseGenerator = new OneWayExerciseGenerator()
+    this.exerciseCreator = new OneWayExerciseCreator()
+    this.exerciseSolver = new OneWayExerciseSolver()
+    // validation
+    this.exerciseValidator = new OneWayExerciseValidator()
+    this.syntaxValidator = new SyntaxValidator()
 
-  const self = this
-  this.exerciseType = ''
-  this.exercise = null
-  this.dummyExercise = null // wordt gebruikt om te testen of de laatste stap equivalent is met de opgave bij shownextstep met validatie per stap af.
-  this.isFormulaValid = true
-  this.keyBindings = new KeyBindings(this)
-  this.formulaPopover = null
-  this.exampleExercises = null
+    document.getElementById('generate-exercise').addEventListener('click', function () {
+      if (config.randomExercises) {
+        this.generateExercise()
+      }
+    }.bind(this))
+
+    document.getElementById('solve-exercise').addEventListener('click', function () {
+      this.showSolution()
+    }.bind(this))
+
+    document.getElementById('validate-step').addEventListener('click', function () {
+      $('#formula').popover('dispose')
+      this.validateStep()
+    }.bind(this))
+
+    document.getElementById('validate-exercise').addEventListener('click', function () {
+      $('#formula').popover('dispose')
+      this.validateExercise()
+    }.bind(this))
+
+    document.getElementById('show-next-step').addEventListener('click', function () {
+      $('#formula').popover('dispose')
+      this.showNextStep()
+    }.bind(this))
+
+    $('body').on('click', 'button.remove-top-step', function () {
+      $('#formula').popover('dispose')
+      this.removeTopStep($(this))
+    })
+
+    $('body').on('focusout', '.retryFormula', function () {
+      this.retryFormula($(this))
+    })
+
+    $('body').on('focusout', '.retryRule', function () {
+      $('#formula').popover('hide')
+      this.retryRule($(this))
+    })
+
+    $('body').on('focus', '.retryRule', function () {
+      $('#formula').popover('hide')
+      $('.retryFormula').popover('hide')
+      this.retryRule($(this))
+    })
+
+    document.getElementById('rule').addEventListener('change', function () {
+      $('#formula').popover('hide')
+      $('.retryFormula').popover('hide')
+      this.clearErrors()
+    }.bind(this))
+
+    $('body').on('focus', '#formula', function () {
+      $('#formula').popover('hide')
+      $('.retryFormula').popover('hide')
+    })
+
+    $('body').on('focus', '.retryFormula', function () {
+      $('#formula').popover('hide')
+    })
+
+    $('#formula').bind('paste cut', function () {
+      setTimeout(function () {
+        // $('#formula').kbinput('tidy')
+        $('#equivsign').attr('src', 'img/equivsignok.png')
+        $('#formula').removeClass('error')
+        $('#formula').tooltip('dispose')
+      }, 100)
+    })
+
+    document.getElementById('show-hint').addEventListener('click', function () {
+      $('#formula').popover('dispose')
+      this.showHint()
+    }.bind(this))
+
+    this.changeRuleJustification = function (ruleJustification) {
+      if (this.exercise) {
+        this.exercise.usesRuleJustification = ruleJustification
+      }
+      if (ruleJustification) {
+        $('#rule').show()
+      } else {
+        $('#rule').hide()
+      }
+    }
+
+    $(SWITCH_RULE).on('switchChange.bootstrapSwitch', function (e, data) {
+      this.changeRuleJustification(data)
+    })
+
+    this.changeStepValidation = function (stepValidation) {
+      if (this.exercise) {
+        this.exercise.usesStepValidation = stepValidation
+      }
+    }
+
+    $(SWITCH_VALIDATION).on('switchChange.bootstrapSwitch', function (e, data) {
+      this.changeStepValidation(data)
+    })
+
+    // key bindings
+    document.addEventListener('keydown', function (e) {
+      this.keyBindings.onKeyDown(e)
+    }.bind(this))
+  }
 
   /**
         Gets the exercisetype as given in the querystring
     */
-  this.getExerciseType = function () {
+  getExerciseType () {
     const sPageURL = window.location.search.substring(1)
     const sURLVariables = sPageURL.split('&')
     let sParameterName
@@ -124,7 +233,7 @@ function OneWayController () {
   /**
         Gets the formula as given in the querystring
     */
-  this.getFormula = function () {
+  getFormula () {
     const sPageURL = window.location.search.substring(1)
     const sURLVariables = sPageURL.split('&')
     let sParameterName
@@ -142,7 +251,7 @@ function OneWayController () {
   /**
         Creates the popover for the input of symbols
     */
-  this.initializeInput = function () {
+  initializeInput () {
     const characterOptions = [
       {
         char: '¬',
@@ -172,6 +281,8 @@ function OneWayController () {
       { char: 'q' },
       { char: 'r' },
       { char: 's' },
+      { char: 'T' },
+      { char: 'F' },
       {
         char: '(',
         triggers: ['9']
@@ -191,12 +302,12 @@ function OneWayController () {
   /**
         Sets the example exercises
     */
-  this.setExampleExercises = function () {
-    this.exampleExercises = config.exampleExercises[self.exerciseType]
+  setExampleExercises () {
+    this.exampleExercises = config.exampleExercises[this.exerciseType]
 
     // inserts the example exercises
     for (let i = 0; i < this.exampleExercises.length; i++) {
-      const nr = self.exampleExercises[i] + 1
+      const nr = this.exampleExercises[i] + 1
       const id = 'exercise' + nr
       $('#new-exercise-menu').append('<a class="dropdown-item" href="#" id="' + id + '"></a>')
     }
@@ -218,34 +329,34 @@ function OneWayController () {
     // installs event handlers
     $('#generate-exercise-easy').click(function () {
       LogEXSession.setDifficulty('easy')
-      self.generateExercise()
+      this.generateExercise()
     })
     $(BTN_GENERATEEXERCISENORMAL).click(function () {
       LogEXSession.setDifficulty('medium')
-      self.generateExercise()
+      this.generateExercise()
     })
 
     $('#generate-exercise-difficult').click(function () {
       LogEXSession.setDifficulty('difficult')
-      self.generateExercise()
+      this.generateExercise()
     })
 
     $('#new-exercise').click(function () {
-      self.newExercise()
+      this.newExercise()
     })
   }
 
   /**
         Initializes all buttons and label to correct language
      */
-  this.initializeLabels = function () {
-    UITranslator.translate(self.exerciseType)
+  initializeLabels () {
+    UITranslator.translate(this.exerciseType)
   }
 
   /**
         Initializes rule justification
      */
-  this.initializeRuleJustification = function () {
+  initializeRuleJustification () {
     $(SWITCH_RULE).bootstrapSwitch('state', config.useRuleJustification)
     if (!config.displayRuleJustification) {
       $(LBL_RULEJUSTIFICATION).hide()
@@ -256,7 +367,7 @@ function OneWayController () {
   /**
         Initializes step validation
      */
-  this.initializeStepValidation = function () {
+  initializeStepValidation () {
     $(SWITCH_VALIDATION).bootstrapSwitch('state', config.useStepValidation)
     if (!config.displayStepValidation) {
       $(LBL_STEPVALIDATION).hide()
@@ -267,23 +378,23 @@ function OneWayController () {
   /**
         Initializes hint, next step and complete derivation button
      */
-  this.initializeButtons = function () {
+  initializeButtons () {
     if (!config.displayHintButton) {
-      $(BTN_SHOWHINT).hide()
+      $('#show-hint').hide()
     }
     if (!config.displayNextStepButton) {
-      $(BTN_SHOW_NEXT_STEP).hide()
+      $('#show-next-step').hide()
     }
     if (!config.displayDerivationButton) {
       $(BTN_SHOWDERIVATION).hide()
-      $(BTN_SOLVEEXERCISE).hide()
+      $('#solve-exercise').hide()
     }
   }
 
   /**
         Initializes drop down box for rules from Rules dictionary
      */
-  this.initializeRules = function (comboRule) {
+  initializeRules (comboRule) {
     const language = LogEXSession.getLanguage()
     let previousRule = 'START' // For unification of the Rules list
     let rule
@@ -303,7 +414,7 @@ function OneWayController () {
   /**
         Gets the html code for an combobox to be used in the rendered step
     */
-  this.renderRuleCombobox = function (selectedRule) {
+  renderRuleCombobox (selectedRule) {
     const language = LogEXSession.getLanguage()
     let previousRule = 'START'
     let rule
@@ -331,7 +442,7 @@ function OneWayController () {
         @param {string} toolTipText - The error message
         @param {string} placement - The placement of the error message (top | bottom | left | right)
      */
-  this.showErrorToolTip = function (element, toolTipText, placement) {
+  showErrorToolTip (element, toolTipText, placement) {
     if (typeof placement === 'undefined') {
       // if (placement === "undefined") {
       placement = 'top'
@@ -351,7 +462,7 @@ function OneWayController () {
   /**
         Clears all errors on the screen.
      */
-  this.clearErrors = function () {
+  clearErrors () {
     $('#validate-exercise').removeClass('error')
     $('#validate-exercise').tooltip('dispose')
 
@@ -362,11 +473,11 @@ function OneWayController () {
     $('#rule').tooltip('dispose')
     $('#equivsign').tooltip('dispose')
     $('#new-exercise-dropdown').tooltip('dispose')
-    $(BTN_SOLVEEXERCISE).tooltip('dispose')
-    $(BTN_SHOW_NEXT_STEP).removeClass('error')
-    $(BTN_SHOW_NEXT_STEP).tooltip('dispose')
-    $(BTN_SHOWHINT).tooltip('dispose')
-    $(BTN_VALIDATESTEP).tooltip('dispose')
+    $('#solve-exercise').tooltip('dispose')
+    $('#show-next-step').removeClass('error')
+    $('#show-next-step').tooltip('dispose')
+    $('#show-hint').tooltip('dispose')
+    $('#validate-step').tooltip('dispose')
 
     $('#equivsign').attr('src', 'img/equivsignok.png')
   }
@@ -376,7 +487,7 @@ function OneWayController () {
 
         @param rows - The proof step rows
      */
-  this.colorRows = function (rows) {
+  colorRows (rows) {
     if (rows === undefined) {
       this.colorRows($('.exercise-step-added'))
       return
@@ -396,7 +507,7 @@ function OneWayController () {
   /**
         Resets the UI to its original state.
      */
-  this.reset = function () {
+  reset () {
     this.clearErrors()
     $('#formula').popover('dispose')
     $('#formula').blur()
@@ -414,7 +525,7 @@ function OneWayController () {
     }
   }
 
-  this.disableUI = function (disable) {
+  disableUI (disable) {
     $(':input').attr('disabled', disable)
 
     if (disable) {
@@ -424,14 +535,11 @@ function OneWayController () {
     }
   }
 
-  // exercise generation
-  this.exerciseGenerator = new OneWayExerciseGenerator()
-
   /**
         Get an example exercise.
      */
 
-  this.useExercise = function (exnr) {
+  useExercise (exnr) {
     const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
     const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state')
 
@@ -439,13 +547,13 @@ function OneWayController () {
     this.disableUI(true)
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'exercise') + ' ' + (exnr + 1))
-    this.exerciseGenerator.example(exnr, this.exerciseType, ruleJustification, stepValidation, this.onExerciseGenerated, this.onErrorGeneratingExercise)
+    this.exerciseGenerator.example(exnr, this.exerciseType, ruleJustification, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
         Generates an exercise.
      */
-  this.generateExercise = function () {
+  generateExercise () {
     const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
     const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state')
 
@@ -453,13 +561,13 @@ function OneWayController () {
     this.disableUI(true)
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    this.exerciseGenerator.generate(this.exerciseType, ruleJustification, stepValidation, this.onExerciseGenerated, this.onErrorGeneratingExercise)
+    this.exerciseGenerator.generate(this.exerciseType, ruleJustification, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
         Shows the form for creating a new exercise
      */
-  this.newExercise = function () {
+  newExercise () {
     const newExerciseTemplate = $('#new-exercise-template')
     const newExerciseHtml = newExerciseTemplate.render()
 
@@ -471,7 +579,7 @@ function OneWayController () {
     $('#formula').focus()
 
     $('#create-exercise-button').click(function () {
-      self.createExercise()
+      this.createExercise()
     })
 
     $('#formula').bind('paste cut', function () {
@@ -499,7 +607,7 @@ function OneWayController () {
   }
 
   // exercise creation
-  this.exerciseCreator = new OneWayExerciseCreator()
+
 
   /**
         Creates a new exercise
@@ -507,56 +615,56 @@ function OneWayController () {
     (that makes a call to service create)
      */
 
-  this.createExercise = function () {
-    const exerciseMethod = Resources.getExerciseMethod(self.exerciseType)
+  createExercise () {
+    const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
     const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state') // true || false
     const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state') // true || false
 
-    self.disableUI(true)
+    this.disableUI(true)
     LogEXSession.setDifficulty('normal')
-    self.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation)
-    self.exerciseCreator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, self.showExercise, self.onErrorCreatingExercise)
+    this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation)
+    this.exerciseCreator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, this.showExercise, this.onErrorCreatingExercise)
   }
 
   /**
         Creates a new exercise
 
     this.createExercise = function () {
-        var exerciseMethod = Resources.getExerciseMethod(self.exerciseType), // vertaal naar servicenaam
+        var exerciseMethod = Resources.getExerciseMethod(this.exerciseType), // vertaal naar servicenaam
             ruleJustification = true, // $(SWITCH_RULE).bootstrapSwitch().state, // true || false
             stepValidation = true; // $(SWITCH_VALIDATION).bootstrapSwitch().state; // true || false
 
-        self.disableUI(true);
+        this.disableUI(true);
         LogEXSession.setDifficulty("normal");
-        self.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation);
-        self.exerciseSolver.solve(self.exercise, self.showExercise, self.onErrorCreatingExercise);
+        this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation);
+        this.exerciseSolver.solve(this.exercise, this.showExercise, this.onErrorCreatingExercise);
     }; */
 
   /**
         Handles the error that an exercise can not be created
      */
-  this.onErrorCreatingExercise = function () {
-    self.disableUI(false)
-    self.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-creating-exercise'))
+  onErrorCreatingExercise () {
+    this.disableUI(false)
+    this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-creating-exercise'))
   }
 
   /**
     */
-  this.showExercise = function () {
-    self.clearErrors()
+  showExercise () {
+    this.clearErrors()
 
     $('#exercise-steps').show()
     if ($('#new-exercise-content')) {
       $('#new-exercise-content').remove()
     }
 
-    $('#exercise-left-formula').text(self.exercise.formula)
+    $('#exercise-left-formula').text(this.exercise.formula)
 
-    $('#formula').val(self.exercise.formula)
+    $('#formula').val(this.exercise.formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
 
-    self.disableUI(false)
+    this.disableUI(false)
     $('#active-step').show()
     $('#exercise').show()
     $('#exercise-steps').show()
@@ -565,7 +673,7 @@ function OneWayController () {
     $('#formula').show()
 
     if (config.displayDerivationButton) {
-      $(BTN_SOLVEEXERCISE).show()
+      $('#solve-exercise').show()
     }
     $('#validate-exercise').show()
     $('#exercise-right-formula').show()
@@ -582,10 +690,10 @@ function OneWayController () {
     $('#rule').val('')
 
     // doh: zorg dat regelverantwoording niet undefined kan zijn
-    self.exercise.usesRuleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
+    this.exercise.usesRuleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
 
     // rvl: Check if rule justification is needed
-    if (self.exercise.usesRuleJustification) {
+    if (this.exercise.usesRuleJustification) {
       $('#rule').show()
     } else {
       $('#rule').hide()
@@ -597,33 +705,31 @@ function OneWayController () {
   /**
         Handles the event that an exercise is generated
      */
-  this.onExerciseGenerated = function (exercise) {
-    self.exercise = exercise
-    self.showExercise()
+  onExerciseGenerated (exercise) {
+    this.exercise = exercise
+    this.showExercise()
   }
 
   /**
         Handles the error that an exercise can not generated
      */
-  this.onErrorGeneratingExercise = function () {
-    self.disableUI(false)
-    self.showErrorToolTip($('#new-exercise-dropdown'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-generating-exercise'), 'right')
+  onErrorGeneratingExercise () {
+    this.disableUI(false)
+    this.showErrorToolTip($('#new-exercise-dropdown'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-generating-exercise'), 'right')
   }
 
-  this.showSolution = function () {
+  showSolution () {
     window.open('onewaysolution.html?formula=' + this.exercise.formula + '&exerciseType=' + this.exercise.type, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
-
-  this.exerciseSolver = new OneWayExerciseSolver()
 
   /**
         Shows the next step
      */
-  this.showNextStep = function () {
+  showNextStep () {
     this.dummyExercise = new OneWayExercise(this.exercise.formula, this.exercise.type, false, false)
     this.dummyExercise.steps.push(new OneWayStep(this.exercise.getCurrentStep().formula, ''))
     this.disableUI(true)
-    this.exerciseSolver.solveNextStep(this.exercise, this.onNextStepSolved, this.onErrorSolvingNextStep)
+    this.exerciseSolver.solveNextStep(this.exercise, this.onNextStepSolved.bind(this), this.onErrorSolvingNextStep.bind(this))
 
     /**
         if (!this.exercise.usesStepValidation && this.exercise.steps.steps.length > 1) {
@@ -634,12 +740,12 @@ function OneWayController () {
         } */
   }
 
-  this.showNextStepWithoutStepValidation = function () {
-    if (self.dummyExercise.getCurrentStep().isValid || self.dummyExercise.getCurrentStep().isCorrect) {
-      self.exerciseSolver.solveNextStep(self.exercise, self.onNextStepSolved, self.onErrorSolvingNextStep)
+  showNextStepWithoutStepValidation () {
+    if (this.dummyExercise.getCurrentStep().isValid || this.dummyExercise.getCurrentStep().isCorrect) {
+      this.exerciseSolver.solveNextStep(this.exercise, this.onNextStepSolved, this.onErrorSolvingNextStep)
     } else {
-      self.disableUI(false)
-      self.showErrorToolTip($(BTN_SHOW_NEXT_STEP), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'))
+      this.disableUI(false)
+      this.showErrorToolTip($('#show-next-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'))
     }
   }
 
@@ -647,24 +753,24 @@ function OneWayController () {
         Handles the event thats the next step of an exercise is solved
         @param {ProofStep} nextStep - The next step
      */
-  this.onNextStepSolved = function (nextStep) {
+  onNextStepSolved (nextStep) {
     // if (nextStep !== null) {
-    //    self.exercise.steps.push(nextStep);
-    //    if (self.exercise.usesStepValidation) {
-    //        self.exerciseValidator.validateStep(self.exercise.type, self.exercise.usesRuleJustification, self.exercise.getPreviousStep(), self.exercise.getCurrentStep(), self.onStepValidated, self.onErrorValidatingStep);
+    //    this.exercise.steps.push(nextStep);
+    //    if (this.exercise.usesStepValidation) {
+    //        this.exerciseValidator.validateStep(this.exercise.type, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
     //    } else {
-    //        self.onStepValidated();
+    //        this.onStepValidated();
     //    }
     // }
 
     if (nextStep !== null) {
-      self.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
+      this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
       $(SWITCH_VALIDATION).bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
 
-      self.exercise.steps.push(nextStep)
-      self.insertStep(nextStep, true)
-      self.exercise.isReady = nextStep.isReady
-      self.disableUI(false) // UI hier terug enabled, anders worden de popovers verkeerd gepositioneerd.
+      this.exercise.steps.push(nextStep)
+      this.insertStep(nextStep, true)
+      this.exercise.isReady = nextStep.isReady
+      this.disableUI(false) // UI hier terug enabled, anders worden de popovers verkeerd gepositioneerd.
 
       // bij auto step is formula nog niet goed gevuld
       $('#formula').val(nextStep.formula)
@@ -678,35 +784,35 @@ function OneWayController () {
       //    Reset rule value after valid step
       $('#rule').val('')
     } else {
-      self.disableUI(false) // UI ook hier terug enabled in geval er geen volgende stappen meer zijn.
+      this.disableUI(false) // UI ook hier terug enabled in geval er geen volgende stappen meer zijn.
     }
   }
 
   /**
         Handles the error that the next step can not be solved
      */
-  this.onErrorSolvingNextStep = function (error) {
-    self.disableUI(false)
-    self.showErrorToolTip($(BTN_SHOW_NEXT_STEP), Resources.getSpecificMessage(LogEXSession.getLanguage(), error))
+  onErrorSolvingNextStep (error) {
+    this.disableUI(false)
+    this.showErrorToolTip($('#show-next-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), error))
   }
 
   /**
         Shows the hint
      */
-  this.showHint = function () {
-    this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound, this.onErrorGettingHelpForNextStep)
+  showHint () {
+    this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
   }
 
   /**
         Handles the event that help for a next step is found
         @param {OneWayStep} nextOneWayStep - The next one way step
      */
-  this.onHelpForNextStepFound = function (nextOneWayStep) {
+  onHelpForNextStepFound (nextOneWayStep) {
     const language = LogEXSession.getLanguage()
     let helpText = Resources.getText(language, 'nohint')
     const formula = $('#formula')
-    const step = self.exercise.getCurrentStep()
-    const state = [self.exercise.type, step.strategyStatus, step.formula, '']
+    const step = this.exercise.getCurrentStep()
+    const state = [this.exercise.type, step.strategyStatus, step.formula, '']
     $('#formula').popover('dispose')
 
     if (Rules[nextOneWayStep.rule] !== null) {
@@ -739,8 +845,8 @@ function OneWayController () {
 
       $('#auto-step').on('click', function () {
         $('#formula').popover('dispose')
-        self.disableUI(true)
-        self.showNextStep()
+        this.disableUI(true)
+        this.showNextStep()
       })
 
       // Log hint
@@ -751,38 +857,34 @@ function OneWayController () {
   /**
         Handles the error that the next step can not be solved
      */
-  this.onErrorGettingHelpForNextStep = function (msg) {
-    self.showErrorToolTip($(BTN_SHOWHINT), Resources.getSpecificMessage(LogEXSession.getLanguage(), msg))
+  onErrorGettingHelpForNextStep (msg) {
+    this.showErrorToolTip($('#show-hint'), Resources.getSpecificMessage(LogEXSession.getLanguage(), msg))
   }
-
-  // validation
-  this.exerciseValidator = new OneWayExerciseValidator()
-  this.syntaxValidator = new SyntaxValidator()
 
   /**
         Validates a step
 
      */
-  this.validateStep = function () {
-    if ($('#rule').val() === '' && self.exercise.usesRuleJustification && self.exercise.usesStepValidation) {
-      self.showErrorToolTip($('#rule'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'))
+  validateStep () {
+    if ($('#rule').val() === '' && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
+      this.showErrorToolTip($('#rule'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'))
       return false
     }
 
     const changed = $('#formulaoriginal').val() !== $('#formula').val()
 
     if (!changed) {
-      self.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'))
+      this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'))
       return false
     }
 
-    self.disableUI(true)
-    self.clearErrors()
-    self.exercise.steps.push(new OneWayStep($('#formula').val(), $('#rule').val()))
-    if (self.exercise.usesStepValidation) {
-      self.exerciseValidator.validateStep(self.exercise.type, self.exercise.usesRuleJustification, self.exercise.getPreviousStep(), self.exercise.getCurrentStep(), self.onStepValidated, self.onErrorValidatingStep)
+    this.disableUI(true)
+    this.clearErrors()
+    this.exercise.steps.push(new OneWayStep($('#formula').val(), $('#rule').val()))
+    if (this.exercise.usesStepValidation) {
+      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
-      self.onStepValidated()
+      this.onStepValidated()
     }
   }
 
@@ -790,11 +892,11 @@ function OneWayController () {
         Validates an exercise
       */
 
-  this.validateExercise = function () {
+  validateExercise () {
     if (this.exercise.usesStepValidation) {
-      self.checkIfReady()
+      this.checkIfReady()
     } else {
-      self.exerciseValidator.validateExercise(self.exercise, 0, 0, self.onExerciseValidated, self.onErrorExerciseValidate)
+      this.exerciseValidator.validateExercise(this.exercise, 0, 0, this.onExerciseValidated.bind(this), this.onErrorExerciseValidate.bind(this))
     }
   }
 
@@ -802,7 +904,7 @@ function OneWayController () {
     Check if the exrecise is completed
       */
 
-  this.checkIfReady = function () {
+  checkIfReady () {
     const step = this.exercise.getCurrentStep()
     const state = [this.exercise.type, step.strategyStatus, step.formula, '']
     const onError = function (data) {
@@ -820,21 +922,21 @@ function OneWayController () {
 
         const stepTemplate = $('#exercise-last-step-template')
         const exerciseStepHtml = stepTemplate.render({
-          leftformula: self.exercise.formula,
-          rightformula: self.exercise.getCurrentStep().formula
+          leftformula: this.exercise.formula,
+          rightformula: this.exercise.getCurrentStep().formula
         })
 
         $('#active-step').before(exerciseStepHtml)
-        self.disableUI(false)
+        this.disableUI(false)
       } else {
-        self.clearErrors()
+        this.clearErrors()
         $('#formula').addClass('error')
-        self.disableUI(false)
-        self.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete1'))
+        this.disableUI(false)
+        this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete1'))
       }
     }
     this.disableUI(true)
-    IdeasServiceProxy.ready(state, onSuccess, onError)
+    IdeasServiceProxy.ready(state, onSuccess.bind(this), onError.bind(this))
   }
 
   /**
@@ -864,20 +966,20 @@ function OneWayController () {
                 this.clearErrors();
                 $('#formula').addClass('error');
                 this.disableUI(false);
-                self.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), "incomplete1"));
+                this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), "incomplete1"));
             }
         } else {
-            self.exerciseValidator.validateExercise(self.exercise, 0, 0, self.onExerciseValidated, self.onErrorExerciseValidate);
+            this.exerciseValidator.validateExercise(this.exercise, 0, 0, this.onExerciseValidated, this.onErrorExerciseValidate);
         }
     }; */
 
-  this.onExerciseValidated = function () {
+  onExerciseValidated () {
     let i = 0
     let isReady = false
     let completelyCorrect = true
 
-    self.reset()
-    $.each(self.exercise.steps.steps, function () {
+    this.reset()
+    $.each(this.exercise.steps.steps, function () {
       let rule = ''
       const stepTemplate = $.templates('#exercise-step-template')
       let error = ''
@@ -912,9 +1014,9 @@ function OneWayController () {
         isWrong: !this.isValid,
         hasRule: this.rule !== undefined,
         step: i,
-        ruleCombobox: self.renderRuleCombobox(this.rule),
+        ruleCombobox: this.renderRuleCombobox(this.rule),
         stepValidation: false,
-        ruleJustification: self.exercise.usesRuleJustification,
+        ruleJustification: this.exercise.usesRuleJustification,
         error: error
       })
 
@@ -922,49 +1024,49 @@ function OneWayController () {
 
       if (this.isReady && !isReady && completelyCorrect === true) {
         isReady = true
-        self.insertLastStep(this)
+        this.insertLastStep(this)
       }
 
       if (!this.isRuleValid && i > 0) {
-        self.initializeRules($('#rule' + i))
+        this.initializeRules($('#rule' + i))
       }
 
       i += 1
     })
 
-    $('#formula').val(self.exercise.getCurrentStep().formula)
+    $('#formula').val(this.exercise.getCurrentStep().formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
-    self.colorRows()
+    this.colorRows()
     $('#formula').blur()
     // $('.retryFormula').kbinput('hide')
-    self.disableUI(false)
+    this.disableUI(false)
 
     if (!isReady) {
-      self.showErrorToolTip($('#validate-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'))
+      this.showErrorToolTip($('#validate-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'))
     }
   }
 
-  this.onErrorExerciseValidate = function () {
-    self.showErrorToolTip($(BTN_VALIDATESTEP), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-exercise'))
+  onErrorExerciseValidate () {
+    this.showErrorToolTip($('#validate-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-exercise'))
   }
 
   /**
         Handles the event that a step is validated
 
      */
-  this.onStepValidated = function () {
-    const currentStep = self.exercise.getCurrentStep()
+  onStepValidated () {
+    const currentStep = this.exercise.getCurrentStep()
     let message
     let errorPlace
 
-    self.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
+    this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
     $(SWITCH_VALIDATION).bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
 
     // de stap is niet valid en gebruikt stap validatie
-    if (!currentStep.isValid && self.exercise.usesStepValidation) {
+    if (!currentStep.isValid && this.exercise.usesStepValidation) {
       message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
-      self.exercise.steps.pop()
+      this.exercise.steps.pop()
 
       if (!currentStep.isSyntaxValid) { // Foutieve syntax
         message = Resources.getInvalidFormulaMessage() // + ": " + currentStep.syntaxError;
@@ -986,19 +1088,19 @@ function OneWayController () {
         errorPlace = $('#formula')
       }
 
-      self.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
-      self.showErrorToolTip(errorPlace, message)
+      this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
+      this.showErrorToolTip(errorPlace, message)
       $('#equivsign').attr('src', 'img/equivsignerr.png')
     } else {
-      self.insertStep(currentStep, true)
-      self.exercise.isReady = currentStep.isReady
+      this.insertStep(currentStep, true)
+      this.exercise.isReady = currentStep.isReady
 
       // bij auto step is formula nog niet goed gevuld
       $('#formula').val(currentStep.formula)
       // $('#formula').kbinput('setPreviousValue', $('#formula').val())
       $('#formulaoriginal').val($('#formula').val())
 
-      self.disableUI(false)
+      this.disableUI(false)
 
       // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
       $('#formula').blur()
@@ -1012,10 +1114,10 @@ function OneWayController () {
   /**
         Handles the error that the step can not be validated
      */
-  this.onErrorValidatingStep = function () {
-    self.exercise.steps.pop()
-    self.disableUI(false)
-    self.showErrorToolTip($(BTN_VALIDATESTEP), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-step'))
+  onErrorValidatingStep () {
+    this.exercise.steps.pop()
+    this.disableUI(false)
+    this.showErrorToolTip($('#validate-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-step'))
   }
 
   /**
@@ -1023,10 +1125,10 @@ function OneWayController () {
 
         @param onFormulasValidated - The callback function
      */
-  this.validateInput = function (afterInputValidated) {
+  validateInput (afterInputValidated) {
     this.clearErrors()
     this.validateFormula($('#formula'), function (isValid, formulaText) {
-      self.onInputValidated(isValid, formulaText, afterInputValidated)
+      this.onInputValidated(isValid, formulaText, afterInputValidated)
     })
   }
 
@@ -1037,8 +1139,8 @@ function OneWayController () {
         @param {String} formulaText - The text of the formula
         @param onFormulasValidated - The callback function
      */
-  this.onInputValidated = function (isValid, formulaText, afterInputValidated) {
-    self.onFormulaValidated(isValid, formulaText)
+  onInputValidated (isValid, formulaText, afterInputValidated) {
+    this.onFormulaValidated(isValid, formulaText)
     afterInputValidated()
   }
 
@@ -1049,11 +1151,11 @@ function OneWayController () {
         @param {String} formulaText - The text of the formula
      */
   // this.onFormulaValidated = function (isValid, formulaText) {
-  this.onFormulaValidated = function (isValid) {
+  onFormulaValidated (isValid) {
     if (!isValid) {
-      self.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'bottom')
+      this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'bottom')
     }
-    self.isFormulaValid = isValid
+    this.isFormulaValid = isValid
   }
 
   /**
@@ -1062,13 +1164,13 @@ function OneWayController () {
         @param formula - The DOM element that contains the formula
         @param onFormulasValidated - The callback function
      */
-  this.validateFormula = function (formula, callback) {
+  validateFormula (formula, callback) {
     // if (typeof callback === "undefined") {
     if (callback === 'undefined') {
       callback = this.onFormulaValidated
     }
 
-    if (self.exercise.usesStepValidation) {
+    if (this.exercise.usesStepValidation) {
       this.syntaxValidator.validateSyntax(formula.val(), callback)
     } else {
       callback(true, formula.val())
@@ -1081,14 +1183,14 @@ function OneWayController () {
         @param {ProofStep} step - The proof step
         @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
      */
-  this.insertStep = function (step, canDelete) {
+  insertStep (step, canDelete) {
     const exerciseStepHtml = this.renderStep(step, canDelete)
 
     $('#active-step').before(exerciseStepHtml)
     this.colorRows()
   }
 
-  this.renderStep = function (step, canDelete) {
+  renderStep (step, canDelete) {
     let rule = ''
     const stepTemplate = $.templates('#exercise-step-template')
     const error = ''
@@ -1122,7 +1224,7 @@ function OneWayController () {
 
         @param {ProofStep} step - The proof step
      */
-  this.insertLastStep = function (step) {
+  insertLastStep (step) {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
       leftformula: this.exercise.formula,
@@ -1147,7 +1249,7 @@ function OneWayController () {
 
         @param source - The source DOM element
      */
-  this.removeTopStep = function (source) {
+  removeTopStep (source) {
     const parent = source.parents('div.exercise-step-added')
     const allExerciseSteps = $('#exercise-steps div.exercise-step-added')
     const index = allExerciseSteps.index(parent)
@@ -1172,7 +1274,7 @@ function OneWayController () {
     IdeasServiceProxy.log(state, 'undo')
   }
 
-  this.retryFormula = function (source) {
+  retryFormula (source) {
     const parent = source.parents('div.exercise-step-added')
     const allExerciseSteps = $('#exercise-steps div.exercise-step-added')
     const index = allExerciseSteps.index(parent)
@@ -1180,7 +1282,7 @@ function OneWayController () {
     this.exercise.steps.steps[index].formula = source.val()
   }
 
-  this.retryRule = function (source) {
+  retryRule (source) {
     const parent = source.parents('div.exercise-step-added')
     const allExerciseSteps = $('#exercise-steps div.exercise-step-added')
     const index = allExerciseSteps.index(parent)
@@ -1193,7 +1295,7 @@ function OneWayController () {
 
         @param source - The source DOM element
      */
-  this.removeBottomStep = function (source) {
+  removeBottomStep (source) {
     this.clearErrors()
     const parent = source.parents('div.exercise-step-added-bottom')
     const allExerciseSteps = $('#exercise-steps div.exercise-step-added-bottom')
@@ -1217,8 +1319,8 @@ function OneWayController () {
   // user interface bindings
   // $("#lang-NL").click(function () {
   //    LogEXSession.setLanguage("NL");
-  //    self.initializeLabels();
-  //    self.initializeRules($('#rule'));
+  //    this.initializeLabels();
+  //    this.initializeRules($('#rule'));
   //    $("#button-NL").addClass('active');
   //    $("#button-EN").removeClass('active');
   //    alert("inOnewaycontroller");
@@ -1226,135 +1328,26 @@ function OneWayController () {
 
   // $("#lang-EN").click(function () {
   //    LogEXSession.setLanguage("EN");
-  //    self.initializeLabels();
-  //    self.initializeRules($('#rule'));
+  //    this.initializeLabels();
+  //    this.initializeRules($('#rule'));
   //    $("#button-EN").addClass('active');
   //    $("#button-NL").removeClass('active');
   //    alert("inOneWayController");
   // });
 
-  $(BTN_LOGOUT).click(function () {
-    LogEXSession.logout()
-    window.location = 'login.html'
-  })
-
   /**
       Use the example exercises
     */
-  this.bindExampleExercises = function () {
-    for (let i = 0; i < self.exampleExercises.length; i++) {
-      const nr = self.exampleExercises[i]
+  bindExampleExercises () {
+    for (let i = 0; i < this.exampleExercises.length; i++) {
+      const nr = this.exampleExercises[i]
       const id = '#exercise' + (nr + 1);
 
       (function (_nr, _id) {
         $(_id).click(function () {
-          self.useExercise(_nr)
+          this.useExercise(_nr)
         })
       })(nr, id)
     }
   }
-
-  $('#generate-exercise').click(function () {
-    if (config.randomExercises) {
-      self.generateExercise()
-    }
-  })
-
-  $(BTN_SOLVEEXERCISE).click(function () {
-    self.showSolution()
-  })
-
-  $(BTN_VALIDATESTEP).click(function () {
-    $('#formula').popover('dispose')
-    self.validateStep()
-  })
-
-  $('#validate-exercise').click(function () {
-    $('#formula').popover('dispose')
-    self.validateExercise()
-  })
-
-  $(BTN_SHOW_NEXT_STEP).click(function () {
-    $('#formula').popover('dispose')
-    self.showNextStep()
-  })
-
-  $('body').on('click', 'button.remove-top-step', function () {
-    $('#formula').popover('dispose')
-    self.removeTopStep($(this))
-  })
-
-  $('body').on('focusout', '.retryFormula', function () {
-    self.retryFormula($(this))
-  })
-
-  $('body').on('focusout', '.retryRule', function () {
-    $('#formula').popover('hide')
-    self.retryRule($(this))
-  })
-
-  $('body').on('focus', '.retryRule', function () {
-    $('#formula').popover('hide')
-    $('.retryFormula').popover('hide')
-    self.retryRule($(this))
-  })
-
-  $('#rule').change(function () {
-    $('#formula').popover('hide')
-    $('.retryFormula').popover('hide')
-    self.clearErrors()
-  })
-
-  $('body').on('focus', '#formula', function () {
-    $('#formula').popover('hide')
-    $('.retryFormula').popover('hide')
-  })
-
-  $('body').on('focus', '.retryFormula', function () {
-    $('#formula').popover('hide')
-  })
-
-  $('#formula').bind('paste cut', function () {
-    setTimeout(function () {
-      // $('#formula').kbinput('tidy')
-      $('#equivsign').attr('src', 'img/equivsignok.png')
-      $('#formula').removeClass('error')
-      $('#formula').tooltip('dispose')
-    }, 100)
-  })
-
-  $(BTN_SHOWHINT).click(function () {
-    $('#formula').popover('dispose')
-    self.showHint()
-  })
-
-  this.changeRuleJustification = function (ruleJustification) {
-    if (this.exercise) {
-      this.exercise.usesRuleJustification = ruleJustification
-    }
-    if (ruleJustification) {
-      $('#rule').show()
-    } else {
-      $('#rule').hide()
-    }
-  }
-
-  $(SWITCH_RULE).on('switchChange.bootstrapSwitch', function (e, data) {
-    self.changeRuleJustification(data)
-  })
-
-  this.changeStepValidation = function (stepValidation) {
-    if (this.exercise) {
-      this.exercise.usesStepValidation = stepValidation
-    }
-  }
-
-  $(SWITCH_VALIDATION).on('switchChange.bootstrapSwitch', function (e, data) {
-    self.changeStepValidation(data)
-  })
-
-  // key bindings
-  $(document).bind('keydown', function (e) {
-    self.keyBindings.onKeyDown(e)
-  })
 }
