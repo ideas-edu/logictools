@@ -1,5 +1,6 @@
 import { LogEXSession } from '../../logEXSession.js'
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { OneWayExercise } from './exercise.js'
 
 /**
     OneWayExerciseCreator is responsible for handling manually created exercises.

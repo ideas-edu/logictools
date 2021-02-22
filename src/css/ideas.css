@@ -131,6 +131,28 @@ input[type="text"] {
 }
 
 /* doh: z-index opgehoogd */
+div.kbinput-wrapper {
+	display: table-row;
+}
+
+div.kbinput-wrapper > button {
+	margin: 5px 2px;
+}
+
+form.kbinput {
+	display: table;
+	width: 100%;
+}
+
+input.kbinput {
+	display: table-row;
+	width: 100%;
+}
+
+#rule {
+	width: 100%;
+}
+
 .kbinput-popover {
 	position: absolute;
 	top: 0;

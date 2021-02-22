@@ -3,11 +3,15 @@ import jsrender from 'jsrender'
 import 'bootstrap'
 import 'iframe-resizer'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'
-import 'bootstrap-switch'
+import '@fortawesome/fontawesome-free/js/fontawesome'
+import '@fortawesome/fontawesome-free/js/solid'
+import '@fortawesome/fontawesome-free/js/regular'
+import '@fortawesome/fontawesome-free/js/brands'
+// import 'bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css'
+// import 'bootstrap-switch'
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
-import { BTN_OK, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT, SWITCH_RULE, LBL_RULEJUSTIFICATION, SWITCH_VALIDATION, LBL_STEPVALIDATION } from '../constants.js'
+import { BTN_OK, BTN_SHOWDERIVATION, BTN_DERIVATIONDONE, BTN_NEWEXERCISE, BTN_GENERATEEXERCISENORMAL, BTN_LOGOUT } from '../constants.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
@@ -52,11 +56,11 @@ const UITranslator = {
     const exampleExercises = config.exampleExercises[exerciseType]
     $('#button-' + language).addClass('active')
 
-    $(BTN_OK).html("<i class='icon-ok'></i> " + Resources.getText(language, 'send'))
+    $(BTN_OK).html("<i class='fas fa-check'></i> " + Resources.getText(language, 'send'))
     $('#show-next-step').html(Resources.getText(language, 'step'))
-    $(BTN_SHOWDERIVATION).html("<i class='icon-key'> </i> " + Resources.getText(language, 'showderivation'))
-    $(BTN_DERIVATIONDONE).html("<i class='icon-ok'></i> " + Resources.getText(language, 'derivationdone'))
-    $(BTN_NEWEXERCISE).html("<i class='icon-refresh'></i> " + Resources.getText(language, 'newexercise'))
+    $(BTN_SHOWDERIVATION).html("<i class='fas fa-key'> </i> " + Resources.getText(language, 'showderivation'))
+    $(BTN_DERIVATIONDONE).html("<i class='fas fa-check'></i> " + Resources.getText(language, 'derivationdone'))
+    $(BTN_NEWEXERCISE).html("<i class='fas fa-refresh'></i> " + Resources.getText(language, 'newexercise'))
     $('#generate-exercise-easy').html(Resources.getText(language, 'exeasy'))
     $(BTN_GENERATEEXERCISENORMAL).html(Resources.getText(language, 'exnormal'))
     $('#generate-exercise-difficult').html(Resources.getText(language, 'exhard'))
@@ -69,20 +73,20 @@ const UITranslator = {
       $('#' + id).html(Resources.getText(language, 'exercise') + ' ' + nr)
     }
 
-    $('#help').html("<i class='icon-question-sign'></i> " + Resources.getText(language, 'help'))
+    $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
     $('#help').attr('href', 'LogEQ_manual_' + language + '.pdf').attr('target', '_new')
-    $(BTN_LOGOUT).html("<i class='icon-signout'></i> " + Resources.getText(language, 'logout'))
+    $(BTN_LOGOUT).html("<i class='fas fa-signout'></i> " + Resources.getText(language, 'logout'))
     if ($('#create-exercise-button-content') !== null) {
-      $('#create-exercise-button-content').html("<i class='icon-ok'></i> " + Resources.getText(language, 'create-exercise-button'))
+      $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'create-exercise-button'))
     }
 
-    $(LBL_RULEJUSTIFICATION).html(Resources.getText(language, 'rulejustification'))
-    $(SWITCH_RULE).bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
-    $(SWITCH_RULE).bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
+    $('#rule-switch-label').html(Resources.getText(language, 'rulejustification'))
+    // $('#rule-switch').bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
+    // $('#rule-switch').bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
 
-    $(LBL_STEPVALIDATION).html(Resources.getText(language, 'stepvalidation'))
-    $(SWITCH_VALIDATION).bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
-    $(SWITCH_VALIDATION).bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
+    $('#step-validation-switch-label').html(Resources.getText(language, 'stepvalidation'))
+    // $('#step-validation-switch').bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
+    // $('#step-validation-switch').bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
   }
 }
 
@@ -181,30 +185,13 @@ class OneWayController {
       this.showHint()
     }.bind(this))
 
-    this.changeRuleJustification = function (ruleJustification) {
-      if (this.exercise) {
-        this.exercise.usesRuleJustification = ruleJustification
-      }
-      if (ruleJustification) {
-        $('#rule').show()
-      } else {
-        $('#rule').hide()
-      }
-    }
+    document.getElementById('rule-switch').addEventListener('click', function () {
+      this.changeRuleJustification()
+    }.bind(this))
 
-    $(SWITCH_RULE).on('switchChange.bootstrapSwitch', function (e, data) {
-      this.changeRuleJustification(data)
-    })
-
-    this.changeStepValidation = function (stepValidation) {
-      if (this.exercise) {
-        this.exercise.usesStepValidation = stepValidation
-      }
-    }
-
-    $(SWITCH_VALIDATION).on('switchChange.bootstrapSwitch', function (e, data) {
-      this.changeStepValidation(data)
-    })
+    document.getElementById('step-validation-switch').addEventListener('click', function () {
+      this.changeStepValidation()
+    }.bind(this))
 
     // key bindings
     document.addEventListener('keydown', function (e) {
@@ -255,34 +242,56 @@ class OneWayController {
     const characterOptions = [
       {
         char: '¬',
-        triggers: ['-', 'n', '~', '1']
+        triggers: ['-', 'n', '~', '1', '`', '!', 'N']
       },
       {
         char: '∧',
-        triggers: ['a', '7', '6'],
+        triggers: ['a', '7', '6', '^', '&', 'A'],
         spaces: true
       },
       {
         char: '∨',
-        triggers: ['o', 'v', '|'],
+        triggers: ['o', 'v', '|', '\\', 'O', 'V'],
         spaces: true
       },
       {
         char: '→',
-        triggers: ['i', '.'],
+        triggers: ['i', '.', 'I'],
         spaces: true
       },
       {
         char: '↔',
-        triggers: ['=', 'e'],
+        triggers: ['=', 'e', 'E'],
         spaces: true
       },
-      { char: 'p' },
-      { char: 'q' },
-      { char: 'r' },
-      { char: 's' },
-      { char: 'T' },
-      { char: 'F' },
+      {
+        char: 'p',
+        triggers: ['P'],
+        charStyled: '<i>p</i>'
+      },
+      {
+        char: 'q',
+        triggers: ['Q'],
+        charStyled: '<i>q</i>'
+      },
+      {
+        char: 'r',
+        triggers: ['R'],
+        charStyled: '<i>r</i>'
+      },
+      {
+        char: 's',
+        triggers: ['S'],
+        charStyled: '<i>s</i>'
+      },
+      {
+        char: 'T',
+        triggers: ['t']
+      },
+      {
+        char: 'F',
+        triggers: ['f']
+      },
       {
         char: '(',
         triggers: ['9']
@@ -296,7 +305,7 @@ class OneWayController {
       id: 1,
       characters: characterOptions
     }
-    this.formulaPopover = new FormulaPopover(document.getElementById('formula'), formulaOptions)
+    this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('one-way-input'), formulaOptions)
   }
 
   /**
@@ -330,20 +339,20 @@ class OneWayController {
     $('#generate-exercise-easy').click(function () {
       LogEXSession.setDifficulty('easy')
       this.generateExercise()
-    })
+    }.bind(this))
     $(BTN_GENERATEEXERCISENORMAL).click(function () {
       LogEXSession.setDifficulty('medium')
       this.generateExercise()
-    })
+    }.bind(this))
 
     $('#generate-exercise-difficult').click(function () {
       LogEXSession.setDifficulty('difficult')
       this.generateExercise()
-    })
+    }.bind(this))
 
     $('#new-exercise').click(function () {
       this.newExercise()
-    })
+    }.bind(this))
   }
 
   /**
@@ -357,10 +366,21 @@ class OneWayController {
         Initializes rule justification
      */
   initializeRuleJustification () {
-    $(SWITCH_RULE).bootstrapSwitch('state', config.useRuleJustification)
-    if (!config.displayRuleJustification) {
-      $(LBL_RULEJUSTIFICATION).hide()
-      $(SWITCH_RULE).hide()
+    document.getElementById('rule-switch').checked = config.useRuleJustification
+    if (config.displayRuleJustification) {
+      document.getElementById('rule-switch-div').style.display = ''
+    }
+  }
+
+  changeRuleJustification () {
+    const usesRuleJustification = document.getElementById('rule-switch').checked
+    if (this.exercise) {
+      this.exercise.usesRuleJustification = usesRuleJustification
+    }
+    if (usesRuleJustification) {
+      $('#rule').show()
+    } else {
+      $('#rule').hide()
     }
   }
 
@@ -368,10 +388,16 @@ class OneWayController {
         Initializes step validation
      */
   initializeStepValidation () {
-    $(SWITCH_VALIDATION).bootstrapSwitch('state', config.useStepValidation)
-    if (!config.displayStepValidation) {
-      $(LBL_STEPVALIDATION).hide()
-      $(SWITCH_VALIDATION).hide()
+    document.getElementById('step-validation-switch').checked = config.useStepValidation
+    if (config.displayStepValidation) {
+      document.getElementById('step-validation-switch-div').style.display = ''
+    }
+  }
+
+  changeStepValidation () {
+    const usesStepValidation = document.getElementById('step-validation-switch').checked
+    if (this.exercise) {
+      this.exercise.usesStepValidation = usesStepValidation
     }
   }
 
@@ -540,8 +566,8 @@ class OneWayController {
      */
 
   useExercise (exnr) {
-    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
-    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state')
+    const ruleJustification = document.getElementById('rule-switch').checked
+    const stepValidation = document.getElementById('step-validation-switch').checked
 
     this.reset()
     this.disableUI(true)
@@ -554,8 +580,8 @@ class OneWayController {
         Generates an exercise.
      */
   generateExercise () {
-    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
-    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state')
+    const ruleJustification = document.getElementById('rule-switch').checked
+    const stepValidation = document.getElementById('step-validation-switch').checked
 
     this.reset()
     this.disableUI(true)
@@ -575,12 +601,12 @@ class OneWayController {
     $('#bottom').hide()
     $('#exercise-steps').hide()
     $(newExerciseHtml).insertBefore('#exercise-steps')
-    $('#create-exercise-button-content').html("<i class='icon-ok'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
+    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
     $('#formula').focus()
 
     $('#create-exercise-button').click(function () {
       this.createExercise()
-    })
+    }.bind(this))
 
     $('#formula').bind('paste cut', function () {
       setTimeout(function () {
@@ -603,42 +629,23 @@ class OneWayController {
 
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    $('#create-exercise-button-content').html("<i class='icon-ok'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
+    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
   }
-
-  // exercise creation
-
 
   /**
         Creates a new exercise
-    This version uses exerciseCreator
-    (that makes a call to service create)
      */
 
   createExercise () {
     const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
-    const ruleJustification = $(SWITCH_RULE).bootstrapSwitch('state') // true || false
-    const stepValidation = $(SWITCH_VALIDATION).bootstrapSwitch('state') // true || false
+    const ruleJustification = document.getElementById('rule-switch').checked
+    const stepValidation = document.getElementById('step-validation-switch').checked
 
     this.disableUI(true)
     LogEXSession.setDifficulty('normal')
     this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation)
-    this.exerciseCreator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, this.showExercise, this.onErrorCreatingExercise)
+    this.exerciseCreator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
-
-  /**
-        Creates a new exercise
-
-    this.createExercise = function () {
-        var exerciseMethod = Resources.getExerciseMethod(this.exerciseType), // vertaal naar servicenaam
-            ruleJustification = true, // $(SWITCH_RULE).bootstrapSwitch().state, // true || false
-            stepValidation = true; // $(SWITCH_VALIDATION).bootstrapSwitch().state; // true || false
-
-        this.disableUI(true);
-        LogEXSession.setDifficulty("normal");
-        this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation);
-        this.exerciseSolver.solve(this.exercise, this.showExercise, this.onErrorCreatingExercise);
-    }; */
 
   /**
         Handles the error that an exercise can not be created
@@ -690,7 +697,7 @@ class OneWayController {
     $('#rule').val('')
 
     // doh: zorg dat regelverantwoording niet undefined kan zijn
-    this.exercise.usesRuleJustification = $(SWITCH_RULE).bootstrapSwitch('state')
+    // this.exercise.usesRuleJustification = $('#rule-switch').bootstrapSwitch('state')
 
     // rvl: Check if rule justification is needed
     if (this.exercise.usesRuleJustification) {
@@ -699,7 +706,7 @@ class OneWayController {
       $('#rule').hide()
     }
 
-    $(SWITCH_VALIDATION).bootstrapSwitch('disabled', true) // true || false
+    document.getElementById('step-validation-switch').disabled = false // $('#step-validation-switch').bootstrapSwitch('disabled', true) // true || false
   }
 
   /**
@@ -765,7 +772,7 @@ class OneWayController {
 
     if (nextStep !== null) {
       this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
-      $(SWITCH_VALIDATION).bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
+      document.getElementById('step-validation-switch').disabled = true // $('#step-validation-switch').bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
 
       this.exercise.steps.push(nextStep)
       this.insertStep(nextStep, true)
@@ -1061,7 +1068,7 @@ class OneWayController {
     let errorPlace
 
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
-    $(SWITCH_VALIDATION).bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
+    document.getElementById('step-validation-switch').disabled = true // $('#step-validation-switch').bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
 
     // de stap is niet valid en gebruikt stap validatie
     if (!currentStep.isValid && this.exercise.usesStepValidation) {
@@ -1241,7 +1248,7 @@ class OneWayController {
     })
     this.clearErrors()
 
-    $(SWITCH_VALIDATION).bootstrapSwitch('disabled', true) // true || false
+    document.getElementById('step-validation-switch').disabled = false // $('#step-validation-switch').bootstrapSwitch('disabled', true) // true || false
   }
 
   /**
@@ -1341,13 +1348,10 @@ class OneWayController {
   bindExampleExercises () {
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = this.exampleExercises[i]
-      const id = '#exercise' + (nr + 1);
-
-      (function (_nr, _id) {
-        $(_id).click(function () {
-          this.useExercise(_nr)
-        })
-      })(nr, id)
+      const id = 'exercise' + (nr + 1)
+      document.getElementById(id).addEventListener('click', function () {
+        this.useExercise(nr)
+      }.bind(this))
     }
   }
 }

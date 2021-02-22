@@ -9,23 +9,19 @@ function setCursor (inputElement, start, end) {
 }
 
 export class FormulaPopover {
-  constructor (inputElement, options) {
+  constructor (inputElement, wrapperElement, options) {
     this.inputElement = inputElement
     this.options = options
-    this.buttons = []
-    for (const i in options.characters) {
-      this.buttons.push(options.characters[i].char)
-    }
+
     this.previousValue = ''
-    this.wrapper = document.createElement('div')
-    this.wrapper.classList.add('kbinput-tip-wrapper')
+    this.wrapper = wrapperElement
     if (options.id) {
       this.wrapper.setAttribute('id', options.id)
     }
-    this.inputElement.insertAdjacentElement('afterend', this.wrapper)
     this.inputElement.addEventListener('focus', this.onFocus.bind(this))
     this.inputElement.addEventListener('blur', this.onBlur.bind(this))
     this.inputElement.addEventListener('input', this.tidy.bind(this))
+    this.inputElement.addEventListener('keydown', this.onKeyDown.bind(this))
     this.setContent()
   }
 
@@ -33,13 +29,27 @@ export class FormulaPopover {
       Adds buttons to allow insertion of characters from this.options.characters in this.inputElement
     */
   setContent () {
-    for (const i in this.buttons) {
+    // Input buttons
+    for (const i in this.options.characters) {
       const button = document.createElement('button')
       button.type = 'button'
-      button.innerHTML = this.buttons[i]
+      button.innerHTML = this.options.characters[i].charStyled || this.options.characters[i].char
+      button.setAttribute('char', this.options.characters[i].char)
       this.wrapper.appendChild(button)
       button.addEventListener('mousedown', this.addText.bind(this))
     }
+    // Backspace button
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.innerHTML = '⌫' // <i class="fas fa-backspace"></i>'
+    this.wrapper.appendChild(button)
+    button.addEventListener('mousedown', function () {
+      this.remove('backspace')
+      // Keep focus on inputElement after pressing button
+      window.setTimeout(() => {
+        this.inputElement.focus()
+      }, 1)
+    }.bind(this))
   }
 
   /**
@@ -47,11 +57,67 @@ export class FormulaPopover {
       @param e - event from button
     */
   addText (e) {
-    this.insertText(e.target.innerHTML)
+    this.insertText(e.currentTarget.getAttribute('char'))
     // Keep focus on inputElement after pressing button
     window.setTimeout(() => {
       this.inputElement.focus()
     }, 1)
+  }
+
+  /**
+      Handles the key press event.
+      @name FormulaPopover#onKeyPress
+      @param e - The event
+  */
+  onKeyDown (e) {
+    if (e.keyCode === 8) { // backspace
+      this.remove('backspace')
+    } else if (e.keyCode >= 35 && e.keyCode <= 40) { // end, home, arrows
+      return
+    } else if (e.ctrlKey || e.metaKey || e.altKey) { // ctrl- / cmd- / alt-
+      // allow default action
+      return
+    } else if (e.key === 'Enter' || e.key === 'Tab') {
+      return
+    } else if (e.keyCode === 46) { // delete
+      const curs = this.inputElement.selectionStart
+      const cure = this.inputElement.selectionEnd
+      if (curs !== cure) {
+        this.remove('delete')
+      } else if (cure < this.inputElement.value.length) {
+        this.remove('delete')
+      }
+    } else {
+      const code = e.charCode || e.keyCode // FireFox Browser Support
+      let char = ''
+      let repkey = ''
+
+      if (e.key) {
+        char = e.key
+      } else {
+        char = String.fromCharCode(code)
+      }
+
+      const chars = this.options.characters
+      for (const i in chars) {
+        if (chars[i].char === char) {
+          repkey = chars[i].char
+          break
+        }
+        if (chars[i].triggers) {
+          for (const j in chars[i].triggers) {
+            if (chars[i].triggers[j] === char) {
+              repkey = chars[i].char
+              break
+            }
+          }
+        }
+      }
+      if (repkey !== '') {
+        this.insertText(repkey)
+      }
+    }
+    e.preventDefault()
   }
 
   onFocus (e) {
@@ -83,6 +149,38 @@ export class FormulaPopover {
       this.inputElement.value += text
     }
     this.tidy()
+  }
+
+  /**
+      Removes an inserted character from the textbox.
+      @name FormulaPopover#remove
+      @param {String} dir - The direction (backspace | delete)
+  */
+  remove (dir) {
+    const start = this.inputElement.selectionStart
+    const end = this.inputElement.selectionEnd
+    const text = this.inputElement.value
+
+    let front = text.substring(0, start)
+    let back = text.substring(end, text.length)
+    if (start !== end) {
+      this.inputElement.value = front + back
+      setCursor(this.inputElement, start)
+    } else if ((start > 0) && dir === 'backspace') {
+      front = text.substring(0, start - 1)
+      this.inputElement.value = front + back
+      setCursor(this.inputElement, start - 1)
+      if (text.substring(start - 1, start) === ' ') {
+        this.remove('backspace') // als spatie verwijderd, verwijder dan ook vorige char
+      }
+    } else if ((end < text.length) && dir === 'delete') {
+      back = text.substring(end + 1, text.length)
+      this.inputElement.value = front + back
+      setCursor(this.inputElement, start)
+      if (text.substring(start, start + 1) === ' ') {
+        this.remove('delete') // als spatie verwijderd, verwijder dan ook volgende char
+      }
+    }
   }
 
   /**

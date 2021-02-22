@@ -2,6 +2,10 @@ import $ from 'jquery'
 import 'bootstrap'
 import { iframeResize } from 'iframe-resizer'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@fortawesome/fontawesome-free/js/fontawesome'
+import '@fortawesome/fontawesome-free/js/solid'
+import '@fortawesome/fontawesome-free/js/regular'
+import '@fortawesome/fontawesome-free/js/brands'
 
 import { LogEXSession } from './logEXSession.js'
 import { Resources } from './resources.js'
@@ -70,7 +74,7 @@ export function MainFrameController () {
     $('#tab-logeq').html(Resources.getText(language, 'exlogeq'))
     $('#tab-dnv').html(Resources.getText(language, 'exdnv'))
     $('#tab-cnv').html(Resources.getText(language, 'excnv'))
-    $('#help').html("<i class='icon-question-sign'></i> " + Resources.getText(language, 'help'))
+    $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
     $('#help').attr('href', 'LogEX_manual_' + language + '.pdf').attr('target', '_new')
   }
 

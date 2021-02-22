@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=1020">
 
         <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
-		<link href="css/font-awesome.css" rel="stylesheet">
+		<!-- <link href="css/font-awesome.css" rel="stylesheet"> -->
 		<link rel="stylesheet" href="css/ideas.css">
 		<!-- <link rel="stylesheet" href="css/bootstrap-switch.css"> -->
     </head>
@@ -35,25 +35,17 @@
 					</div>
                 </div>
 
-				<div class="col-md-2 cell">
-					<div class="v-center">
-						<label id="lblRuleJustification" value=""/>
-					</div>
+				<div id="rule-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
+					<span>
+						<input id="rule-switch" type="checkbox">
+						<label id="rule-switch-label" for="rule-switch"></label>
+					</span>
 				</div>
-				<div class="col-md-2">
-					<div class="v-center">
-						<input id="ruleswitch" type="checkbox" checked>
-					</div>
-				</div>
-                <div class="col-md-2 cell">
-					<div class="v-center">
-						<label id="lblStepValidation" value=""/>
-					</div>
-				</div>
-				<div class="col-md-2">
-					<div class="v-center">
-						<input id="stepvalidationswitch" type="checkbox" checked>
-					</div>
+				<div id="step-validation-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
+					<span>
+						<input id="step-validation-switch" type="checkbox">
+						<label id="step-validation-switch-label" for="step-validation-switch"></label>
+					</span>
 				</div>
                 <div class="col-md-1">
                     &nbsp;
@@ -87,12 +79,13 @@
 					<div id="active-step" class="exercise-step-even">
 						<div class="row bar">
                             <div class="col-md-1">
-                                <span><img id="equivsign" src="img/equivsignok.png" class="pull-right" width=18></span>
+                                <span>&#8660;</span>
                             </div>
 							<div class="col-md-6">
-								<form class="form-inline padded-left">
-								    <input type="text" class="input-xlarge" id="formula">
+								<form class="kbinput">
+								    <input type="text" class="input-xlarge kbinput" id="formula">
 									<input type="hidden" id="formulaoriginal">
+									<div id="one-way-input" class="kbinput-wrapper"></div>
 								</form>
 							</div>
 							<div class="col-md-3">
@@ -116,7 +109,7 @@
 				</div>
                 <div class="col-md-11">
                 	<div class="btn-group">
-										<button type="button" class="btn btn-warning tight" id="show-hint">&nbsp;<i class="icon-question-sign"></i>&nbsp;</button>
+										<button type="button" class="btn btn-warning tight" id="show-hint">&nbsp;<i class="fas fa-question-circle"></i>&nbsp;</button>
 										<button type="button" id="show-next-step" class="btn btn-warning tight" > </button>
 									</div>
 					<button type="button" id="solve-exercise" class="btn btn-warning pull-left"><div id="showderivation"> </div></button>
