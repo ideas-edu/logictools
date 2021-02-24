@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Ideas - Solution</title>
+        <meta name="description" content="solution">
+        <meta name="viewport" content="width=1020">
+
+		<link rel="stylesheet" href="css/ideas.css">
+    </head>
+    <body>
+        <script src="oneWaySolution.bundle.js"></script>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">
+                    &nbsp;
+                </div>
+                <div class="col-md-8 cell">
+                    <div id="exercise">
+                          <span class="left-formula" id="exercise-left-formula"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="exercise-steps" class="row">
+				<div class="col-md-9">
+                    <div id="active-step" class="exercise-step-even" style="display: none"></div>
+                </div>
+            </div>
+            <div class="row" id="bottom" style="display: none">
+                <div class="col-md-9"></div>
+            </div>
+        </div>
+
+        <script id="exercise-step-template" type="text/x-jsrender">
+			<div class="exercise-step-even exercise-step-added bar">
+				<div class="row">
+                    <div class="col-md-1">
+                        &nbsp;
+                    </div>
+					<div class="col-md-7">
+						<span class="pull-right">
+                            {{>rule}}
+                        </span>
+				    </div>
+                    <div class="col-md-1">
+                        &nbsp;
+                    </div>
+				</div>
+				<div class="row">
+                    <div class="col-md-1">
+                        <span class="arrow pull-right">&#8660;</span>
+                    </div>
+					<div class="col-md-7">
+						<span class="oneway-exercise pull-left">
+                            {{:formula}}
+                        </span>
+					</div>
+					<div class="col-md-1">
+						&nbsp;
+				   </div>
+				</div>
+			</div>
+		</script>
+
+		<script id="exercise-last-step-template" type="text/x-jsrender">
+			<div class="exercise-step-even last-step success">
+				<div class="row">
+                    <div class="col-md-1">
+                        <div class="v-center h-center">
+                            <img src="img/tick.png" />
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <span class="pull-left">
+                            <label>{{:leftformula}} &#x021D4; {{:rightformula}}</label>
+                        </span>
+                    </div>
+                    <div class="col-md-1">
+                        &nbsp;
+                    </div>
+				</div>
+			</div>
+		</script>
+
+    </body>
+</html>

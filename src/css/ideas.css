@@ -1,0 +1,416 @@
+/* bootstrap overrules */
+/* bootstrap overrules */
+button.close {
+	padding: 0px 6px 3px;
+}
+
+button.tight {
+	padding-right:2px;
+	padding-left:2px;
+}
+
+.btn.disabled, .btn[disabled] {
+	opacity: 0.2;
+}
+
+a.spaced {
+	padding:0px;
+	font-size: 11px;
+}
+
+legend {
+	border-bottom: 0px;
+	padding-bottom: 20px;
+}
+
+body {
+  	font-family: "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
+	font-size: small;
+	line-height: 16px;
+
+	margin: auto;
+    xmargin-left: 120px;
+	padding-top: 60px;
+    padding-bottom: 40px;
+    width: 1020px;
+	min-width: 1020px;
+	max-width: 1020px;
+	min-height: 300px;
+}
+
+.logexiframe
+{
+	font-family: "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
+	font-size: small;
+	line-height: 16px;
+	margin: auto;
+	padding-top: 20px;
+    padding-bottom: 70px;
+    width: 1020;
+	min-width: 1020;
+	max-width: 1020;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
+}
+
+.no-space {
+    margin-left:0;
+}
+
+.container {
+	width: 1020px;
+}
+
+.span14 {
+	width: 1100px;
+}
+
+.span13 {
+	width: 1020px;
+}
+
+.span14 {
+	width:1030px;
+}
+
+label, input, button, select, textarea {
+	font-size: small;
+	line-height: 16px;
+}
+
+input[type="text"] {
+	font-size: small;
+}
+
+.pagination {
+	height: 34px;
+	margin: 14px;
+}
+
+.pagination ul > li > a, .pagination ul > li > span {
+	padding: 0 12px;
+	line-height: 28px;
+}
+
+.popover {
+	z-index:1050;
+}
+
+
+
+/*.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+	width: 1020px;
+}
+*/
+.cell{
+    display:table;
+    //border:1px solid gray;
+    height:40px;
+}
+
+.v-center {
+    display:table-cell;
+    vertical-align:middle;
+}
+
+.h-center {
+    display:table-cell;
+    text-align:center;
+}
+
+
+/* end bootstrap overrules */
+#formula1, #formula2 {
+	width:269px;
+	padding-right:0px;
+}
+
+/* doh: z-index opgehoogd */
+div.kbinput-wrapper {
+	display: table-row;
+}
+
+div.kbinput-wrapper > button {
+	margin: 5px 2px;
+}
+
+form.kbinput {
+	display: table;
+	width: 100%;
+}
+
+input.kbinput {
+	display: table-row;
+	width: 100%;
+}
+
+#rule {
+	width: 100%;
+}
+
+.kbinput-popover {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 12010;
+	display: none;
+
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.kbinput-popover-content .navbar {
+	width:284px;
+	margin-bottom: 0px;
+}
+
+.kbinput-popover-content .navbar {
+	margin-bottom: 0px;
+}
+
+.kbinput-popover-content .navbar .navbar-inner {
+	min-height: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.kbinput-popover-content .navbar .navbar-inner .nav {
+	margin-bottom: 0px;
+}
+
+/*.kbinput-popover-content .navbar .nav > li > a {
+	padding: 2px 5px 2px;
+}
+*/
+.backspace {
+  background-color: black;
+  font-weight: bold;
+  display: inline-block;
+  color: white;
+  width: 11px;
+  height: 10px;
+  padding: 0;
+  text-align:center;
+  box-sizing: border-box;
+  position: relative;
+  font-size: 8px;
+  line-height: 11px;
+}
+.backspace::after {
+  content: "\00274C";
+}
+
+.backspace::before {
+  content: " ";
+  width: 0;
+	height: 0;
+	border-bottom: 5px solid transparent;  /* left arrow slant */
+	border-top: 5px solid transparent; /* right arrow slant */
+	border-right: 5px solid black; /* bottom, add background color here */
+	font-size: 0;
+	line-height: 0;
+  position: absolute;
+  left: -5px;
+  top: 0;
+}
+
+.navbar-inner {
+	min-height: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.studentid-popover-content .navbar .navbar-inner .nav {
+	margin-bottom: 0px;
+}
+
+.studentid-popover-content .navbar .nav > li > a {
+	padding: 2px 2px 2px;
+}
+
+
+
+
+
+.questionmark {
+	position: relative;
+	left:14px;
+	bottom:4px;
+}
+
+.equivalence {
+	font-size:18px;
+	position:relative;
+	top:7px;
+	right:5px;
+}
+
+.oneven {
+	background-color: #F9F9F9;
+	border-bottom: 1px solid #eee;
+	border-top: 1px solid #eee;
+}
+
+.wrong {
+    background-color: #FF8080;
+    border-botom: 1px solid #eee;
+    border-top: 1px solid #eee;
+}
+
+#exercise-steps .row {
+	margin-top:3px;
+}
+
+.padded-left{
+	margin:0 0 0 5px;
+}
+
+.padded-top {
+	margin:5px 0 0 0px;
+}
+
+.left-formula{
+	padding: 4px 6px;
+	width: 269px;
+	display: inline-block;
+	text-align:left;
+}
+
+.oneway-formula{
+    padding: 4px 6px;
+    width: 269px;
+    display: inline-block;
+    text-align:left;
+}
+
+#toggle-hint2, #toggle-hint1 {
+	float:right;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#auto-step {
+	float:right;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#formula1{
+	text-align:left;
+}
+
+#active-step {
+	padding-top:30px;
+	// doh: verlaagd van 30->10
+	padding-bottom:10px;
+}
+
+input.success {
+	border-color: green;
+}
+
+div.success {
+	border: 1px solid green;
+	/*background-color: rgb(170, 241, 170);*/
+}
+
+.form-inline {
+	margin: 0 0 0px;
+}
+
+.equation-sign{
+
+	width: 20px;
+	display: inline-block;
+}
+
+.right-formula{
+	padding: 4px;
+	width: 269px;
+	display: inline-block;
+}
+
+.arrow {
+	font-size:16px;
+}
+
+.alert-block {
+	width: 541px;
+}
+
+/* .remove-top-step, .remove-bottom-step{
+	color:red;
+	opacity: .8;
+}
+
+.remove-top-step:hover, .remove-bottom-step:hover{
+	color:red;
+	opacity: 1;
+} */
+
+/* doh: z-index opgehoogd, zodat tooltip ook in modal verschijnt */
+.error{
+  z-index:8000;
+  }
+
+.tooltip.top.error .tooltip-arrow {
+	border-top-color: red;
+}
+
+.tooltip.bottom.error .tooltip-arrow {
+	border-bottom-color: red;
+}
+
+.tooltip.top.error .tooltip-inner, .error .tooltip-inner {
+	background-color: red;
+}
+
+
+span.error {
+	font-weight: bold;
+	color: red;
+
+}
+
+input.error, select.error {
+	border-color: red;
+}
+
+.last-step{
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:0px;
+}
+
+.last-step .left-formula{
+	padding-left:12px;
+}
+
+.last-step .right-formula{
+	padding-left:0px;
+	width:auto;
+	padding-right:5px;
+}
+
+//Team26
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 0px;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}
+
+.tab.pane {
+	border-bottom: 1px solid #ddd;
+}
+

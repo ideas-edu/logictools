@@ -1,0 +1,46 @@
+{
+  "name": "logictools",
+  "version": "1.0.0",
+  "description": "Logic tools",
+  "main": "index.js",
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "jsrender": "^1.0.11"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "bootstrap": "^4.6.0",
+    "bootstrap-switch": "^3.4.0",
+    "copy-webpack-plugin": "^7.0.0",
+    "css-loader": "^5.0.2",
+    "eslint": "^7.19.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "html-webpack-plugin": "^5.0.0",
+    "iframe-resizer": "^4.3.1",
+    "jsdoc": "^3.6.6",
+    "jshint": "^2.12.0",
+    "jshint-html-reporter": "^0.2.5",
+    "jslint": "^0.12.1",
+    "modernizr": "^3.11.4",
+    "popper.js": "^1.16.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0"
+  },
+  "scripts": {
+    "test": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ideas-edu/logictools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ideas-edu/logictools/issues"
+  },
+  "homepage": "https://github.com/ideas-edu/logictools#readme"
+}
