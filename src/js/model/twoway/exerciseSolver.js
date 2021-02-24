@@ -17,7 +17,6 @@ export function TwoWayExerciseSolver () {
         @param onErrorSolvingExercise - The callback function that is called if there is a problem solving the exercise.
      */
   this.solve = function (exercise, onExerciseSolved, onErrorSolvingExercise) {
-    let state
     const currentStep = exercise.steps.getCurrentStep()
     let currentStrategy
     let currentLocation
@@ -49,7 +48,7 @@ export function TwoWayExerciseSolver () {
       currentLocation = currentStep.strategyLocation
     }
 
-    state = [exercise.type, currentStrategy, currentFormula, currentLocation]
+    const state = [exercise.type, currentStrategy, currentFormula, currentLocation]
 
     IdeasServiceProxy.derivationtext(state, onSuccess, onError)
   }
@@ -63,7 +62,6 @@ export function TwoWayExerciseSolver () {
 
   this.solveNextStep = function (exercise, onNextStepSolved, onErrorSolvingNextStep) {
     const currentStep = exercise.steps.getCurrentStep()
-    let state
     let currentStrategy
     let currentLocation
     let currentFormula
@@ -96,7 +94,7 @@ export function TwoWayExerciseSolver () {
       currentStrategy = currentStep.strategyStatus
       currentLocation = currentStep.strategyLocation
     }
-    state = [exercise.type, currentStrategy, currentFormula, currentLocation]
+    const state = [exercise.type, currentStrategy, currentFormula, currentLocation]
 
     IdeasServiceProxy.onefirst(state, 'nextStep', onSuccess, onError)
   }
@@ -174,7 +172,7 @@ export function TwoWayExerciseSolver () {
     let currentStrategy
     let currentLocation
     let currentFormula
-    let state
+
     const onError = onErrorGettingHelpForNextStep
     const onSuccess = function (data) {
       if (data === null || data.error !== null || data.result === null) {
@@ -196,7 +194,7 @@ export function TwoWayExerciseSolver () {
       currentLocation = currentStep.strategyLocation
     }
 
-    state = [exercise.type, currentStrategy, currentFormula, currentLocation]
+    const state = [exercise.type, currentStrategy, currentFormula, currentLocation]
     IdeasServiceProxy.onefirst(state, 'Hint: rewriteThis', onSuccess, onError)
   }
 }

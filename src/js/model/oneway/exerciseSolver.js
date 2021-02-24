@@ -20,7 +20,6 @@ export function OneWayExerciseSolver () {
     const currentStep = exercise.steps.getCurrentStep()
     let currentStrategy
     let currentFormula
-    let state
 
     const onError = onErrorSolvingExercise
     const onSuccess = function (data) {
@@ -43,7 +42,7 @@ export function OneWayExerciseSolver () {
       currentStrategy = currentStep.strategyStatus
     }
 
-    state = [exercise.type, currentStrategy, currentFormula, '']
+    const state = [exercise.type, currentStrategy, currentFormula, '']
 
     IdeasServiceProxy.derivation(state, onSuccess, onError)
   }
@@ -57,7 +56,6 @@ export function OneWayExerciseSolver () {
      */
   this.solveNextStep = function (exercise, onNextStepSolved, onErrorSolvingNextStep) {
     const currentStep = exercise.steps.getCurrentStep()
-    let state
     let currentStrategy
     let currentFormula
     const onError = onErrorSolvingNextStep
@@ -89,7 +87,8 @@ export function OneWayExerciseSolver () {
       currentFormula = currentStep.formula
       currentStrategy = currentStep.strategyStatus
     }
-    state = [exercise.type, currentStrategy, currentFormula, '']
+
+    const state = [exercise.type, currentStrategy, currentFormula, '']
 
     IdeasServiceProxy.onefirst(state, 'nextStep', onSuccess, onError)
   }
@@ -161,7 +160,7 @@ export function OneWayExerciseSolver () {
     const currentStep = exercise.steps.getCurrentStep()
     let currentStrategy
     let currentFormula
-    let state
+
     const onError = onErrorGettingHelpForNextStep
     const onSuccess = function (data) {
       if (data === null || data.error !== null || data.result === null) {
@@ -184,7 +183,7 @@ export function OneWayExerciseSolver () {
       currentStrategy = currentStep.strategyStatus
     }
 
-    state = [exercise.type, currentStrategy, currentFormula, '']
+    const state = [exercise.type, currentStrategy, currentFormula, '']
     IdeasServiceProxy.onefirst(state, 'Hint: useRule', onSuccess, onError)
   }
 }

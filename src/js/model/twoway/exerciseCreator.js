@@ -1,3 +1,8 @@
+import { LogEXSession } from '../../logEXSession.js'
+import { Resources } from '../../resources.js'
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { TwoWayExercise } from './exercise.js'
+
 /**
     TwoWayExerciseCreator is responsible for handling manually created exercises.
     @constructor

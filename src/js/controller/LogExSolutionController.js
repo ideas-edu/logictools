@@ -1,3 +1,6 @@
+import { LogEXSession } from '../logEXSession.js'
+import { Resources } from '../resources.js'
+
 export class LogExSolutionController {
   /**
         Gets the exercisetype as given in the querystring
@@ -71,8 +74,7 @@ export class LogExSolutionController {
         Handles the error that an exercise can not be solved
      */
   onErrorSolvingExercise () {
-    console.log('Error')
-    this.showErrorToolTip($('#solve-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-exercise'), 'right')
+    this.showErrorToolTip(document.getElementById('solve-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-exercise'), 'right')
     this.disableUI(false)
   }
 }

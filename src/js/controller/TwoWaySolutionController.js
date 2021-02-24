@@ -122,7 +122,6 @@ class TwoWaySolutionController extends LogExSolutionController {
   renderStep (step) {
     const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
     let stepTemplate
-    let exerciseStepHtml
     let error
 
     // dit is de start opgave
@@ -136,7 +135,7 @@ class TwoWaySolutionController extends LogExSolutionController {
       stepTemplate = $('#exercise-bottom-step-template')
     }
 
-    exerciseStepHtml = stepTemplate.render({
+    const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
       leftformula: step.equation.formula1,

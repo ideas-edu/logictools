@@ -10,10 +10,11 @@ import '@fortawesome/fontawesome-free/js/brands'
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
 import { LogExController } from './LogExController.js'
-import { BTN_SHOW_NEXT_STEP, SWITCH_VALIDATION, BTN_SHOWHINT } from '../constants.js'
+import { BTN_SHOW_NEXT_STEP, BTN_SHOWHINT } from '../constants.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
+import { Equation } from '../model/twoway/equation.js'
 import { TwoWayExerciseGenerator } from '../model/twoway/exerciseGenerator.js'
 import { TwoWayExerciseCreator } from '../model/twoway/exerciseCreator.js'
 import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
@@ -525,7 +526,7 @@ class TwoWayController extends LogExController {
     $(FORMULA1).focus()
     $('#create-exercise-button').click(function () {
       this.createExercise()
-    })
+    }.bind(this))
 
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
@@ -538,8 +539,6 @@ class TwoWayController extends LogExController {
   createExercise () {
     const formula1 = $(FORMULA1).val()
     const formula2 = $(FORMULA2).val()
-    let equation
-    let exerciseMethod
     const stepValidation = document.getElementById('step-validation-switch').checked
 
     // if (formula1 === formula2) {
@@ -547,8 +546,8 @@ class TwoWayController extends LogExController {
     //    return false;
     // }
 
-    equation = new Equation()
-    exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
+    const equation = new Equation()
+    const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
     equation.setFormula1(formula1)
     equation.setFormula2(formula2)
     this.exercise = new TwoWayExercise(equation.getText(), exerciseMethod, stepValidation)
