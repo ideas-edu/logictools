@@ -10,8 +10,8 @@ export function Equation (text) {
   if (text !== undefined) {
     const formulae = text.split('==')
 
-    this.formula1 = $.trim(formulae[0])
-    this.formula2 = $.trim(formulae[1])
+    this.formula1 = formulae[0].trim()
+    this.formula2 = formulae[1].trim()
   }
 
   /**
@@ -27,7 +27,7 @@ export function Equation (text) {
         @param {string} formulaText - The text of the formula.
      */
   this.setFormula1 = function (formulaText) {
-    this.formula1 = $.trim(formulaText)
+    this.formula1 = formulaText.trim()
   }
 
   /**
@@ -35,7 +35,7 @@ export function Equation (text) {
         @param {string} formulaText - The text of the formula.
      */
   this.setFormula2 = function (formulaText) {
-    this.formula2 = $.trim(formulaText)
+    this.formula2 = formulaText.trim()
   }
 
   this.getEquationIsSolved = function () {

@@ -1,3 +1,4 @@
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 /**
     TwoWayExerciseValidator is responsible for validating exercises.
     @constructor

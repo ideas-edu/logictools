@@ -1,3 +1,5 @@
+import { IdeasServiceProxy } from './ideasServiceProxy.js'
+
 /**
     SyntaxValidator is responsible for validating the syntax of a formula.
     @constructor

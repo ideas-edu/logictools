@@ -1,6 +1,7 @@
 import { Texts } from './texts.js'
 import { Rules } from './model/rules.js'
 import { exerciseTypes } from './model/exerciseTypes.js'
+import { BuggyRules } from './model/buggyRules.js'
 
 /**
     Resources contains the logic for returning user interface resources in the correct culture.
@@ -37,7 +38,7 @@ export const Resources = {
     'use strict'
     let message
 
-    if (BuggyRules.hasOwnProperty(buggyRule) && BuggyRules[buggyRule].length >= this.getLanguageIndex(language) + 1) {
+    if (Object.prototype.hasOwnProperty.call(BuggyRules, buggyRule) && BuggyRules[buggyRule].length >= this.getLanguageIndex(language) + 1) {
       message = BuggyRules[buggyRule][this.getLanguageIndex(language)]
     } else {
       message = buggyRule + ' undefined'
@@ -92,7 +93,7 @@ export const Resources = {
     'use strict'
     let retVal
 
-    if (Rules.hasOwnProperty(rule) && Rules[rule].length >= this.getLanguageIndex(language) + 1) {
+    if (Object.prototype.hasOwnProperty.call(Rules, rule) && Rules[rule].length >= this.getLanguageIndex(language) + 1) {
       retVal = (Rules[rule][this.getLanguageIndex(language)])
     } else {
       retVal = (rule + ' undefined')
@@ -110,7 +111,7 @@ export const Resources = {
     'use strict'
     let retVal
 
-    if (Texts.hasOwnProperty(text) && Texts[text].length >= this.getLanguageIndex(language) + 1) {
+    if (Object.prototype.hasOwnProperty.call(Texts, text) && Texts[text].length >= this.getLanguageIndex(language) + 1) {
       retVal = (Texts[text][this.getLanguageIndex(language)])
     } else {
       retVal = (text + ' undefined')
@@ -127,7 +128,7 @@ export const Resources = {
     'use strict'
     let retVal
 
-    if (exerciseTypes.hasOwnProperty(exerciseType.toUpperCase())) {
+    if (Object.prototype.hasOwnProperty.call(exerciseTypes, exerciseType.toUpperCase())) {
       retVal = exerciseTypes[exerciseType.toUpperCase()]
     } else {
       retVal = (exerciseType + ' undefined')
@@ -148,7 +149,7 @@ export const Resources = {
     // if (Texts.hasOwnProperty("invalidformula") && Texts["invalidformula"].length >= this.getLanguageIndex(language) + 1) {
     //    retVal = (Texts["invalidformula"][this.getLanguageIndex(language)]);
 
-    if (Texts.hasOwnProperty('invalidformula') && Texts.invalidformula.length >= this.getLanguageIndex(language) + 1) {
+    if (Object.prototype.hasOwnProperty.call(Texts, 'invalidformula') && Texts.invalidformula.length >= this.getLanguageIndex(language) + 1) {
       retVal = (Texts.invalidformula[this.getLanguageIndex(language)])
     } else {
       retVal = 'invalidformula undefined'

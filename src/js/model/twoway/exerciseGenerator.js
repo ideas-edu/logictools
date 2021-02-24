@@ -7,9 +7,7 @@ import { TwoWayExercise } from './exercise.js'
     ExerciseGenerator is responsible for generating exercises.
     @constructor
  */
-export function TwoWayExerciseGenerator () {
-  'use strict'
-
+export class TwoWayExerciseGenerator {
   /**
         Generates an exercise.
         @param ExerciseType - Type of exercise to be generated.  See exerciseTypes.js for the full list
@@ -17,7 +15,7 @@ export function TwoWayExerciseGenerator () {
         The callback function expects 1 parameter, the exercise.
         @param onErrorGeneratingExercise - The callback function that is called if there is a problem generating the exercise.
      */
-  this.generate = function (exerciseType, stepValidation, onExerciseGenerated, onErrorGeneratingExercise) {
+  generate (exerciseType, stepValidation, onExerciseGenerated, onErrorGeneratingExercise) {
     const exerciseId = Resources.getExerciseMethod(exerciseType)
     const userId = LogEXSession.getStudentId()
     const difficulty = LogEXSession.getDifficulty()
@@ -45,7 +43,7 @@ export function TwoWayExerciseGenerator () {
         @param onErrorGeneratingExercise - The callback function that is called if there is a problem generating the exercise.
      */
 
-  this.example = function (exerciseNr, exerciseType, stepValidation, onExerciseGenerated, onErrorGeneratingExercise) {
+  example (exerciseNr, exerciseType, stepValidation, onExerciseGenerated, onErrorGeneratingExercise) {
     const exerciseId = Resources.getExerciseMethod(exerciseType)
     const userId = LogEXSession.getStudentId()
     const onError = onErrorGeneratingExercise

@@ -21,6 +21,8 @@ module.exports = {
   entry: {
     oneWaySolution: path.resolve(jsDir, 'controller/OneWaySolutionController.js'),
     oneWay: path.resolve(jsDir, 'controller/OneWayController.js'),
+    twoWaySolution: path.resolve(jsDir, 'controller/TwoWaySolutionController.js'),
+    twoWay: path.resolve(jsDir, 'controller/TwoWayController.js'),
     main: path.resolve(jsDir, 'mainFrameController.js')
     // kbinput: path.resolve(sharedDir, 'kbinput/kbinput.js')
   },
