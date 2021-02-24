@@ -17,7 +17,7 @@ export const IdeasServiceProxy = {
   post: function (input, onSuccess, onError) {
     'use strict'
     const request = {}
-    const url = 'http://ideas.cs.uu.nl/cgi-bin/ideas-logex.cgi'
+    const url = 'https://ideas.science.uu.nl/cgi-bin/ideas-logex.cgi'
     request.input = JSON.stringify(input)
     request.input = unescape(request.input.replace(/\\u/g, '%u'))
     request.path = '/cgi-bin/ideas-logex.cgi'

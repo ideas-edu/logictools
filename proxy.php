@@ -3,7 +3,7 @@
 // Peter Dol: gebaseerd op http://blog.michaelkidd.com/2007/10/php-ajax-proxy.html
 
 // Allowed hostname
-define ('HOSTNAME', 'http://ideas.cs.uu.nl');
+define ('HOSTNAME', 'https://ideas.science.uu.nl');
 
 //returns the headers as an array
 function getHeaders()
@@ -19,7 +19,7 @@ function getHeaders()
         }
     }
     return $headers;
-} 
+}
 
 // Get the REST call path from the AJAX application
 $path = $_REQUEST['path'];
