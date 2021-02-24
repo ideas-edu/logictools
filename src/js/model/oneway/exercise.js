@@ -7,21 +7,21 @@ import { OneWayStepCollection } from './stepCollection.js'
     @param {string} exerciseType - The type of the formula. ("DNV","CNV",...)
     @property {OneWayStepCollection} steps The collection of oneway steps.
  */
-export function OneWayExercise (formulaText, exerciseType, ruleJustification, stepValidation) {
-  'use strict'
-
-  this.type = exerciseType
-  this.usesRuleJustification = ruleJustification
-  this.usesStepValidation = stepValidation
-  this.isReady = false
-  this.formula = formulaText
-  this.steps = new OneWayStepCollection(new OneWayStep(formulaText))
+export class OneWayExercise {
+  constructor (formulaText, exerciseType, ruleJustification, stepValidation) {
+    this.type = exerciseType
+    this.usesRuleJustification = ruleJustification
+    this.usesStepValidation = stepValidation
+    this.isReady = false
+    this.formula = formulaText
+    this.steps = new OneWayStepCollection(new OneWayStep(formulaText))
+  }
 
   /**
         Gets the current/Last step of the exercise
         @return {OneWayStep} - The current/last step of the exercise
     */
-  this.getCurrentStep = function () {
+  getCurrentStep () {
     return this.steps.getCurrentStep()
   }
 
@@ -29,7 +29,7 @@ export function OneWayExercise (formulaText, exerciseType, ruleJustification, st
         Gets the previous step of the exercise (last but one)
         @return {OneWayStep} - The previous step of the exercise (last but one)
     */
-  this.getPreviousStep = function () {
+  getPreviousStep () {
     return this.steps.getPreviousStep()
   }
 }

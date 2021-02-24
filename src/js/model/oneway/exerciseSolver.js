@@ -29,8 +29,8 @@ export function OneWayExerciseSolver () {
         return
       }
       const onewaySteps = new OneWayStepCollection(new OneWayStep(exercise.formula, null))
-      jQuery.each(data.result, function () {
-        onewaySteps.push(new OneWayStep(this[2], this[0]))
+      data.result.forEach(function (item) {
+        onewaySteps.push(new OneWayStep(item[2], item[0]))
       })
       onExerciseSolved(onewaySteps)
     }

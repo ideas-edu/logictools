@@ -647,7 +647,6 @@ class TwoWayController extends LogExController {
 
     document.getElementById('step-validation-switch').checked = true
 
-
     $('#active-step-bottom').hide()
     $('#active-step-top').hide()
     $('#add-step-bottom-button').show()

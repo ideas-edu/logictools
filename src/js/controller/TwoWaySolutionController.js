@@ -1,72 +1,42 @@
+import $ from 'jquery'
+import jsrender from 'jsrender'
+
+import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
 import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
 import { TwoWayExercise } from '../model/twoway/exercise.js'
 
-(function ($) {
-  'use strict'
+jsrender($); // load JsRender jQuery plugin methods
 
-  // we can now rely on $ within the safety of our "bodyguard" function
+(function () {
   $(document).ready(function () {
     const controller = new TwoWaySolutionController()
     controller.solveExercise()
   })
-})(jQuery)
+})()
 
 /**
     TwoWayController is responsible for handling all user interaction and manipulation of the user interface.
     @constructor
  */
 
-function TwoWaySolutionController () {
-  'use strict'
-
-  const self = this
-
-  const EXERCISE_TYPE = 'exerciseType'
-  const START = 'START'
-  const EXERCISE_ADDED_STEP = '.exercise-step-added'
-  const EXERCISE_BOTTOM_STEPS = '#exercise-steps div.exercise-step-added-bottom'
-  const EXERCISE_TOP_STEPS = '#exercise-steps div.exercise-step-added-top'
-  const EXERCISE_LAST_STEP = '#exercise-steps div.last-step'
-  const NEW_EXERCISE_CONTENT = '#new-exercise-content'
-
-  const UNDEFINED = 'undefined'
-  const TOP = 'top'
-  const ERROR = 'error'
-  const SUCCESS = 'success'
-  const DIV_TOOLTIP_ERROR = "<div class='tooltip error'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>"
-  const SHOW = 'show'
-  const DESTROY = 'destroy'
-  const ERROR_TIMEOUT = 5000
-
-  /**
-        Gets the exercisetype as given in the querystring
-    */
-  this.getExerciseType = function () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-    let sParameterName
-    let i
-
-    for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === 'exerciseType') {
-        return sParameterName[1]
-      }
-    }
+class TwoWaySolutionController extends LogExSolutionController {
+  constructor () {
+    super()
+    this.exerciseSolver = new TwoWayExerciseSolver()
+    this.ExerciseType = TwoWayExercise
   }
 
   /**
-        Gets the formula as given in the querystring
-    */
-  this.getFormula = function () {
+      Gets the formula as given in the querystring
+  */
+  getFormula () {
     const sPageURL = window.location.search.substring(1)
     const sURLVariables = sPageURL.split('&')
-    let sParameterName
-    let i
-    for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
+
+    for (const i in sURLVariables) {
+      const sParameterName = sURLVariables[i].split('=')
       if (sParameterName[0] === 'formula') {
         return decodeURIComponent(sParameterName[1] + '==' + sParameterName[3])
       }
@@ -74,34 +44,11 @@ function TwoWaySolutionController () {
   }
 
   /**
-        Shows an error message.
-
-        @param element - The DOM element
-        @param {string} toolTipText - The error message
-        @param {string} placement - The placement of the error message (top | bottom | left | right)
-     */
-  this.showErrorToolTip = function (element, toolTipText, placement) {
-    if (typeof placement === UNDEFINED) {
-      placement = TOP
-    }
-    element.addClass(ERROR)
-    element.tooltip({
-      title: toolTipText,
-      placement: placement,
-      template: DIV_TOOLTIP_ERROR
-    })
-    element.tooltip(SHOW)
-
-    // vervelende tooltips verwijderen na 5 seconden, dan hebben gebruikers ze wel gezien
-    setTimeout(this.clearErrors, ERROR_TIMEOUT)
-  }
-
-  /**
         Zebra stripes the proof steps.
 
         @param rows - The proof step rows
      */
-  this.colorRows = function (rows) {
+  colorRows (rows) {
     if (rows === undefined) {
       this.colorRows($('.exercise-step-added-top'))
       this.colorRows($($('.exercise-step-added-bottom').get().reverse()))
@@ -121,46 +68,24 @@ function TwoWaySolutionController () {
     })
   }
 
-  // exercise solving
-  this.exerciseSolver = new TwoWayExerciseSolver()
-
-  /**
-        Solves the exercise
-     */
-  this.solveExercise = function () {
-    const exerciseType = this.getExerciseType()
-    const formula = this.getFormula()
-    let exercise
-
-    exercise = new TwoWayExercise(formula, exerciseType, false)
-    this.exerciseSolver.solve(exercise, this.onExerciseSolved, this.onErrorSolvingExercise)
-  }
-
   /**
         Handles the event that an exercise is solved
         @param {TwoWayStepCollection} solution - The solution
      */
-  this.onExerciseSolved = function (solution) {
+  onExerciseSolved (solution) {
     let lastStep = null
 
     $('#exercise-left-formula').text(solution.steps[0].equation.formula1)
     $('#exercise-right-formula').text(solution.steps[0].equation.formula2)
 
-    jQuery.each(solution.steps, function (index) {
-      lastStep = this
-      self.insertStep(this, false)
-    })
+    solution.steps.forEach(function (item) {
+      lastStep = item
+      this.insertStep(item, false)
+    }.bind(this))
     if (lastStep) {
-      self.insertLastStep(lastStep)
+      this.insertLastStep(lastStep)
     }
-    self.colorRows()
-  }
-
-  /**
-        Handles the error that an exercise can not be solved
-     */
-  this.onErrorSolvingExercise = function () {
-    self.showErrorToolTip($(BTN_SOLVEEXERCISE), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-exercise'), 'right')
+    this.colorRows()
   }
 
   /**
@@ -169,8 +94,8 @@ function TwoWaySolutionController () {
         @param {TwoWayStep} step - The proof step
         @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
      */
-  this.insertStep = function (step, canDelete) {
-    const exerciseStepHtml = self.renderStep(step, canDelete)
+  insertStep (step, canDelete) {
+    const exerciseStepHtml = this.renderStep(step, canDelete)
 
     if (step.isTopStep) {
       $('#active-step').before(exerciseStepHtml)
@@ -184,7 +109,7 @@ function TwoWaySolutionController () {
 
         @param {TwoWayStep} step - The proof step
      */
-  this.insertLastStep = function (step) {
+  insertLastStep (step) {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
       leftformula: step.equation.formula1,
@@ -194,7 +119,7 @@ function TwoWaySolutionController () {
     $('#active-step').before(exerciseStepHtml)
   }
 
-  this.renderStep = function (step) {
+  renderStep (step) {
     const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
     let stepTemplate
     let exerciseStepHtml

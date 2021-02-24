@@ -32,8 +32,9 @@ export function TwoWayExerciseSolver () {
       }
 
       const proofSteps = new TwoWayStepCollection(new TwoWayStep(exercise.equation.getText(), null))
-      jQuery.each(data.result, function () {
-        proofSteps.push(new TwoWayStep(this[1], this[0]))
+
+      data.result.forEach(function (item) {
+        proofSteps.push(new TwoWayStep(item[1], item[0]))
       })
       onExerciseSolved(proofSteps)
     }

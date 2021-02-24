@@ -1,84 +1,31 @@
-import 'jsrender'
+import $ from 'jquery'
+import jsrender from 'jsrender'
+
+import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
 import { OneWayExerciseSolver } from '../model/oneway/exerciseSolver.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
 
-(function ($) {
-  'use strict'
+jsrender($); // load JsRender jQuery plugin methods
 
-  // we can now rely on $ within the safety of our "bodyguard" function
+(function () {
   $(document).ready(function () {
     const controller = new OneWaySolutionController()
     controller.solveExercise()
   })
-})(jQuery)
+})()
 
 /**
     OneWayController is responsible for handling all user interaction and manipulation of the user interface.
     @constructor
  */
 
-function OneWaySolutionController () {
-  'use strict'
-
-  const self = this
-
-  /**
-        Gets the exercisetype as given in the querystring
-    */
-  this.getExerciseType = function () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-    let sParameterName
-    let i
-
-    for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === 'exerciseType') {
-        return sParameterName[1]
-      }
-    }
-  }
-
-  /**
-        Gets the formula as given in the querystring
-    */
-  this.getFormula = function () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-    let sParameterName
-    let i
-    for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === 'formula') {
-        return decodeURIComponent(sParameterName[1])
-      }
-    }
-  }
-
-  /**
-        Shows an error message.
-
-        @param element - The DOM element
-        @param {string} toolTipText - The error message
-        @param {string} placement - The placement of the error message (top | bottom | left | right)
-     */
-  this.showErrorToolTip = function (element, toolTipText, placement) {
-    // if (typeof placement === "undefined") {
-    if (placement === 'undefined') {
-      placement = 'top'
-    }
-    element.addClass('error')
-    element.tooltip({
-      title: toolTipText,
-      placement: placement,
-      template: '<div class="tooltip error"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-    })
-    element.tooltip('show')
-
-    // vervelende tooltips verwijderen na 5 seconden, dan hebben gebruikers ze wel gezien
-    setTimeout(this.clearErrors, 5000)
+class OneWaySolutionController extends LogExSolutionController {
+  constructor () {
+    super()
+    this.exerciseSolver = new OneWayExerciseSolver()
+    this.ExerciseType = OneWayExercise
   }
 
   /**
@@ -86,7 +33,7 @@ function OneWaySolutionController () {
 
         @param rows - The proof step rows
      */
-  this.colorRows = function (rows) {
+  colorRows (rows) {
     let toggle = -1
 
     if (rows === undefined) {
@@ -104,47 +51,24 @@ function OneWaySolutionController () {
     })
   }
 
-  // exercise solving
-  this.exerciseSolver = new OneWayExerciseSolver()
-
-  /**
-        Solves the exercise
-     */
-  this.solveExercise = function () {
-    const exerciseType = this.getExerciseType()
-    const formula = this.getFormula()
-    let exercise
-
-    exercise = new OneWayExercise(formula, exerciseType, false, false)
-    this.exerciseSolver.solve(exercise, this.onExerciseSolved, this.onErrorSolvingExercise)
-  }
-
   /**
         Handles the event that an exercise is solved
         @param {ProofStepCollection} solution - The solution
      */
-  this.onExerciseSolved = function (solution) {
+  onExerciseSolved (solution) {
     let lastStep = null
     let firstStep = null
 
     $('#exercise-left-formula').text(solution.steps[0].formula)
     firstStep = solution.steps[0]
-    jQuery.each(solution.steps, function () {
-      lastStep = this
-      self.insertStep(this, false)
-    })
+    solution.steps.forEach(function (item) {
+      lastStep = item
+      this.insertStep(item, false)
+    }.bind(this))
     if (lastStep) {
-      self.insertLastStep(firstStep, lastStep)
+      this.insertLastStep(firstStep, lastStep)
     }
-    self.colorRows()
-  }
-
-  /**
-        Handles the error that an exercise can not be solved
-     */
-  this.onErrorSolvingExercise = function () {
-    self.showErrorToolTip($(BTN_SOLVEEXERCISE), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-exercise'), 'right')
-    this.disableUI(false)
+    this.colorRows()
   }
 
   /**
@@ -153,16 +77,15 @@ function OneWaySolutionController () {
         @param {ProofStep} step - The proof step
         @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
      */
-  this.insertStep = function (step, canDelete) {
+  insertStep (step, canDelete) {
     const exerciseStepHtml = this.renderStep(step, canDelete)
 
     $('#active-step').before(exerciseStepHtml)
   }
 
-  this.renderStep = function (step, canDelete) {
+  renderStep (step, canDelete) {
     let rule = ''
     const stepTemplate = $('#exercise-step-template')
-    let exerciseStepHtml
     const error = ''
 
     if (step.rule === null) { // dit is de startopgave
@@ -173,7 +96,7 @@ function OneWaySolutionController () {
       rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
     }
 
-    exerciseStepHtml = stepTemplate.render({
+    const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
       formula: step.formula,
@@ -191,7 +114,7 @@ function OneWaySolutionController () {
 
         @param {ProofStep} step - The proof step
      */
-  this.insertLastStep = function (firstStep, lastStep) {
+  insertLastStep (firstStep, lastStep) {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
       leftformula: firstStep.formula,
