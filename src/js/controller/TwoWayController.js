@@ -104,7 +104,6 @@ const EXERCISE_TOP_STEPS = '#exercise-steps div.exercise-step-added-top'
 const EXERCISE_LAST_STEP = '#exercise-steps div.last-step'
 const NEW_EXERCISE_CONTENT = '#new-exercise-content'
 
-const UNDEFINED = 'undefined'
 const TOP = 'top'
 const ERROR = 'error'
 const SUCCESS = 'success'
@@ -332,7 +331,7 @@ class TwoWayController extends LogExController {
 
     for (rule in Rules) {
       // NB: Rule will only be displayed if it has not already been displayed
-      if (Rules.hasOwnProperty(rule) && Resources.getRule(language, rule) !== previousRule) {
+      if (Object.prototype.hasOwnProperty.call(Rules, rule) && Resources.getRule(language, rule) !== previousRule) {
         $('<option/>').val(rule).html(Resources.getRule(language, rule)).appendTo(RULE_LISTBOX_TOP)
         $('<option/>').val(rule).html(Resources.getRule(language, rule)).appendTo(RULE_LISTBOX_BOTTOM)
         previousRule = Resources.getRule(language, rule)
@@ -348,7 +347,7 @@ class TwoWayController extends LogExController {
         @param {string} placement - The placement of the error message (top | bottom | left | right)
      */
   showErrorToolTip (element, toolTipText, placement) {
-    if (typeof placement === UNDEFINED) {
+    if (placement === undefined) {
       placement = TOP
     }
     element.addClass(ERROR)
@@ -1006,7 +1005,6 @@ class TwoWayController extends LogExController {
       if (this.isTopStep || this.isBottomStep) {
         let rule = ''
         let stepTemplate
-        let exerciseStepHtml
         let error = ''
 
         if (this.isTopStep) {
@@ -1035,7 +1033,7 @@ class TwoWayController extends LogExController {
           error = Resources.getMessageForBuggyRule(LogEXSession.getLanguage(), this.buggyRule)
         }
 
-        exerciseStepHtml = stepTemplate.render({
+        const exerciseStepHtml = stepTemplate.render({
           rule: rule,
           leftformula: this.equation.formula1,
           rightformula: this.equation.formula2,
@@ -1348,7 +1346,7 @@ class TwoWayController extends LogExController {
 
       this.showErrorToolTip(formula, Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'bottom')
     }
-    console.log($(FORMULA1).val(), formulaText)
+
     if ($(FORMULA1).val() === formulaText) {
       this.isFormula1Valid = isValid
     } else {
@@ -1370,7 +1368,6 @@ class TwoWayController extends LogExController {
 
     const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
     let stepTemplate
-    let exerciseStepHtml
     let error
 
     // todo
@@ -1382,7 +1379,7 @@ class TwoWayController extends LogExController {
       stepTemplate = $('#exercise-bottom-step-template')
     }
 
-    exerciseStepHtml = stepTemplate.render({
+    const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
       leftformula: step.equation.formula1,

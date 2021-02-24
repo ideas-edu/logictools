@@ -38,9 +38,7 @@ export function TwoWayStepCollection (baseStep) {
         @return {ProofStep[]} The top steps.
     */
   this.getTopSteps = function () {
-    return jQuery.grep(this.steps, function (step, i) {
-      return (step.isTopStep)
-    })
+    return this.steps.filter(step => step.isTopStep)
   }
 
   /**
@@ -48,9 +46,7 @@ export function TwoWayStepCollection (baseStep) {
         @return {ProofStep[]} The bottom steps.
     */
   this.getBottomSteps = function () {
-    return jQuery.grep(this.steps, function (step, i) {
-      return (step.isBottomStep)
-    })
+    return this.steps.filter(step => step.isBottomStep)
   }
 
   /**

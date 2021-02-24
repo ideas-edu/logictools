@@ -923,16 +923,15 @@ class OneWayController extends LogExController {
         @param formula - The DOM element that contains the formula
         @param onFormulasValidated - The callback function
      */
-  validateFormula (formula, callback) {
-    // if (typeof callback === "undefined") {
-    if (callback === 'undefined') {
-      callback = this.onFormulaValidated
+  validateFormula (formula, callbackFunc) {
+    if (callbackFunc === undefined) {
+      callbackFunc = this.onFormulaValidated
     }
 
     if (this.exercise.usesStepValidation) {
-      this.syntaxValidator.validateSyntax(formula.val(), callback)
+      this.syntaxValidator.validateSyntax(formula.val(), callbackFunc)
     } else {
-      callback(true, formula.val())
+      callbackFunc(true, formula.val())
     }
   }
 

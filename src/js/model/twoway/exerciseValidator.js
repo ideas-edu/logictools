@@ -1,4 +1,5 @@
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
+import { Rules } from '../rules.js'
 /**
     TwoWayExerciseValidator is responsible for validating exercises.
     @constructor
@@ -16,9 +17,7 @@ export function TwoWayExerciseValidator () {
     const self = this
     const checkRule = exercise.usesRuleJustification
     let step1
-    let step2
-    let state
-    let formula
+    let step2 = null
     let rule = null
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
@@ -92,7 +91,7 @@ export function TwoWayExerciseValidator () {
           // Er zijn nog geen stappen met de opgave gecontroleerd: sentinel = index1 die op het aantal elementen staat.
           index1 = exercise.steps.steps.length
           index2 = 2 // De eertste stap moeten we niet meer vergelijken met de opgave: is al gebeurd in de stappencontrole.
-          if (exercise.steps.steps.length == 2) { // Als de oefening uit maar 2 stappen bestaat, moet er niet meer gecontroleerd worden.
+          if (exercise.steps.steps.length === 2) { // Als de oefening uit maar 2 stappen bestaat, moet er niet meer gecontroleerd worden.
             onValidated(exercise)
           } else {
             self.validateSteps(exercise, index1, index2, onValidated, onErrorValidatingStep)
@@ -118,8 +117,8 @@ export function TwoWayExerciseValidator () {
       self.initializeStepStatus(step2)
     }
 
-    state = [exercise.type, step1.strategyStatus, step1.equation.getText(), step1.strategyLocation]
-    formula = step2.equation.getText()
+    const state = [exercise.type, step1.strategyStatus, step1.equation.getText(), step1.strategyLocation]
+    const formula = step2.equation.getText()
     if (checkRule && index1 < exercise.steps.steps.length - 1) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
     }

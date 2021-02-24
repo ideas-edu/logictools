@@ -18,9 +18,7 @@ export function OneWayExerciseValidator () {
     const self = this
     const checkRule = exercise.usesRuleJustification
     let step1
-    let step2
-    let state
-    let formula
+    let step2 = null
     let rule = null
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
@@ -117,8 +115,8 @@ export function OneWayExerciseValidator () {
       self.initializeStepStatus(step2)
     }
 
-    state = [exercise.type, step1.strategyStatus, step1.formula, '']
-    formula = step2.formula
+    const state = [exercise.type, step1.strategyStatus, step1.formula, '']
+    const formula = step2.formula
 
     if (checkRule && index1 < exercise.steps.steps.length - 1) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
