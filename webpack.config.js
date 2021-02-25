@@ -8,12 +8,10 @@ const jsDir = path.resolve(__dirname, 'src/js')
 const htmlDir = path.resolve(__dirname, 'src/html')
 const cssDir = path.resolve(__dirname, 'src/css')
 const imgDir = path.resolve(__dirname, 'src/img')
-const fontDir = path.resolve(__dirname, 'src/font')
 const pdfDir = path.resolve(__dirname, 'src/pdf')
 const distDir = path.resolve(__dirname, 'dist')
 const distCssDir = path.resolve(__dirname, 'dist/css')
 const distImgDir = path.resolve(__dirname, 'dist/img')
-const distFontDir = path.resolve(__dirname, 'dist/font')
 const distPdfDir = path.resolve(__dirname, 'dist/pdf')
 
 module.exports = {
@@ -22,7 +20,7 @@ module.exports = {
     oneWay: path.resolve(jsDir, 'controller/OneWayController.js'),
     twoWaySolution: path.resolve(jsDir, 'controller/TwoWaySolutionController.js'),
     twoWay: path.resolve(jsDir, 'controller/TwoWayController.js'),
-    main: path.resolve(jsDir, 'mainFrameController.js')
+    main: path.resolve(jsDir, 'controller/mainFrameController.js')
   },
   output: {
     path: distDir,
@@ -53,9 +51,7 @@ module.exports = {
       patterns: [
         { from: htmlDir }, // to: output.path
         { from: cssDir, to: distCssDir },
-        // { from: sharedDir, to: distSharedDir },
         { from: imgDir, to: distImgDir },
-        { from: fontDir, to: distFontDir },
         { from: pdfDir, to: distPdfDir }
       ]
     })

@@ -7,8 +7,8 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 
-import { LogEXSession } from './logEXSession.js'
-import { Resources } from './resources.js'
+import { LogEXSession } from '../logEXSession.js'
+import { Resources } from '../resources.js'
 
 (function () {
   $(document).ready(function () {
