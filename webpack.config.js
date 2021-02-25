@@ -11,11 +11,13 @@ const cssDir = path.resolve(__dirname, 'src/css')
 // const sharedDir = path.resolve(__dirname, 'src/shared')
 const imgDir = path.resolve(__dirname, 'src/img')
 const fontDir = path.resolve(__dirname, 'src/font')
+const pdfDir = path.resolve(__dirname, 'src/pdf')
 const distDir = path.resolve(__dirname, 'dist')
 const distCssDir = path.resolve(__dirname, 'dist/css')
 // const distSharedDir = path.resolve(__dirname, 'dist/shared')
 const distImgDir = path.resolve(__dirname, 'dist/img')
 const distFontDir = path.resolve(__dirname, 'dist/font')
+const distPdfDir = path.resolve(__dirname, 'dist/pdf')
 
 module.exports = {
   entry: {
@@ -57,7 +59,8 @@ module.exports = {
         { from: cssDir, to: distCssDir },
         // { from: sharedDir, to: distSharedDir },
         { from: imgDir, to: distImgDir },
-        { from: fontDir, to: distFontDir }
+        { from: fontDir, to: distFontDir },
+        { from: pdfDir, to: distPdfDir }
       ]
     }),
     // Avoid publishing files when compilation fails
