@@ -75,7 +75,7 @@ export function MainFrameController () {
     $('#tab-dnv').html(Resources.getText(language, 'exdnv'))
     $('#tab-cnv').html(Resources.getText(language, 'excnv'))
     $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
-    $('#help').attr('href', 'LogEX_manual_' + language + '.pdf').attr('target', '_new')
+    $('#help').attr('href', 'pdf/LogEX_manual_' + language + '.pdf').attr('target', '_new')
   }
 
   $('#lang-NL').click(function () {
