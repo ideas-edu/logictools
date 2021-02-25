@@ -10,7 +10,6 @@ import '@fortawesome/fontawesome-free/js/brands'
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
 import { LogExController } from './LogExController.js'
-import { BTN_SHOW_NEXT_STEP, BTN_SHOWHINT } from '../constants.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
@@ -234,10 +233,10 @@ class TwoWayController extends LogExController {
 
       // toon de hint/next-step button
       if (config.displayHintButton) {
-        $(BTN_SHOWHINT).show()
+        $('#show-hint').show()
       }
       if (config.displayNextStepButton) {
-        $(BTN_SHOW_NEXT_STEP).show()
+        $('#show-next-step').show()
       }
       $('#add-step-bottom-button').show()
 
@@ -257,10 +256,10 @@ class TwoWayController extends LogExController {
 
       // toon de hint/next-step button
       if (config.displayHintButton) {
-        $(BTN_SHOWHINT).show()
+        $('#show-hint').show()
       }
       if (config.displayNextStepButton) {
-        $(BTN_SHOW_NEXT_STEP).show()
+        $('#show-next-step').show()
       }
 
       // verberg de hint popover als we van richting wisselen
@@ -406,9 +405,9 @@ class TwoWayController extends LogExController {
 
     $('#equivsign').tooltip(DESTROY)
     $('#new-exercise-dropdown').tooltip(DESTROY)
-    $(BTN_SHOW_NEXT_STEP).tooltip(DESTROY)
-    $(BTN_SHOW_NEXT_STEP).removeClass(ERROR)
-    $(BTN_SHOWHINT).tooltip(DESTROY)
+    $('#show-next-step').tooltip(DESTROY)
+    $('#show-next-step').removeClass(ERROR)
+    $('#show-hint').tooltip(DESTROY)
     $('#validate-exercise').removeClass(ERROR)
     $('#validate-exercise').tooltip(DESTROY)
 
@@ -484,8 +483,8 @@ class TwoWayController extends LogExController {
     const stepValidation = document.getElementById('step-validation-switch').checked
 
     this.reset()
-    $(BTN_SHOWHINT).hide()
-    $(BTN_SHOW_NEXT_STEP).hide()
+    $('#show-hint').hide()
+    $('#show-next-step').hide()
     this.disableUI(true)
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'exercise') + ' ' + (exnr + 1))
@@ -499,8 +498,8 @@ class TwoWayController extends LogExController {
     const stepValidation = document.getElementById('step-validation-switch').checked
 
     this.reset()
-    $(BTN_SHOWHINT).hide()
-    $(BTN_SHOW_NEXT_STEP).hide()
+    $('#show-hint').hide()
+    $('#show-next-step').hide()
     this.disableUI(true)
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
@@ -512,8 +511,8 @@ class TwoWayController extends LogExController {
      */
   newExercise () {
     this.reset()
-    $(BTN_SHOWHINT).hide()
-    $(BTN_SHOW_NEXT_STEP).hide()
+    $('#show-hint').hide()
+    $('#show-next-step').hide()
     $('#bottom').hide()
     $('#exercise-steps').hide()
 
@@ -739,7 +738,7 @@ class TwoWayController extends LogExController {
       // this.exerciseSolver.solveNextStep(this.exercise, this.this.GetStepsRemaining, this.onErrorSolvingNextStep);
     } else {
       this.disableUI(false)
-      this.showErrorToolTip($(BTN_SHOW_NEXT_STEP), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'))
+      this.showErrorToolTip($('#show-next-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'))
     }
   }
 
@@ -772,7 +771,7 @@ class TwoWayController extends LogExController {
         Handles the error that the next step can not be solved
      */
   onErrorSolvingNextStep () {
-    this.showErrorToolTip($(BTN_SHOW_NEXT_STEP), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-step'))
+    this.showErrorToolTip($('#show-next-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-step'))
   }
 
   /**
@@ -881,7 +880,7 @@ class TwoWayController extends LogExController {
         Handles the error that the next step can not be solved
      */
   onErrorGettingHelpForNextStep () {
-    this.showErrorToolTip($(BTN_SHOWHINT), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-showing-hint'))
+    this.showErrorToolTip($('#show-hint'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-showing-hint'))
   }
 
   /**
