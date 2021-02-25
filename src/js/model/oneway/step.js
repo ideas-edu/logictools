@@ -1,3 +1,5 @@
+import katex from 'katex'
+
 /**
     Represents a one way step.
     @constructor
@@ -9,6 +11,9 @@
 export function OneWayStep (formulaText, rule) {
   'use strict'
   this.formula = formulaText
+  this.formulaKatex = katex.renderToString(formulaText, {
+    throwOnError: false
+  })
   this.rule = rule
   this.isValid = false
   this.isSyntaxValid = true

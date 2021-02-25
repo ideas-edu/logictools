@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import jsrender from 'jsrender'
+import 'katex/dist/katex.min.css'
 
 import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
@@ -75,8 +76,8 @@ class TwoWaySolutionController extends LogExSolutionController {
   onExerciseSolved (solution) {
     let lastStep = null
 
-    $('#exercise-left-formula').text(solution.steps[0].equation.formula1)
-    $('#exercise-right-formula').text(solution.steps[0].equation.formula2)
+    document.getElementById('exercise-left-formula').innerHTML = solution.steps[0].equation.formula1katex
+    document.getElementById('exercise-right-formula').innerHTML = solution.steps[0].equation.formula2katex
 
     solution.steps.forEach(function (item) {
       lastStep = item
@@ -112,8 +113,8 @@ class TwoWaySolutionController extends LogExSolutionController {
   insertLastStep (step) {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
-      leftformula: step.equation.formula1,
-      rightformula: step.equation.formula2
+      leftformula: step.equation.formula1katex,
+      rightformula: step.equation.formula2katex
     })
 
     $('#active-step').before(exerciseStepHtml)
@@ -138,8 +139,8 @@ class TwoWaySolutionController extends LogExSolutionController {
     const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
-      leftformula: step.equation.formula1,
-      rightformula: step.equation.formula2,
+      leftformula: step.equation.formula1katex,
+      rightformula: step.equation.formula2katex,
       canDelete: false,
       isWrong: false,
       hasRule: this.rule !== undefined,

@@ -7,6 +7,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
+import 'katex/dist/katex.min.css'
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
 import { LogExController } from './LogExController.js'
@@ -609,8 +610,8 @@ class TwoWayController extends LogExController {
       $(NEW_EXERCISE_CONTENT).remove()
     }
 
-    $(EXERCISE_LEFT_FORMULA).text(exercise.equation.formula1)
-    $(EXERCISE_RIGHT_FORMULA).text(exercise.equation.formula2)
+    document.getElementById('exercise-left-formula').innerHTML = exercise.equation.formula1katex
+    document.getElementById('exercise-right-formula').innerHTML = exercise.equation.formula2katex
 
     $(FORMULA1).val(exercise.equation.formula1)
     // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
@@ -1034,8 +1035,8 @@ class TwoWayController extends LogExController {
 
         const exerciseStepHtml = stepTemplate.render({
           rule: rule,
-          leftformula: this.equation.formula1,
-          rightformula: this.equation.formula2,
+          leftformula: this.equation.formula1katex,
+          rightformula: this.equation.formula2katex,
           canDelete: true,
           isWrong: !this.isValid || this.isCorrect,
           hasRule: this.rule !== undefined,
@@ -1381,8 +1382,8 @@ class TwoWayController extends LogExController {
     const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
-      leftformula: step.equation.formula1,
-      rightformula: step.equation.formula2,
+      leftformula: step.equation.formula1katex,
+      rightformula: step.equation.formula2katex,
       canDelete: canDelete,
       isWrong: false,
       hasRule: this.rule !== undefined,
@@ -1408,8 +1409,8 @@ class TwoWayController extends LogExController {
   insertLastStep (step) {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
-      leftformula: step.equation.formula1,
-      rightformula: step.equation.formula2
+      leftformula: step.equation.formula1katex,
+      rightformula: step.equation.formula2katex
     })
 
     $('#active-step-top').before(exerciseStepHtml)

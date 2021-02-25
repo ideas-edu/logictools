@@ -1,3 +1,5 @@
+import katex from 'katex'
+
 /**
     Represents an equation.
     @constructor
@@ -5,20 +7,27 @@
     @property {string} formula1 The first formula.
     @property {string} formula2 The second formula.
  */
-export function Equation (text) {
-  'use strict'
-  if (text !== undefined) {
-    const formulae = text.split('==')
+export class Equation {
+  constructor (text) {
+    if (text !== undefined) {
+      const formulae = text.split('==')
 
-    this.formula1 = formulae[0].trim()
-    this.formula2 = formulae[1].trim()
+      this.formula1 = formulae[0].trim()
+      this.formula2 = formulae[1].trim()
+      this.formula1katex = katex.renderToString(this.formula1, {
+        throwOnError: false
+      })
+      this.formula2katex = katex.renderToString(this.formula2, {
+        throwOnError: false
+      })
+    }
   }
 
   /**
         Gets the text of the equation.
         @return {string} - The text of the equation.
      */
-  this.getText = function () {
+  getText () {
     return this.formula1 + ' == ' + this.formula2
   }
 
@@ -26,7 +35,7 @@ export function Equation (text) {
         Sets formula 1.
         @param {string} formulaText - The text of the formula.
      */
-  this.setFormula1 = function (formulaText) {
+  setFormula1 (formulaText) {
     this.formula1 = formulaText.trim()
   }
 
@@ -34,11 +43,11 @@ export function Equation (text) {
         Sets formula 2.
         @param {string} formulaText - The text of the formula.
      */
-  this.setFormula2 = function (formulaText) {
+  setFormula2 (formulaText) {
     this.formula2 = formulaText.trim()
   }
 
-  this.getEquationIsSolved = function () {
+  getEquationIsSolved () {
     return this.formula1 === this.formula2
   }
 }
