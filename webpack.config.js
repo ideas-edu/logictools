@@ -10,9 +10,6 @@ const cssDir = path.resolve(__dirname, 'src/css')
 const imgDir = path.resolve(__dirname, 'src/img')
 const pdfDir = path.resolve(__dirname, 'src/pdf')
 const distDir = path.resolve(__dirname, 'dist')
-const distCssDir = path.resolve(__dirname, 'dist/css')
-const distImgDir = path.resolve(__dirname, 'dist/img')
-const distPdfDir = path.resolve(__dirname, 'dist/pdf')
 
 module.exports = {
   entry: {
@@ -62,9 +59,9 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: htmlDir }, // to: output.path
-        { from: cssDir, to: distCssDir },
-        { from: imgDir, to: distImgDir },
-        { from: pdfDir, to: distPdfDir }
+        { from: cssDir, to: 'css/' },
+        { from: imgDir, to: 'img/' },
+        { from: pdfDir, to: 'pdf/' }
       ]
     })
     // Avoid publishing files when compilation fails
