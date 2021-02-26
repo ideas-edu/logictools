@@ -23,7 +23,8 @@
     "popper.js": "^1.16.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.21.2",
-    "webpack-cli": "^4.5.0"
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
     "test": "eslint ."
