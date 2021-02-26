@@ -1,3 +1,5 @@
+import katex from 'katex'
+
 import { OneWayStep } from './step.js'
 import { OneWayStepCollection } from './stepCollection.js'
 /**
@@ -14,6 +16,9 @@ export class OneWayExercise {
     this.usesStepValidation = stepValidation
     this.isReady = false
     this.formula = formulaText
+    this.formulaKatex = katex.renderToString(formulaText, {
+      throwOnError: false
+    })
     this.steps = new OneWayStepCollection(new OneWayStep(formulaText))
   }
 

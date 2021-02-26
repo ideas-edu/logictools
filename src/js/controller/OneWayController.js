@@ -7,6 +7,8 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
+import 'katex/dist/katex.min.css'
+
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
 import { LogExController } from './LogExController.js'
@@ -418,7 +420,7 @@ class OneWayController extends LogExController {
       $('#new-exercise-content').remove()
     }
 
-    $('#exercise-left-formula').text(this.exercise.formula)
+    document.getElementById('exercise-left-formula').innerHTML = this.exercise.formulaKatex
 
     $('#formula').val(this.exercise.formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
@@ -682,8 +684,8 @@ class OneWayController extends LogExController {
 
         const stepTemplate = $('#exercise-last-step-template')
         const exerciseStepHtml = stepTemplate.render({
-          leftformula: this.exercise.formula,
-          rightformula: this.exercise.getCurrentStep().formula
+          leftformula: this.exercise.formulaKatex,
+          rightformula: this.exercise.getCurrentStep().formulaKatex
         })
 
         $('#active-step').before(exerciseStepHtml)
@@ -768,7 +770,7 @@ class OneWayController extends LogExController {
 
       const exerciseStepHtml = stepTemplate.render({
         rule: rule,
-        formula: this.formula,
+        formula: this.formulaKatex,
         canDelete: false,
         isWrong: !this.isValid,
         hasRule: this.rule !== undefined,
@@ -967,7 +969,7 @@ class OneWayController extends LogExController {
     const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
-      formula: step.formula,
+      formula: step.formulaKatex,
       isWrong: false,
       hasRule: true,
       canDelete: canDelete,
@@ -986,7 +988,7 @@ class OneWayController extends LogExController {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
       leftformula: this.exercise.formula,
-      rightformula: step.formula
+      rightformula: step.formulaKatex
     })
 
     $('#active-step').before(exerciseStepHtml)

@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import jsrender from 'jsrender'
+import 'katex/dist/katex.min.css'
 
 import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
@@ -59,7 +60,7 @@ class OneWaySolutionController extends LogExSolutionController {
     let lastStep = null
     let firstStep = null
 
-    $('#exercise-left-formula').text(solution.steps[0].formula)
+    document.getElementById('exercise-left-formula').innerHTML = solution.steps[0].formulaKatex
     firstStep = solution.steps[0]
     solution.steps.forEach(function (item) {
       lastStep = item
@@ -79,8 +80,12 @@ class OneWaySolutionController extends LogExSolutionController {
      */
   insertStep (step, canDelete) {
     const exerciseStepHtml = this.renderStep(step, canDelete)
-
-    $('#active-step').before(exerciseStepHtml)
+    if (exerciseStepHtml === undefined) {
+      return
+    }
+    const exerciseStep = document.createElement('div')
+    exerciseStep.innerHTML = exerciseStepHtml
+    document.getElementById('active-step').insertAdjacentElement('beforebegin', exerciseStep)
   }
 
   renderStep (step, canDelete) {
@@ -99,7 +104,7 @@ class OneWaySolutionController extends LogExSolutionController {
     const exerciseStepHtml = stepTemplate.render({
       error: error,
       rule: rule,
-      formula: step.formula,
+      formula: step.formulaKatex,
       isWrong: false,
       hasRule: true,
       canDelete: canDelete,
@@ -117,8 +122,8 @@ class OneWaySolutionController extends LogExSolutionController {
   insertLastStep (firstStep, lastStep) {
     const stepTemplate = $('#exercise-last-step-template')
     const exerciseStepHtml = stepTemplate.render({
-      leftformula: firstStep.formula,
-      rightformula: lastStep.formula
+      leftformula: firstStep.formulaKatex,
+      rightformula: lastStep.formulaKatex
     })
 
     $('#active-step').before(exerciseStepHtml)
