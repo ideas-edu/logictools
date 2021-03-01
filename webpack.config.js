@@ -9,6 +9,9 @@ const htmlDir = path.resolve(__dirname, 'src/html')
 const cssDir = path.resolve(__dirname, 'src/css')
 const imgDir = path.resolve(__dirname, 'src/img')
 const pdfDir = path.resolve(__dirname, 'src/pdf')
+const phpDir = path.resolve(__dirname, 'src/php')
+// Copy vendor files for php lib support
+const phpVendorDir = path.resolve(__dirname, 'vendor')
 const distDir = path.resolve(__dirname, 'dist')
 
 module.exports = {
@@ -61,7 +64,10 @@ module.exports = {
         { from: htmlDir }, // to: output.path
         { from: cssDir, to: 'css/' },
         { from: imgDir, to: 'img/' },
-        { from: pdfDir, to: 'pdf/' }
+        { from: pdfDir, to: 'pdf/' },
+        { from: phpDir, to: '.' },
+        { from: phpVendorDir, to: 'vendor' },
+        { from: path.resolve(__dirname, 'src/config.json'), to: '.' }
       ]
     })
     // Avoid publishing files when compilation fails

@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿<?php
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/db.php';
+
+use \IMSGlobal\LTI;
+$launch = LTI\LTI_Message_Launch::new(new Example_Database())
+    ->validate();
+var_dump($launch->get_launch_data())
+
+?>
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->

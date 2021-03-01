@@ -1,0 +1,39 @@
+<?php
+// https://github.com/IMSGlobal/lti-1-3-php-example-tool
+
+require_once __DIR__ . '/vendor/autoload.php';
+define("TOOL_HOST", 'http://localhost:8080');//($_SERVER['HTTP_X_FORWARDED_PROTO'] ?: $_SERVER['REQUEST_SCHEME']) . '://' . $_SERVER['HTTP_HOST']);
+session_start();
+use \IMSGlobal\LTI;
+
+$_SESSION['iss'] = json_decode(file_get_contents(__DIR__ . "/config.json"), true);
+
+class Example_Database implements LTI\Database {
+    public function find_registration_by_issuer($iss) {
+        if (empty($_SESSION['iss']) || empty($_SESSION['iss'][$iss])) {
+            return false;
+        }
+        return LTI\LTI_Registration::new()
+            ->set_auth_login_url($_SESSION['iss'][$iss]['auth_login_url'])
+            ->set_auth_token_url($_SESSION['iss'][$iss]['auth_token_url'])
+            ->set_auth_server($_SESSION['iss'][$iss]['auth_server'])
+            ->set_client_id($_SESSION['iss'][$iss]['client_id'])
+            ->set_key_set_url($_SESSION['iss'][$iss]['key_set_url'])
+            ->set_kid($_SESSION['iss'][$iss]['kid'])
+            ->set_issuer($iss)
+            ->set_tool_private_key($this->private_key($iss));
+    }
+
+    public function find_deployment($iss, $deployment_id) {
+        if (!in_array($deployment_id, $_SESSION['iss'][$iss]['deployment'])) {
+            return false;
+        }
+        return LTI\LTI_Deployment::new()
+            ->set_deployment_id($deployment_id);
+    }
+
+    private function private_key($iss) {
+        return file_get_contents(__DIR__ . $_SESSION['iss'][$iss]['private_key_file']);
+    }
+}
+?>
