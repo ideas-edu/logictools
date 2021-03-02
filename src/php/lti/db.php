@@ -1,12 +1,12 @@
 <?php
 // https://github.com/IMSGlobal/lti-1-3-php-example-tool
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 define("TOOL_HOST", 'http://localhost:8080');//($_SERVER['HTTP_X_FORWARDED_PROTO'] ?: $_SERVER['REQUEST_SCHEME']) . '://' . $_SERVER['HTTP_HOST']);
 session_start();
 use \IMSGlobal\LTI;
 
-$_SESSION['iss'] = json_decode(file_get_contents(__DIR__ . "/config.json"), true);
+$_SESSION['iss'] = json_decode(file_get_contents(__DIR__ . "/../config.json"), true);
 
 class Example_Database implements LTI\Database {
     public function find_registration_by_issuer($iss) {

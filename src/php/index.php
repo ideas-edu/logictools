@@ -1,13 +1,18 @@
 ﻿<?php
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/lti/db.php';
 
 use \IMSGlobal\LTI;
 $launch = LTI\LTI_Message_Launch::new(new Example_Database())
     ->validate();
-var_dump($launch->get_launch_data())
+// var_dump($launch->get_launch_data())
 
 ?>
+<script type="text/javascript">
+const user = <?php echo json_encode($launch->get_launch_data()); ?>
+
+console.log(user)
+</script>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -20,7 +25,7 @@ var_dump($launch->get_launch_data())
         <meta name="description" content="">
         <meta name="viewport" content="width=1020">
 
-		<script type="module" src="main.bundle.js" type="text/javascript"></script>
+		<script type="module" src="../../main.bundle.js" type="text/javascript"></script>
     </head>
     <body>
         <!--[if lt IE 9]>

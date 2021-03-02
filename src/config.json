@@ -1,12 +1,14 @@
 {
     "http://localhost:8000" : {
         "client_id" : "H79SVfUZfOSYuXt",
-        "auth_login_url" : "http://localhost:8080/platform/login.php",
-        "auth_token_url" : "http://localhost:8080/token.php",
-        "key_set_url" : "http://localhost:9001/platform/jwks.php",
-        "private_key_file" : "/private.key",
+        "auth_login_url" : "http://localhost:8000/mod/lti/auth.php",
+        "auth_token_url" : "http://localhost:8000/mod/lti/token.php",
+        "key_set_url" : "http://localhost:8000/mod/lti/certs.php",
+        "auth_server": "",
+        "private_key_file" : "/../private.key",
         "kid": "58f36e10-c1c1-4df0-af8b-85c857d1634f",
         "deployment" : [
+            "2",
             "8c49a5fa-f955-405e-865f-3d7e959e809f"
         ]
     }
