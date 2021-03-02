@@ -20,8 +20,7 @@ class Example_Database implements LTI\Database {
             ->set_client_id($_SESSION['iss'][$iss]['client_id'])
             ->set_key_set_url($_SESSION['iss'][$iss]['key_set_url'])
             ->set_kid($_SESSION['iss'][$iss]['kid'])
-            ->set_issuer($iss)
-            ->set_tool_private_key($this->private_key($iss));
+            ->set_issuer($iss);
     }
 
     public function find_deployment($iss, $deployment_id) {
@@ -30,10 +29,6 @@ class Example_Database implements LTI\Database {
         }
         return LTI\LTI_Deployment::new()
             ->set_deployment_id($deployment_id);
-    }
-
-    private function private_key($iss) {
-        return file_get_contents(__DIR__ . $_SESSION['iss'][$iss]['private_key_file']);
     }
 }
 ?>

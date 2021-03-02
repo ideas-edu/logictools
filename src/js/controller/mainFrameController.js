@@ -1,3 +1,4 @@
+/* global lti_user */
 import $ from 'jquery'
 import 'bootstrap'
 import { iframeResize } from 'iframe-resizer'
@@ -29,6 +30,12 @@ import { Resources } from '../resources.js'
         $(paneID + ' iframe').attr('src', src)
       }
     })
+    // console.log(user)
+    if (lti_user) {
+      document.getElementById('nav-username').innerHTML = lti_user.name
+    } else {
+      document.getElementById('nav-username').innerHTML = 'Not Logged In'
+    }
 
     iframeResize({
       log: false,
@@ -40,13 +47,95 @@ import { Resources } from '../resources.js'
   })
 })()
 
-export function MainFrameController () {
-  const self = this
+export class MainFrameController {
+  constructor () {
+    $('#lang-NL').click(function () {
+      LogEXSession.setLanguage('NL')
+      this.initializeLabels()
+
+      // All iFrames must be updated to Dutch
+      if ($('#fraLogEQ').attr('src') !== '') {
+        $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
+      }
+      if ($('#fraDNV').attr('src') !== '') {
+        $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
+      }
+      if ($('#fraCNV').attr('src') !== '') {
+        $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
+      }
+
+      // Switch view of the buttons (Bold = Active)
+      $('#button-NL').addClass('active')
+      $('#button-EN').removeClass('active')
+    })
+
+    $('#lang-EN').click(function () {
+      LogEXSession.setLanguage('EN')
+      this.initializeLabels()
+
+      // All iFrames must be updated to English.
+      if ($('#fraLogEQ').attr('src') !== '') {
+        $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
+      }
+      if ($('#fraDNV').attr('src') !== '') {
+        $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
+      }
+      if ($('#fraCNV').attr('src') !== '') {
+        $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
+      }
+
+      // Switch view of the buttons (Bold = Active)
+      $('#button-EN').addClass('active')
+      $('#button-NL').removeClass('active')
+    })
+
+    // doh: helaas is er een tweede set van gelijke eventhandlers nodig voor de taalknoppen in het hoofdvenster
+
+    $('#lang2-NL').click(function () {
+      LogEXSession.setLanguage('NL')
+      this.initializeLabels()
+
+      // All iFrames must be updated to Dutch
+      if ($('#fraLogEQ').attr('src') !== '') {
+        $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
+      }
+      if ($('#fraDNV').attr('src') !== '') {
+        $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
+      }
+      if ($('#fraCNV').attr('src') !== '') {
+        $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
+      }
+
+      // Switch view of the buttons (Bold = Active)
+      $('#lang2-NL').addClass('active')
+      $('#lang2-EN').removeClass('active')
+    })
+
+    $('#lang2-EN').click(function () {
+      LogEXSession.setLanguage('EN')
+      this.initializeLabels()
+
+      // All iFrames must be updated to English.
+      if ($('#fraLogEQ').attr('src') !== '') {
+        $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
+      }
+      if ($('#fraDNV').attr('src') !== '') {
+        $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
+      }
+      if ($('#fraCNV').attr('src') !== '') {
+        $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
+      }
+
+      // Switch view of the buttons (Bold = Active)
+      $('#lang2-EN').addClass('active')
+      $('#lang2-NL').removeClass('active')
+    })
+  }
 
   /**
         Initializes the language to the user settings or falls back to the browser language.
      */
-  this.initializeLanguage = function () {
+  initializeLanguage () {
     let language,
       browserLanguage
     if (LogEXSession.getLanguage() === null) {
@@ -65,7 +154,7 @@ export function MainFrameController () {
   /**
         Initializes all buttons and label to correct language
      */
-  this.initializeLabels = function () {
+  initializeLabels () {
     const language = LogEXSession.getLanguage()
 
     $('#button-' + language).addClass('active')
@@ -77,86 +166,4 @@ export function MainFrameController () {
     $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
     $('#help').attr('href', 'pdf/LogEX_manual_' + language + '.pdf').attr('target', '_new')
   }
-
-  $('#lang-NL').click(function () {
-    LogEXSession.setLanguage('NL')
-    self.initializeLabels()
-
-    // All iFrames must be updated to Dutch
-    if ($('#fraLogEQ').attr('src') !== '') {
-      $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
-    }
-    if ($('#fraDNV').attr('src') !== '') {
-      $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
-    }
-    if ($('#fraCNV').attr('src') !== '') {
-      $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
-    }
-
-    // Switch view of the buttons (Bold = Active)
-    $('#button-NL').addClass('active')
-    $('#button-EN').removeClass('active')
-  })
-
-  $('#lang-EN').click(function () {
-    LogEXSession.setLanguage('EN')
-    self.initializeLabels()
-
-    // All iFrames must be updated to English.
-    if ($('#fraLogEQ').attr('src') !== '') {
-      $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
-    }
-    if ($('#fraDNV').attr('src') !== '') {
-      $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
-    }
-    if ($('#fraCNV').attr('src') !== '') {
-      $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
-    }
-
-    // Switch view of the buttons (Bold = Active)
-    $('#button-EN').addClass('active')
-    $('#button-NL').removeClass('active')
-  })
-
-  // doh: helaas is er een tweede set van gelijke eventhandlers nodig voor de taalknoppen in het hoofdvenster
-
-  $('#lang2-NL').click(function () {
-    LogEXSession.setLanguage('NL')
-    self.initializeLabels()
-
-    // All iFrames must be updated to Dutch
-    if ($('#fraLogEQ').attr('src') !== '') {
-      $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
-    }
-    if ($('#fraDNV').attr('src') !== '') {
-      $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
-    }
-    if ($('#fraCNV').attr('src') !== '') {
-      $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
-    }
-
-    // Switch view of the buttons (Bold = Active)
-    $('#lang2-NL').addClass('active')
-    $('#lang2-EN').removeClass('active')
-  })
-
-  $('#lang2-EN').click(function () {
-    LogEXSession.setLanguage('EN')
-    self.initializeLabels()
-
-    // All iFrames must be updated to English.
-    if ($('#fraLogEQ').attr('src') !== '') {
-      $('#fraLogEQ')[0].contentWindow.UITranslator.translate('LOGEQ')
-    }
-    if ($('#fraDNV').attr('src') !== '') {
-      $('#fraDNV')[0].contentWindow.UITranslator.translate('DNV')
-    }
-    if ($('#fraCNV').attr('src') !== '') {
-      $('#fraCNV')[0].contentWindow.UITranslator.translate('CNV')
-    }
-
-    // Switch view of the buttons (Bold = Active)
-    $('#lang2-EN').addClass('active')
-    $('#lang2-NL').removeClass('active')
-  })
 }

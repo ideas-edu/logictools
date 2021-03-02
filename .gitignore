@@ -4,3 +4,4 @@ hints.html
 jslint.txt
 dist/
 vendor
+*.key

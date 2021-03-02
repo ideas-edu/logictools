@@ -5,7 +5,6 @@
         "auth_token_url" : "http://localhost:8000/mod/lti/token.php",
         "key_set_url" : "http://localhost:8000/mod/lti/certs.php",
         "auth_server": "",
-        "private_key_file" : "/../private.key",
         "kid": "58f36e10-c1c1-4df0-af8b-85c857d1634f",
         "deployment" : [
             "2",

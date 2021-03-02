@@ -3,15 +3,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/lti/db.php';
 
 use \IMSGlobal\LTI;
-$launch = LTI\LTI_Message_Launch::new(new Example_Database())
-    ->validate();
-// var_dump($launch->get_launch_data())
 
+try {
+	$launch = LTI\LTI_Message_Launch::new(new Example_Database())
+	    ->validate();
+    $user = $launch->get_launch_data();
+} catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+    $user = null;
+}
 ?>
 <script type="text/javascript">
-const user = <?php echo json_encode($launch->get_launch_data()); ?>
-
-console.log(user)
+const lti_user = <?php echo json_encode($user); ?>
 </script>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -25,7 +28,7 @@ console.log(user)
         <meta name="description" content="">
         <meta name="viewport" content="width=1020">
 
-		<script type="module" src="../../main.bundle.js" type="text/javascript"></script>
+		<script type="module" src="main.bundle.js" type="text/javascript"></script>
     </head>
     <body>
         <!--[if lt IE 9]>
@@ -38,6 +41,7 @@ console.log(user)
 				<li class="nav-item" style="padding:0px 10px;" id="button-NL"><a href="#" id="lang2-NL">NL</a></li>
 				<li class="nav-item" style="padding:0px 10px;" id="button-EN"><a href="#" id="lang2-EN">EN</a></li>
 				<li class="nav-item" style="padding:0px 10px;"><a href="" target="_new" id="help"> </a></li>
+				<li class="nav-item" style="padding:0px 10px; color: #fff;" id="nav-username"></li>
 			</ul>
         </nav>
 
