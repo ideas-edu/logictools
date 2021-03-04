@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 
@@ -15,19 +13,25 @@ export class IdeasServiceProxy {
         @param onError - The callback method that gets called on error
     */
   static post (input, onSuccess, onError) {
-    const request = {}
     const url = config.backend_url
-    request.input = JSON.stringify(input)
-    request.input = unescape(request.input.replace(/\\u/g, '%u'))
+    const data = 'input=' + encodeURI(JSON.stringify(input))
 
-    $.support.cors = true
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: $.param(request),
-      success: onSuccess,
-      error: onError
-    })
+    const request = new XMLHttpRequest()
+
+    request.open('POST', url, true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    request.responseType = 'json'
+
+    request.onload = function () {
+      const resp = this.response
+      onSuccess(resp)
+    }
+    request.onerror = function () {
+      const resp = this.response
+      onError(resp)
+    }
+
+    request.send(data)
   }
 
   static post2 (method, params, onSuccess, onError, requestinfo) {
