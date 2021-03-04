@@ -12,6 +12,7 @@ export const config = {
   randomExercises: true,
   inputOwnExercise: true,
   source: 'logex',
+  backend_url: 'https://ideas.science.uu.nl/cgi-bin/ideas-logex.cgi',
   useRuleJustification: true,
   displayRuleJustification: true,
   useStepValidation: true,
