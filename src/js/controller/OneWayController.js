@@ -319,28 +319,32 @@ class OneWayController extends LogExController {
      */
 
   useExercise (exnr) {
-    const ruleJustification = document.getElementById('rule-switch').checked
-    const stepValidation = document.getElementById('step-validation-switch').checked
+    const properties = {
+      ruleJustification: document.getElementById('rule-switch').checked,
+      stepValidation: document.getElementById('step-validation-switch').checked
+    }
 
     this.reset()
     this.disableUI(true)
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'exercise') + ' ' + (exnr + 1))
-    this.exerciseGenerator.example(exnr, this.exerciseType, ruleJustification, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    this.exerciseGenerator.example(exnr, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
         Generates an exercise.
      */
   generateExercise () {
-    const ruleJustification = document.getElementById('rule-switch').checked
-    const stepValidation = document.getElementById('step-validation-switch').checked
+    const properties = {
+      ruleJustification: document.getElementById('rule-switch').checked,
+      stepValidation: document.getElementById('step-validation-switch').checked
+    }
 
     this.reset()
     this.disableUI(true)
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    this.exerciseGenerator.generate(this.exerciseType, ruleJustification, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    this.exerciseGenerator.generate(this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
@@ -391,13 +395,15 @@ class OneWayController extends LogExController {
 
   createExercise () {
     const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
-    const ruleJustification = document.getElementById('rule-switch').checked
-    const stepValidation = document.getElementById('step-validation-switch').checked
+    const properties = {
+      ruleJustification: document.getElementById('rule-switch').checked,
+      stepValidation: document.getElementById('step-validation-switch').checked
+    }
 
     this.disableUI(true)
     LogEXSession.setDifficulty('normal')
-    this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation)
-    this.exerciseGenerator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, $('#formula').val(), properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
@@ -665,13 +671,11 @@ class OneWayController extends LogExController {
       */
 
   checkIfReady () {
-    const step = this.exercise.getCurrentStep()
-    const state = [this.exercise.type, step.strategyStatus, step.formula, '']
     const onError = function (data) {
       alert('Error calling ready service')
     }
     const onSuccess = function (data) {
-      if (data.result) {
+      if (data.ready) {
         $('#active-step').hide()
         $('#bottom').hide()
         $('#formula').blur()
@@ -696,7 +700,7 @@ class OneWayController extends LogExController {
       }
     }
     this.disableUI(true)
-    IdeasServiceProxy.ready(state, onSuccess.bind(this), onError.bind(this))
+    this.exerciseValidator.validateReady(this.exercise, onSuccess.bind(this), onError.bind(this))
   }
 
   /**

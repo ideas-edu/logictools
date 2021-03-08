@@ -13,6 +13,7 @@ export class IdeasServiceProxy {
         @param onError - The callback method that gets called on error
     */
   static post (input, onSuccess, onError) {
+    console.trace("Call")
     const url = config.backend_url
     input.source = config.source
     const data = 'input=' + encodeURI(JSON.stringify(input))

@@ -16,7 +16,6 @@ import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
 import { Equation } from '../model/twoway/equation.js'
 import { TwoWayExerciseGenerator } from '../model/twoway/exerciseGenerator.js'
-import { TwoWayExerciseCreator } from '../model/twoway/exerciseCreator.js'
 import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
 import { TwoWayExerciseValidator } from '../model/twoway/exerciseValidator.js'
 import { TwoWayStep } from '../model/twoway/step.js'
@@ -117,7 +116,6 @@ class TwoWayController extends LogExController {
     super()
 
     this.exerciseGenerator = new TwoWayExerciseGenerator()
-    this.exerciseCreator = new TwoWayExerciseCreator()
     this.exerciseSolver = new TwoWayExerciseSolver()
     this.exerciseValidator = new TwoWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
@@ -552,7 +550,7 @@ class TwoWayController extends LogExController {
     this.exercise = new TwoWayExercise(equation.getText(), exerciseMethod, stepValidation)
 
     // this.exerciseSolver.solve(this.exercise, this.onNewExerciseValidated, this.onErrorCreatingExercise);
-    this.exerciseCreator.create(this.exerciseType, stepValidation, this.exercise.equation.getText(), this.onExerciseGenerated.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exerciseGenerator.create(this.exerciseType, stepValidation, this.exercise.equation.getText(), this.onExerciseGenerated.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
@@ -938,7 +936,8 @@ class TwoWayController extends LogExController {
 
     if (this.exercise.usesStepValidation) {
       // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
-      this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.getStepsRemaining.bind(this), this.onErrorValidatingStep.bind(this))
+      console.log(this.onErrorValidatingStep.bind(this))
+      this.exerciseValidator.validateStep(this.exercise, false, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.getStepsRemaining.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
       // this.onStepValidated();
       this.getStepsRemaining(this.exercise.type, this.exercise.getCurrentStep())
@@ -1091,13 +1090,13 @@ class TwoWayController extends LogExController {
   }
 
   // here we set the number of steps that remain for step2
-  getStepsRemaining (exerciseType, step2) {
-    const that = step2
+  getStepsRemaining (exercise) {
+    // const that = step2
 
     // [BHR] disable the service call to stepsremaining. Instead, we use the
     // empty string. It would be better to remove the 'stepsremaining' field
     // in the user interface.
-    that.stepsRemaining = ''
+    // that.stepsRemaining = ''
 
     // when useStepValidiation is false (in the config), there is no prior check
     // to see if the step is correct. Hence, disable the automatic 'proof is

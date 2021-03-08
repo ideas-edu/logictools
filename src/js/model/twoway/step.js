@@ -27,6 +27,6 @@ export function TwoWayStep (equationText, rule) {
   this.buggyRule = ''
   this.isReady = false
   this.strategyStatus = '[]'
-  this.stepsRemaining = 0
+  this.stepsRemaining = ''
   this.strategyLocation = ''
 }
