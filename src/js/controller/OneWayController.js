@@ -16,7 +16,6 @@ import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
 import { OneWayExerciseGenerator } from '../model/oneway/exerciseGenerator.js'
-import { OneWayExerciseCreator } from '../model/oneway/exerciseCreator.js'
 import { OneWayExerciseSolver } from '../model/oneway/exerciseSolver.js'
 import { OneWayExerciseValidator } from '../model/oneway/exerciseValidator.js'
 import { OneWayStep } from '../model/oneway/step.js'
@@ -99,7 +98,6 @@ class OneWayController extends LogExController {
     super()
     this.formulaPopover = null
     this.exerciseGenerator = new OneWayExerciseGenerator()
-    this.exerciseCreator = new OneWayExerciseCreator()
     this.exerciseSolver = new OneWayExerciseSolver()
     // validation
     this.exerciseValidator = new OneWayExerciseValidator()
@@ -399,7 +397,7 @@ class OneWayController extends LogExController {
     this.disableUI(true)
     LogEXSession.setDifficulty('normal')
     this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, ruleJustification, stepValidation)
-    this.exerciseCreator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exerciseGenerator.create(exerciseMethod, $('#formula').val(), ruleJustification, stepValidation, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**

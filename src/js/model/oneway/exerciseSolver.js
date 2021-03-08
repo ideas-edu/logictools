@@ -6,9 +6,7 @@ import { OneWayStep } from './step.js'
     OneWayExerciseSolver is responsible for solving one way exercises.
     @constructor
  */
-export function OneWayExerciseSolver () {
-  'use strict'
-
+export class OneWayExerciseSolver {
   /**
         Solves a one way exercise.
         @param {OneWayExercise} exercise - The exercise that needs to be solved.
@@ -16,11 +14,7 @@ export function OneWayExerciseSolver () {
         The callback function expects 1 parameter, a ProofStepCollection.
         @param onErrorSolvingExercise - The callback function that is called if there is a problem solving the exercise.
      */
-  this.solve = function (exercise, onExerciseSolved, onErrorSolvingExercise) {
-    const currentStep = exercise.steps.getCurrentStep()
-    let currentStrategy
-    let currentFormula
-
+  solve (exercise, onExerciseSolved, onErrorSolvingExercise) {
     const onError = onErrorSolvingExercise
     const onSuccess = function (data) {
       if (data === null || data.error !== null || data.result === null || data.result[0][1] === undefined) {
@@ -34,15 +28,7 @@ export function OneWayExerciseSolver () {
       onExerciseSolved(onewaySteps)
     }
 
-    if (currentStep === null) {
-      currentFormula = exercise.formula
-      currentStrategy = '[]'
-    } else {
-      currentFormula = currentStep.formula
-      currentStrategy = currentStep.strategyStatus
-    }
-
-    const state = [exercise.type, currentStrategy, currentFormula, '']
+    const state = this.getState(exercise)
 
     IdeasServiceProxy.derivation(state, onSuccess, onError)
   }
@@ -54,13 +40,10 @@ export function OneWayExerciseSolver () {
         The callback function expects 1 parameter, a OneWayStep.
         @param onErrorSolvingNextStep - The callback function that is called if there is a problem solving the next step.
      */
-  this.solveNextStep = function (exercise, onNextStepSolved, onErrorSolvingNextStep) {
-    const currentStep = exercise.steps.getCurrentStep()
-    let currentStrategy
-    let currentFormula
+  solveNextStep (exercise, onNextStepSolved, onErrorSolvingNextStep) {
     const onError = onErrorSolvingNextStep
     const onSuccess = function (data) {
-      if (data === null || data.error !== null || data.result === null) {
+      if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
           onErrorSolvingNextStep('no-step-possible')
         } else {
@@ -69,85 +52,21 @@ export function OneWayExerciseSolver () {
         return
       }
 
-      if (data.result.length === 0) {
+      if (data.onefirst.length === 0) {
         onErrorSolvingNextStep('error-solving-last-step')
         return
       }
-      const result = data.result
-      const nextStep = new OneWayStep(result[3][2], result[0])
+      const result = data.onefirst.first
+      const nextStep = new OneWayStep(result.state.context.term, result.step.rule)
       if (nextStep) {
         onNextStepSolved(nextStep)
       }
     }
 
-    if (currentStep === null) {
-      currentFormula = exercise.formula
-      currentStrategy = '[]'
-    } else {
-      currentFormula = currentStep.formula
-      currentStrategy = currentStep.strategyStatus
-    }
-
-    const state = [exercise.type, currentStrategy, currentFormula, '']
+    const state = this.getState(exercise)
 
     IdeasServiceProxy.onefirst(state, 'nextStep', onSuccess, onError)
   }
-
-  /**
-        Solves the next step of a one way exercise.
-        @param {OneWayExercise} exercise - the exercise of which the next step must be solved.
-        @param onNextStepSolved - The callback function that is called after the next step is solved.
-        The callback function expects 1 parameter, a OneWayStep.
-        @param onErrorSolvingNextStep - The callback function that is called if there is a problem solving the next step.
-
-    this.solveNextStep = function (exercise, onNextStepSolved, onErrorSolvingNextStep) {
-        var currentStep = exercise.steps.getCurrentStep(),
-            state,
-            currentStrategy,
-            currentFormula,
-            onError = onErrorSolvingNextStep,
-            onSuccess = function (data) {
-                if (data === null || data.error !== null || data.result === null) {
-                    onErrorSolvingNextStep("error-solving-next-step");
-                    return;
-                }
-
-                if (data.result.length === 0) {
-                    onErrorSolvingNextStep("error-solving-last-step");
-                    return;
-                }
-
-                var nextStep = null;
-                jQuery.each(data.result, function () {
-                    nextStep = new OneWayStep(this[2], this[0]);
-                    // controleren of het een valide step is
-                    if (Rules[nextStep.rule] === null) {
-                        // overslaan, naar de volgende stap
-                        return true;
-                    }
-                    return false;
-                });
-
-                if (data.result.length === 1) {
-                    nextStep.isReady = true;
-                }
-
-                if (nextStep) {
-                    onNextStepSolved(nextStep);
-                }
-            };
-
-        if (currentStep === null) {
-            currentFormula = exercise.formula;
-            currentStrategy = "[]";
-        } else {
-            currentFormula = currentStep.formula;
-            currentStrategy = currentStep.strategyStatus;
-        }
-        state = [exercise.type, currentStrategy, currentFormula, ""];
-
-        IdeasServiceProxy.derivation(state, onSuccess, onError);
-    }; */
 
   /**
         Gets the help for the next step of a one way exercise.
@@ -156,25 +75,34 @@ export function OneWayExerciseSolver () {
         The callback function expects 1 parameter, a OneWayStep.
         @param onErrorGettingHelpForNextStep - The callback function that is called if there is a problem getting help for the next step.
      */
-  this.getHelpForNextStep = function (exercise, onHelpForNextStepFound, onErrorGettingHelpForNextStep) {
-    const currentStep = exercise.steps.getCurrentStep()
-    let currentStrategy
-    let currentFormula
-
+  getHelpForNextStep (exercise, onHelpForNextStepFound, onErrorGettingHelpForNextStep) {
     const onError = onErrorGettingHelpForNextStep
     const onSuccess = function (data) {
-      if (data === null || data.error !== null || data.result === null) {
+      if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
           onErrorGettingHelpForNextStep('no-step-possible')
         } else {
           onErrorGettingHelpForNextStep('error-showing-hint')
         }
       } else {
+        const currentStep = exercise.steps.getCurrentStep()
         const onewaySteps = new OneWayStepCollection(new OneWayStep(currentStep.formula, null))
-        onewaySteps.push(new OneWayStep(data.result[3][2], data.result[0]))
+        const result = data.onefirst.first
+        onewaySteps.push(new OneWayStep(result.state.context.term, result.step.rule))
         onHelpForNextStepFound(onewaySteps.getCurrentStep())
       }
     }
+
+    const state = this.getState(exercise)
+
+    IdeasServiceProxy.onefirst(state, 'Hint: useRule', onSuccess, onError)
+  }
+
+  getState (exercise) {
+    const currentStep = exercise.steps.getCurrentStep()
+    let currentStrategy
+    let currentFormula
+
     if (currentStep === null) {
       currentFormula = exercise.formula
       currentStrategy = '[]'
@@ -183,7 +111,16 @@ export function OneWayExerciseSolver () {
       currentStrategy = currentStep.strategyStatus
     }
 
-    const state = [exercise.type, currentStrategy, currentFormula, '']
-    IdeasServiceProxy.onefirst(state, 'Hint: useRule', onSuccess, onError)
+    const state = {
+      exerciseid: exercise.type,
+      prefix: currentStrategy,
+      context: {
+        term: currentFormula,
+        environment: {},
+        location: []
+      }
+    }
+
+    return state
   }
 }

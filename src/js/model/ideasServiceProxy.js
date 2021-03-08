@@ -14,6 +14,7 @@ export class IdeasServiceProxy {
     */
   static post (input, onSuccess, onError) {
     const url = config.backend_url
+    input.source = config.source
     const data = 'input=' + encodeURI(JSON.stringify(input))
 
     const request = new XMLHttpRequest()
@@ -34,42 +35,44 @@ export class IdeasServiceProxy {
     request.send(data)
   }
 
-  static post2 (method, params, onSuccess, onError, requestinfo) {
-    const input = {
-      source: config.source,
-      method: method,
-      params: params,
-      requestinfo: requestinfo,
-      logging: 'v2'
-    }
-
-    const onError3 = function (jqXHR, textStatus, errorThrown) {
-      onError()
-    }
-
-    IdeasServiceProxy.post(input, onSuccess, onError3)
-  }
-
   /* -----------------------------------------------------
        Feedback services for the outer loop
     ----------------------------------------------------- */
 
   // generate :: Exercise, Difficulty, UserId -> State
-  static generate (exerciseId, difficulty, userId, onSuccess, onError) {
-    const params = [exerciseId, difficulty, userId]
-    IdeasServiceProxy.post2('generate', params, onSuccess, onError)
+  static generate (exerciseId, difficulty, userid, onSuccess, onError) {
+    const request = {
+      service: 'generate',
+      exerciseid: exerciseId,
+      difficulty: difficulty,
+      userid: userid
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // example :: Exercise, Int, UserId -> State
-  static example (exerciseId, exerciseNr, userId, onSuccess, onError) {
-    const params = [exerciseId, exerciseNr, userId]
-    IdeasServiceProxy.post2('example', params, onSuccess, onError)
+  static example (exerciseId, exerciseNr, userid, onSuccess, onError) {
+    const request = {
+      service: 'example',
+      exerciseid: exerciseId,
+      nr: exerciseNr,
+      userid: userid
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // create :: Exercise, String -> State
-  static create (exerciseId, formula, userId, onSuccess, onError) {
-    const params = [exerciseId, formula, userId]
-    IdeasServiceProxy.post2('create', params, onSuccess, onError)
+  static create (exerciseId, formula, userid, onSuccess, onError) {
+    const request = {
+      service: 'create',
+      exerciseid: exerciseId,
+      term: formula,
+      userid: userid
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   /* -----------------------------------------------------
@@ -78,41 +81,72 @@ export class IdeasServiceProxy {
 
   // onefirst :: State -> StepInfo, State
   static onefirst (state, requestinfo, onSuccess, onError) {
-    state.push(LogEXSession.getIdentifiers(state[0]))
-    IdeasServiceProxy.post2('onefirst', [state], onSuccess, onError, requestinfo)
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'onefirst',
+      state: state
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // derivation :: State -> Derivation
   static derivation (state, onSuccess, onError) {
-    state.push(LogEXSession.getIdentifiers(state[0]))
-    IdeasServiceProxy.post2('derivation', [state], onSuccess, onError)
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'derivation',
+      state: state
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // derivationtext :: State -> Derivation
   static derivationtext (state, onSuccess, onError) {
-    state.push(LogEXSession.getIdentifiers(state[0]))
-    IdeasServiceProxy.post2('derivationtext', [state], onSuccess, onError)
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'derivationtext',
+      state: state
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // diagnose-string :: State, Context, (Rule)Id -> Diagnosis
-  static diagnose (state, formula, rule, onSuccess, onError) {
-    state.push(LogEXSession.getIdentifiers(state[0]))
-    let params = [state, formula, rule]
-    if (rule === null) {
-      params = [state, formula]
+  static diagnose (state, context, rule, onSuccess, onError) {
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'diagnose',
+      state: state,
+      context: context,
+      rule: rule
     }
-    IdeasServiceProxy.post2('diagnose-string', params, onSuccess, onError)
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // ready:: State -> Boolean
   static ready (state, onSuccess, onError) {
-    state.push(LogEXSession.getIdentifiers(state[0]))
-    IdeasServiceProxy.post2('ready', [state], onSuccess, onError)
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'ready',
+      state: state
+    }
+
+    IdeasServiceProxy.post(request, onSuccess, onError)
   }
 
   // log:: ? -> Empty
   static log (state, requestinfo) {
-    state.push(LogEXSession.getIdentifiers(state[0]))
-    IdeasServiceProxy.post2('log', [state], null, null, requestinfo)
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'log',
+      state: state
+    }
+
+    IdeasServiceProxy.post(request, undefined, undefined)
+
+    // state.push(LogEXSession.getIdentifiers(state[0]))
+    // IdeasServiceProxy.post2('log', [state], null, null, requestinfo)
   }
 }
