@@ -936,7 +936,6 @@ class TwoWayController extends LogExController {
 
     if (this.exercise.usesStepValidation) {
       // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
-      console.log(this.onErrorValidatingStep.bind(this))
       this.exerciseValidator.validateStep(this.exercise, false, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.getStepsRemaining.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
       // this.onStepValidated();
