@@ -10,10 +10,10 @@ import { OneWayStepCollection } from './stepCollection.js'
     @property {OneWayStepCollection} steps The collection of oneway steps.
  */
 export class OneWayExercise {
-  constructor (formulaText, exerciseType, ruleJustification, stepValidation) {
+  constructor (formulaText, exerciseType, properties) {
     this.type = exerciseType
-    this.usesRuleJustification = ruleJustification
-    this.usesStepValidation = stepValidation
+    this.usesRuleJustification = properties.ruleJustification
+    this.usesStepValidation = properties.stepValidation
     this.isReady = false
     this.formula = formulaText
     this.formulaKatex = katex.renderToString(formulaText, {
