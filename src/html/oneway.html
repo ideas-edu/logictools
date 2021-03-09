@@ -3,116 +3,128 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Ideas - Conjunctive Normal Form</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=1020">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Ideas - Conjunctive Normal Form</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=1020">
 
-		<link rel="stylesheet" href="css/ideas.css">
-    </head>
-		<script src="oneWay.bundle.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="css/ideas.css">
+	<script src="oneWay.bundle.js" type="text/javascript"></script>
+</head>
 
-        <body class="logexiframe">
-        <!--[if lt IE 9]>
-            <p class="alert alert-error">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
-        <![endif]-->
-            <div class="row">
-                <div class="col-md-3">
-					<div class="v-center">
-						<div class="btn-group pull-left">
-							<button class="btn btn-primary btn-large" id="generate-exercise"><div id="newexercise"></div></button>
-							<button class="btn btn-primary btn-large dropdown-toggle" id="new-exercise-dropdown" data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" id="new-exercise-menu">
-							</ul>
+<body class="logexiframe">
+<!--[if lt IE 9]>
+	<p class="alert alert-error">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
+<![endif]-->
+	<div class="row">
+		<div class="col-md-9">
+			<h4>Omzetten naar disjunctieve normaalvorm</h4>
+		</div>
+		<div class="col-md-3">
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle float-right" type="button" id="generate-exercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Selecteer Opgave
+				</button>
+				<!-- <button class="btn btn-primary btn-large" id="generate-exercise"><div id="newexercise"></div></button>
+				<button class="btn btn-primary btn-large dropdown-toggle" id="new-exercise-dropdown" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button> -->
+				<div class="dropdown-menu" aria-labelledby="generate-exercise" id="new-exercise-menu"></div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div id="rule-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
+			<span>
+				<input id="rule-switch" type="checkbox">
+				<label id="rule-switch-label" for="rule-switch"></label>
+			</span>
+		</div>
+		<div id="step-validation-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
+			<span>
+				<input id="step-validation-switch" type="checkbox">
+				<label id="step-validation-switch-label" for="step-validation-switch"></label>
+			</span>
+		</div>
+		<div class="col-md-8">
+			&nbsp;
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="alert alert-primary col-md-12" role="alert">
+			<i class="fas fa-info-circle"></i> Selecteer een opgave om mee te beginnen!
+		</div>
+	</div>
+
+	<div id="exercise-container" style="display: none">
+		<table class="table table-striped">
+			<thead>
+				<tr id="exercise-table-header">
+					<th scope="col">Stap</th>
+					<th scope="col">Formule</th>
+					<th scope="col">Regel</th>
+					<th scope="col">Acties</th>
+				</tr>
+			</thead>
+			<tbody id="exercise-step-table">
+				<tr id="active-step">
+					<th scope="row">
+						<span id="active-step-number"></span>
+						<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span>
+					</th>
+					<td>
+						<form class="kbinput">
+							<input type="text" class="input-xlarge kbinput" id="formula">
+							<input type="hidden" id="formulaoriginal">
+							<div id="one-way-input" class="kbinput-wrapper"></div>
+						</form>
+					</td>
+					<td>
+						<select id="rule" class="input"></select>
+					</td>
+					<td>
+						<button type="button" id="validate-step" class="btn btn-secondary float-right"></button>
+						<button class="btn btn-secondary dropdown-toggle float-right" type="button" id="help-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Hulp
+						</button>
+						<div class="dropdown-menu" aria-labelledby="help-menu">
+							<button type="button" class="dropdown-item" id="show-hint" style="display: none">Hint</button>
+							<button type="button" class="dropdown-item" id="show-next-step" style="display: none"></button>
+							<button type="button" class="dropdown-item" id="solve-exercise" style="display: none"></button>
 						</div>
-					</div>
-                </div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-				<div id="rule-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
-					<span>
-						<input id="rule-switch" type="checkbox">
-						<label id="rule-switch-label" for="rule-switch"></label>
-					</span>
-				</div>
-				<div id="step-validation-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
-					<span>
-						<input id="step-validation-switch" type="checkbox">
-						<label id="step-validation-switch-label" for="step-validation-switch"></label>
-					</span>
-				</div>
-                <div class="col-md-1">
-                    &nbsp;
-                </div>
-            </div>
+		<div class="row" id="exercise-alert" style="display: none">
+			<div class="alert alert-primary col-md-12" role="alert">
+				<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+			</div>
+		</div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <p>
-						<img id="wait-exercise" src="img/animated_loading.gif" />
-					</p>
-                </div>
-            </div>
+		<div class="row">
+			<div class="col-md-12">
+				<p>
+					<img id="wait-exercise" src="img/animated_loading.gif" />
+				</p>
+			</div>
+		</div>
 
-            <hr>
+		<hr>
 
-            <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-12">
-                	<div class="bar pull-left">
-						<div id="exercise">
-						  <span class="oneway-formula" id="exercise-left-formula"></span>
-						</div>
-					</div>
-                </div>
-            </div>
-
-            <div id="exercise-steps" class="row">
-				<div class="col-md-12">
-					<div id="active-step" class="exercise-step-even">
-						<div class="row bar">
-                            <div class="col-md-1">
-                                <span class="arrow pull-right">&#8660;</span>
-                            </div>
-							<div class="col-md-6">
-								<form class="kbinput">
-								    <input type="text" class="input-xlarge kbinput" id="formula">
-									<input type="hidden" id="formulaoriginal">
-									<div id="one-way-input" class="kbinput-wrapper"></div>
-								</form>
-							</div>
-							<div class="col-md-3">
-								<form class="form-inline pull-right">
-									<select id="rule" class="input">
-									</select>
-								</form>
-						   </div>
-							<div class="col-md-2">
-								<form class="form-inline pull-right">
-									<button type="button" id="validate-step" class="btn btn-success"><div id="ok"> </div></button>
-								</form>
-						   </div>
-						</div>
-					</div>
-			   </div>
-            </div>
-			<hr>
-            <div class="row" id="bottom">
-				<div class="col-md-1">
-				</div>
-                <div class="col-md-11">
-                	<div class="btn-group">
-										<button type="button" class="btn btn-warning tight" id="show-hint" style="display: none">&nbsp;<i class="fas fa-question-circle"></i>&nbsp;</button>
-										<button type="button" id="show-next-step" class="btn btn-warning tight" style="display: none"> </button>
-									</div>
-					<button type="button" id="solve-exercise" class="btn btn-warning pull-left" style="display: none"><div id="showderivation" style="display: none"></div></button>
-					<button type="button" id="validate-exercise" class="btn btn-success pull-right"><div id="derivationdone"></div></button>
-                </div>
-            </div>
+		<div class="row" id="bottom">
+			<div class="col-md-12">
+			<button type="button" id="validate-exercise" class="btn btn-success float-right"><div id="derivationdone"></div></button>
+		</div>
 
 		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and
 			http://msdn.microsoft.com/en-us/magazine/hh975379.aspx
@@ -120,62 +132,79 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<div class="exercise-step-even exercise-step-added bar">
+				<th scope="row">
+					{{>step}} {{:arrow}}
+				</th>
+				<td>
+					<span class="oneway-formula">{{:formula}}</span>
+				</td>
+				<td>
+					{{if ruleJustification && rule }}
+						<span>{{>rule}}</span>
+					{{/if}}
+				</td>
+				<td>
+					{{if canDelete && step > 0}}
+						<button type="button" class="btn btn-secondary btn-sm float-right"><i class='fas fa-times'></i></button>
+					{{/if}}
+				</td>
+		</script>
+
+			<!-- <div class="exercise-step-even exercise-step-added bar">
 				<div class="row">
 					<div class="col-md-7">
-                        {{if !stepValidation && step > 0}}
-                                {{if isWrong}}
-                                    <img src="img/wrong.png" height=20 width=20>
+						{{if !stepValidation && step > 0}}
+								{{if isWrong}}
+									<img src="img/wrong.png" height=20 width=20>
 									<span class="wrong">{{:error}}</span>
-                                {{else}}
-                                    <img src="img/correct.png" height=20 width=20>
-                                {{/if}}
-                        {{/if}}
+								{{else}}
+									<img src="img/correct.png" height=20 width=20>
+								{{/if}}
+						{{/if}}
 					</div>
 					<div class="col-md-5">
 						<p>
 							<span class="">&nbsp;</span>
-                            {{if step > 0}}
-                                {{if isWrong && ruleJustification && false }}
-                                    <select class='retryRule'>
-                                        {{:ruleCombobox}}
-                                    </select>
-                                {{else}}
-                                    <span>{{>rule}}</span>
-                                {{/if}}
-                                {{if canDelete && step > 0}}
-                                    <button type="button" class="close pull-right remove-top-step close">×</button>
-                                {{/if}}
-                            {{/if}}
+							{{if step > 0}}
+								{{if isWrong && ruleJustification && false }}
+									<select class='retryRule'>
+										{{:ruleCombobox}}
+									</select>
+								{{else}}
+									<span>{{>rule}}</span>
+								{{/if}}
+								{{if canDelete && step > 0}}
+									<button type="button" class="close float-right remove-top-step close">×</button>
+								{{/if}}
+							{{/if}}
 						</p>
 				   </div>
 				</div>
 				<div class="row">
-                    <div class="col-md-1">
-                        <p>
-                            {{if step > 0 && !isWrong}}
-                                <span class="arrow pull-right">&#8660;</span>
-                            {{/if}}
-                            {{if step > 0 && isWrong}}
-                                <span class="pull-right">
-                                    <img src="img/equivsignerr.png">
-                                </span>
-                            {{/if}}
+					<div class="col-md-1">
+						<p>
+							{{if step > 0 && !isWrong}}
+								<span class="arrow float-right">&#8660;</span>
+							{{/if}}
+							{{if step > 0 && isWrong}}
+								<span class="float-right">
+									<img src="img/equivsignerr.png">
+								</span>
+							{{/if}}
 						</p>
-                    </div>
+					</div>
 					<div class="col-md-11">
 						<div class="padded-left">
-                              {{if isWrong && step > 0}}
-                                <input id="retryFormula{{:step}}" type="text" class="input-xlarge retryFormula" value="{{:formula}}"/>
-                              {{else}}
-                                <span class="oneway-formula">{{:formula}}</span>
-                              {{/if}}
+							  {{if isWrong && step > 0}}
+								<input id="retryFormula{{:step}}" type="text" class="input-xlarge retryFormula" value="{{:formula}}"/>
+							  {{else}}
+								<span class="oneway-formula">{{:formula}}</span>
+							  {{/if}}
 							  {{if hasRule}}<label class="equation-sign"></label>{{/if}}
 						</div>
 					</div>
 				</div>
-			</div>
-		</script>
+			</div> -->
 
 		<script id="exercise-last-step-template" type="text/x-jsrender">
 			<div class="exercise-step-even last-step">
@@ -208,7 +237,6 @@
 				</div>
 			</div>
 		</script>
-
-		<!-- <script src="js/lib/iframeResizer.contentWindow.min.js"></script> -->
-    </body>
+	</div>
+</body>
 </html>

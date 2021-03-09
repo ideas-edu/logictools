@@ -10,11 +10,11 @@ export class ExerciseController {
     this.keyBindings = new KeyBindings(this)
     this.exampleExercises = null
 
-    document.getElementById('generate-exercise').addEventListener('click', function () {
-      if (config.randomExercises) {
-        this.generateExercise()
-      }
-    }.bind(this))
+    // document.getElementById('generate-exercise').addEventListener('click', function () {
+    //   if (config.randomExercises) {
+    //     this.generateExercise()
+    //   }
+    // }.bind(this))
 
     document.getElementById('solve-exercise').addEventListener('click', function () {
       this.showSolution()
@@ -85,7 +85,6 @@ export class ExerciseController {
       document.getElementById('show-next-step').style.display = ''
     }
     if (config.displayDerivationButton) {
-      document.getElementById('showderivation').style.display = ''
       document.getElementById('solve-exercise').style.display = ''
     }
   }
@@ -100,6 +99,77 @@ export class ExerciseController {
       document.getElementById(id).addEventListener('click', function () {
         this.useExercise(nr)
       }.bind(this))
+    }
+  }
+
+  /**
+        Generates an exercise.
+     */
+  generateExercise (properties) {
+    this.reset()
+    this.disableUI(true)
+    document.getElementById('exercise-container').style.display = ''
+
+    this.exerciseGenerator.generate(this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+  }
+
+  /**
+        Get an example exercise.
+     */
+  useExercise (exerciseNumber, properties) {
+    this.reset()
+    this.disableUI(true)
+    document.getElementById('exercise-container').style.display = ''
+
+    this.exerciseGenerator.example(exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+  }
+
+  /**
+        Inserts a proof step
+
+        @param {ProofStep} step - The proof step
+        @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
+     */
+  insertStep (step, canDelete) {
+    const exerciseStep = document.createElement('tr')
+    exerciseStep.classList.add('exercise-step')
+    exerciseStep.innerHTML = this.renderStep(step, canDelete)
+
+    const tableBody = document.getElementById('active-step')
+    tableBody.insertAdjacentElement('beforebegin', exerciseStep)
+
+    document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
+  }
+
+  updateAlert (innerHTML, type) {
+    document.getElementById('exercise-alert').style.display = ''
+    switch (type) {
+      case 'hint':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-info-circle"></i>'
+        document.getElementById('exercise-alert-icon').parentNode.style['background-color'] = ''
+        break
+      case 'error':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-exclamation-circle"></i>'
+        document.getElementById('exercise-alert-icon').parentNode.style['background-color'] = '#ffcccc'
+        break
+    }
+    document.getElementById('exercise-alert-span').innerHTML = innerHTML
+  }
+
+  // Highlights the location of an error
+  setErrorLocation (elementId) {
+    this.clearErrors()
+    document.getElementById(elementId).classList.add('error')
+  }
+
+  dismissAlert () {
+    document.getElementById('exercise-alert').style.display = 'none'
+  }
+
+  clearErrors () {
+    const elements = document.getElementsByClassName('error')
+    while (elements.length > 0) {
+      elements[0].classList.remove('error')
     }
   }
 }

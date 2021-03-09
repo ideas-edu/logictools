@@ -8,6 +8,7 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
+import katex from 'katex'
 
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
@@ -23,7 +24,6 @@ import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
-import { showdiff } from '../showdiff.js'
 
 jsrender($); // load JsRender jQuery plugin methods
 
@@ -39,11 +39,6 @@ jsrender($); // load JsRender jQuery plugin methods
     controller.initializeLabels()
     controller.initializeRules($('#rule'))
     controller.bindExampleExercises()
-    if (config.randomExercises) {
-      controller.generateExercise()
-    } else {
-      controller.useExercise(0)
-    }
   })
 })()
 
@@ -54,9 +49,9 @@ const UITranslator = {
     const exampleExercises = config.exampleExercises[exerciseType]
     $('#button-' + language).addClass('active')
 
-    $('#ok').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'send'))
+    $('#validate-step').html("<i class='fas fa-check'></i>")
     $('#show-next-step').html(Resources.getText(language, 'step'))
-    $('#showderivation').html("<i class='fas fa-key'> </i> " + Resources.getText(language, 'showderivation'))
+    $('#solve-exercise').html("<i class='fas fa-key'> </i> " + Resources.getText(language, 'showderivation'))
     $('#derivationdone').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'derivationdone'))
     $('#newexercise').html("<i class='fas fa-refresh'></i> " + Resources.getText(language, 'newexercise'))
     $('#generate-exercise-easy').html(Resources.getText(language, 'exeasy'))
@@ -215,75 +210,6 @@ class OneWayController extends LogExController {
   }
 
   /**
-        Shows an error message.
-
-        @param element - The DOM element
-        @param {string} toolTipText - The error message
-        @param {string} placement - The placement of the error message (top | bottom | left | right)
-     */
-  showErrorToolTip (element, toolTipText, placement) {
-    if (typeof placement === 'undefined') {
-      // if (placement === "undefined") {
-      placement = 'top'
-    }
-    element.addClass('error')
-    element.tooltip({
-      title: toolTipText,
-      placement: placement,
-      template: '<div class="tooltip error"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-    })
-    element.tooltip('show')
-
-    // vervelende tooltips verwijderen na 5 seconden, dan hebben gebruikers ze wel gezien
-    setTimeout(this.clearErrors, 5000)
-  }
-
-  /**
-        Clears all errors on the screen.
-     */
-  clearErrors () {
-    $('#validate-exercise').removeClass('error')
-    $('#validate-exercise').tooltip('dispose')
-
-    $('#formula').removeClass('error')
-    $('#rule').removeClass('error')
-    $('#formul1').removeClass('success')
-    $('#formula').tooltip('dispose')
-    $('#rule').tooltip('dispose')
-    $('#equivsign').tooltip('dispose')
-    $('#new-exercise-dropdown').tooltip('dispose')
-    $('#solve-exercise').tooltip('dispose')
-    $('#show-next-step').removeClass('error')
-    $('#show-next-step').tooltip('dispose')
-    $('#show-hint').tooltip('dispose')
-    $('#validate-step').tooltip('dispose')
-
-    $('#equivsign').attr('src', 'img/equivsignok.png')
-  }
-
-  /**
-        Zebra stripes the proof steps.
-
-        @param rows - The proof step rows
-     */
-  colorRows (rows) {
-    if (rows === undefined) {
-      this.colorRows($('.exercise-step-added'))
-      return
-    }
-
-    let toggle = -1
-    rows.each(function () {
-      if (toggle < 0) {
-        $(this).addClass('oneven')
-      } else {
-        $(this).removeClass('oneven')
-      }
-      toggle = toggle * -1
-    })
-  }
-
-  /**
         Resets the UI to its original state.
      */
   reset () {
@@ -324,11 +250,7 @@ class OneWayController extends LogExController {
       stepValidation: document.getElementById('step-validation-switch').checked
     }
 
-    this.reset()
-    this.disableUI(true)
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'exercise') + ' ' + (exnr + 1))
-    this.exerciseGenerator.example(exnr, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    super.useExercise(exnr, properties)
   }
 
   /**
@@ -340,11 +262,7 @@ class OneWayController extends LogExController {
       stepValidation: document.getElementById('step-validation-switch').checked
     }
 
-    this.reset()
-    this.disableUI(true)
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    this.exerciseGenerator.generate(this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    super.generateExercise(properties)
   }
 
   /**
@@ -411,7 +329,8 @@ class OneWayController extends LogExController {
      */
   onErrorCreatingExercise () {
     this.disableUI(false)
-    this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-creating-exercise'))
+    this.setErrorLocation('formula')
+    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-creating-exercise'), 'error')
   }
 
   /**
@@ -419,24 +338,39 @@ class OneWayController extends LogExController {
   showExercise () {
     this.clearErrors()
 
+    // Remove old rows
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+    let stepRow = exerciseStepTable.firstElementChild
+    while (true) {
+      if (stepRow.classList.contains('exercise-step')) {
+        exerciseStepTable.removeChild(stepRow)
+        stepRow = exerciseStepTable.firstElementChild
+      } else {
+        break
+      }
+    }
+
+    // Insert first row
+    this.insertStep(this.exercise.steps.steps[0], false)
+
     $('#exercise-steps').show()
     if ($('#new-exercise-content')) {
       $('#new-exercise-content').remove()
     }
 
-    document.getElementById('exercise-left-formula').innerHTML = this.exercise.formulaKatex
+    // document.getElementById('exercise-left-formula').innerHTML = this.exercise.formulaKatex
 
     $('#formula').val(this.exercise.formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
 
     this.disableUI(false)
-    $('#active-step').show()
-    $('#exercise').show()
-    $('#exercise-steps').show()
-    $('#equivsign').show()
-    $('#validate-step').show()
-    $('#formula').show()
+    // $('#active-step').show()
+    // $('#exercise').show()
+    // $('#exercise-steps').show()
+    // $('#equivsign').show()
+    // $('#validate-step').show()
+    // $('#formula').show()
 
     if (config.displayDerivationButton) {
       $('#solve-exercise').show()
@@ -481,7 +415,8 @@ class OneWayController extends LogExController {
      */
   onErrorGeneratingExercise () {
     this.disableUI(false)
-    this.showErrorToolTip($('#new-exercise-dropdown'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-generating-exercise'), 'right')
+    this.setErrorLocation('new-exercise-dropdown')
+    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-generating-exercise'), 'error')
   }
 
   showSolution () {
@@ -511,7 +446,8 @@ class OneWayController extends LogExController {
       this.exerciseSolver.solveNextStep(this.exercise, this.onNextStepSolved, this.onErrorSolvingNextStep)
     } else {
       this.disableUI(false)
-      this.showErrorToolTip($('#show-next-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'))
+      this.setErrorLocation('show-next-step')
+      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'), 'error')
     }
   }
 
@@ -559,7 +495,8 @@ class OneWayController extends LogExController {
      */
   onErrorSolvingNextStep (error) {
     this.disableUI(false)
-    this.showErrorToolTip($('#show-next-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), error))
+    this.setErrorLocation('show-next-step')
+    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), error), 'error')
   }
 
   /**
@@ -576,55 +513,58 @@ class OneWayController extends LogExController {
   onHelpForNextStepFound (nextOneWayStep) {
     const language = LogEXSession.getLanguage()
     let helpText = Resources.getText(language, 'nohint')
-    const formula = $('#formula')
-    const step = this.exercise.getCurrentStep()
-    const state = [this.exercise.type, step.strategyStatus, step.formula, '']
+    // const formula = $('#formula')
+    // const step = this.exercise.getCurrentStep()
+    // const state = [this.exercise.type, step.strategyStatus, step.formula, '']
     $('#formula').popover('dispose')
 
     if (Rules[nextOneWayStep.rule] !== null) {
       helpText = '<div id="hint1">' + Resources.getUseRuleMessage(language, nextOneWayStep.rule) + '<br/><a href="#" id="toggle-hint1">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
     }
 
-    formula.popover({
-      trigger: 'manual',
-      placement: 'top',
-      title: 'Hint',
-      content: helpText,
-      html: true
-    })
-    formula.popover('show')
+    this.updateAlert(helpText, 'hint')
 
-    $('#toggle-hint1').on('click', function () {
-      const oldFormula = formula.val()
-      const newFormula = nextOneWayStep.formula
-      formula.popover('dispose')
-      helpText = '<div id="hint2">' + Resources.getFullHintMessage(language, nextOneWayStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button></div>'
+    // formula.popover({
+    //   trigger: 'manual',
+    //   placement: 'top',
+    //   title: 'Hint',
+    //   content: helpText,
+    //   html: true
+    // })
+    // formula.popover('show')
 
-      formula.popover({
-        trigger: 'manual',
-        placement: 'top',
-        title: 'Hint',
-        content: helpText,
-        html: true
-      })
-      formula.popover('show')
+    // $('#toggle-hint1').on('click', function () {
+    //   const oldFormula = formula.val()
+    //   const newFormula = nextOneWayStep.formula
+    //   formula.popover('dispose')
+    //   helpText = '<div id="hint2">' + Resources.getFullHintMessage(language, nextOneWayStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button></div>'
 
-      $('#auto-step').on('click', function () {
-        $('#formula').popover('dispose')
-        this.disableUI(true)
-        this.showNextStep()
-      })
+    //   formula.popover({
+    //     trigger: 'manual',
+    //     placement: 'top',
+    //     title: 'Hint',
+    //     content: helpText,
+    //     html: true
+    //   })
+    //   formula.popover('show')
 
-      // Log hint
-      IdeasServiceProxy.log(state, 'Hint: rewriteThisUsing')
-    })
+    //   $('#auto-step').on('click', function () {
+    //     $('#formula').popover('dispose')
+    //     this.disableUI(true)
+    //     this.showNextStep()
+    //   })
+
+    //   // Log hint
+    //   IdeasServiceProxy.log(state, 'Hint: rewriteThisUsing')
+    // })
   }
 
   /**
         Handles the error that the next step can not be solved
      */
   onErrorGettingHelpForNextStep (msg) {
-    this.showErrorToolTip($('#show-hint'), Resources.getSpecificMessage(LogEXSession.getLanguage(), msg))
+    this.setErrorLocation('show-hint')
+    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), msg), 'error')
   }
 
   /**
@@ -633,14 +573,14 @@ class OneWayController extends LogExController {
      */
   validateStep () {
     if ($('#rule').val() === '' && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
-      this.showErrorToolTip($('#rule'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'))
+      this.setErrorLocation('rule')
+      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'), 'error')
       return false
     }
 
-    const changed = $('#formulaoriginal').val() !== $('#formula').val()
-
-    if (!changed) {
-      this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'))
+    if ($('#formulaoriginal').val() === $('#formula').val()) {
+      this.setErrorLocation('formula')
+      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'), 'error')
       return false
     }
 
@@ -693,10 +633,9 @@ class OneWayController extends LogExController {
         $('#active-step').before(exerciseStepHtml)
         this.disableUI(false)
       } else {
-        this.clearErrors()
-        $('#formula').addClass('error')
+        this.setErrorLocation('formula')
+        this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete1'), 'error')
         this.disableUI(false)
-        this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete1'))
       }
     }
     this.disableUI(true)
@@ -800,18 +739,20 @@ class OneWayController extends LogExController {
     $('#formula').val(this.exercise.getCurrentStep().formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
-    this.colorRows()
+
     $('#formula').blur()
     // $('.retryFormula').kbinput('hide')
     this.disableUI(false)
 
     if (!isReady) {
-      this.showErrorToolTip($('#validate-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'))
+      this.setErrorLocation('validate-exercise')
+      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'), 'error')
     }
   }
 
   onErrorExerciseValidate () {
-    this.showErrorToolTip($('#validate-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-exercise'))
+    this.setErrorLocation('validate-step')
+    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-exercise'), 'error')
   }
 
   /**
@@ -821,7 +762,7 @@ class OneWayController extends LogExController {
   onStepValidated () {
     const currentStep = this.exercise.getCurrentStep()
     let message
-    let errorPlace
+    let errorLocation
 
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
     document.getElementById('step-validation-switch').disabled = true // $('#step-validation-switch').bootstrapSwitch('disabled', false) // na validatie van minstens 1 stap, mag de gebruiker niet meer de optie hebben om "correctie per stap" te wijzigen
@@ -833,27 +774,27 @@ class OneWayController extends LogExController {
 
       if (!currentStep.isSyntaxValid) { // Foutieve syntax
         message = Resources.getInvalidFormulaMessage() // + ": " + currentStep.syntaxError;
-        errorPlace = $('#formula')
+        errorLocation = 'formula'
       } else if (currentStep.isSimilar) { // Ongewijzigde formule
         message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'similar')
-        errorPlace = $('#formula')
+        errorLocation = 'formula'
       } else if (currentStep.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
         message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'correctnotval')
-        errorPlace = $('#formula')
+        errorLocation = 'formula'
       } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
         message = Resources.getMessageForBuggyRule(LogEXSession.getLanguage(), currentStep.buggyRule)
-        errorPlace = $('#formula')
+        errorLocation = 'formula'
       } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
         message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongrule')
-        errorPlace = $('#rule')
+        errorLocation = 'rule'
       } else if (!currentStep.isValid) {
         message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
-        errorPlace = $('#formula')
+        errorLocation = 'formula'
       }
 
       this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
-      this.showErrorToolTip(errorPlace, message)
-      $('#equivsign').attr('src', 'img/equivsignerr.png')
+      this.setErrorLocation(errorLocation)
+      this.updateAlert(message, 'error')
     } else {
       this.insertStep(currentStep, true)
       this.exercise.isReady = currentStep.isReady
@@ -880,7 +821,8 @@ class OneWayController extends LogExController {
   onErrorValidatingStep () {
     this.exercise.steps.pop()
     this.disableUI(false)
-    this.showErrorToolTip($('#validate-step'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-step'))
+    this.setErrorLocation('validate-step')
+    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-step'), 'error')
   }
 
   /**
@@ -916,7 +858,8 @@ class OneWayController extends LogExController {
   // this.onFormulaValidated = function (isValid, formulaText) {
   onFormulaValidated (isValid) {
     if (!isValid) {
-      this.showErrorToolTip($('#formula'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'bottom')
+      this.setErrorLocation('formula')
+      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'error')
     }
     this.isFormulaValid = isValid
   }
@@ -939,44 +882,29 @@ class OneWayController extends LogExController {
     }
   }
 
-  /**
-        Inserts a proof step
-
-        @param {ProofStep} step - The proof step
-        @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
-     */
-  insertStep (step, canDelete) {
-    const exerciseStepHtml = this.renderStep(step, canDelete)
-
-    $('#active-step').before(exerciseStepHtml)
-    this.colorRows()
-  }
-
   renderStep (step, canDelete) {
     let rule = ''
+    let arrow = null
     const stepTemplate = $.templates('#exercise-step-template')
-    const error = ''
 
-    // nog te doen:
-    // check: afhankelijk van de waarden in step welke error getoond moet worden
-
-    if (step.rule === null) { // dit is de startopgave
-      return
-    }
-
-    if (step.rule !== '') {
+    if (step.rule !== undefined) {
       rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
     }
 
+    if (step.number > 1) {
+      arrow = katex.renderToString('\\Leftrightarrow', {
+        throwOnError: false
+      })
+    }
+
     const exerciseStepHtml = stepTemplate.render({
-      error: error,
       rule: rule,
       formula: step.formulaKatex,
-      isWrong: false,
-      hasRule: true,
       canDelete: canDelete,
-      step: 1,
-      stepValidation: true
+      step: step.number,
+      arrow: arrow,
+      stepValidation: true,
+      ruleJustification: true
     })
     return exerciseStepHtml
   }
@@ -1026,7 +954,6 @@ class OneWayController extends LogExController {
     $('#formula').val(this.exercise.getCurrentStep().formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
-    this.colorRows()
 
     // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
     $('#formula').blur()
@@ -1069,7 +996,6 @@ class OneWayController extends LogExController {
     $('#formula').val(this.exercise.getCurrentStep().equation.formula)
     // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
-    this.colorRows()
 
     // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
     $('#formula').blur()
