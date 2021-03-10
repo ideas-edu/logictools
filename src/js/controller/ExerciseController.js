@@ -3,6 +3,7 @@ import { KeyBindings } from '../keyBindings.js'
 
 export class ExerciseController {
   constructor () {
+    this.formulaPopover = null
     this.exerciseType = ''
     this.exercise = null
     this.dummyExercise = null // wordt gebruikt om te testen of de laatste stap equivalent is met de opgave bij shownextstep met validatie per stap af.
@@ -131,6 +132,7 @@ export class ExerciseController {
         @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
      */
   insertStep (step, canDelete) {
+    this.dismissAlert()
     const exerciseStep = document.createElement('tr')
     exerciseStep.classList.add('exercise-step')
     exerciseStep.innerHTML = this.renderStep(step, canDelete)
@@ -138,19 +140,25 @@ export class ExerciseController {
     const tableBody = document.getElementById('active-step')
     tableBody.insertAdjacentElement('beforebegin', exerciseStep)
 
+    this.formulaPopover.previousValue = step.formula
     document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
   }
 
+  // Updates the alert which gives user feedback with the html content and styled based on the type of alert
   updateAlert (innerHTML, type) {
-    document.getElementById('exercise-alert').style.display = ''
+    document.getElementById('exercise-alert-container').style.display = ''
     switch (type) {
       case 'hint':
-        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-info-circle"></i>'
-        document.getElementById('exercise-alert-icon').parentNode.style['background-color'] = ''
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 hint-alert'
         break
       case 'error':
-        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-exclamation-circle"></i>'
-        document.getElementById('exercise-alert-icon').parentNode.style['background-color'] = '#ffcccc'
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-exclamation-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 error-alert'
+        break
+      case 'complete':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
         break
     }
     document.getElementById('exercise-alert-span').innerHTML = innerHTML
@@ -163,7 +171,7 @@ export class ExerciseController {
   }
 
   dismissAlert () {
-    document.getElementById('exercise-alert').style.display = 'none'
+    document.getElementById('exercise-alert-container').style.display = 'none'
   }
 
   clearErrors () {

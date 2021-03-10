@@ -14,9 +14,9 @@ export const config = {
   source: 'logex',
   backend_url: 'https://ideastest.science.uu.nl/cgi-bin/ideas-logic-new.cgi',
   useRuleJustification: true,
-  displayRuleJustification: true,
+  displayRuleJustification: false,
   useStepValidation: true,
-  displayStepValidation: true,
+  displayStepValidation: false,
   displayHintButton: true,
   displayNextStepButton: true,
   displayDerivationButton: true

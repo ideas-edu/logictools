@@ -24,7 +24,7 @@
 		</div>
 		<div class="col-md-3">
 			<div class="dropdown">
-				<button class="btn btn-secondary dropdown-toggle float-right" type="button" id="generate-exercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="generate-exercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					Selecteer Opgave
 				</button>
 				<!-- <button class="btn btn-primary btn-large" id="generate-exercise"><div id="newexercise"></div></button>
@@ -36,16 +36,14 @@
 		</div>
 	</div>
 
-	<hr>
-
 	<div class="row">
-		<div id="rule-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
+		<div id="rule-switch-div" class="col-md-2 align-items-center" style="display: none">
 			<span>
 				<input id="rule-switch" type="checkbox">
 				<label id="rule-switch-label" for="rule-switch"></label>
 			</span>
 		</div>
-		<div id="step-validation-switch-div" class="col-md-2 d-flex align-items-center" style="display: none">
+		<div id="step-validation-switch-div" class="col-md-2 align-items-center" style="display: none">
 			<span>
 				<input id="step-validation-switch" type="checkbox">
 				<label id="step-validation-switch-label" for="step-validation-switch"></label>
@@ -60,7 +58,7 @@
 
 	<div class="row">
 		<div class="alert alert-primary col-md-12" role="alert">
-			<i class="fas fa-info-circle"></i> Selecteer een opgave om mee te beginnen!
+			<i class="fas fa-info-circle"></i> <span id="instruction">Selecteer een opgave om mee te beginnen!</span>
 		</div>
 	</div>
 
@@ -69,30 +67,30 @@
 			<thead>
 				<tr id="exercise-table-header">
 					<th scope="col">Stap</th>
-					<th scope="col">Formule</th>
+					<th scope="col" style="width: 55%">Formule</th>
 					<th scope="col">Regel</th>
-					<th scope="col">Acties</th>
+					<th scope="col" id="remove-step-header">Acties</th>
 				</tr>
 			</thead>
 			<tbody id="exercise-step-table">
 				<tr id="active-step">
-					<th scope="row">
-						<span id="active-step-number"></span>
+					<td>
+						<div class="active-circle"><span id="active-step-number"></span></div>
 						<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span>
-					</th>
+					</td>
 					<td>
 						<form class="kbinput">
-							<input type="text" class="input-xlarge kbinput" id="formula">
+							<input type="text" class="form-control kbinput" id="formula">
 							<input type="hidden" id="formulaoriginal">
 							<div id="one-way-input" class="kbinput-wrapper"></div>
 						</form>
 					</td>
 					<td>
-						<select id="rule" class="input"></select>
+						<select id="rule" class="form-control input custom-select"></select>
 					</td>
 					<td>
-						<button type="button" id="validate-step" class="btn btn-secondary float-right"></button>
-						<button class="btn btn-secondary dropdown-toggle float-right" type="button" id="help-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" id="validate-step" class="btn btn-outline-secondary float-right"></button>
+						<button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="help-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Hulp
 						</button>
 						<div class="dropdown-menu" aria-labelledby="help-menu">
@@ -105,17 +103,17 @@
 			</tbody>
 		</table>
 
-		<div class="row" id="exercise-alert" style="display: none">
-			<div class="alert alert-primary col-md-12" role="alert">
+		<div class="row" id="exercise-alert-container" style="display: none">
+			<div class="alert col-md-12" id="exercise-alert" role="alert">
 				<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="col-md-12">
-				<p>
-					<img id="wait-exercise" src="img/animated_loading.gif" />
-				</p>
+			<div class="col-md-12 d-flex justify-content-center">
+				<div class="spinner-border" role="status" id="wait-exercise" style="display: none">
+					<span class="sr-only">Loading...</span>
+				</div>
 			</div>
 		</div>
 
@@ -123,7 +121,7 @@
 
 		<div class="row" id="bottom">
 			<div class="col-md-12">
-			<button type="button" id="validate-exercise" class="btn btn-success float-right"><div id="derivationdone"></div></button>
+			<button type="button" id="validate-exercise" class="btn btn-primary float-right"></button>
 		</div>
 
 		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and
@@ -132,93 +130,22 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-step-template" type="text/x-jsrender">
-				<th scope="row">
-					{{>step}} {{:arrow}}
-				</th>
-				<td>
-					<span class="oneway-formula">{{:formula}}</span>
-				</td>
-				<td>
-					{{if ruleJustification && rule }}
-						<span>{{>rule}}</span>
-					{{/if}}
-				</td>
-				<td>
-					{{if canDelete && step > 0}}
-						<button type="button" class="btn btn-secondary btn-sm float-right"><i class='fas fa-times'></i></button>
-					{{/if}}
-				</td>
-		</script>
-
-			<!-- <div class="exercise-step-even exercise-step-added bar">
-				<div class="row">
-					<div class="col-md-7">
-						{{if !stepValidation && step > 0}}
-								{{if isWrong}}
-									<img src="img/wrong.png" height=20 width=20>
-									<span class="wrong">{{:error}}</span>
-								{{else}}
-									<img src="img/correct.png" height=20 width=20>
-								{{/if}}
-						{{/if}}
-					</div>
-					<div class="col-md-5">
-						<p>
-							<span class="">&nbsp;</span>
-							{{if step > 0}}
-								{{if isWrong && ruleJustification && false }}
-									<select class='retryRule'>
-										{{:ruleCombobox}}
-									</select>
-								{{else}}
-									<span>{{>rule}}</span>
-								{{/if}}
-								{{if canDelete && step > 0}}
-									<button type="button" class="close float-right remove-top-step close">×</button>
-								{{/if}}
-							{{/if}}
-						</p>
-				   </div>
-				</div>
-				<div class="row">
-					<div class="col-md-1">
-						<p>
-							{{if step > 0 && !isWrong}}
-								<span class="arrow float-right">&#8660;</span>
-							{{/if}}
-							{{if step > 0 && isWrong}}
-								<span class="float-right">
-									<img src="img/equivsignerr.png">
-								</span>
-							{{/if}}
-						</p>
-					</div>
-					<div class="col-md-11">
-						<div class="padded-left">
-							  {{if isWrong && step > 0}}
-								<input id="retryFormula{{:step}}" type="text" class="input-xlarge retryFormula" value="{{:formula}}"/>
-							  {{else}}
-								<span class="oneway-formula">{{:formula}}</span>
-							  {{/if}}
-							  {{if hasRule}}<label class="equation-sign"></label>{{/if}}
-						</div>
-					</div>
-				</div>
-			</div> -->
-
-		<script id="exercise-last-step-template" type="text/x-jsrender">
-			<div class="exercise-step-even last-step">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="success">
-							  <label class="left-formula">{{:leftformula}}</label>
-							  <label class="equation-sign">&#x021D4;</label>
-							  <label class="right-formula">{{:rightformula}}</label>
-							  <img src="img/tick.png" />
-						</div>
-					</div>
-				</div>
-			</div>
+			<td scope="row">
+				<div class="circle">{{>step}}</div> {{:arrow}}
+			</td>
+			<td>
+				<span class="oneway-formula">{{:formula}}</span>
+			</td>
+			<td>
+				{{if ruleJustification && rule }}
+					<span>{{>rule}}</span>
+				{{/if}}
+			</td>
+			<td class="remove-step">
+				{{if canDelete && step > 0}}
+					<button type="button" class="btn btn-outline-secondary btn-sm float-right"><i class='fas fa-times'></i></button>
+				{{/if}}
+			</td>
 		</script>
 
 		<script id="new-exercise-template" type="text/x-jsrender">

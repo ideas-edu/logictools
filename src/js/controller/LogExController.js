@@ -8,62 +8,75 @@ export class LogExController extends ExerciseController {
     this.characterOptions = [
       {
         char: '¬',
+        latex: '\\neg',
         triggers: ['-', 'n', '~', '1', '`', '!', 'N']
       },
       {
         char: '∧',
+        latex: '\\land',
         triggers: ['a', '7', '6', '^', '&', 'A'],
         spaces: true
       },
       {
         char: '∨',
+        latex: '\\lor',
         triggers: ['o', 'v', '|', '\\', 'O', 'V'],
         spaces: true
       },
       {
         char: '→',
+        latex: '\\rightarrow',
         triggers: ['i', '.', 'I'],
         spaces: true
       },
       {
         char: '↔',
+        latex: '\\leftrightarrow',
         triggers: ['=', 'e', 'E'],
         spaces: true
       },
       {
         char: 'p',
+        latex: 'p',
         triggers: ['P'],
         charStyled: '<i>p</i>'
       },
       {
         char: 'q',
+        latex: 'q',
         triggers: ['Q'],
         charStyled: '<i>q</i>'
       },
       {
         char: 'r',
+        latex: 'r',
         triggers: ['R'],
         charStyled: '<i>r</i>'
       },
       {
         char: 's',
+        latex: 's',
         triggers: ['S'],
         charStyled: '<i>s</i>'
       },
       {
         char: 'T',
+        latex: 'T',
         triggers: ['t']
       },
       {
         char: 'F',
+        latex: 'F',
         triggers: ['f']
       },
       {
         char: '(',
+        latex: '(',
         triggers: ['9']
       },
       {
         char: ')',
+        latex: ')',
         triggers: ['0']
       }
     ]

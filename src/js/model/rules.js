@@ -2,7 +2,7 @@
     Rules is a dictionary of all the possible rules and their translations.
  */
 export const Rules = {} // 0 = NL, 1=EN
-Rules[''] = ['Regel..', 'Rule..']
+Rules[''] = ['-- Selecteer regel --', '-- Select rule --']
 
 // basisarray's die hieronder hergebruikt worden
 const absorbtie = ['Absorptie', 'Absorption']
