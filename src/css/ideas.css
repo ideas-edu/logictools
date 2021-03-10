@@ -28,10 +28,7 @@ body {
     xmargin-left: 120px;
 	padding-top: 60px;
     padding-bottom: 40px;
-    width: 1020px;
-	min-width: 1020px;
-	max-width: 1020px;
-	min-height: 300px;
+	min-height: 400px;
 }
 
 .logexiframe
@@ -41,10 +38,8 @@ body {
 	line-height: 16px;
 	margin: auto;
 	padding-top: 20px;
-    padding-bottom: 70px;
-    width: 1020;
-	min-width: 1020;
-	max-width: 1020;
+    padding-bottom: 20px;
+    border: 1px solid #e5e5e5;
 }
 
 input,
@@ -181,8 +176,9 @@ input.kbinput {
     border-top: 1px solid #eee;
 }
 
-#exercise-steps .row {
-	margin-top:3px;
+.row {
+	margin-left: 15px !important;
+	margin-right: 15px !important;
 }
 
 .padded-left{
@@ -302,6 +298,13 @@ input.error, select.error {
 	border-bottom: 1px solid #ddd;
 }
 
+#instruction-alert {
+	color: #1D1D1D;
+	background-color: #FBFBFB;
+	border-color: #C6C6C6;
+	border-style: dashed;
+}
+
 .hint-alert {
 	color: #004085;
 	background-color: #cce5ff;
@@ -320,9 +323,14 @@ input.error, select.error {
 	border-color: #99cc99;
 }
 
+#header-step {
+	padding-left: 15px;
+}
+
 .circle {
 	float: left;
 	margin-right: 6px;
+	margin-left: 4px;
 	width: 20px;
 	height: 20px;
 	line-height: 20px;
@@ -336,6 +344,7 @@ input.error, select.error {
 .active-circle {
 	float: left;
 	margin-right: 6px;
+	margin-left: 4px;
 	width: 20px;
 	height: 20px;
 	line-height: 20px;
@@ -350,7 +359,11 @@ th {
 	text-transform: uppercase;
 }
 
-table, hr {
-	width: calc(100% + 90px) !important;
-	margin-left: -45px;
+#validate-step, .remove-step > button {
+	margin-right: 17px;
+	margin-left: 6px;
+}
+
+table {
+	border-bottom: 1px solid #E5E5E5;
 }

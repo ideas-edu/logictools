@@ -42,7 +42,7 @@ export class FormulaPopover {
         button.innerHTML = this.options.characters[i].charStyled || this.options.characters[i].char
       }
       button.setAttribute('char', this.options.characters[i].char)
-      button.classList = 'btn btn-sm btn-secondary'
+      button.classList = 'btn btn-sm btn-outline-secondary'
       this.wrapper.appendChild(button)
       button.addEventListener('mousedown', this.addText.bind(this))
     }
@@ -50,7 +50,7 @@ export class FormulaPopover {
     const unButton = document.createElement('button')
     unButton.type = 'button'
     unButton.innerHTML = '&#9100;'
-    unButton.classList = 'btn btn-sm btn-secondary'
+    unButton.classList = 'btn btn-sm btn-outline-secondary'
 
     this.wrapper.appendChild(unButton)
     unButton.addEventListener('mousedown', function () {
@@ -66,7 +66,7 @@ export class FormulaPopover {
     const bsButton = document.createElement('button')
     bsButton.type = 'button'
     bsButton.innerHTML = '⌫' // <i class="fas fa-backspace"></i>'
-    bsButton.classList = 'btn btn-sm btn-secondary'
+    bsButton.classList = 'btn btn-sm btn-outline-secondary'
 
     this.wrapper.appendChild(bsButton)
     bsButton.addEventListener('mousedown', function () {
