@@ -349,3 +349,8 @@ input.error, select.error {
 th {
 	text-transform: uppercase;
 }
+
+table, hr {
+	width: calc(100% + 90px) !important;
+	margin-left: -45px;
+}
