@@ -18,6 +18,12 @@ class Translate {
     langFile.send(null)
   }
 
+  // Takes a path 'nested.key' and return the object found at dict['nested']['key']
+  resolveString (path, dict) {
+    const properties = Array.isArray(path) ? path : path.split('.')
+    return properties.reduce((prev, curr) => prev && prev[curr], dict)
+  }
+
   string (key, params) {
     const language = LogEXSession.getLanguage()
 
@@ -27,11 +33,21 @@ class Translate {
 
     const dict = this.langDicts[language]
 
-    if (!Object.prototype.hasOwnProperty.call(dict, key)) {
+    let string = this.resolveString(key, dict)
+    if (string === undefined) {
       return 'Key not found'
     }
 
-    return dict[key]
+    // Find all cases of {{param}}. () makes group so that we can retrieve the key with match[1]
+    const paramRegex = /{{(\w+?)}}/g
+    let match
+
+    while ((match = paramRegex.exec(string)) !== null) {
+      const matchKey = match[1]
+      string = string.replace(match[0], params[matchKey])
+    }
+
+    return string
   }
 }
 

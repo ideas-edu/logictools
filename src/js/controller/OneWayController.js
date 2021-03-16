@@ -50,8 +50,9 @@ jsrender($); // load JsRender jQuery plugin methods
 })()
 
 function updateTexts () {
-  document.getElementById('ok').innerHTML = translate('send')
-  document.getElementById('show-next-step').innerHTML = translate('step')
+  document.getElementById('ok').innerHTML = translate('send', { name: 'Bob', name2: 'Joe' })
+  document.getElementById('show-next-step').innerHTML = translate('nested.key')
+  document.getElementById('showderivation').innerHTML = translate('nested.key.not.found')
 }
 
 const UITranslator = {
