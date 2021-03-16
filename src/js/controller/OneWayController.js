@@ -24,6 +24,8 @@ import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
+// import { translateInstance } from '../translate.js'
+import { translate, loadLanguage } from '../translate.js'
 
 jsrender($); // load JsRender jQuery plugin methods
 
@@ -46,6 +48,11 @@ jsrender($); // load JsRender jQuery plugin methods
     }
   })
 })()
+
+function updateTexts () {
+  document.getElementById('ok').innerHTML = translate('send')
+  document.getElementById('show-next-step').innerHTML = translate('step')
+}
 
 const UITranslator = {
   translate: function (exerciseType) {
@@ -85,6 +92,8 @@ const UITranslator = {
     $('#step-validation-switch-label').html(Resources.getText(language, 'stepvalidation'))
     // $('#step-validation-switch').bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
     // $('#step-validation-switch').bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
+    const langCallback = updateTexts
+    loadLanguage(language, langCallback)
   }
 }
 

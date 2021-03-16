@@ -9,6 +9,7 @@ const htmlDir = path.resolve(__dirname, 'src/html')
 const cssDir = path.resolve(__dirname, 'src/css')
 const imgDir = path.resolve(__dirname, 'src/img')
 const pdfDir = path.resolve(__dirname, 'src/pdf')
+const langDir = path.resolve(__dirname, 'src/lang')
 const distDir = path.resolve(__dirname, 'dist')
 
 module.exports = {
@@ -61,7 +62,8 @@ module.exports = {
         { from: htmlDir }, // to: output.path
         { from: cssDir, to: 'css/' },
         { from: imgDir, to: 'img/' },
-        { from: pdfDir, to: 'pdf/' }
+        { from: pdfDir, to: 'pdf/' },
+        { from: langDir, to: 'lang/' }
       ]
     })
     // Avoid publishing files when compilation fails

@@ -51,10 +51,10 @@ export function MainFrameController () {
       browserLanguage
     if (LogEXSession.getLanguage() === null) {
       // Default language = EN overrule with browser language
-      language = 'EN'
+      language = 'en'
       browserLanguage = window.navigator.userLanguage || window.navigator.language
       if (browserLanguage.substring(0, 2) === 'nl') {
-        language = 'NL'
+        language = 'nl'
       }
       LogEXSession.setLanguage(language)
     }
@@ -79,7 +79,7 @@ export function MainFrameController () {
   }
 
   $('#lang-NL').click(function () {
-    LogEXSession.setLanguage('NL')
+    LogEXSession.setLanguage('nl')
     self.initializeLabels()
 
     // All iFrames must be updated to Dutch
@@ -99,7 +99,7 @@ export function MainFrameController () {
   })
 
   $('#lang-EN').click(function () {
-    LogEXSession.setLanguage('EN')
+    LogEXSession.setLanguage('en')
     self.initializeLabels()
 
     // All iFrames must be updated to English.
@@ -121,7 +121,7 @@ export function MainFrameController () {
   // doh: helaas is er een tweede set van gelijke eventhandlers nodig voor de taalknoppen in het hoofdvenster
 
   $('#lang2-NL').click(function () {
-    LogEXSession.setLanguage('NL')
+    LogEXSession.setLanguage('nl')
     self.initializeLabels()
 
     // All iFrames must be updated to Dutch
@@ -141,7 +141,7 @@ export function MainFrameController () {
   })
 
   $('#lang2-EN').click(function () {
-    LogEXSession.setLanguage('EN')
+    LogEXSession.setLanguage('en')
     self.initializeLabels()
 
     // All iFrames must be updated to English.
