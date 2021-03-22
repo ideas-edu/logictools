@@ -1,3 +1,11 @@
 {
+	"main": {
+		"tabTitle": {
+			"dnf": "Disjunctieve Normaalvorm",
+			"cnf": "Conjunctieve Normaalvorm",
+			"logeq": "Logische Equivalentie"
+		},
+		"help": "<i class='fas fa-question-circle'></i> Hulp"
+	},
 	"send": "Hallo"
 }

@@ -1,4 +1,12 @@
 {
+	"main": {
+		"tabTitle": {
+			"dnf": "Disjunctive Normal Form",
+			"cnf": "Conjunctive Normal Form",
+			"logeq": "Logical Equivalence"
+		},
+		"help": "<i class='fas fa-question-circle'></i> Help"
+	},
 	"send": "Hello {{name}} and {{name2}}",
 	"nested": {
 		"key": "value"
