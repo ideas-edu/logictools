@@ -1,5 +1,6 @@
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
+// import { ExerciseController } from './ExerciseController.js'
 
 export class LogExSolutionController {
   /**
@@ -76,5 +77,14 @@ export class LogExSolutionController {
   onErrorSolvingExercise () {
     this.showErrorToolTip(document.getElementById('solve-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-exercise'), 'right')
     this.disableUI(false)
+  }
+
+  insertStep (step, canDelete) {
+    const exerciseStep = document.createElement('tr')
+    exerciseStep.classList.add('exercise-step')
+    exerciseStep.innerHTML = this.renderStep(step, canDelete)
+
+    const tableBody = document.getElementById('active-step')
+    tableBody.insertAdjacentElement('beforebegin', exerciseStep)
   }
 }
