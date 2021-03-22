@@ -23,7 +23,7 @@ legend {
 	padding-bottom: 20px;
 }
 
-body {
+body.logexiframe {
   	font-family: "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: small;
 	line-height: 16px;
@@ -413,4 +413,3 @@ input.error, select.error {
 .tab.pane {
 	border-bottom: 1px solid #ddd;
 }
-
