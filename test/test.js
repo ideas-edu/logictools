@@ -1,5 +1,4 @@
 import { describe, it } from 'mocha'
-// import assert from 'assert'
 import { IdeasServiceProxy } from '../src/js/model/ideasServiceProxy.js'
 import { XMLHttpRequest } from 'xhr2'
 import { assert } from 'chai'

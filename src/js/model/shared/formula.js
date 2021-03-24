@@ -53,60 +53,79 @@ const unaryOperators = ['¬']
 const binaryOperators = ['∧', '∨', '→', '↔']
 const literals = ['p', 'q', 'r', 's', 'T', 'F']
 
-class Formula {
+export class Formula {
   constructor (formula) {
-    console.log(`Input: ${formula}`)
-    const result = this.parse(formula)
-    console.log(`Done: ${result.printUnicode()}`)
+    this.error = null
+    this.result = this.parse(formula, 0)
+    // if (this.error === null) {
+    //   console.log(`Done: ${result.printUnicode()}`)
+    // } else {
+    //   console.log(`Error at index ${this.error.index}: ${this.error.message}\n${formula.substring(0, this.error.index)}_${formula.substring(this.error.index)}`)
+    // }
   }
 
-  parse (expressionString) {
+  parse (expressionString, contextIndex) {
     let leftExpression = null
     while (expressionString && expressionString.length > 0) {
-      console.log(`Parse: ${expressionString}`)
+      contextIndex += 1
       if (unaryOperators.includes(expressionString[0])) {
-        const unaryExpression = this.findFirstExpression(expressionString.substring(1))
+        const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
         leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
-        console.log(leftExpression.printUnicode())
         expressionString = unaryExpression.tailString
-        console.log(expressionString)
         continue
       }
       if (binaryOperators.includes(expressionString[0])) {
         if (leftExpression === null) {
-          throw Error('Missing literal or group')
+          this.error = {
+            message: 'Missing literal or group',
+            index: contextIndex
+          }
+          return
         }
         if (leftExpression instanceof BinaryOperator) {
           if (leftExpression.operator !== expressionString[0]) {
-            throw Error('Ambiguous associativity')
+            this.error = {
+              message: 'Ambiguous associativity',
+              index: contextIndex
+            }
+            return
           }
         }
-        const rightExpression = this.findFirstExpression(expressionString.substring(1))
+        const rightExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
         leftExpression = new BinaryOperator(expressionString[0], leftExpression, rightExpression.exp)
-        console.log(leftExpression.printUnicode())
         expressionString = rightExpression.tailString
         continue
       }
       if (literals.includes(expressionString[0])) {
         if (leftExpression !== null) {
-          throw Error('Missing operator')
+          this.error = {
+            message: 'Missing operator',
+            index: contextIndex
+          }
+          return
         }
         const rightExpression = expressionString.substring(1)
         leftExpression = new Literal(expressionString[0])
-        console.log(leftExpression.printUnicode())
         expressionString = rightExpression
         continue
       }
       if (expressionString[0] === '(') {
-        console.log(`Found brackets: ${expressionString}`)
         if (leftExpression !== null) {
-          throw Error('Missing operator')
+          this.error = {
+            message: 'Missing operator',
+            index: contextIndex
+          }
+          return
         }
         let i = 1
         let numLeft = 1
         while (numLeft > 0) {
           if (i > expressionString.length) {
-            throw Error('Missing closing parenthesis')
+            this.error = {
+              message: 'Missing closing parenthesis',
+              index: contextIndex
+            }
+            return
           }
           if (expressionString[i] === '(') {
             numLeft += 1
@@ -116,17 +135,20 @@ class Formula {
           }
           i++
         }
-        leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1)))
+        leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1))
         expressionString = expressionString.substring(i)
         continue
       }
-      throw Error('Unexpected character')
+      this.error = {
+        message: 'Unexpected character',
+        index: contextIndex
+      }
+      return
     }
     return leftExpression
   }
 
-  findFirstExpression (expressionString) {
-    console.log(`Find: ${expressionString}`)
+  findFirstExpression (expressionString, contextIndex) {
     if (literals.includes(expressionString[0])) {
       return {
         exp: new Literal(expressionString[0]),
@@ -135,9 +157,8 @@ class Formula {
     }
 
     if (unaryOperators.includes(expressionString[0])) {
-      const unaryExpression = this.findFirstExpression(expressionString.substring(1))
+      const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
       const leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
-      console.log(`Un ${leftExpression.printUnicode()} | ${unaryExpression.tailString}`)
       return {
         exp: leftExpression,
         tailString: unaryExpression.tailString
@@ -149,7 +170,14 @@ class Formula {
       let numLeft = 1
       while (numLeft > 0) {
         if (i > expressionString.length) {
-          throw Error('Missing closing parenthesis')
+          this.error = {
+            message: 'Missing closing parenthesis',
+            index: contextIndex
+          }
+          return {
+            exp: null,
+            tailString: ''
+          }
         }
         if (expressionString[i] === '(') {
           numLeft += 1
@@ -160,12 +188,18 @@ class Formula {
         i++
       }
       return {
-        exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1))),
+        exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1)),
         tailString: expressionString.substring(i)
       }
     }
 
-    throw Error('Missing literal or group')
+    this.error = {
+      message: 'Missing literal or group',
+      index: contextIndex
+    }
+    return {
+      exp: null,
+      tailString: ''
+    }
   }
 }
-const formula = new Formula('¬¬¬p∧r∧(s∧¬r)')
