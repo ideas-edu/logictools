@@ -25,6 +25,8 @@ import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
+// import { translateInstance } from '../translate.js'
+import { translate, loadLanguage } from '../translate.js'
 
 jsrender($); // load JsRender jQuery plugin methods
 
@@ -43,46 +45,44 @@ jsrender($); // load JsRender jQuery plugin methods
   })
 })()
 
-const UITranslator = {
-  translate: function (exerciseType) {
-    'use strict'
-    const language = LogEXSession.getLanguage()
-    const exampleExercises = config.exampleExercises[exerciseType]
-    $('#button-' + language).addClass('active')
-
-    $('#validate-step').html("<i class='fas fa-check'></i>")
-    $('#show-next-step').html(Resources.getText(language, 'step'))
-    $('#solve-exercise').html(Resources.getText(language, 'showderivation'))
-    $('#validate-exercise').html(Resources.getText(language, 'derivationdone'))
-    $('#newexercise').html("<i class='fas fa-refresh'></i> " + Resources.getText(language, 'newexercise'))
-    $('#generate-exercise-easy').html(Resources.getText(language, 'exeasy'))
-    $('#generate-exercise-normal').html(Resources.getText(language, 'exnormal'))
-    $('#generate-exercise-difficult').html(Resources.getText(language, 'exhard'))
-    $('#new-exercise').html(Resources.getText(language, 'new-exercise'))
-
-    // Translate the example exercises
-    for (let i = 0; i < exampleExercises.length; i++) {
-      const nr = exampleExercises[i] + 1
-      const id = 'exercise' + nr
-      $('#' + id).html(Resources.getText(language, 'exercise') + ' ' + nr)
-    }
-
-    $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
-    $('#help').attr('href', 'LogEQ_manual_' + language + '.pdf').attr('target', '_new')
-    $('#logout').html("<i class='fas fa-signout'></i> " + Resources.getText(language, 'logout'))
-    if ($('#create-exercise-button-content') !== null) {
-      $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'create-exercise-button'))
-    }
-
-    $('#rule-switch-label').html(Resources.getText(language, 'rulejustification'))
-    // $('#rule-switch').bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
-    // $('#rule-switch').bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
-
-    $('#step-validation-switch-label').html(Resources.getText(language, 'stepvalidation'))
-    // $('#step-validation-switch').bootstrapSwitch('onText', Resources.getText(language, 'on')) // sets the text of the "on" label
-    // $('#step-validation-switch').bootstrapSwitch('offText', Resources.getText(language, 'off')) // sets the text of the "off" label
-  }
+function updateTexts () {
+  document.getElementById('ok').innerHTML = translate('send', { name: 'Bob', name2: 'Joe' })
+  document.getElementById('show-next-step').innerHTML = translate('nested.key')
+  document.getElementById('showderivation').innerHTML = translate('nested.key.not.found')
 }
+
+function UITranslate (exerciseType) {
+  const language = LogEXSession.getLanguage()
+  const exampleExercises = config.exampleExercises[exerciseType]
+  $('#button-' + language).addClass('active')
+
+  $('#validate-step').html("<i class='fas fa-check'></i>")
+  $('#show-next-step').html(Resources.getText(language, 'step'))
+  $('#solve-exercise').html(Resources.getText(language, 'showderivation'))
+  $('#validate-exercise').html(Resources.getText(language, 'derivationdone'))
+  $('#newexercise').html("<i class='fas fa-refresh'></i> " + Resources.getText(language, 'newexercise'))
+  $('#generate-exercise-easy').html(Resources.getText(language, 'exeasy'))
+  $('#generate-exercise-normal').html(Resources.getText(language, 'exnormal'))
+  $('#generate-exercise-difficult').html(Resources.getText(language, 'exhard'))
+  $('#new-exercise').html(Resources.getText(language, 'new-exercise'))
+
+  // Translate the example exercises
+  for (let i = 0; i < exampleExercises.length; i++) {
+    const nr = exampleExercises[i] + 1
+    const id = 'exercise' + nr
+    $('#' + id).html(Resources.getText(language, 'exercise') + ' ' + nr)
+  }
+
+  $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
+  $('#help').attr('href', 'LogEQ_manual_' + language + '.pdf').attr('target', '_new')
+  $('#logout').html("<i class='fas fa-signout'></i> " + Resources.getText(language, 'logout'))
+  if ($('#create-exercise-button-content') !== null) {
+    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'create-exercise-button'))
+  }
+  const langCallback = updateTexts
+  loadLanguage(language, langCallback)
+}
+window.UITranslate = UITranslate
 
 /**
     OneWayController is responsible for handling all user interaction and manipulation of the user interface.
@@ -162,7 +162,7 @@ class OneWayController extends LogExController {
         Initializes all buttons and label to correct language
      */
   initializeLabels () {
-    UITranslator.translate(this.exerciseType)
+    UITranslate(this.exerciseType)
   }
 
   /**

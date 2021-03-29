@@ -8,12 +8,12 @@ export class LogEXSession {
         @name LogEXSession#initialize
         @param {Number} studentId - The student id
         @param {String} difficulty - The chosen difficulty (default medium)
-        @param {String} language - The language (default NL)
+        @param {String} language - The language (default nl)
      */
   static initialize (studentId, difficulty, language) {
     localStorage.setItem('logex:studentId', studentId)
     localStorage.setItem('logex:difficulty', difficulty || 'medium')
-    localStorage.setItem('logex:language', language || 'NL')
+    localStorage.setItem('logex:language', language || 'nl')
   }
 
   /**
