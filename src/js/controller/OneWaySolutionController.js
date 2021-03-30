@@ -9,9 +9,10 @@ import '@fortawesome/fontawesome-free/js/brands'
 
 import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
-import { Resources } from '../resources.js'
+import { Rules } from '../model/rules.js'
 import { OneWayExerciseSolver } from '../model/oneway/exerciseSolver.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
+import { translate, loadLanguage } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -24,8 +25,15 @@ function ready (fn) {
 }
 
 function setUp () {
-  const controller = new OneWaySolutionController()
-  controller.solveExercise()
+  const language = LogEXSession.getLanguage()
+  loadLanguage(language, function () {
+    const controller = new OneWaySolutionController()
+    controller.solveExercise()
+    document.getElementById('header-step').innerHTML = translate('shared.header.step')
+    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
+    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
+
+  })
 }
 
 ready(setUp)
@@ -67,7 +75,7 @@ class OneWaySolutionController extends LogExSolutionController {
     const stepTemplate = $.templates('#exercise-step-template')
 
     if (step.rule !== null) {
-      rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
+      rule = translate(Rules[step.rule])
     }
 
     if (step.number > 1) {

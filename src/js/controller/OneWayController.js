@@ -22,67 +22,42 @@ import { OneWayExerciseValidator } from '../model/oneway/exerciseValidator.js'
 import { OneWayStep } from '../model/oneway/step.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
-import { Rules } from '../model/rules.js'
+import { Rules, UserRules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
-// import { translateInstance } from '../translate.js'
 import { translate, loadLanguage } from '../translate.js'
 
-jsrender($); // load JsRender jQuery plugin methods
+jsrender($) // load JsRender jQuery plugin methods
 
-(function () {
-  $(document).ready(function () {
-    const controller = new OneWayController()
-    controller.getExerciseType()
-    controller.initializeRuleJustification()
-    controller.initializeStepValidation()
-    controller.initializeButtons()
-    controller.initializeInput()
-    controller.setExampleExercises()
-    controller.initializeLabels()
-    controller.initializeRules($('#rule'))
-    controller.bindExampleExercises()
-  })
-})()
-
-function updateTexts () {
-  document.getElementById('ok').innerHTML = translate('send', { name: 'Bob', name2: 'Joe' })
-  document.getElementById('show-next-step').innerHTML = translate('nested.key')
-  document.getElementById('showderivation').innerHTML = translate('nested.key.not.found')
+function ready (fn) {
+  if (document.readyState !== 'loading') {
+    fn()
+  } else {
+    document.addEventListener('DOMContentLoaded', fn)
+  }
 }
 
-function UITranslate (exerciseType) {
-  const language = LogEXSession.getLanguage()
-  const exampleExercises = config.exampleExercises[exerciseType]
-  $('#button-' + language).addClass('active')
-
-  $('#validate-step').html("<i class='fas fa-check'></i>")
-  $('#show-next-step').html(Resources.getText(language, 'step'))
-  $('#solve-exercise').html(Resources.getText(language, 'showderivation'))
-  $('#validate-exercise').html(Resources.getText(language, 'derivationdone'))
-  $('#newexercise').html("<i class='fas fa-refresh'></i> " + Resources.getText(language, 'newexercise'))
-  $('#generate-exercise-easy').html(Resources.getText(language, 'exeasy'))
-  $('#generate-exercise-normal').html(Resources.getText(language, 'exnormal'))
-  $('#generate-exercise-difficult').html(Resources.getText(language, 'exhard'))
-  $('#new-exercise').html(Resources.getText(language, 'new-exercise'))
-
-  // Translate the example exercises
-  for (let i = 0; i < exampleExercises.length; i++) {
-    const nr = exampleExercises[i] + 1
-    const id = 'exercise' + nr
-    $('#' + id).html(Resources.getText(language, 'exercise') + ' ' + nr)
+function setUp () {
+  const controller = new OneWayController()
+  controller.getExerciseType()
+  window.UITranslate = function () {
+    const language = LogEXSession.getLanguage()
+    const langCallback = function () {
+      controller.updateTexts()
+    }
+    loadLanguage(language, langCallback)
   }
-
-  $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
-  $('#help').attr('href', 'LogEQ_manual_' + language + '.pdf').attr('target', '_new')
-  $('#logout').html("<i class='fas fa-signout'></i> " + Resources.getText(language, 'logout'))
-  if ($('#create-exercise-button-content') !== null) {
-    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'create-exercise-button'))
-  }
-  const langCallback = updateTexts
-  loadLanguage(language, langCallback)
+  controller.initializeRuleJustification()
+  controller.initializeStepValidation()
+  controller.initializeButtons()
+  controller.initializeInput()
+  controller.setExampleExercises()
+  controller.initializeLabels()
+  controller.initializeRules(document.getElementById('rule'))
+  controller.bindExampleExercises()
 }
-window.UITranslate = UITranslate
+
+ready(setUp)
 
 /**
     OneWayController is responsible for handling all user interaction and manipulation of the user interface.
@@ -122,11 +97,11 @@ class OneWayController extends LogExController {
       this.retryRule($(this))
     })
 
-    document.getElementById('rule').addEventListener('change', function () {
-      $('#formula').popover('hide')
-      $('.retryFormula').popover('hide')
-      this.clearErrors()
-    }.bind(this))
+    // document.getElementById('rule').addEventListener('change', function () {
+    //   $('#formula').popover('hide')
+    //   $('.retryFormula').popover('hide')
+    //   this.clearErrors()
+    // }.bind(this))
 
     $('body').on('focus', '#formula', function () {
       $('#formula').popover('hide')
@@ -162,51 +137,32 @@ class OneWayController extends LogExController {
         Initializes all buttons and label to correct language
      */
   initializeLabels () {
-    UITranslate(this.exerciseType)
+    window.UITranslate()
+  }
+
+  updateTexts () {
+    super.updateTexts()
+    this.initializeRules(document.getElementById('rule'))
   }
 
   /**
         Initializes drop down box for rules from Rules dictionary
      */
   initializeRules (comboRule) {
-    const language = LogEXSession.getLanguage()
-    let previousRule = 'START' // For unification of the Rules list
-    let rule
-
     // Clear ruleset if already set
-    comboRule.find('option').remove().end()
+    comboRule.innerHTML = ''
+    const select = document.createElement('option')
+    select.innerHTML = translate('shared.button.selectRule')
+    comboRule.appendChild(select)
 
-    for (rule in Rules) {
+    for (const rule of UserRules) {
       // Rule will only be displayed if it has not already been displayed
-      if (Object.prototype.hasOwnProperty.call(Rules, rule) && Resources.getRule(language, rule) !== previousRule) {
-        $('<option/>').val(rule).html(Resources.getRule(language, rule)).appendTo(comboRule)
-        previousRule = Resources.getRule(language, rule)
-      }
+      const option = document.createElement('option')
+      option.innerHTML = translate(`rule.${rule}`)
+      comboRule.appendChild(option)
     }
-  }
-
-  /**
-        Gets the html code for an combobox to be used in the rendered step
-    */
-  renderRuleCombobox (selectedRule) {
-    const language = LogEXSession.getLanguage()
-    let previousRule = 'START'
-    let rule
-    let ruleTranslation
-    let renderedCombobox = ''
-
-    for (rule in Rules) {
-      ruleTranslation = Resources.getRule(language, rule)
-      if (previousRule !== ruleTranslation) {
-        renderedCombobox += ("<option value='" + rule + "'")
-        if (rule === selectedRule) {
-          renderedCombobox += ' selected'
-        }
-        renderedCombobox += '>' + ruleTranslation + '</option>'
-        previousRule = ruleTranslation
-      }
-    }
-    return renderedCombobox
+    // Show '-- Select rule --'
+    comboRule.selectedIndex = 0
   }
 
   /**
@@ -245,8 +201,6 @@ class OneWayController extends LogExController {
       ruleJustification: document.getElementById('rule-switch').checked,
       stepValidation: document.getElementById('step-validation-switch').checked
     }
-
-    document.getElementById('generate-exercise').innerHTML = 'Opgave ' + (exnr + 1)
 
     super.useExercise(exnr, properties)
   }
@@ -318,7 +272,7 @@ class OneWayController extends LogExController {
   onErrorCreatingExercise () {
     this.disableUI(false)
     this.setErrorLocation('formula')
-    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-creating-exercise'), 'error')
+    this.updateAlert('shared.error.creatingExercise', null, 'error')
   }
 
   /**
@@ -338,12 +292,12 @@ class OneWayController extends LogExController {
       }
     }
 
-    document.getElementById('remove-step-header').style.display = ''
+    document.getElementById('header-actions').style.display = ''
 
     // Insert first row
     this.insertStep(this.exercise.steps.steps[0], false)
 
-    document.getElementById('instruction').innerHTML = 'Reduceer ' + this.exercise.formulaKatex + ' tot disjunctieve normaalvorm'
+    document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
     document.getElementById('active-step').style.display = ''
 
     $('#exercise-steps').show()
@@ -352,16 +306,9 @@ class OneWayController extends LogExController {
     }
 
     $('#formula').val(this.exercise.formula)
-    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
     $('#formulaoriginal').val($('#formula').val())
 
     this.disableUI(false)
-    // $('#active-step').show()
-    // $('#exercise').show()
-    // $('#exercise-steps').show()
-    // $('#equivsign').show()
-    // $('#validate-step').show()
-    // $('#formula').show()
 
     if (config.displayDerivationButton) {
       $('#solve-exercise').show()
@@ -378,7 +325,7 @@ class OneWayController extends LogExController {
     }
 
     // Reset rule value at start
-    $('#rule').val('')
+    document.getElementById('rule').selectedIndex = 0
 
     // doh: zorg dat regelverantwoording niet undefined kan zijn
     // this.exercise.usesRuleJustification = $('#rule-switch').bootstrapSwitch('state')
@@ -407,7 +354,7 @@ class OneWayController extends LogExController {
   onErrorGeneratingExercise () {
     this.disableUI(false)
     this.setErrorLocation('new-exercise-dropdown')
-    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-generating-exercise'), 'error')
+    this.updateAlert('shared.error.generatingExercise', null, 'error')
   }
 
   showSolution () {
@@ -438,7 +385,7 @@ class OneWayController extends LogExController {
     } else {
       this.disableUI(false)
       this.setErrorLocation('show-next-step')
-      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-next-stap-inv'), 'error')
+      this.updateAlert('shared.error.solvingNextStepInv', null, 'error')
     }
   }
 
@@ -475,7 +422,7 @@ class OneWayController extends LogExController {
       $('#formula').focus()
 
       //    Reset rule value after valid step
-      $('#rule').val('')
+      document.getElementById('rule').selectedIndex = 0
     } else {
       this.disableUI(false) // UI ook hier terug enabled in geval er geen volgende stappen meer zijn.
     }
@@ -487,7 +434,7 @@ class OneWayController extends LogExController {
   onErrorSolvingNextStep (error) {
     this.disableUI(false)
     this.setErrorLocation('show-next-step')
-    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), error), 'error')
+    this.updateAlert(error, null, 'error')
   }
 
   /**
@@ -502,22 +449,20 @@ class OneWayController extends LogExController {
         @param {OneWayStep} nextOneWayStep - The next one way step
      */
   onHelpForNextStepFound (nextOneWayStep) {
-    const language = LogEXSession.getLanguage()
-    let helpText = Resources.getText(language, 'nohint')
-
-    if (Rules[nextOneWayStep.rule] !== null) {
-      helpText = Resources.getUseRuleMessage(language, nextOneWayStep.rule) + '<a href="#" id="toggle-hint1">» ' + Resources.getText(language, 'nexthint') + '</a>'
+    const rule = Rules[nextOneWayStep.rule]
+    if (rule !== null) {
+      this.updateAlert('shared.hint.useRule', { rule: rule }, 'hint')
+    } else {
+      this.updateAlert('shared.hint.unavailable', null, 'hint')
     }
-
-    this.updateAlert(helpText, 'hint')
 
     // Set up next hint
     document.getElementById('toggle-hint1').addEventListener('click', function () {
       const formula = document.getElementById('formula')
       const oldFormula = formula.value
       const newFormula = nextOneWayStep.formula
-      const helpText = Resources.getFullHintMessage(language, nextOneWayStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button>'
-      this.updateAlert(helpText, 'hint')
+      const formulaDiff = showdiff(true, newFormula, oldFormula)
+      this.updateAlert('shared.hint.full', { rule: rule, formula: formulaDiff }, 'hint')
       document.getElementById('auto-step').addEventListener('click', function () {
         this.showNextStep()
       }.bind(this))
@@ -534,7 +479,16 @@ class OneWayController extends LogExController {
      */
   onErrorGettingHelpForNextStep (msg) {
     this.setErrorLocation('show-hint')
-    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), msg), 'error')
+    this.updateAlert(msg, null, 'error')
+  }
+
+  getSelectedRuleKey () {
+    const index = document.getElementById('rule').selectedIndex
+    if (index === 0) {
+      return null
+    }
+    // Subtract 1 for '-- Select rule --'
+    return UserRules[index - 1]
   }
 
   /**
@@ -542,21 +496,23 @@ class OneWayController extends LogExController {
 
      */
   validateStep () {
-    if ($('#rule').val() === '' && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
+    const ruleKey = this.getSelectedRuleKey()
+    if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
+      console.log("HELLO")
       this.setErrorLocation('rule')
-      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'), 'error')
+      this.updateAlert('shared.error.noRule', null, 'error')
       return false
     }
 
     if ($('#formulaoriginal').val() === $('#formula').val()) {
       this.setErrorLocation('formula')
-      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'), 'error')
+      this.updateAlert('shared.error.notChanged', null, 'error')
       return false
     }
 
     this.disableUI(true)
     this.clearErrors()
-    this.exercise.steps.push(new OneWayStep($('#formula').val(), $('#rule').val()))
+    this.exercise.steps.push(new OneWayStep($('#formula').val(), ruleKey))
     if (this.exercise.usesStepValidation) {
       this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
@@ -577,7 +533,7 @@ class OneWayController extends LogExController {
   }
 
   /**
-    Check if the exrecise is completed
+    Check if the exercise is completed
       */
 
   checkIfReady () {
@@ -594,19 +550,22 @@ class OneWayController extends LogExController {
         for (const element of elements) {
           element.style.display = 'none'
         }
-        document.getElementById('remove-step-header').style.display = 'none'
-
+        document.getElementById('header-actions').style.display = 'none'
 
         const arrow = katex.renderToString('\\Leftrightarrow', {
           throwOnError: false
         })
 
-        const message = this.exercise.formulaKatex + ' ' + arrow + ' ' + this.exercise.getCurrentStep().formulaKatex
-        this.updateAlert(message, 'complete')
+        const alertParams = {
+          beginFormula: this.exercise.formulaKatex,
+          endFormula: this.exercise.getCurrentStep().formulaKatex,
+          arrow: arrow
+        }
+        this.updateAlert('oneWay.solution', alertParams, 'complete')
         this.disableUI(false)
       } else {
         this.setErrorLocation('formula')
-        this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete1'), 'error')
+        this.updateAlert('shared.error.incomplete.oneWay', null, 'error')
         this.disableUI(false)
       }
     }
@@ -622,42 +581,27 @@ class OneWayController extends LogExController {
     this.reset()
     $.each(this.exercise.steps.steps, function () {
       let rule = ''
+      const ruleKey = Rules[this.rule]
       const stepTemplate = $.templates('#exercise-step-template')
-      let error = ''
 
       if (this.rule !== undefined && this.rule !== '') {
-        rule = Resources.getRule(LogEXSession.getLanguage(), this.rule)
+        rule = translate(ruleKey)
       }
 
       if (i > 0 && !this.isValid && completelyCorrect === true) {
         completelyCorrect = false
       }
 
-      if (!this.isValid) {
-        error = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
-      } else if (!this.isSyntaxValid) { // Foutieve syntax
-        error = Resources.getInvalidFormulaMessage() + ': ' + this.syntaxError
-      } else if (this.isSimilar) { // Ongewijzigde formule
-        error = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'similar')
-      } else if (this.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
-        error = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'correctnotval')
-      } else if (this.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
-        error = Resources.getMessageForBuggyRule(LogEXSession.getLanguage(), this.buggyRule)
-      } else if (!this.isRuleValid) { // De ingegeven regel is niet correct
-        error = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongrule')
-      }
-
       const exerciseStepHtml = stepTemplate.render({
         rule: rule,
+        ruleKey: ruleKey,
         formula: this.formulaKatex,
         canDelete: false,
         isWrong: !this.isValid,
         hasRule: this.rule !== undefined,
         step: i,
-        ruleCombobox: this.renderRuleCombobox(this.rule),
         stepValidation: false,
-        ruleJustification: this.exercise.usesRuleJustification,
-        error: error
+        ruleJustification: this.exercise.usesRuleJustification
       })
 
       $('#active-step').before(exerciseStepHtml)
@@ -684,13 +628,13 @@ class OneWayController extends LogExController {
 
     if (!isReady) {
       this.setErrorLocation('validate-exercise')
-      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'), 'error')
+      this.updateAlert('shared.error.incomplete.oneWay', null, 'error')
     }
   }
 
   onErrorExerciseValidate () {
     this.setErrorLocation('validate-step')
-    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-exercise'), 'error')
+    this.updateAlert('shared.error.validatingExercise', null, 'error')
   }
 
   /**
@@ -707,32 +651,32 @@ class OneWayController extends LogExController {
 
     // de stap is niet valid en gebruikt stap validatie
     if (!currentStep.isValid && this.exercise.usesStepValidation) {
-      message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
+      message = 'shared.error.wrongStep'
       this.exercise.steps.pop()
 
       if (!currentStep.isSyntaxValid) { // Foutieve syntax
-        message = Resources.getInvalidFormulaMessage() // + ": " + currentStep.syntaxError;
+        message = 'shared.error.invalidFormula'
         errorLocation = 'formula'
       } else if (currentStep.isSimilar) { // Ongewijzigde formule
-        message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'similar')
+        message = 'shared.error.similar'
         errorLocation = 'formula'
       } else if (currentStep.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
-        message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'correctnotval')
+        message = 'shared.error.correctNotVal'
         errorLocation = 'formula'
       } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
-        message = Resources.getMessageForBuggyRule(LogEXSession.getLanguage(), currentStep.buggyRule)
+        message = `buggyRule.${currentStep.buggyRule}`
         errorLocation = 'formula'
       } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
-        message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongrule')
+        message = 'shared.error.wrongRule'
         errorLocation = 'rule'
       } else if (!currentStep.isValid) {
-        message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
+        message = 'shared.error.wrongStep'
         errorLocation = 'formula'
       }
 
       this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
       this.setErrorLocation(errorLocation)
-      this.updateAlert(message, 'error')
+      this.updateAlert(message, null, 'error')
     } else {
       this.insertStep(currentStep, true)
       this.exercise.isReady = currentStep.isReady
@@ -749,7 +693,7 @@ class OneWayController extends LogExController {
       $('#formula').focus()
 
       //    Reset rule value after valid step
-      $('#rule').val('')
+      document.getElementById('rule').selectedIndex = 0
     }
   }
 
@@ -760,7 +704,7 @@ class OneWayController extends LogExController {
     this.exercise.steps.pop()
     this.disableUI(false)
     this.setErrorLocation('validate-step')
-    this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-validating-step'), 'error')
+    this.updateAlert('shared.error.validatingStep', null, 'error')
   }
 
   /**
@@ -797,7 +741,7 @@ class OneWayController extends LogExController {
   onFormulaValidated (isValid) {
     if (!isValid) {
       this.setErrorLocation('formula')
-      this.updateAlert(Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'error')
+      this.updateAlert('shared.error.invalidFormula', null, 'error')
     }
     this.isFormulaValid = isValid
   }
@@ -824,9 +768,10 @@ class OneWayController extends LogExController {
     let rule = ''
     let arrow = null
     const stepTemplate = $.templates('#exercise-step-template')
+    const ruleKey = Rules[step.rule]
 
     if (step.rule !== undefined) {
-      rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
+      rule = translate(ruleKey)
     }
 
     if (step.number > 1) {
@@ -837,6 +782,7 @@ class OneWayController extends LogExController {
 
     const exerciseStepHtml = stepTemplate.render({
       rule: rule,
+      ruleKey: ruleKey,
       formula: step.formulaKatex,
       canDelete: canDelete,
       step: step.number,
@@ -864,7 +810,7 @@ class OneWayController extends LogExController {
     $('#bottom').hide()
     $('#formula').blur()
 
-    document.getElementById('remove-step-header').style.display = 'none'
+    document.getElementById('header-actions').style.display = 'none'
     const elements = document.getElementsByClassName('remove-step')
     for (const element of elements) {
       element.style.display = 'none'
@@ -942,25 +888,4 @@ class OneWayController extends LogExController {
     $('#formula').blur()
     $('#formula').focus()
   }
-
-  // input manipulatie van invoervelden formula1 en 2
-
-  // user interface bindings
-  // $("#lang-NL").click(function () {
-  //    LogEXSession.setLanguage("NL");
-  //    this.initializeLabels();
-  //    this.initializeRules($('#rule'));
-  //    $("#button-NL").addClass('active');
-  //    $("#button-EN").removeClass('active');
-  //    alert("inOnewaycontroller");
-  // });
-
-  // $("#lang-EN").click(function () {
-  //    LogEXSession.setLanguage("EN");
-  //    this.initializeLabels();
-  //    this.initializeRules($('#rule'));
-  //    $("#button-EN").addClass('active');
-  //    $("#button-NL").removeClass('active');
-  //    alert("inOneWayController");
-  // });
 }

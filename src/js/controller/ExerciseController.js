@@ -1,5 +1,6 @@
 import { config } from '../config.js'
 import { KeyBindings } from '../keyBindings.js'
+import { translate } from '../translate.js'
 
 export class ExerciseController {
   constructor () {
@@ -10,6 +11,8 @@ export class ExerciseController {
     this.isFormulaValid = true
     this.keyBindings = new KeyBindings(this)
     this.exampleExercises = null
+    this.alertKey = null
+    this.alertParams = null
 
     // document.getElementById('generate-exercise').addEventListener('click', function () {
     //   if (config.randomExercises) {
@@ -37,6 +40,44 @@ export class ExerciseController {
     document.addEventListener('keydown', function (e) {
       this.keyBindings.onKeyDown(e)
     }.bind(this))
+  }
+
+  updateTexts () {
+    document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
+    if (this.exercise !== null) {
+      document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
+    } else {
+      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
+    }
+    document.getElementById('validate-step').innerHTML = translate('shared.button.validateStep')
+    document.getElementById('show-next-step').innerHTML = translate('shared.button.step')
+    document.getElementById('solve-exercise').innerHTML = translate('shared.button.solveExercise')
+    document.getElementById('validate-exercise').innerHTML = translate(`shared.button.validateExercise.${this.exerciseType}`)
+    document.getElementById('new-exercise').innerHTML = translate('shared.button.newExercise')
+    document.getElementById('select-exercise').innerHTML = translate('shared.button.selectExercise')
+    document.getElementById('generate-exercise-easy').innerHTML = translate('shared.button.generateExerciseEasy')
+    document.getElementById('generate-exercise-normal').innerHTML = translate('shared.button.generateExerciseNormal')
+    document.getElementById('generate-exercise-difficult').innerHTML = translate('shared.button.generateExerciseDifficult')
+    const exampleExercises = config.exampleExercises[this.exerciseType]
+    for (let i = 0; i < exampleExercises.length; i++) {
+      const nr = exampleExercises[i] + 1
+      document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: nr })
+    }
+    if (this.alertKey !== null) {
+      document.getElementById('exercise-alert-span').innerHTML = translate(this.alertKey, this.alertParams)
+    }
+
+    document.getElementById('header-step').innerHTML = translate('shared.header.step')
+    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
+    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
+    document.getElementById('header-actions').innerHTML = translate('shared.header.actions')
+
+    const elements = document.getElementsByClassName('step-rule')
+    for (const element of elements) {
+      element.innerHTML = translate(element.getAttribute('key'))
+    }
+
+    document.getElementById('help-menu').innerHTML = translate('shared.button.help')
   }
 
   /**
@@ -144,8 +185,9 @@ export class ExerciseController {
     document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
   }
 
-  // Updates the alert which gives user feedback with the html content and styled based on the type of alert
-  updateAlert (innerHTML, type) {
+  // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.
+  // We use keys and params here so that they are updated when switching language
+  updateAlert (alertKey, alertParams, type) {
     document.getElementById('exercise-alert-container').style.display = ''
     switch (type) {
       case 'hint':
@@ -161,7 +203,9 @@ export class ExerciseController {
         document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
         break
     }
-    document.getElementById('exercise-alert-span').innerHTML = innerHTML
+    this.alertKey = alertKey
+    this.alertParams = alertParams
+    document.getElementById('exercise-alert-span').innerHTML = translate(alertKey, alertParams)
   }
 
   // Highlights the location of an error
@@ -172,6 +216,8 @@ export class ExerciseController {
 
   dismissAlert () {
     document.getElementById('exercise-alert-container').style.display = 'none'
+    this.alertKey = null
+    this.alertParams = null
   }
 
   clearErrors () {

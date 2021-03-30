@@ -74,10 +74,10 @@ class MainFrameController {
       document.getElementById('fra-logeq').contentWindow.UITranslate('LOGEQ')
     }
     if (document.getElementById('fra-dnv').getAttribute('src') !== '') {
-      document.getElementById('fra-dnv').contentWindow.UITranslate('DNV')
+      document.getElementById('fra-dnv').contentWindow.UITranslate()
     }
     if (document.getElementById('fra-cnv').getAttribute('src') !== '') {
-      document.getElementById('fra-cnv').contentWindow.UITranslate('CNV')
+      document.getElementById('fra-cnv').contentWindow.UITranslate()
     }
   }
 

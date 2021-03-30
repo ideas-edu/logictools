@@ -49,15 +49,15 @@ export class ExerciseSolver {
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
-          onErrorSolvingNextStep('no-step-possible')
+          onErrorSolvingNextStep('shared.error.noStepPossible')
         } else {
-          onErrorSolvingNextStep('error-solving-next-step')
+          onErrorSolvingNextStep('shared.error.solvingNextStep')
         }
         return
       }
 
       if (data.onefirst.length === 0) {
-        onErrorSolvingNextStep('error-solving-last-step')
+        onErrorSolvingNextStep('shared.error.solvingLastStep')
         return
       }
       const result = data.onefirst.first
@@ -84,9 +84,9 @@ export class ExerciseSolver {
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
-          onErrorGettingHelpForNextStep('no-step-possible')
+          onErrorGettingHelpForNextStep('shared.error.noStepPossible')
         } else {
-          onErrorGettingHelpForNextStep('error-showing-hint')
+          onErrorGettingHelpForNextStep('shared.error.showingHint')
         }
       } else {
         const currentStep = exercise.steps.getCurrentStep()

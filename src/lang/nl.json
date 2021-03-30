@@ -7,5 +7,147 @@
 		},
 		"help": "<i class='fas fa-question-circle'></i> Hulp"
 	},
-	"send": "Hallo"
+	"oneWay": {
+		"title": {
+			"DNV": "Omzetten naar Disjunctieve Normaalvorm",
+			"CNV": "Omzetten naar Conjunctieve Normaalvorm"
+		},
+		"instruction": {
+			"begin": "Selecteer een opgave om mee te beginnen!",
+			"DNV": "Zet {{formula}} om naar disjunctieve normaalvorm",
+			"CNV": "Zet {{formula}} om naar conjunctieve normaalvorm"
+		},
+		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+	},
+	"rule": {
+		"logic": {
+			"propositional": {
+				"absorption": "Absorptie",
+				"commutativity": "Commutativiteit",
+				"demorgan": "De Morgan",
+				"distribution": "Distributie",
+				"doublenegation": "Dubbele negatie",
+				"equivalence": "Equivalentie-eliminatie",
+				"falsecomplement": "F-regel complement",
+				"falseconjunction": "F-regel conjunctie",
+				"falsedisjunction": "F-regel disjunctie",
+				"nottrue": "F-regel niet T",
+				"idempotency": "Idempotentie",
+				"implication": "Implicatie-eliminatie",
+				"truecomplement": "T-regel complement",
+				"trueconjunction": "T-regel conjunctie",
+				"truedisjunction": "T-regel disjunctie",
+				"notfalse": "T-regel niet F"
+			}
+		}
+	},
+	"buggyRule": {
+		"logic": {
+			"propositional": {
+				"buggy": {
+					"absor": "U heeft absorptie niet correct toegepast.",
+					"absor2": "U heeft absorptie niet correct toegepast: let op welke subformule u overhoudt.",
+					"andcompl": "U heeft een complement regel niet correct toegepast.",
+					"andcompl2": "U heeft een complement regel niet correct toegepast.",
+					"andsame": "U heeft idempotentie niet correct toegepast.",
+					"assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
+					"assoc": "Associativiteit mag alleen toegepast worden tussen gelijke connectieven (enkel conjuncties of enkel disjuncties).",
+					"commimp": "U heeft onterecht commutativiteit bij implicatie toegepast.",
+					"demorgan1": "U heeft De Morgan niet correct toegepast, denk aan de negatietekens.",
+					"demorgan2": "Denk bij het toepassen van De Morgan aan het weghalen van de negatie buiten de haken.",
+					"demorgan3": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
+					"demorgan4": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
+					"demorgan5": "Let bij het toepassen van De Morgan op het plaatsen van de haken, u hebt het bereik van een negatie onbedoeld gewijzigd.",
+					"distr": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan.",
+					"distrnot": "U bent bij de distributie een negatie vergeten.",
+					"equivelim1": "U heeft equivalentie eliminatie niet correct toegepast, let op de negaties",
+					"equivelim2": "U heeft equivalentie eliminatie niet correct toegepast, let op de plaats van de disjuncties en de conjuncties.",
+					"equivelim3": "U heeft de regel voor implicatie eliminatie in plaats van equivalentie eliminatie toegepast.",
+					"falseprop": "U heeft een F regel niet correct toegepast.",
+					"idemequi": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
+					"idemimp": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
+					"implelim": "U heeft implicatie eliminatie niet correct toegepast.",
+					"implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
+					"implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
+					"implnotelim": "U bent de negatie voor de implicatie vergeten.",
+					"notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
+					"orcompl": "U heeft een complement regel niet correct toegepast.",
+					"orcompl2": "U heeft een complement regel niet correct toegepast.",
+					"orsame": "U heeft een T regel onterecht toegepast.",
+					"parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
+					"parenth2": "Let op de haakjes. Denk eraan dat bij equivalentie-eliminatie de negatie buiten haken blijft staan.",
+					"parenth3": "Dubbele negatie is pas toepasbaar als beide negaties betrekking hebben op dezelfde subformule.",
+					"trueprop": "U heeft een T regel niet correct toegepast.",
+					"andcompl.inv": "U heeft een complement regel niet correct toegepast.",
+					"orcompl.inv": "U heeft een complement regel niet correct toegepast.",
+					"trueprop.inv": "U heeft een T regel niet correct toegepast.",
+					"falseprop.inv": "U heeft een F regel niet correct toegepast.",
+					"idemimp.inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
+					"idemequiv.inv": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
+					"demorgan3.inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
+					"demorgan4.inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
+					"distr.inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan."
+				}
+			}
+		}
+	},
+	"shared": {
+		"button": {
+			"validateStep": "<i class='fas fa-check'></i>",
+			"step": "Toon stap",
+			"solveExercise": "Toon oplossing",
+			"validateExercise": {
+				"DNV": "Is in DNV?",
+				"CNV": "Is in CNV?"
+			},
+			"newExercise": "Zelf invoeren",
+			"selectExercise": "Selecteer Opgave",
+			"generateExerciseEasy": "Eenvoudig",
+			"generateExerciseNormal": "Normaal",
+			"generateExerciseDifficult": "Moeilijk",
+			"help": "Hulp",
+			"selectRule": "-- Selecteer regel --"
+		},
+		"header": {
+			"step": "Stap",
+			"formula": "Formule",
+			"rule": "Regel",
+			"actions": "Acties"
+		},
+		"exerciseName": {
+			"example": "Opgave {{number}}"
+		},
+		"hint": {
+			"unavailable": "Geen hint beschikbaar",
+			"useRule": "Gebruik <i>[[rule]]</i>. <a href='#' id='toggle-hint1'>» Volgende hint</a>",
+			"rewriteThis": "Rewrite this formula {{formula}}",
+			"full": "Herschrijf deze formule met behulp van de <i>[[rule]]</i>  regel naar {{formula}}. <button type='button' id='auto-step' class='btn btn-success pull-right'>Deze stap uitvoeren</button>"
+		},
+		"error": {
+			"noRule": "U moet aangeven welke regel u heeft toegepast",
+			"notChanged": "U heeft de vergelijking niet gewijzigd",
+			"wrongStep": "U heeft een verkeerde stap uitgevoerd",
+			"wrongRule": "U heeft de verkeerde regel gekozen",
+			"similar": "Er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.",
+			"correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
+			"invalidFormula": "Deze formule is grammaticaal niet correct",
+			"incomplete": {
+				"oneWay": "Afleiding is nog niet voltooid",
+				"twoWay": "Bewijs is nog niet voltooid"
+			},
+			"notEquivalent": "De beide expressies zijn niet equivalent.",
+			"identical": "U moet twee verschillende formules opgeven.",
+			"creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
+			"validatingExercise": "Er is een probleem opgetreden bij het valideren van de uitwerking. Probeert u het nog een keer.",
+			"generatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Probeert u het nog een keer.",
+			"solvingExercise": "Er is een probleem opgetreden bij het tonen van het volledige bewijs. Probeert u het nog een keer.",
+			"solvingNextStep": "Er is een probleem opgetreden bij het tonen van de volgende stap. Probeert u het nog een keer.",
+			"solvingNextStepInv": "Volgende stap kan niet worden getoond. Er bevindt zich een foute stap in de uitwerking.",
+			"solvingLastStep": "Er is een probleem opgetreden bij het tonen van de volgende stap. Er zijn geen overige stappen meer.",
+			"showingHint": "Er is een probleem opgetreden bij het tonen van de hint voor de volgende stap. Probeert u het nog een keer.",
+			"validatingStep": "Er is een probleem opgetreden bij het valideren van de stap. Probeert u het nog een keer.",
+			"notSuitable": "De formules zijn niet equivalent!",
+			"noStepPossible": "De formule is al in normaalvorm."
+		}
+	}
 }
