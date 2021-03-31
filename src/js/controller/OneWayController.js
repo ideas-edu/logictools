@@ -498,7 +498,6 @@ class OneWayController extends LogExController {
   validateStep () {
     const ruleKey = this.getSelectedRuleKey()
     if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
-      console.log("HELLO")
       this.setErrorLocation('rule')
       this.updateAlert('shared.error.noRule', null, 'error')
       return false
@@ -790,6 +789,7 @@ class OneWayController extends LogExController {
       stepValidation: true,
       ruleJustification: true
     })
+
     return exerciseStepHtml
   }
 
@@ -819,6 +819,18 @@ class OneWayController extends LogExController {
     this.clearErrors()
 
     document.getElementById('step-validation-switch').disabled = false // $('#step-validation-switch').bootstrapSwitch('disabled', true) // true || false
+  }
+
+  removeStep (index) {
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+
+    for (let i = exerciseStepTable.children.length - 1; i >= 0 ; i--) {
+      if (exerciseStepTable.children[i].getAttribute('number') >= index) {
+        exerciseStepTable.removeChild(exerciseStepTable.children[i])
+      }
+    }
+    this.exercise.steps.removeTopSteps(index - 1)
+    document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
   }
 
   /**

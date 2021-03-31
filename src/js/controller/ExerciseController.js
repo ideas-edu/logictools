@@ -176,7 +176,15 @@ export class ExerciseController {
     this.dismissAlert()
     const exerciseStep = document.createElement('tr')
     exerciseStep.classList.add('exercise-step')
+    exerciseStep.setAttribute('number', step.number)
     exerciseStep.innerHTML = this.renderStep(step, canDelete)
+
+    if (canDelete) {
+      const deleteButton = exerciseStep.getElementsByClassName('delete-step')[0]
+      deleteButton.addEventListener('click', function () {
+        this.removeStep(step.number)
+      }.bind(this))
+    }
 
     const tableBody = document.getElementById('active-step')
     tableBody.insertAdjacentElement('beforebegin', exerciseStep)

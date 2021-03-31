@@ -65,6 +65,6 @@ export class StepCollection {
         @param {Number} index - The start index.
      */
   removeTopSteps (index) {
-    this.steps = this.steps.slice(0, index + 1)
+    this.steps = this.steps.slice(0, index)
   }
 }
