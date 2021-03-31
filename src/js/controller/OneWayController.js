@@ -451,27 +451,21 @@ class OneWayController extends LogExController {
   onHelpForNextStepFound (nextOneWayStep) {
     const rule = Rules[nextOneWayStep.rule]
     if (rule !== null) {
-      this.updateAlert('shared.hint.useRule', { rule: rule }, 'hint')
+      const buttonCallback = function () {
+        this.showNextHint(nextOneWayStep)
+      }.bind(this)
+      this.updateAlert('shared.hint.useRule', { rule: rule }, 'hint', 'shared.hint.nextHint', buttonCallback)
     } else {
       this.updateAlert('shared.hint.unavailable', null, 'hint')
     }
+  }
 
-    // Set up next hint
-    document.getElementById('toggle-hint1').addEventListener('click', function () {
-      const formula = document.getElementById('formula')
-      const oldFormula = formula.value
-      const newFormula = nextOneWayStep.formula
-      const formulaDiff = showdiff(true, newFormula, oldFormula)
-      this.updateAlert('shared.hint.full', { rule: rule, formula: formulaDiff }, 'hint')
-      document.getElementById('auto-step').addEventListener('click', function () {
-        this.showNextStep()
-      }.bind(this))
-
-      // Log hint
-      const step = this.exercise.getCurrentStep()
-      const state = [this.exercise.type, step.strategyStatus, step.formula, '']
-      IdeasServiceProxy.log(state, 'Hint: rewriteThisUsing')
-    }.bind(this))
+  showNextHint (nextOneWayStep) {
+    const formula = document.getElementById('formula')
+    const oldFormula = formula.value
+    const newFormula = nextOneWayStep.formula
+    const formulaDiff = showdiff(true, newFormula, oldFormula)
+    this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }
 
   /**

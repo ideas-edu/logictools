@@ -13,6 +13,11 @@ export class ExerciseController {
     this.exampleExercises = null
     this.alertKey = null
     this.alertParams = null
+    this.alertButtonCallback = undefined
+
+    document.getElementById('exercise-alert-button').addEventListener('click', function () {
+      this.alertButtonCallback()
+    }.bind(this))
 
     // document.getElementById('generate-exercise').addEventListener('click', function () {
     //   if (config.randomExercises) {
@@ -65,6 +70,9 @@ export class ExerciseController {
     }
     if (this.alertKey !== null) {
       document.getElementById('exercise-alert-span').innerHTML = translate(this.alertKey, this.alertParams)
+      if (this.buttonKey !== undefined) {
+        document.getElementById('exercise-alert-button').innerHTML = translate(this.buttonKey)
+      }
     }
 
     document.getElementById('header-step').innerHTML = translate('shared.header.step')
@@ -195,7 +203,7 @@ export class ExerciseController {
 
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.
   // We use keys and params here so that they are updated when switching language
-  updateAlert (alertKey, alertParams, type) {
+  updateAlert (alertKey, alertParams, type, buttonKey, buttonCallback) {
     document.getElementById('exercise-alert-container').style.display = ''
     switch (type) {
       case 'hint':
@@ -213,6 +221,17 @@ export class ExerciseController {
     }
     this.alertKey = alertKey
     this.alertParams = alertParams
+    this.buttonKey = buttonKey
+    console.log(buttonKey)
+    const alertButton = document.getElementById('exercise-alert-button')
+    if (buttonKey !== undefined) {
+      alertButton.innerHTML = translate(buttonKey)
+      this.alertButtonCallback = buttonCallback
+      alertButton.style.display = ''
+    } else {
+      this.alertButtonCallback = undefined
+      alertButton.style.display = 'none'
+    }
     document.getElementById('exercise-alert-span').innerHTML = translate(alertKey, alertParams)
   }
 
