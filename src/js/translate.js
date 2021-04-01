@@ -1,4 +1,4 @@
-import { LogEXSession } from './logexSession.js'
+import { LogEXSession } from './logEXSession.js'
 
 class Translate {
   constructor () {
