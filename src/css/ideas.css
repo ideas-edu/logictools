@@ -201,11 +201,6 @@ input.kbinput {
     text-align:left;
 }
 
-#toggle-hint2, #toggle-hint1 {
-	float:right;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
 
 #auto-step {
 	float:right;
@@ -219,9 +214,13 @@ input.kbinput {
 
 #active-step {
 	padding-top:30px;
-	// doh: verlaagd van 30->10
 	padding-bottom:10px;
 }
+
+#active-step td:first-child {
+	padding-top:18px;
+}
+
 
 input.success {
 	border-color: green;
@@ -306,6 +305,10 @@ input.error, select.error {
 	font-size: 12px;
 }
 
+.alert svg {
+	margin-right: 10px;
+}
+
 .alert-primary {
     border-color: #b8b8b8;
     background: #fcfcfc;
@@ -314,21 +317,47 @@ input.error, select.error {
 
 
 .hint-alert {
-	color: #004085;
-	background-color: #cce5ff;
-	border-color: #b8daff;
+	font-weight: 600;
+	color: #fff;
+	background-color: #1665d8;
+	border-color:#1665d8;
+}
+
+.hint-alert svg {
+	margin-right: 10px;
+	font-size: 12px;
+	vertical-align: -.125em;
+}
+
+#toggle-hint2,
+#toggle-hint1 {
+	float:right;
+	color:#fff;
 }
 
 .error-alert {
-	color: #AA4000;
-	background-color: #ffcccc;
-	border-color: #cc9999;
+	font-weight: 600;
+	color: #fff;
+	background-color: #e2001a;
+	border-color: #e2001a;
+}
+.error-alert svg {
+	margin-right: 10px;
+	font-size: 12px;
+	vertical-align: -.125em;
 }
 
 .complete-alert {
-	color: #208020;
-	background-color: #ccffcc;
-	border-color: #99cc99;
+	font-weight: 600;
+	color: #fff;
+	background-color: #34aa44;
+	border-color: #34aa44;
+}
+
+.complete-alert svg {
+	margin-right: 10px;
+	font-size: 12px;
+	vertical-align: -.125em;
 }
 
 
@@ -380,23 +409,37 @@ th {
 }
 
 table {
-	border-bottom: 1px solid #E5E5E5;
+	border-bottom: 1px solid #e8e8e8;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fff;
 }
 
 
-
-table thead tr th {
+table thead th {
 	background-color: #fdfdfd;
 	padding: 9px 10px 9px!important;
-	border-bottom: 1px solid #e8e8e8;
-
+	border-bottom: 1px solid #e8e8e8!important;
 	color:#999;
 	font-size: 11px;
 	text-transform: uppercase;
 	font-weight: bold;
-
 }
 
+table th,
+table td {
+	border-top: 1px solid #e8e8e8!important;
+}
+
+table td:first-child {
+	padding-right: 0;
+}
+
+table td:first-child .katex {
+	margin-top:2px;
+	float:right;
+}
 
 
 
@@ -424,7 +467,7 @@ body.logexiframe {
 
 h4 {
 	margin:0;
-	padding: 23px 0;
+	padding: 23px 0 10px 0;
 	font-size: 18px;
 	font-weight: 600;
 }
@@ -433,9 +476,7 @@ h4 {
 	margin:14px 0;
 }
 
-hr {
-	margin:0;
-}
+
 
 
 
@@ -471,6 +512,7 @@ hr {
 
 .dropdown-item {
 	padding: 10px 10px;
+	font-weight: 400!important;
 }
 
 .dropdown-item:hover {
@@ -518,6 +560,6 @@ button {
 	height: 37px;
 }
 
-.active {
-	color: #2B68D1;
+#exercise-container {
+	margin-bottom: 1rem;
 }
