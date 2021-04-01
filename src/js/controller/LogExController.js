@@ -1,6 +1,8 @@
 import { ExerciseController } from './ExerciseController.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
+import { UserRules } from '../model/rules.js'
+import { translate } from '../translate.js'
 
 export class LogExController extends ExerciseController {
   constructor () {
@@ -81,6 +83,10 @@ export class LogExController extends ExerciseController {
       }
     ]
 
+    document.getElementById('validate-step').addEventListener('click', function () {
+      this.validateStep()
+    }.bind(this))
+
     if (document.getElementById('rule-switch')) {
       document.getElementById('rule-switch').addEventListener('click', function () {
         this.changeRuleJustification()
@@ -90,6 +96,35 @@ export class LogExController extends ExerciseController {
     document.getElementById('step-validation-switch').addEventListener('click', function () {
       this.changeStepValidation()
     }.bind(this))
+  }
+
+  /**
+        Initializes drop down box for rules from Rules dictionary
+     */
+  initializeRules (comboRule) {
+    // Clear ruleset if already set
+    comboRule.innerHTML = ''
+    const select = document.createElement('option')
+    select.innerHTML = translate('shared.button.selectRule')
+    comboRule.appendChild(select)
+
+    for (const rule of UserRules) {
+      // Rule will only be displayed if it has not already been displayed
+      const option = document.createElement('option')
+      option.innerHTML = translate(`rule.${rule}`)
+      comboRule.appendChild(option)
+    }
+    // Show '-- Select rule --'
+    comboRule.selectedIndex = 0
+  }
+
+  disableUI (disable) {
+    const inputs = document.getElementsByTagName('input')
+    for (const input of inputs) {
+      input.disabled = disable
+    }
+
+    document.getElementById('wait-exercise').style.display = disable ? '' : 'none'
   }
 
   /**
@@ -151,6 +186,7 @@ export class LogExController extends ExerciseController {
   }
 
   changeRuleJustification () {
+    console.log('here')
     const usesRuleJustification = document.getElementById('rule-switch').checked
     if (this.exercise) {
       this.exercise.usesRuleJustification = usesRuleJustification

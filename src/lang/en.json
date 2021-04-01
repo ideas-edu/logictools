@@ -17,6 +17,24 @@
 			"DNV": "Convert {{formula}} to disjunctive normal form",
 			"CNV": "Convert {{formula}} to conjunctive normal form"
 		},
+		"buttons": {
+			"validateExercise": {
+				"DNV": "Is in DNF?",
+				"CNV": "Is in CNF?"
+			}
+		},
+		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+	},
+	"twoWay": {
+		"title": "Prove Logical Equivalence",
+		"instruction": {
+			"begin": "Select an exercise to get started!",
+			"exercise": "Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
+		},
+		"buttons": {
+			"topDown": "<i class='fas fa-chevron-down'></i> Top-down",
+			"bottomUp": "<i class='fas fa-chevron-up'></i> Bottom-up"
+		},
 		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
 	},
 	"rule": {
@@ -96,10 +114,6 @@
 			"validateStep": "<i class='fas fa-check'></i>",
 			"step": "Show step",
 			"solveExercise": "Show complete derivation",
-			"validateExercise": {
-				"DNV": "Is in DNF?",
-				"CNV": "Is in CNF?"
-			},
 			"newExercise": "Manual entry",
 			"selectExercise": "Select Exercise",
 			"generateExerciseEasy": "Easy",

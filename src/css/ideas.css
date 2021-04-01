@@ -517,3 +517,7 @@ button {
 	font-size: 13px;
 	height: 37px;
 }
+
+.active {
+	color: #2B68D1;
+}

@@ -73,14 +73,9 @@ class OneWayController extends LogExController {
     this.exerciseValidator = new OneWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
 
-    document.getElementById('validate-step').addEventListener('click', function () {
-      this.validateStep()
+    document.getElementById('validate-exercise').addEventListener('click', function () {
+      this.validateExercise()
     }.bind(this))
-
-    $('body').on('click', 'button.remove-top-step', function () {
-      $('#formula').popover('dispose')
-      this.removeTopStep($(this))
-    })
 
     $('body').on('focusout', '.retryFormula', function () {
       this.retryFormula($(this))
@@ -95,30 +90,6 @@ class OneWayController extends LogExController {
       $('#formula').popover('hide')
       $('.retryFormula').popover('hide')
       this.retryRule($(this))
-    })
-
-    // document.getElementById('rule').addEventListener('change', function () {
-    //   $('#formula').popover('hide')
-    //   $('.retryFormula').popover('hide')
-    //   this.clearErrors()
-    // }.bind(this))
-
-    $('body').on('focus', '#formula', function () {
-      $('#formula').popover('hide')
-      $('.retryFormula').popover('hide')
-    })
-
-    $('body').on('focus', '.retryFormula', function () {
-      $('#formula').popover('hide')
-    })
-
-    $('#formula').bind('paste cut', function () {
-      setTimeout(function () {
-        // $('#formula').kbinput('tidy')
-        $('#equivsign').attr('src', 'img/equivsignok.png')
-        $('#formula').removeClass('error')
-        $('#formula').tooltip('dispose')
-      }, 100)
     })
   }
 
@@ -142,27 +113,14 @@ class OneWayController extends LogExController {
 
   updateTexts () {
     super.updateTexts()
-    this.initializeRules(document.getElementById('rule'))
-  }
-
-  /**
-        Initializes drop down box for rules from Rules dictionary
-     */
-  initializeRules (comboRule) {
-    // Clear ruleset if already set
-    comboRule.innerHTML = ''
-    const select = document.createElement('option')
-    select.innerHTML = translate('shared.button.selectRule')
-    comboRule.appendChild(select)
-
-    for (const rule of UserRules) {
-      // Rule will only be displayed if it has not already been displayed
-      const option = document.createElement('option')
-      option.innerHTML = translate(`rule.${rule}`)
-      comboRule.appendChild(option)
+    document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
+    if (this.exercise !== null) {
+      document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
+    } else {
+      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
     }
-    // Show '-- Select rule --'
-    comboRule.selectedIndex = 0
+    this.initializeRules(document.getElementById('rule'))
+    document.getElementById('validate-exercise').innerHTML = translate(`oneWay.button.validateExercise.${this.exerciseType}`)
   }
 
   /**
@@ -170,26 +128,6 @@ class OneWayController extends LogExController {
      */
   reset () {
     this.clearErrors()
-    $('#formula').popover('dispose')
-    $('#formula').blur()
-    // $('#formula').val('')
-    $('#exercise').hide()
-    $('#exercise-left-formula').html('')
-    $('#exercise-right-formula').html('')
-    $('.exercise-step-added').remove()
-    $('#exercise-steps div.exercise-step-added-bottom').remove()
-    $('#exercise-steps div.exercise-step-added-top').remove()
-    $('#exercise-steps div.last-step').remove()
-
-    if ($('#new-exercise-content')) {
-      $('#new-exercise-content').remove()
-    }
-  }
-
-  disableUI (disable) {
-    $(':input').attr('disabled', disable)
-
-    document.getElementById('wait-exercise').style.display = disable ? '' : 'none'
   }
 
   /**
@@ -338,14 +276,6 @@ class OneWayController extends LogExController {
     }
 
     document.getElementById('step-validation-switch').disabled = false // $('#step-validation-switch').bootstrapSwitch('disabled', true) // true || false
-  }
-
-  /**
-        Handles the event that an exercise is generated
-     */
-  onExerciseGenerated (exercise) {
-    this.exercise = exercise
-    this.showExercise()
   }
 
   /**
@@ -757,6 +687,11 @@ class OneWayController extends LogExController {
     }
   }
 
+  insertStep (step, canDelete) {
+    super.insertStep(step, canDelete)
+    document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
+  }
+
   renderStep (step, canDelete) {
     let rule = ''
     let arrow = null
@@ -827,35 +762,6 @@ class OneWayController extends LogExController {
     document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
   }
 
-  /**
-        Removes the top steps, starting at the specified source index
-
-        @param source - The source DOM element
-     */
-  removeTopStep (source) {
-    const parent = source.parents('div.exercise-step-added')
-    const allExerciseSteps = $('#exercise-steps div.exercise-step-added')
-    const index = allExerciseSteps.index(parent)
-    const step = this.exercise.getCurrentStep()
-    const state = [this.exercise.type, step.strategyStatus, step.formula, '']
-
-    this.clearErrors()
-    this.exercise.steps.removeTopSteps(index)
-
-    allExerciseSteps.slice(index).remove()
-
-    $('#formula').val(this.exercise.getCurrentStep().formula)
-    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
-    $('#formulaoriginal').val($('#formula').val())
-
-    // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
-    $('#formula').blur()
-    $('#formula').focus()
-
-    // Log the use of undo
-    IdeasServiceProxy.log(state, 'undo')
-  }
-
   retryFormula (source) {
     const parent = source.parents('div.exercise-step-added')
     const allExerciseSteps = $('#exercise-steps div.exercise-step-added')
@@ -870,28 +776,5 @@ class OneWayController extends LogExController {
     const index = allExerciseSteps.index(parent)
 
     this.exercise.steps.steps[index].rule = source.val()
-  }
-
-  /**
-        Removes the bottom steps, starting at the specified source index
-
-        @param source - The source DOM element
-     */
-  removeBottomStep (source) {
-    this.clearErrors()
-    const parent = source.parents('div.exercise-step-added-bottom')
-    const allExerciseSteps = $('#exercise-steps div.exercise-step-added-bottom')
-    const index = (allExerciseSteps.length - allExerciseSteps.index(parent) - 1)
-
-    this.exercise.steps.removeBottomSteps(index)
-    allExerciseSteps.slice(0, allExerciseSteps.index(parent) + 1).remove()
-
-    $('#formula').val(this.exercise.getCurrentStep().equation.formula)
-    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
-    $('#formulaoriginal').val($('#formula').val())
-
-    // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
-    $('#formula').blur()
-    $('#formula').focus()
   }
 }

@@ -19,18 +19,8 @@ export class ExerciseController {
       this.alertButtonCallback()
     }.bind(this))
 
-    // document.getElementById('generate-exercise').addEventListener('click', function () {
-    //   if (config.randomExercises) {
-    //     this.generateExercise()
-    //   }
-    // }.bind(this))
-
     document.getElementById('solve-exercise').addEventListener('click', function () {
       this.showSolution()
-    }.bind(this))
-
-    document.getElementById('validate-exercise').addEventListener('click', function () {
-      this.validateExercise()
     }.bind(this))
 
     document.getElementById('show-next-step').addEventListener('click', function () {
@@ -48,16 +38,9 @@ export class ExerciseController {
   }
 
   updateTexts () {
-    document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
-    if (this.exercise !== null) {
-      document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
-    } else {
-      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
-    }
     document.getElementById('validate-step').innerHTML = translate('shared.button.validateStep')
     document.getElementById('show-next-step').innerHTML = translate('shared.button.step')
     document.getElementById('solve-exercise').innerHTML = translate('shared.button.solveExercise')
-    document.getElementById('validate-exercise').innerHTML = translate(`shared.button.validateExercise.${this.exerciseType}`)
     document.getElementById('new-exercise').innerHTML = translate('shared.button.newExercise')
     document.getElementById('select-exercise').innerHTML = translate('shared.button.selectExercise')
     document.getElementById('generate-exercise-easy').innerHTML = translate('shared.button.generateExerciseEasy')
@@ -175,6 +158,14 @@ export class ExerciseController {
   }
 
   /**
+        Handles the event that an exercise is generated
+     */
+  onExerciseGenerated (exercise) {
+    this.exercise = exercise
+    this.showExercise()
+  }
+
+  /**
         Inserts a proof step
 
         @param {ProofStep} step - The proof step
@@ -182,6 +173,7 @@ export class ExerciseController {
      */
   insertStep (step, canDelete) {
     this.dismissAlert()
+    console.log(this)
     const exerciseStep = document.createElement('tr')
     exerciseStep.classList.add('exercise-step')
     exerciseStep.setAttribute('number', step.number)
@@ -198,7 +190,6 @@ export class ExerciseController {
     tableBody.insertAdjacentElement('beforebegin', exerciseStep)
 
     this.formulaPopover.previousValue = step.formula
-    document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
   }
 
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.

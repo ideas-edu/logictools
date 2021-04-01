@@ -8,6 +8,8 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
+import katex from 'katex'
+
 import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
 
 import { LogExController } from './LogExController.js'
@@ -24,69 +26,38 @@ import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
+import { translate, loadLanguage } from '../translate.js'
 
-jsrender($); // load JsRender jQuery plugin methods
+jsrender($) // load JsRender jQuery plugin methods
 
-(function () {
-  $(document).ready(function () {
-    const controller = new TwoWayController()
-    controller.getExerciseType()
-    controller.initializeStepValidation()
-    controller.initializeButtons()
-    controller.initializeInput()
-    controller.setExampleExercises()
-    controller.initializeLabels()
-    controller.initializeRules()
-    controller.bindExampleExercises()
-    if (config.randomExercises) {
-      controller.generateExercise()
-    } else {
-      controller.useExercise(0)
-    }
-  })
-})()
-
-/**
-    TwoWayController is responsible for handling all user interaction and manipulation of the user interface.
-    @constructor
- */
-
-const UITranslator = {
-  translate: function (exerciseType) {
-    'use strict'
-    const language = LogEXSession.getLanguage()
-    const exampleExercises = config.exampleExercises[exerciseType]
-    $('#button-' + language).addClass('active')
-
-    $('#ok-top').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'send'))
-    $('#ok-bottom').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'send'))
-    $('#show-next-step').html(Resources.getText(language, 'step'))
-    $('#showderivation').html("<i class='fas fa-key'> </i> " + Resources.getText(language, 'showderivation'))
-    $('#derivationdone').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'derivationdone'))
-    $('#add-step-top').html("<i class='icon-sort-down'></i> " + Resources.getText(language, 'add-step-top'))
-    $('#add-step-bottom').html("<i class='icon-sort-up'></i> " + Resources.getText(language, 'add-step-bottom'))
-    $('#new-exercise').html(Resources.getText(language, 'new-exercise'))
-    $('#generate-exercise-easy').html(Resources.getText(language, 'exeasy'))
-    $('#generate-exercise-normal').html(Resources.getText(language, 'exnormal'))
-    $('#generate-exercise-difficult').html(Resources.getText(language, 'exhard'))
-    $('#new-exercise').html(Resources.getText(language, 'new-exercise'))
-
-    for (let i = 0; i < exampleExercises.length; i++) {
-      const nr = exampleExercises[i] + 1
-      const id = 'exercise' + nr
-      $('#' + id).html(Resources.getText(language, 'exercise') + ' ' + nr)
-    }
-
-    $('#help').html("<i class='fas fa-question-circle'></i> " + Resources.getText(language, 'help'))
-    $('#help').attr('href', 'LogEQ_manual_' + language + '.pdf').attr('target', '_new')
-    $('#logout').html("<i class='fas fa-signout'></i> " + Resources.getText(language, 'logout'))
-    if ($('#create-exercise-button-content') !== null) {
-      $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(language, 'create-exercise-button'))
-    }
-
-    $('#step-validation-switch-label').html(Resources.getText(language, 'stepvalidation'))
+function ready (fn) {
+  if (document.readyState !== 'loading') {
+    fn()
+  } else {
+    document.addEventListener('DOMContentLoaded', fn)
   }
 }
+
+function setUp () {
+  const controller = new TwoWayController()
+  controller.getExerciseType()
+  window.UITranslate = function () {
+    const language = LogEXSession.getLanguage()
+    const langCallback = function () {
+      controller.updateTexts()
+    }
+    loadLanguage(language, langCallback)
+  }
+  controller.initializeStepValidation()
+  controller.initializeButtons()
+  controller.initializeInput()
+  controller.initializeLabels()
+  controller.initializeRules(document.getElementById('rule'))
+  controller.setExampleExercises()
+  controller.bindExampleExercises()
+}
+
+ready(setUp)
 
 const EXERCISE_TYPE = 'exerciseType'
 const START = 'START'
@@ -119,23 +90,7 @@ class TwoWayController extends LogExController {
     this.exerciseSolver = new TwoWayExerciseSolver()
     this.exerciseValidator = new TwoWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
-
-    // user interface bindings
-    $('#lang-NL').click(function () {
-      LogEXSession.setLanguage('NL')
-      this.initializeLabels()
-      this.initializeRules()
-      $('#button-NL').addClass('active')
-      $('#button-EN').removeClass('active')
-    })
-
-    $('#lang-EN').click(function () {
-      LogEXSession.setLanguage('EN')
-      this.initializeLabels()
-      this.initializeRules()
-      $('#button-EN').addClass('active')
-      $('#button-NL').removeClass('active')
-    })
+    this.exerciseType = 'logeq'
 
     $('#generate-exercise').click(function () {
       if (config.randomExercises) {
@@ -276,19 +231,14 @@ class TwoWayController extends LogExController {
   }
 
   /**
-      Creates the popover for the input of symbols
+        Creates the popover for the input of symbols
     */
   initializeInput () {
-    const formulaOptions1 = {
+    const formulaOptions = {
       id: 1,
       characters: this.characterOptions
     }
-    const formulaOptions2 = {
-      id: 2,
-      characters: this.characterOptions
-    }
-    this.formulaPopover1 = new FormulaPopover(document.getElementById('formula1'), document.getElementById('formula1-wrapper'), formulaOptions1)
-    this.formulaPopover2 = new FormulaPopover(document.getElementById('formula2'), document.getElementById('formula2-wrapper'), formulaOptions2)
+    this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('two-way-input'), formulaOptions)
   }
 
   /**
@@ -308,33 +258,23 @@ class TwoWayController extends LogExController {
 
   /**
         Initializes all buttons and label to correct language
-
      */
   initializeLabels () {
-    UITranslator.translate(this.exerciseType)
+    window.UITranslate()
   }
 
-  /**
-        Initializes drop down box for rules from Rules dictionary
-
-     */
-  initializeRules () {
-    const language = LogEXSession.getLanguage()
-    let previousRule = START // For unification of the Rules list
-    let rule
-
-    // Clear ruleset if already set
-    $(RULE_LISTBOX_TOP).find('option').remove().end()
-    $(RULE_LISTBOX_BOTTOM).find('option').remove().end()
-
-    for (rule in Rules) {
-      // NB: Rule will only be displayed if it has not already been displayed
-      if (Object.prototype.hasOwnProperty.call(Rules, rule) && Resources.getRule(language, rule) !== previousRule) {
-        $('<option/>').val(rule).html(Resources.getRule(language, rule)).appendTo(RULE_LISTBOX_TOP)
-        $('<option/>').val(rule).html(Resources.getRule(language, rule)).appendTo(RULE_LISTBOX_BOTTOM)
-        previousRule = Resources.getRule(language, rule)
-      }
+  updateTexts () {
+    super.updateTexts()
+    document.getElementById('exercise-title').innerHTML = translate('twoWay.title')
+    if (this.exercise !== null) {
+      document.getElementById('instruction').innerHTML = translate('twoWay.instruction.exercise', {
+        topFormula: this.exercise.equation.formula1katex,
+        bottomFormula: this.exercise.equation.formula2katex
+      })
+    } else {
+      document.getElementById('instruction').innerHTML = translate('twoWay.instruction.begin')
     }
+    this.initializeRules(document.getElementById('rule'))
   }
 
   /**
@@ -417,77 +357,28 @@ class TwoWayController extends LogExController {
   }
 
   /**
-        Zebra stripes the proof steps.
-
-        @param rows - The proof step rows
-     */
-  colorRows (rows) {
-    if (!rows) {
-      this.colorRows($('.exercise-step-added-top'))
-      this.colorRows($($('.exercise-step-added-bottom').get().reverse()))
-      return
-    }
-
-    let toggle = -1
-
-    rows.each(function () {
-      if (toggle < 0) {
-        $(this).addClass('oneven')
-      } else {
-        $(this).removeClass('oneven')
-      }
-      toggle = toggle * -1
-    })
-  }
-
-  /**
         Resets the UI to its original state.
      */
   reset () {
     this.clearErrors()
-
-    $(FORMULA1).popover(DESTROY)
-    $(FORMULA1).blur()
-    $(FORMULA1).val('')
-    $(FORMULA2).popover(DESTROY)
-    $(FORMULA2).blur()
-    $(FORMULA2).val('')
-    $(EXERCISE).hide()
-    $(EXERCISE_LEFT_FORMULA).html('')
-    $(EXERCISE_RIGHT_FORMULA).html('')
-    $(EXERCISE_ADDED_STEP).remove()
-    $(EXERCISE_BOTTOM_STEPS).remove()
-    $(EXERCISE_TOP_STEPS).remove()
-    $(EXERCISE_LAST_STEP).remove()
-
-    if ($(NEW_EXERCISE_CONTENT)) {
-      $(NEW_EXERCISE_CONTENT).remove()
-    }
-  }
-
-  disableUI (disable) {
-    $(':input').attr('disabled', disable)
-
-    if (disable) {
-      $('#wait-exercise').show()
-    } else {
-      $('#wait-exercise').hide()
-    }
   }
 
   /**
         Get an example exercise.
      */
   useExercise (exnr) {
-    const stepValidation = document.getElementById('step-validation-switch').checked
+    const properties = {
+      stepValidation: document.getElementById('step-validation-switch').checked
+    }
 
-    this.reset()
-    $('#show-hint').hide()
-    $('#show-next-step').hide()
-    this.disableUI(true)
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'exercise') + ' ' + (exnr + 1))
-    this.exerciseGenerator.example(exnr, this.exerciseType, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    super.useExercise(exnr, properties)
+    // this.reset()
+    // $('#show-hint').hide()
+    // $('#show-next-step').hide()
+    // this.disableUI(true)
+    // const language = LogEXSession.getLanguage()
+    // $('#newexercise').html(Resources.getText(language, 'exercise') + ' ' + (exnr + 1))
+    // this.exerciseGenerator.example(exnr, this.exerciseType, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
@@ -597,57 +488,128 @@ class TwoWayController extends LogExController {
     }; */
 
   /**
-        Handles the event that an exercise is generated
-     */
-  onExerciseGenerated (exercise) {
-    this.exercise = exercise
+    */
+  showExercise () {
     this.clearErrors()
 
-    $('#exercise-steps').show()
-    if ($(NEW_EXERCISE_CONTENT)) {
-      $(NEW_EXERCISE_CONTENT).remove()
+    // Remove old rows
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+    let stepRow = exerciseStepTable.firstElementChild
+    while (true) {
+      if (stepRow.classList.contains('exercise-step')) {
+        exerciseStepTable.removeChild(stepRow)
+        stepRow = exerciseStepTable.firstElementChild
+      } else {
+        break
+      }
     }
 
-    document.getElementById('exercise-left-formula').innerHTML = exercise.equation.formula1katex
-    document.getElementById('exercise-right-formula').innerHTML = exercise.equation.formula2katex
+    document.getElementById('header-actions').style.display = ''
 
-    $(FORMULA1).val(exercise.equation.formula1)
-    // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
-    $('#formula1original').val($(FORMULA1).val())
-    $(FORMULA2).val(exercise.equation.formula2)
-    // $(FORMULA2).kbinput('setPreviousValue', $(FORMULA2).val())
-    $('#formula2original').val($(FORMULA2).val())
-    this.exercise = exercise
+    // Insert first row
+    this.insertStep(this.exercise.steps.topSteps[0], false)
+    this.insertStep(this.exercise.steps.bottomSteps[0], false)
+
+    document.getElementById('instruction').innerHTML = translate('twoWay.instruction.exercise', {
+      topFormula: this.exercise.equation.formula1katex,
+      bottomFormula: this.exercise.equation.formula2katex
+    })
+
+    document.getElementById('active-step').style.display = ''
+
+    $('#exercise-steps').show()
+    if ($('#new-exercise-content')) {
+      $('#new-exercise-content').remove()
+    }
+
+    $('#formula').val(this.exercise.formula)
+    $('#formulaoriginal').val($('#formula').val())
 
     this.disableUI(false)
-    $('#active-step-top').show()
-    $('#active-step-bottom').show()
-    $(EXERCISE).show()
-    $('#exercise-steps').show()
+
     if (config.displayDerivationButton) {
       $('#solve-exercise').show()
     }
     $('#validate-exercise').show()
-    $(EXERCISE_RIGHT_FORMULA).show()
+    $('#exercise-right-formula').show()
     $('#bottom').show()
-    $('#equivsign').attr('src', 'img/equivsign.png')
+    $('#equivsign').attr('src', 'img/equivsignok.png')
 
     // When using hotkeys focus on formula field must be reset
-    $(FORMULA1).blur()
-    $('#formula2').blur()
-    $(FORMULA1).focus()
+    if ((LogEXSession.getStudentId() > 0)) {
+      $('#formula').blur()
+      $('#formula').focus()
+    }
 
-    // Reset rules value at start
-    $(RULE_LISTBOX_TOP).val('')
-    $(RULE_LISTBOX_BOTTOM).val('')
+    // Reset rule value at start
+    document.getElementById('rule').selectedIndex = 0
 
-    document.getElementById('step-validation-switch').checked = true
+    // doh: zorg dat regelverantwoording niet undefined kan zijn
+    // this.exercise.usesRuleJustification = $('#rule-switch').bootstrapSwitch('state')
 
-    $('#active-step-bottom').hide()
-    $('#active-step-top').hide()
-    $('#add-step-bottom-button').show()
-    $('#add-step-top-button').show()
+    // rvl: Check if rule justification is needed
+    // if (this.exercise.usesRuleJustification) {
+    //   $('#rule').show()
+    // } else {
+    //   $('#rule').hide()
+    // }
+
+    document.getElementById('step-validation-switch').disabled = false // $('#step-validation-switch').bootstrapSwitch('disabled', true) // true || false
+    this.setProofDirection(null)
   }
+
+  /**
+        Handles the event that an exercise is generated
+     */
+  // onExerciseGenerated (exercise) {
+  //   this.exercise = exercise
+  //   this.clearErrors()
+
+  //   $('#exercise-steps').show()
+  //   if ($(NEW_EXERCISE_CONTENT)) {
+  //     $(NEW_EXERCISE_CONTENT).remove()
+  //   }
+
+  //   // document.getElementById('exercise-left-formula').innerHTML = exercise.equation.formula1katex
+  //   // document.getElementById('exercise-right-formula').innerHTML = exercise.equation.formula2katex
+
+  //   // $(FORMULA1).val(exercise.equation.formula1)
+  //   // // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
+  //   // $('#formula1original').val($(FORMULA1).val())
+  //   // $(FORMULA2).val(exercise.equation.formula2)
+  //   // // $(FORMULA2).kbinput('setPreviousValue', $(FORMULA2).val())
+  //   // $('#formula2original').val($(FORMULA2).val())
+  //   // this.exercise = exercise
+
+  //   // this.disableUI(false)
+  //   // $('#active-step-top').show()
+  //   // $('#active-step-bottom').show()
+  //   // $(EXERCISE).show()
+  //   // $('#exercise-steps').show()
+  //   // if (config.displayDerivationButton) {
+  //   //   $('#solve-exercise').show()
+  //   // }
+  //   // $('#validate-exercise').show()
+  //   // $(EXERCISE_RIGHT_FORMULA).show()
+  //   // $('#bottom').show()
+  //   // $('#equivsign').attr('src', 'img/equivsign.png')
+
+  //   // // When using hotkeys focus on formula field must be reset
+  //   // $(FORMULA1).blur()
+  //   // $('#formula2').blur()
+  //   // $(FORMULA1).focus()
+
+  //   // // Reset rules value at start
+  //   // $(RULE_LISTBOX_TOP).val('')
+  //   // $(RULE_LISTBOX_BOTTOM).val('')
+
+  //   // document.getElementById('step-validation-switch').checked = true
+
+  //   // $('#active-step-bottom').hide()
+  //   // $('#active-step-top').hide()
+  //   // $('#add-step-bottom-button').show()
+  //   // $('#add-step-top-button').show()
+  // }
 
   /**
         Handles the error that an exercise can not generated
@@ -1057,7 +1019,7 @@ class TwoWayController extends LogExController {
         }
 
         if (!this.isRuleValid && i > 0) {
-          this.initializeRules($('#rule' & i))
+          // this.initializeRules($('#rule' & i))
         }
       }
       i++
@@ -1352,51 +1314,151 @@ class TwoWayController extends LogExController {
     }
   }
 
+  setProofDirection (direction) {
+    const topBuffer = document.getElementById('empty-top-step')
+    const bottomBuffer = document.getElementById('empty-bottom-step')
+    const activeStep = document.getElementById('active-step')
+    const activeArrow = document.getElementById('active-arrow')
+
+    if (direction === 'down') {
+      topBuffer.style.display = 'none'
+      bottomBuffer.style.display = ''
+      activeStep.style.display = ''
+      activeArrow.innerHTML = '<i class="fas fa-arrow-down"></i>'
+    }
+    if (direction === 'up') {
+      topBuffer.style.display = ''
+      bottomBuffer.style.display = 'none'
+      activeStep.style.display = ''
+      activeArrow.innerHTML = '<i class="fas fa-arrow-up"></i>'
+    }
+    if (direction === null) {
+      topBuffer.style.display = 'none'
+      bottomBuffer.style.display = ''
+      activeStep.style.display = 'none'
+    }
+  }
+
+  /**
+        Inserts a proof step
+
+        @param {ProofStep} step - The proof step
+        @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
+     */
+  insertStep (step, canDelete) {
+    this.dismissAlert()
+    console.log(this)
+    const exerciseStep = document.createElement('tr')
+    exerciseStep.classList.add('exercise-step')
+    exerciseStep.setAttribute('number', step.number)
+    exerciseStep.innerHTML = this.renderStep(step, canDelete)
+
+    if (canDelete) {
+      const deleteButton = exerciseStep.getElementsByClassName('delete-step')[0]
+      deleteButton.addEventListener('click', function () {
+        this.removeStep(step.number)
+      }.bind(this))
+    }
+
+    if (step.isTopStep) {
+      const topBuffer = document.getElementById('empty-top-step')
+      topBuffer.insertAdjacentElement('beforebegin', exerciseStep)
+    } else {
+      const bottomBuffer = document.getElementById('empty-bottom-step')
+      bottomBuffer.insertAdjacentElement('afterend', exerciseStep)
+    }
+
+    this.formulaPopover.previousValue = step.formula
+    if (step.isTopStep) {
+      document.getElementById('top-step').innerHTML = translate('twoWay.buttons.topDown')
+      document.getElementById('top-step').addEventListener('click', function () {
+        this.setProofDirection('down')
+      }.bind(this))
+    } else {
+      document.getElementById('bottom-step').innerHTML = translate('twoWay.buttons.bottomUp')
+      document.getElementById('bottom-step').addEventListener('click', function () {
+        this.setProofDirection('up')
+      }.bind(this))
+    }
+  }
+
   /**
         Inserts a proof step
 
         @param {TwoWayStep} step - The proof step
         @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
      */
-  insertStep (step, canDelete) {
-    // dit is de start opgave
-    if (!step.isTopStep && !step.isBottomStep) {
-      return
+  // insertStep (step, canDelete) {
+  //   // dit is de start opgave
+  //   if (!step.isTopStep && !step.isBottomStep) {
+  //     return
+  //   }
+
+  //   const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
+  //   let stepTemplate
+  //   let error
+
+  //   // todo
+  //   // error boodschap bepalen aan de hand van step
+
+  //   if (step.isTopStep) {
+  //     stepTemplate = $('#exercise-top-step-template')
+  //   } else {
+  //     stepTemplate = $('#exercise-bottom-step-template')
+  //   }
+
+  //   const exerciseStepHtml = stepTemplate.render({
+  //     error: error,
+  //     rule: rule,
+  //     leftformula: step.equation.formula1katex,
+  //     rightformula: step.equation.formula2katex,
+  //     canDelete: canDelete,
+  //     isWrong: false,
+  //     hasRule: this.rule !== undefined,
+  //     step: 1,
+  //     stepValidation: true,
+  //     stepsremaining: step.stepsRemaining
+  //   })
+
+  //   if (step.isTopStep) {
+  //     $('#active-step-top').before(exerciseStepHtml)
+  //   } else {
+  //     $('#active-step-bottom').after(exerciseStepHtml)
+  //   }
+
+  //   this.colorRows()
+  // }
+
+  renderStep (step, canDelete) {
+    let rule = ''
+    let arrow = null
+    const stepTemplate = $.templates('#exercise-step-template')
+    const ruleKey = Rules[step.rule]
+
+    if (step.rule !== undefined) {
+      rule = translate(ruleKey)
     }
 
-    const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
-    let stepTemplate
-    let error
-
-    // todo
-    // error boodschap bepalen aan de hand van step
-
-    if (step.isTopStep) {
-      stepTemplate = $('#exercise-top-step-template')
-    } else {
-      stepTemplate = $('#exercise-bottom-step-template')
+    if (step.number > 1) {
+      arrow = katex.renderToString('\\Leftrightarrow', {
+        throwOnError: false
+      })
     }
 
     const exerciseStepHtml = stepTemplate.render({
-      error: error,
       rule: rule,
-      leftformula: step.equation.formula1katex,
-      rightformula: step.equation.formula2katex,
+      ruleKey: ruleKey,
+      formula: step.formulaKatex,
       canDelete: canDelete,
-      isWrong: false,
-      hasRule: this.rule !== undefined,
-      step: 1,
+      topStep: step.isTopStep,
+      bottomStep: step.isBottomStep,
+      step: step.number,
+      arrow: arrow,
       stepValidation: true,
-      stepsremaining: step.stepsRemaining
+      ruleJustification: true
     })
 
-    if (step.isTopStep) {
-      $('#active-step-top').before(exerciseStepHtml)
-    } else {
-      $('#active-step-bottom').after(exerciseStepHtml)
-    }
-
-    this.colorRows()
+    return exerciseStepHtml
   }
 
   /**

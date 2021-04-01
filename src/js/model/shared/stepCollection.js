@@ -6,13 +6,6 @@ import { Rules } from '../rules.js'
     @param {ProofStep} baseStep - The first proof step.
  */
 export class StepCollection {
-  constructor (baseStep) {
-    this.steps = []
-    if (baseStep !== null) {
-      this.push(baseStep)
-    }
-  }
-
   /**
         Gets the current step.
         @return {OneWayStep} The current step.
