@@ -10,7 +10,6 @@ import { Rules } from '../rules.js'
 export class TwoWayStepCollection extends StepCollection {
   constructor (equation) {
     super()
-    console.log(equation)
     this.topSteps = [new TwoWayStep(equation.formula1, undefined, 'top')]
     this.bottomSteps = [new TwoWayStep(equation.formula2, undefined, 'bottom')]
   }
@@ -40,7 +39,6 @@ export class TwoWayStepCollection extends StepCollection {
     if (Rules[proofStep.rule] === null) {
       return
     }
-    console.log(this, proofStep)
 
     if (this.steps[this.steps.length - 1] !== null) {
       proofStep.isTopStep = proofStep.equation.formula1 !== this.steps[this.steps.length - 1].equation.formula1

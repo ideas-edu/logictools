@@ -123,6 +123,7 @@
 			"selectRule": "-- Select rule --"
 		},
 		"header": {
+			"direction": "",
 			"step": "Step",
 			"formula": "Formula",
 			"rule": "Rule",

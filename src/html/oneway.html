@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="css/ideas.css">
 </head>
 
-<body class="logexiframe">
+<body class="oneWay-body">
 <!--[if lt IE 9]>
 	<p class="alert alert-error">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
 <![endif]-->
@@ -69,21 +69,21 @@
 			</thead>
 			<tbody id="exercise-step-table">
 				<tr id="active-step">
-					<td>
+					<td class="col-step">
 						<div class="active-circle circle"><span id="active-step-number"></span></div>
 						<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span>
 					</td>
-					<td>
+					<td class="col-formula">
 						<form class="kbinput">
 							<input type="text" class="form-control kbinput" id="formula">
 							<input type="hidden" id="formulaoriginal">
 							<div id="one-way-input" class="kbinput-wrapper"></div>
 						</form>
 					</td>
-					<td>
+					<td class="col-rule">
 						<select id="rule" class="form-control input custom-select"></select>
 					</td>
-					<td>
+					<td class="col-actions">
 						<button type="button" id="validate-step" class="btn btn-outline-secondary float-right"></button>
 						<button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="help-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
@@ -123,18 +123,18 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<td scope="row">
+			<td scope="row" class="col-step">
 				<div class="circle">{{>step}}</div> {{:arrow}}
 			</td>
-			<td>
+			<td class="col-formula">
 				<span class="oneway-formula">{{:formula}}</span>
 			</td>
-			<td>
+			<td class="col-rule">
 				{{if ruleJustification && rule }}
 					<span class="step-rule" key="{{:ruleKey}}">{{>rule}}</span>
 				{{/if}}
 			</td>
-			<td class="remove-step">
+			<td class="remove-step col-actions>
 				{{if canDelete && step > 0}}
 					<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
 				{{/if}}

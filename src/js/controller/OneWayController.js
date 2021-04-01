@@ -120,6 +120,7 @@ class OneWayController extends LogExController {
       document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
     }
     this.initializeRules(document.getElementById('rule'))
+    document.getElementById('header-step').innerHTML = translate('shared.header.step')
     document.getElementById('validate-exercise').innerHTML = translate(`oneWay.button.validateExercise.${this.exerciseType}`)
   }
 

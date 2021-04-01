@@ -58,7 +58,6 @@ export class ExerciseController {
       }
     }
 
-    document.getElementById('header-step').innerHTML = translate('shared.header.step')
     document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
     document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
     document.getElementById('header-actions').innerHTML = translate('shared.header.actions')

@@ -31,7 +31,7 @@ body {
 	min-height: 430px;
 }
 
-.logexiframe
+.oneWay-body, .twoWay-body
 {
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;
@@ -456,7 +456,7 @@ table td:first-child .katex {
 
 
 
-body.logexiframe {
+body.oneWay-body, body.twoWay-body {
 	padding:0;
 	border-radius: 4px;
 	border-color:#e8e8e8;
@@ -562,4 +562,8 @@ button {
 
 #exercise-container {
 	margin-bottom: 1rem;
+}
+
+.active {
+	color: #2B68D1;
 }

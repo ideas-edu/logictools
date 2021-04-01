@@ -274,6 +274,8 @@ class TwoWayController extends LogExController {
     } else {
       document.getElementById('instruction').innerHTML = translate('twoWay.instruction.begin')
     }
+    document.getElementById('header-direction').innerHTML = translate('shared.header.direction')
+
     this.initializeRules(document.getElementById('rule'))
   }
 
@@ -1370,12 +1372,12 @@ class TwoWayController extends LogExController {
 
     this.formulaPopover.previousValue = step.formula
     if (step.isTopStep) {
-      document.getElementById('top-step').innerHTML = translate('twoWay.buttons.topDown')
+      document.getElementById('top-step').innerHTML = translate('twoWay.button.topDown')
       document.getElementById('top-step').addEventListener('click', function () {
         this.setProofDirection('down')
       }.bind(this))
     } else {
-      document.getElementById('bottom-step').innerHTML = translate('twoWay.buttons.bottomUp')
+      document.getElementById('bottom-step').innerHTML = translate('twoWay.button.bottomUp')
       document.getElementById('bottom-step').addEventListener('click', function () {
         this.setProofDirection('up')
       }.bind(this))

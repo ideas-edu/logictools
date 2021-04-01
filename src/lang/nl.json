@@ -115,6 +115,7 @@
 			"selectRule": "-- Selecteer regel --"
 		},
 		"header": {
+			"direction": "",
 			"step": "Stap",
 			"formula": "Formule",
 			"rule": "Regel",
