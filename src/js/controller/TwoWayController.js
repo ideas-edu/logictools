@@ -1347,7 +1347,7 @@ class TwoWayController extends LogExController {
      */
   insertStep (step, canDelete) {
     this.dismissAlert()
-    console.log(this)
+
     const exerciseStep = document.createElement('tr')
     exerciseStep.classList.add('exercise-step')
     exerciseStep.setAttribute('number', step.number)

@@ -17,6 +17,12 @@
 			"DNV": "Zet {{formula}} om naar disjunctieve normaalvorm",
 			"CNV": "Zet {{formula}} om naar conjunctieve normaalvorm"
 		},
+		"button": {
+			"validateExercise": {
+				"DNV": "Is in DNV?",
+				"CNV": "Is in CNV?"
+			}
+		},
 		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
 	},
 	"rule": {

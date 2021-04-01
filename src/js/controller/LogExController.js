@@ -186,7 +186,6 @@ export class LogExController extends ExerciseController {
   }
 
   changeRuleJustification () {
-    console.log('here')
     const usesRuleJustification = document.getElementById('rule-switch').checked
     if (this.exercise) {
       this.exercise.usesRuleJustification = usesRuleJustification

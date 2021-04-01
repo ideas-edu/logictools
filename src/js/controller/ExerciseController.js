@@ -173,7 +173,7 @@ export class ExerciseController {
      */
   insertStep (step, canDelete) {
     this.dismissAlert()
-    console.log(this)
+
     const exerciseStep = document.createElement('tr')
     exerciseStep.classList.add('exercise-step')
     exerciseStep.setAttribute('number', step.number)
@@ -213,7 +213,7 @@ export class ExerciseController {
     this.alertKey = alertKey
     this.alertParams = alertParams
     this.buttonKey = buttonKey
-    console.log(buttonKey)
+
     const alertButton = document.getElementById('exercise-alert-button')
     if (buttonKey !== undefined) {
       alertButton.innerHTML = translate(buttonKey)

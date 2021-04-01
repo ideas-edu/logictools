@@ -17,7 +17,7 @@
 			"DNV": "Convert {{formula}} to disjunctive normal form",
 			"CNV": "Convert {{formula}} to conjunctive normal form"
 		},
-		"buttons": {
+		"button": {
 			"validateExercise": {
 				"DNV": "Is in DNF?",
 				"CNV": "Is in CNF?"
@@ -31,7 +31,7 @@
 			"begin": "Select an exercise to get started!",
 			"exercise": "Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
 		},
-		"buttons": {
+		"button": {
 			"topDown": "<i class='fas fa-chevron-down'></i> Top-down",
 			"bottomUp": "<i class='fas fa-chevron-up'></i> Bottom-up"
 		},
