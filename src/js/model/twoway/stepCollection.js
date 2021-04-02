@@ -14,12 +14,20 @@ export class TwoWayStepCollection extends StepCollection {
     this.bottomSteps = [new TwoWayStep(equation.formula2, undefined, 'bottom')]
   }
 
+    /**
+        Gets the current step.
+        @return {OneWayStep} The current step.
+     */
+  getCurrentStep () {
+    return this.topSteps[this.topSteps.length - 1]
+  }
+
   /**
     Gets all the top step.
         @return {ProofStep[]} The top steps.
     */
   getTopSteps () {
-    return this.steps.filter(step => step.isTopStep)
+    return this.topSteps
   }
 
   /**
@@ -27,7 +35,7 @@ export class TwoWayStepCollection extends StepCollection {
         @return {ProofStep[]} The bottom steps.
     */
   getBottomSteps () {
-    return this.steps.filter(step => step.isBottomStep)
+    return this.bottomSteps
   }
 
   /**

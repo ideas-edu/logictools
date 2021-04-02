@@ -123,7 +123,7 @@ export class ExerciseValidator {
     }
 
     const state = this.getState(exercise, step1)
-    const context = this.getContext(step2)
+    const context = this.getContext(exercise, step2)
 
     if (checkRule && index1 < exercise.steps.steps.length - 1) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
@@ -171,6 +171,7 @@ export class ExerciseValidator {
         @param onErrorValidatingStep - The callback function that is called if there is a problem validating the step.
      */
   validateStep (exercise, checkRule, step1, step2, onValidated, onErrorValidatingStep) {
+    console.log("Steps", step1, step2)
     let rule = null
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
@@ -245,8 +246,9 @@ export class ExerciseValidator {
 
     this.initializeStepStatus(step2)
 
-    const state = this.getState(exercise, step1)
-    const context = this.getContext(step2)
+    const state = this.getState(exercise, step1, step2)
+    const context = this.getContext(exercise, step2)
+    console.log("states", state, context)
     if (checkRule) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
     }

@@ -118,6 +118,15 @@ export class LogExController extends ExerciseController {
     comboRule.selectedIndex = 0
   }
 
+  getSelectedRuleKey () {
+    const index = document.getElementById('rule').selectedIndex
+    if (index === 0) {
+      return null
+    }
+    // Subtract 1 for '-- Select rule --'
+    return UserRules[index - 1]
+  }
+
   disableUI (disable) {
     const inputs = document.getElementsByTagName('input')
     for (const input of inputs) {

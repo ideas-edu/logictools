@@ -67,7 +67,7 @@
                     <tr id="empty-top-step"><td></td><td></td><td></td><td></td></tr>
                     <tr id="active-step" style="display: none">
                         <td class="col-direction">
-                            <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span>
+                            <span id="active-equiv"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span></span>
                             <span class="active" id="active-arrow"></span>
                         </td>
                         <td class="col-formula">
@@ -117,7 +117,15 @@
                 -->
             <script id="exercise-step-template" type="text/x-jsrender">
                 <td scope="row" class="col-direction">
-                    {{:arrow}}
+                    {{if topStep && !basis}}
+                        <i class='fas fa-arrow-down'></i>
+                    {{/if}}
+                    {{if bottomStep && !basis}}
+                        <i class='fas fa-arrow-up'></i>
+                    {{/if}}
+                    {{if !(topStep && basis)}}
+                        {{:arrow}}
+                    {{/if}}
                 </td>
                 <td class="col-formula">
                     <span class="twoway-formula">{{:formula}}</span>
@@ -128,14 +136,14 @@
                     {{/if}}
                 </td>
                 <td class="step-actions col-actions">
+                    {{if canDelete}}
+                        <button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+                    {{/if}}
                     {{if topStep}}
-                        <button type="button" class="btn btn-outline-secondary btn-sm float-right" id="top-step"><i class='fas fa-times'></i></button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm float-right" id="top-step"></button>
                     {{/if}}
                     {{if bottomStep}}
-                        <button type="button" class="btn btn-outline-secondary btn-sm float-right" id="bottom-step"><i class='fas fa-times'></i></button>
-                    {{/if}}
-                    {{if canDelete && step > 0}}
-                        <button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm float-right" id="bottom-step"></button>
                     {{/if}}
                 </td>
             </script>

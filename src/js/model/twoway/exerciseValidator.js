@@ -5,12 +5,13 @@ import { ExerciseValidator } from '../shared/exerciseValidator.js'
     @constructor
  */
 export class TwoWayExerciseValidator extends ExerciseValidator {
-  getState (exercise, step1) {
+  getState (exercise, step1, step2) {
+    console.log(exercise)
     const state = {
       exerciseid: exercise.type,
       prefix: step1.strategyStatus,
       context: {
-        term: step1.equation.getText(),
+        term: exercise.equation.getText(),
         environment: {},
         location: []
       }
@@ -19,9 +20,15 @@ export class TwoWayExerciseValidator extends ExerciseValidator {
     return state
   }
 
-  getContext (step2) {
+  getContext (exercise, step2) {
+    let term = null
+    if (step2.isTopStep) {
+      term = `${step2.formula} == ${exercise.equation.formula2}`
+    } else {
+      term = `${exercise.equation.formula1} == ${step2.formula}`
+    }
     const context = {
-      term: step2.equation.getText(),
+      term: term,
       environment: {},
       location: []
     }

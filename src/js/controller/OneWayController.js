@@ -23,7 +23,6 @@ import { OneWayStep } from '../model/oneway/step.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules, UserRules } from '../model/rules.js'
-import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
 import { translate, loadLanguage } from '../translate.js'
 
@@ -407,15 +406,6 @@ class OneWayController extends LogExController {
     this.updateAlert(msg, null, 'error')
   }
 
-  getSelectedRuleKey () {
-    const index = document.getElementById('rule').selectedIndex
-    if (index === 0) {
-      return null
-    }
-    // Subtract 1 for '-- Select rule --'
-    return UserRules[index - 1]
-  }
-
   /**
         Validates a step
 
@@ -606,7 +596,7 @@ class OneWayController extends LogExController {
       this.exercise.isReady = currentStep.isReady
 
       // bij auto step is formula nog niet goed gevuld
-      $('#formula').val(currentStep.formula)
+      document.getElementById('formula').value = currentStep.formula
       // $('#formula').kbinput('setPreviousValue', $('#formula').val())
       $('#formulaoriginal').val($('#formula').val())
 
@@ -754,7 +744,7 @@ class OneWayController extends LogExController {
   removeStep (index) {
     const exerciseStepTable = document.getElementById('exercise-step-table')
 
-    for (let i = exerciseStepTable.children.length - 1; i >= 0 ; i--) {
+    for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {
       if (exerciseStepTable.children[i].getAttribute('number') >= index) {
         exerciseStepTable.removeChild(exerciseStepTable.children[i])
       }

@@ -60,19 +60,12 @@ function setUp () {
 ready(setUp)
 
 const EXERCISE_TYPE = 'exerciseType'
-const START = 'START'
 const RULE_LISTBOX_TOP = '#rule-top'
 const RULE_LISTBOX_BOTTOM = '#rule-bottom'
 const FORMULA1 = '#formula1'
 const FORMULA2 = '#formula2'
-const EXERCISE = '#exercise'
-const EXERCISE_LEFT_FORMULA = '#exercise-left-formula'
-const EXERCISE_RIGHT_FORMULA = '#exercise-right-formula'
-const EXERCISE_ADDED_STEP = '.exercise-step-added'
 const EXERCISE_BOTTOM_STEPS = '#exercise-steps div.exercise-step-added-bottom'
 const EXERCISE_TOP_STEPS = '#exercise-steps div.exercise-step-added-top'
-const EXERCISE_LAST_STEP = '#exercise-steps div.last-step'
-const NEW_EXERCISE_CONTENT = '#new-exercise-content'
 
 const TOP = 'top'
 const ERROR = 'error'
@@ -91,143 +84,13 @@ class TwoWayController extends LogExController {
     this.exerciseValidator = new TwoWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
     this.exerciseType = 'logeq'
+    this.proofDirection = null
 
     $('#generate-exercise').click(function () {
       if (config.randomExercises) {
         this.generateExercise()
       }
     }.bind(this))
-
-    $('#validate-step-top').click(function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-      this.validateStep(true)
-    }.bind(this))
-
-    $('#validate-step-bottom').click(function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-      this.validateStep(false)
-    }.bind(this))
-
-    $('body').on('click', 'button.remove-top-step', function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-      this.removeTopStep($(this))
-    })
-
-    $('body').on('click', 'button.remove-bottom-step', function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-      this.removeBottomStep($(this))
-    })
-
-    $('body').on('focusout', '.retryFormula', function () {
-      this.retryFormula($(this))
-    })
-
-    $('body').on('focusout', '.retryRule', function () {
-      this.retryRule($(this))
-    })
-
-    $(RULE_LISTBOX_TOP).change(function () {
-      this.clearErrors()
-    }.bind(this))
-
-    $(RULE_LISTBOX_BOTTOM).change(function () {
-      this.clearErrors()
-    }.bind(this))
-
-    $('body').on('focus', FORMULA1, function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-    })
-    $('body').on('focus', FORMULA2, function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-    })
-
-    $(FORMULA1).bind('paste cut', function () {
-      setTimeout(function () {
-        $(FORMULA1).kbinput('tidy')
-        $(FORMULA2).kbinput('undo')
-        $('#equivsign').attr('src', 'img/equivsign.png')
-        $(FORMULA1).removeClass('error')
-        $(FORMULA1).tooltip(DESTROY)
-      }, 100)
-    })
-
-    $('body').on('focus', '.retryFormula', function () {
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-      $('.retryFormula').popover(DESTROY)
-      $('.retryFormula').popover('hide')
-    })
-
-    $(FORMULA2).bind('paste cut', function () {
-      setTimeout(function () {
-        $(FORMULA2).kbinput('tidy')
-        $(FORMULA1).kbinput('undo')
-        $('#equivsign').attr('src', 'img/equivsign.png')
-        $(FORMULA2).removeClass('error')
-        $(FORMULA2).tooltip(DESTROY)
-      }, 100)
-    })
-
-    $('#add-step-top-button').click(function () {
-      $('#active-step-top').show()
-      $('#active-step-bottom').hide()
-      $('#add-step-top-button').hide()
-
-      // toon de hint/next-step button
-      if (config.displayHintButton) {
-        $('#show-hint').show()
-      }
-      if (config.displayNextStepButton) {
-        $('#show-next-step').show()
-      }
-      $('#add-step-bottom-button').show()
-
-      // 20140430
-      $(FORMULA2).val($('#formula2original').val())
-
-      // verberg de hint popover als we van richting wisselen
-      // formula.popover(DESTROY);
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-    })
-
-    $('#add-step-bottom-button').click(function () {
-      $('#active-step-bottom').show()
-      $('#active-step-top').hide()
-      $('#add-step-bottom-button').hide()
-
-      // toon de hint/next-step button
-      if (config.displayHintButton) {
-        $('#show-hint').show()
-      }
-      if (config.displayNextStepButton) {
-        $('#show-next-step').show()
-      }
-
-      // verberg de hint popover als we van richting wisselen
-      // formula.popover(DESTROY);
-      $(FORMULA1).popover(DESTROY)
-      $(FORMULA2).popover(DESTROY)
-
-      $('#add-step-top-button').show()
-
-      // 20140430
-      $(FORMULA1).val($('#formula1original').val())
-
-      // $(FORMULA2).val(this.exercise.getCurrentStep().equation.formula2);
-    })
   }
 
   /**
@@ -241,20 +104,20 @@ class TwoWayController extends LogExController {
     this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('two-way-input'), formulaOptions)
   }
 
-  /**
-        Gets the exercisetype as given in the querystring
-    */
-  getExerciseType () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-    for (let i = 0; i < sURLVariables.length; i++) {
-      const sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === EXERCISE_TYPE) {
-        this.exerciseType = sParameterName[1]
-        return
-      }
-    }
-  }
+  // /**
+  //       Gets the exercisetype as given in the querystring
+  //   */
+  // getExerciseType () {
+  //   const sPageURL = window.location.search.substring(1)
+  //   const sURLVariables = sPageURL.split('&')
+  //   for (let i = 0; i < sURLVariables.length; i++) {
+  //     const sParameterName = sURLVariables[i].split('=')
+  //     if (sParameterName[0] === EXERCISE_TYPE) {
+  //       this.exerciseType = sParameterName[1]
+  //       return
+  //     }
+  //   }
+  // }
 
   /**
         Initializes all buttons and label to correct language
@@ -680,8 +543,8 @@ class TwoWayController extends LogExController {
   // };
 
   showNextStep () {
-    this.dummyExercise = new TwoWayExercise(this.exercise.equation.getText(), this.exercise.type, false)
-    this.dummyExercise.steps.push(new TwoWayStep(this.exercise.getCurrentStep().equation.getText(), ''))
+    // this.dummyExercise = new TwoWayExercise(this.exercise.equation.getText(), this.exercise.type, false)
+    // this.dummyExercise.steps.push(new TwoWayStep(this.getCurrentStep().equation.getText(), ''))
     this.disableUI(true)
 
     if (!this.exercise.usesStepValidation && this.exercise.steps.steps.length > 1) {
@@ -710,24 +573,32 @@ class TwoWayController extends LogExController {
         @param {TwoWayStep} nextStep - The next step
      */
   onNextStepSolved (nextStep) {
-    this.exercise.steps.push(nextStep)
-
-    nextStep.isValid = true
-    nextStep.isRuleValid = true
-
-    // Reset rule value after valid step
-    $('#rule').val('')
-    this.getStepsRemaining(this.exercise.type, this.exercise.getCurrentStep())
-    if (this.exercise.usesStepValidation) {
-
-      // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
-      // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.getStepsRemaining, this.onErrorValidatingStep);
-
+    console.log(nextStep)
+    if (nextStep.isTopStep) {
+      this.exercise.steps.pushTopStep(nextStep)
     } else {
-
-      // this.onStepValidated();
-      // this.getStepsRemaining(this.exercise.type,this.exercise.getCurrentStep());
+      this.exercise.steps.pushBottomStep(nextStep)
     }
+
+    this.insertStep(nextStep)
+    this.disableUI(false) // UI hier terug enabled, anders worden de popovers verkeerd gepositioneerd.
+
+    // nextStep.isValid = true
+    // nextStep.isRuleValid = true
+
+    // // Reset rule value after valid step
+    // $('#rule').val('')
+    // this.getStepsRemaining(this.exercise.type, this.getCurrentStep())
+    // if (this.exercise.usesStepValidation) {
+
+    //   // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
+    //   // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.getCurrentStep(), this.getStepsRemaining, this.onErrorValidatingStep);
+
+    // } else {
+
+    //   // this.onStepValidated();
+    //   // this.getStepsRemaining(this.exercise.type,this.getCurrentStep());
+    // }
   }
 
   /**
@@ -746,98 +617,122 @@ class TwoWayController extends LogExController {
 
   /**
         Handles the event that help for a next step is found
+        @param {OneWayStep} nextOneWayStep - The next one way step
+     */
+  onHelpForNextStepFound (nextOneWayStep) {
+    const rule = Rules[nextOneWayStep.rule]
+    if (rule !== null) {
+      const buttonCallback = function () {
+        this.showNextHint(nextOneWayStep)
+      }.bind(this)
+      this.updateAlert('shared.hint.useRule', { rule: rule }, 'hint', 'shared.hint.nextHint', buttonCallback)
+    } else {
+      this.updateAlert('shared.hint.unavailable', null, 'hint')
+    }
+  }
+
+  showNextHint (nextOneWayStep) {
+    const formula = document.getElementById('formula')
+    const oldFormula = formula.value
+    const newFormula = nextOneWayStep.formula
+    const formulaDiff = showdiff(true, newFormula, oldFormula)
+    this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
+  }
+
+  /**
+        Handles the event that help for a next step is found
         @param {TwoWayStep} nextProofStep - The next proof step
      */
-  onHelpForNextStepFound (nextProofStep) {
-    $(FORMULA1).popover(DESTROY)
-    $(FORMULA2).popover(DESTROY)
+  // onHelpForNextStepFound (nextProofStep) {
+  //   $(FORMULA1).popover(DESTROY)
+  //   $(FORMULA2).popover(DESTROY)
 
-    const language = LogEXSession.getLanguage()
-    let helpText = Resources.getText(language, 'nohint')
-    let formula = $(FORMULA1)
-    const step = this.exercise.getCurrentStep()
-    const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
+  //   const language = LogEXSession.getLanguage()
+  //   let helpText = Resources.getText(language, 'nohint')
+  //   let formula = $(FORMULA1)
+  //   const step = this.getCurrentStep()
+  //   const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
 
-    // formula is nodig om te weten waar de popover getoond moet worden
-    if ($(FORMULA1).is(':visible')) {
-      formula = $(FORMULA1)
-    } else {
-      formula = $(FORMULA2)
-    }
+  //   // formula is nodig om te weten waar de popover getoond moet worden
+  //   if ($(FORMULA1).is(':visible')) {
+  //     formula = $(FORMULA1)
+  //   } else {
+  //     formula = $(FORMULA2)
+  //   }
 
-    // het kan echter zijn dat formule die bewerkt moet worden in de volgende stap
-    // juist de andere formule is (die niet zichtbaar is)
-    // geef afhankelijk van de situatie een passende hint
+  //   // het kan echter zijn dat formule die bewerkt moet worden in de volgende stap
+  //   // juist de andere formule is (die niet zichtbaar is)
+  //   // geef afhankelijk van de situatie een passende hint
 
-    if ($(FORMULA1).is(':visible') && nextProofStep.isBottomStep) {
-      helpText = Resources.getSpecificMessage(language, 'do-bottom-up-step')
-    } else if ($(FORMULA2).is(':visible') && nextProofStep.isTopStep) {
-      helpText = Resources.getSpecificMessage(language, 'do-top-down-step')
-    } else if (Rules[nextProofStep.rule] !== null) {
-      helpText = '<div id="hint1">' + Resources.getSpecificMessage(language, 'rewritethis') + '<br/><a href="#" id="toggle-hint1">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
-    }
+  //   if ($(FORMULA1).is(':visible') && nextProofStep.isBottomStep) {
+  //     helpText = Resources.getSpecificMessage(language, 'do-bottom-up-step')
+  //   } else if ($(FORMULA2).is(':visible') && nextProofStep.isTopStep) {
+  //     helpText = Resources.getSpecificMessage(language, 'do-top-down-step')
+  //   } else if (Rules[nextProofStep.rule] !== null) {
+  //     helpText = '<div id="hint1">' + Resources.getSpecificMessage(language, 'rewritethis') + '<br/><a href="#" id="toggle-hint1">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
+  //   }
 
-    // overbodig?
-    // if (nextProofStep.isBottomStep) {
-    //    formula = $(FORMULA2);
-    // }
+  //   // overbodig?
+  //   // if (nextProofStep.isBottomStep) {
+  //   //    formula = $(FORMULA2);
+  //   // }
 
-    formula.popover({
-      trigger: 'manual',
-      placement: 'top',
-      title: 'Hint',
-      content: helpText,
-      html: true
-    })
-    formula.popover('show')
+  //   formula.popover({
+  //     trigger: 'manual',
+  //     placement: 'top',
+  //     title: 'Hint',
+  //     content: helpText,
+  //     html: true
+  //   })
+  //   formula.popover('show')
 
-    $('#toggle-hint1').on('click', function () {
-      formula.popover(DESTROY)
-      helpText = '<div id="hint2">' + Resources.getUseRuleMessage(language, nextProofStep.rule) + '<br/><a href="#" id="toggle-hint2">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
-      formula.popover({
-        trigger: 'manual',
-        placement: 'top',
-        title: 'Hint',
-        content: helpText,
-        html: true
-      })
-      formula.popover('show')
+  //   $('#toggle-hint1').on('click', function () {
+  //     formula.popover(DESTROY)
+  //     helpText = '<div id="hint2">' + Resources.getUseRuleMessage(language, nextProofStep.rule) + '<br/><a href="#" id="toggle-hint2">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
+  //     formula.popover({
+  //       trigger: 'manual',
+  //       placement: 'top',
+  //       title: 'Hint',
+  //       content: helpText,
+  //       html: true
+  //     })
+  //     formula.popover('show')
 
-      // Log hint
-      IdeasServiceProxy.log(state, 'Hint: useRule')
+  //     // Log hint
+  //     IdeasServiceProxy.log(state, 'Hint: useRule')
 
-      $('#toggle-hint2').on('click', function () {
-        formula.popover(DESTROY)
+  //     $('#toggle-hint2').on('click', function () {
+  //       formula.popover(DESTROY)
 
-        const oldFormula = formula.val()
-        let newFormula = nextProofStep.equation.formula1
+  //       const oldFormula = formula.val()
+  //       let newFormula = nextProofStep.equation.formula1
 
-        if (nextProofStep.isBottomStep) {
-          newFormula = nextProofStep.equation.formula2
-        }
+  //       if (nextProofStep.isBottomStep) {
+  //         newFormula = nextProofStep.equation.formula2
+  //       }
 
-        helpText = '<div id="hint3">' + Resources.getFullHintMessage(language, nextProofStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button></div>'
-        formula.popover({
-          trigger: 'manual',
-          placement: 'top',
-          title: 'Hint',
-          content: helpText,
-          html: true
-        })
-        formula.popover('show')
+  //       helpText = '<div id="hint3">' + Resources.getFullHintMessage(language, nextProofStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button></div>'
+  //       formula.popover({
+  //         trigger: 'manual',
+  //         placement: 'top',
+  //         title: 'Hint',
+  //         content: helpText,
+  //         html: true
+  //       })
+  //       formula.popover('show')
 
-        $('#auto-step').on('click', function () {
-          $(FORMULA1).popover(DESTROY)
-          $(FORMULA2).popover(DESTROY)
-          this.disableUI(true)
-          this.showNextStep()
-        })
+  //       $('#auto-step').on('click', function () {
+  //         $(FORMULA1).popover(DESTROY)
+  //         $(FORMULA2).popover(DESTROY)
+  //         this.disableUI(true)
+  //         this.showNextStep()
+  //       })
 
-        // Log hint
-        IdeasServiceProxy.log(state, 'Hint: rewriteThisUsing')
-      })
-    })
-  }
+  //       // Log hint
+  //       IdeasServiceProxy.log(state, 'Hint: rewriteThisUsing')
+  //     })
+  //   })
+  // }
 
   /**
         Handles the error that the next step can not be solved
@@ -850,30 +745,72 @@ class TwoWayController extends LogExController {
         Validates a step
 
      */
-  validateStep (isTopStep) {
-    let ruleListBox
-    if (isTopStep) {
-      ruleListBox = RULE_LISTBOX_TOP
-    } else {
-      ruleListBox = RULE_LISTBOX_BOTTOM
-    }
+  validateStep () {
+    const isTopStep = this.proofDirection == 'down'
 
-    if ($(ruleListBox).val() === '' && this.exercise.usesStepValidation) {
-      // this.showErrorToolTip($(RULE_LISTBOX), Resources.getSpecificMessage(LogEXSession.getLanguage(), "no-rule"));
-      this.showErrorToolTip($(ruleListBox), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'))
+
+
+    const ruleKey = this.getSelectedRuleKey()
+    if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
+      this.setErrorLocation('rule')
+      this.updateAlert('shared.error.noRule', null, 'error')
       return false
     }
 
-    const changed = $('#formula1original').val() !== $(FORMULA1).val() || $('#formula2original').val() !== $(FORMULA2).val()
-
-    if (!changed) {
-      this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'))
+    if ($('#formulaoriginal').val() === $('#formula').val()) {
+      this.setErrorLocation('formula')
+      this.updateAlert('shared.error.notChanged', null, 'error')
       return false
     }
 
-    // this.validateFormulas(this.onFormulasValidatedBeforeValidatingStep);
     this.disableUI(true)
-    this.onFormulasValidatedBeforeValidatingStep(isTopStep)
+    this.clearErrors()
+
+    let currentStep = null
+    let previousStep = null
+    if (isTopStep) {
+      currentStep = new TwoWayStep($('#formula').val(), ruleKey, 'top')
+      previousStep = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1]
+      this.exercise.steps.pushTopStep(currentStep)
+
+    } else {
+      currentStep = new TwoWayStep($('#formula').val(), ruleKey, 'bottom')
+      previousStep = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1]
+      this.exercise.steps.pushBottomStep(currentStep)
+    }
+
+    if (this.exercise.usesStepValidation) {
+      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, previousStep, currentStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+    } else {
+      this.onStepValidated()
+    }
+
+
+
+    console.log("hello")
+    // let ruleListBox
+    // if (isTopStep) {
+    //   ruleListBox = RULE_LISTBOX_TOP
+    // } else {
+    //   ruleListBox = RULE_LISTBOX_BOTTOM
+    // }
+
+    // if ($(ruleListBox).val() === '' && this.exercise.usesStepValidation) {
+    //   // this.showErrorToolTip($(RULE_LISTBOX), Resources.getSpecificMessage(LogEXSession.getLanguage(), "no-rule"));
+    //   this.showErrorToolTip($(ruleListBox), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'no-rule'))
+    //   return false
+    // }
+
+    // const changed = $('#formula1original').val() !== $(FORMULA1).val() || $('#formula2original').val() !== $(FORMULA2).val()
+
+    // if (!changed) {
+    //   this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'not-changed'))
+    //   return false
+    // }
+
+    // // this.validateFormulas(this.onFormulasValidatedBeforeValidatingStep);
+    // this.disableUI(true)
+    // this.onFormulasValidatedBeforeValidatingStep(isTopStep)
   }
 
   /**
@@ -899,11 +836,27 @@ class TwoWayController extends LogExController {
     this.exercise.steps.push(new TwoWayStep($(FORMULA1).val() + '==' + $(FORMULA2).val(), $(ruleListBox).val()))
 
     if (this.exercise.usesStepValidation) {
-      // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
-      this.exerciseValidator.validateStep(this.exercise, false, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.getStepsRemaining.bind(this), this.onErrorValidatingStep.bind(this))
+      // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
+      this.exerciseValidator.validateStep(this.exercise, false, this.exercise.getPreviousStep(), this.getCurrentStep(), this.getStepsRemaining.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
       // this.onStepValidated();
-      this.getStepsRemaining(this.exercise.type, this.exercise.getCurrentStep())
+      this.getStepsRemaining(this.exercise.type, this.getCurrentStep())
+    }
+  }
+
+  getCurrentStep () {
+    if (this.proofDirection == 'down') {
+      return this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1]
+    } else {
+      return this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1]
+    }
+  }
+
+  removeCurrentStep () {
+    if (this.proofDirection == 'down') {
+      return this.exercise.steps.topSteps.pop()
+    } else {
+      return this.exercise.steps.bottomSteps.pop()
     }
   }
 
@@ -911,7 +864,7 @@ class TwoWayController extends LogExController {
         Validates an exercise
      */
   validateExercise () {
-    const step = this.exercise.getCurrentStep()
+    const step = this.getCurrentStep()
     const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
     this.disableUI(true)
     if (this.exercise.usesStepValidation) {
@@ -1027,11 +980,11 @@ class TwoWayController extends LogExController {
       i++
     })
 
-    $('#formula1').val(this.exercise.getCurrentStep().equation.formula1)
+    $('#formula1').val(this.getCurrentStep().equation.formula1)
     // $('#formula1').kbinput('setPreviousValue', $('#formula1').val())
     $('#formula1original').val($('#formula1').val())
 
-    $('#formula2').val(this.exercise.getCurrentStep().equation.formula2)
+    $('#formula2').val(this.getCurrentStep().equation.formula2)
     // $('#formula2').kbinput('setPreviousValue', $('#formula2').val())
     $('#formula2original').val($('#formula2').val())
 
@@ -1099,7 +1052,7 @@ class TwoWayController extends LogExController {
         Checks if the exercise is ready
      */
   setReady () {
-    const step = this.exercise.getCurrentStep()
+    const step = this.getCurrentStep()
     const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
     if (!step.isReady) {
       step.isReady = step.equation.getEquationIsSolved()
@@ -1117,7 +1070,8 @@ class TwoWayController extends LogExController {
      */
   onStepValidated () {
     this.clearErrors()
-    const currentStep = this.exercise.getCurrentStep()
+    const currentStep = this.getCurrentStep()
+    document.getElementById('formula').value = currentStep.formula
     let ruleListBox
 
     if (currentStep.isTopStep) {
@@ -1130,7 +1084,7 @@ class TwoWayController extends LogExController {
 
     if (!currentStep.isValid && this.exercise.usesStepValidation) {
       let message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
-      this.exercise.steps.pop()
+      this.removeCurrentStep()
 
       if (!currentStep.isSyntaxValid && this.exercise.usesStepValidation) {
         message = Resources.getInvalidFormulaMessage()
@@ -1191,15 +1145,15 @@ class TwoWayController extends LogExController {
     this.clearErrors()
 
     // bij auto step is formula1 nog niet goed gevuld
-    // $(FORMULA1).val(this.exercise.getCurrentStep().equation.formula1);
-    $(FORMULA1).val(currentStep.equation.formula1)
+    // $(FORMULA1).val(this.getCurrentStep().equation.formula1);
+    // $(FORMULA1).val(currentStep.equation.formula1)
     // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
-    $('#formula1original').val($(FORMULA1).val())
+    // $('#formula1original').val($(FORMULA1).val())
 
     // bij auto step is formula2 nog niet goed gevuld
-    $(FORMULA2).val(currentStep.equation.formula2)
+    // $(FORMULA2).val(currentStep.equation.formula2)
     // $(FORMULA2).kbinput('setPreviousValue', $(FORMULA2).val())
-    $('#formula2original').val($(FORMULA2).val())
+    // $('#formula2original').val($(FORMULA2).val())
 
     this.insertStep(currentStep, true)
     if (currentStep.isReady) {
@@ -1317,22 +1271,30 @@ class TwoWayController extends LogExController {
   }
 
   setProofDirection (direction) {
+    this.proofDirection = direction
     const topBuffer = document.getElementById('empty-top-step')
     const bottomBuffer = document.getElementById('empty-bottom-step')
     const activeStep = document.getElementById('active-step')
     const activeArrow = document.getElementById('active-arrow')
+    const activeEquiv = document.getElementById('active-equiv')
 
     if (direction === 'down') {
       topBuffer.style.display = 'none'
       bottomBuffer.style.display = ''
       activeStep.style.display = ''
       activeArrow.innerHTML = '<i class="fas fa-arrow-down"></i>'
+      activeEquiv.style.display = ''
+      document.getElementById('formula').value = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula
+      this.formulaPopover.previousValue = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula
     }
     if (direction === 'up') {
       topBuffer.style.display = ''
       bottomBuffer.style.display = 'none'
       activeStep.style.display = ''
       activeArrow.innerHTML = '<i class="fas fa-arrow-up"></i>'
+      activeEquiv.style.display = 'none'
+      document.getElementById('formula').value = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula
+      this.formulaPopover.previousValue = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula
     }
     if (direction === null) {
       topBuffer.style.display = 'none'
@@ -1357,15 +1319,25 @@ class TwoWayController extends LogExController {
 
     if (canDelete) {
       const deleteButton = exerciseStep.getElementsByClassName('delete-step')[0]
+      console.log(exerciseStep)
       deleteButton.addEventListener('click', function () {
         this.removeStep(step.number)
       }.bind(this))
     }
 
+    // Move Top down/Bottom up button
     if (step.isTopStep) {
+      const topDownButton = document.getElementById('top-step')
+      if (topDownButton) {
+        topDownButton.parentNode.removeChild(topDownButton)
+      }
       const topBuffer = document.getElementById('empty-top-step')
       topBuffer.insertAdjacentElement('beforebegin', exerciseStep)
     } else {
+      const bottomUpButton = document.getElementById('bottom-step')
+      if (bottomUpButton) {
+        bottomUpButton.parentNode.removeChild(bottomUpButton)
+      }
       const bottomBuffer = document.getElementById('empty-bottom-step')
       bottomBuffer.insertAdjacentElement('afterend', exerciseStep)
     }
@@ -1384,53 +1356,6 @@ class TwoWayController extends LogExController {
     }
   }
 
-  /**
-        Inserts a proof step
-
-        @param {TwoWayStep} step - The proof step
-        @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
-     */
-  // insertStep (step, canDelete) {
-  //   // dit is de start opgave
-  //   if (!step.isTopStep && !step.isBottomStep) {
-  //     return
-  //   }
-
-  //   const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
-  //   let stepTemplate
-  //   let error
-
-  //   // todo
-  //   // error boodschap bepalen aan de hand van step
-
-  //   if (step.isTopStep) {
-  //     stepTemplate = $('#exercise-top-step-template')
-  //   } else {
-  //     stepTemplate = $('#exercise-bottom-step-template')
-  //   }
-
-  //   const exerciseStepHtml = stepTemplate.render({
-  //     error: error,
-  //     rule: rule,
-  //     leftformula: step.equation.formula1katex,
-  //     rightformula: step.equation.formula2katex,
-  //     canDelete: canDelete,
-  //     isWrong: false,
-  //     hasRule: this.rule !== undefined,
-  //     step: 1,
-  //     stepValidation: true,
-  //     stepsremaining: step.stepsRemaining
-  //   })
-
-  //   if (step.isTopStep) {
-  //     $('#active-step-top').before(exerciseStepHtml)
-  //   } else {
-  //     $('#active-step-bottom').after(exerciseStepHtml)
-  //   }
-
-  //   this.colorRows()
-  // }
-
   renderStep (step, canDelete) {
     let rule = ''
     let arrow = null
@@ -1441,11 +1366,9 @@ class TwoWayController extends LogExController {
       rule = translate(ruleKey)
     }
 
-    if (step.number > 1) {
-      arrow = katex.renderToString('\\Leftrightarrow', {
-        throwOnError: false
-      })
-    }
+    arrow = katex.renderToString('\\Leftrightarrow', {
+      throwOnError: false
+    })
 
     const exerciseStepHtml = stepTemplate.render({
       rule: rule,
@@ -1454,6 +1377,7 @@ class TwoWayController extends LogExController {
       canDelete: canDelete,
       topStep: step.isTopStep,
       bottomStep: step.isBottomStep,
+      basis: step === this.exercise.steps.topSteps[0] || step === this.exercise.steps.bottomSteps[0],
       step: step.number,
       arrow: arrow,
       stepValidation: true,
@@ -1505,17 +1429,17 @@ class TwoWayController extends LogExController {
     const parent = source.parents('div.exercise-step-added-top')
     const allExerciseSteps = $(EXERCISE_TOP_STEPS)
     const index = allExerciseSteps.index(parent)
-    const step = this.exercise.getCurrentStep()
+    const step = this.getCurrentStep()
     const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
 
     this.exercise.steps.removeTopSteps(index)
 
     allExerciseSteps.slice(index).remove()
 
-    $(FORMULA1).val(this.exercise.getCurrentStep().equation.formula1)
+    $(FORMULA1).val(this.getCurrentStep().equation.formula1)
     // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
     $('#formula1original').val($(FORMULA1).val())
-    $(FORMULA2).val(this.exercise.getCurrentStep().equation.formula2)
+    $(FORMULA2).val(this.getCurrentStep().equation.formula2)
     // $(FORMULA2).kbinput('setPreviousValue', $(FORMULA2).val())
     $('#formula2original').val($(FORMULA2).val())
     this.colorRows()
@@ -1561,16 +1485,16 @@ class TwoWayController extends LogExController {
     const parent = source.parents('div.exercise-step-added-bottom')
     const allExerciseSteps = $(EXERCISE_BOTTOM_STEPS)
     const index = (allExerciseSteps.length - allExerciseSteps.index(parent) - 1)
-    const step = this.exercise.getCurrentStep()
+    const step = this.getCurrentStep()
     const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
     this.exercise.steps.removeBottomSteps(index)
 
     allExerciseSteps.slice(0, allExerciseSteps.index(parent) + 1).remove()
 
-    $(FORMULA1).val(this.exercise.getCurrentStep().equation.formula1)
+    $(FORMULA1).val(this.getCurrentStep().equation.formula1)
     // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
     $('#formula1original').val($(FORMULA1).val())
-    $(FORMULA2).val(this.exercise.getCurrentStep().equation.formula2)
+    $(FORMULA2).val(this.getCurrentStep().equation.formula2)
     // $(FORMULA2).kbinput('setPreviousValue', $(FORMULA2).val())
     $('#formula2original').val($(FORMULA2).val())
     this.colorRows()

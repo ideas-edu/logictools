@@ -89,11 +89,14 @@ export class ExerciseSolver {
           onErrorGettingHelpForNextStep('shared.error.showingHint')
         }
       } else {
-        const currentStep = exercise.steps.getCurrentStep()
-        const onewaySteps = new this.StepCollection(new this.Step(currentStep.formula, null))
+        // const currentStep = exercise.steps.getCurrentStep()
+        // const steps = new this.StepCollection(new this.Step(currentStep.formula, null))
         const result = data.onefirst.first
-        onewaySteps.push(new this.Step(result.state.context.term, result.step.rule))
-        onHelpForNextStepFound(onewaySteps.getCurrentStep())
+        // steps.push(new this.Step(result.state.context.term, result.step.rule))
+        onHelpForNextStepFound({
+          formula: result.state.context.term,
+          rule: result.step.rule
+        })
       }
     }.bind(this)
 
