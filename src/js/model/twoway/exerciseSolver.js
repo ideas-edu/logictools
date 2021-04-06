@@ -18,7 +18,6 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
   _getState (exercise) {
     const currentTopStep = exercise.steps.topSteps[exercise.steps.topSteps.length - 1]
     const currentBottomStep = exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1]
-    // console.log(exercise, exercise.steps.topSteps)
     let currentStrategy
     let currentFormula
     let currentLocation

@@ -146,7 +146,7 @@
 			"wrongStep": "You have performed an incorrect step",
 			"wrongRule": "You have chosen an incorrect rule",
 			"similar": "No changes have been made. Both terms have remained the same.",
-			"correctNotVal": "This formula is quivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
+			"correctNotVal": "This formula is equivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
 			"invalidFormula": "This formula has an incorrect syntax",
 			"incomplete": {
 				"oneWay": "Derivation is not yet completed",

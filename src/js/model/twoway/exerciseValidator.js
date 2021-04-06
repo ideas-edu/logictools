@@ -6,12 +6,17 @@ import { ExerciseValidator } from '../shared/exerciseValidator.js'
  */
 export class TwoWayExerciseValidator extends ExerciseValidator {
   getState (exercise, step1, step2) {
-    console.log(exercise)
+    let term = null
+    if (step1.isTopStep) {
+      term = `${step1.formula} == ${exercise.equation.formula2}`
+    } else {
+      term = `${exercise.equation.formula1} == ${step1.formula}`
+    }
     const state = {
       exerciseid: exercise.type,
       prefix: step1.strategyStatus,
       context: {
-        term: exercise.equation.getText(),
+        term: term,
         environment: {},
         location: []
       }

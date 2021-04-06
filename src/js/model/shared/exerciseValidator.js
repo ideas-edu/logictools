@@ -171,7 +171,6 @@ export class ExerciseValidator {
         @param onErrorValidatingStep - The callback function that is called if there is a problem validating the step.
      */
   validateStep (exercise, checkRule, step1, step2, onValidated, onErrorValidatingStep) {
-    console.log("Steps", step1, step2)
     let rule = null
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
@@ -241,14 +240,13 @@ export class ExerciseValidator {
           }
           break
       }
-      onValidated(exercise)
+      onValidated(step2)
     }
 
     this.initializeStepStatus(step2)
 
     const state = this.getState(exercise, step1, step2)
     const context = this.getContext(exercise, step2)
-    console.log("states", state, context)
     if (checkRule) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
     }

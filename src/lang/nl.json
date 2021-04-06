@@ -25,6 +25,18 @@
 		},
 		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
 	},
+	"twoWay": {
+		"title": "Bewijs Logische Equivalentie",
+		"instruction": {
+			"begin": "Selecteer een opgave om mee te beginnen!",
+			"exercise": "Bewijs dat {{topFormula}} logisch equivalent met {{bottomFormula}} is"
+		},
+		"button": {
+			"topDown": "<i class='fas fa-chevron-down'></i> Omlaag",
+			"bottomUp": "<i class='fas fa-chevron-up'></i> Omhoog"
+		},
+		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+	},
 	"rule": {
 		"logic": {
 			"propositional": {
@@ -102,10 +114,6 @@
 			"validateStep": "<i class='fas fa-check'></i>",
 			"step": "Toon stap",
 			"solveExercise": "Toon oplossing",
-			"validateExercise": {
-				"DNV": "Is in DNV?",
-				"CNV": "Is in CNV?"
-			},
 			"newExercise": "Zelf invoeren",
 			"selectExercise": "Selecteer Opgave",
 			"generateExerciseEasy": "Eenvoudig",

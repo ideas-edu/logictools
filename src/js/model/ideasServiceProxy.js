@@ -121,7 +121,6 @@ export class IdeasServiceProxy {
       context: context,
       rule: rule
     }
-    console.log("req", request)
 
     IdeasServiceProxy.post(request, onSuccess, onError)
   }

@@ -11,7 +11,9 @@ export class TwoWayStepCollection extends StepCollection {
   constructor (equation) {
     super()
     this.topSteps = [new TwoWayStep(equation.formula1, undefined, 'top')]
+    this.topSteps[0].number = 1
     this.bottomSteps = [new TwoWayStep(equation.formula2, undefined, 'bottom')]
+    this.bottomSteps[0].number = 1
   }
 
     /**
@@ -20,6 +22,14 @@ export class TwoWayStepCollection extends StepCollection {
      */
   getCurrentStep () {
     return this.topSteps[this.topSteps.length - 1]
+  }
+
+  getCurrentTopStep () {
+    return this.topSteps[this.topSteps.length - 1]
+  }
+
+  getCurrentBottomStep () {
+    return this.bottomSteps[this.bottomSteps.length - 1]
   }
 
   /**
@@ -36,6 +46,10 @@ export class TwoWayStepCollection extends StepCollection {
     */
   getBottomSteps () {
     return this.bottomSteps
+  }
+
+  isComplete () {
+    return this.topSteps[this.topSteps.length - 1].formula === this.bottomSteps[this.bottomSteps.length - 1].formula
   }
 
   /**
@@ -57,40 +71,13 @@ export class TwoWayStepCollection extends StepCollection {
   }
 
   pushTopStep (step) {
+    step.number = this.topSteps.length + 1
     this.topSteps.push(step)
   }
 
   pushBottomStep (step) {
+    step.number = this.bottomSteps.length + 1
     this.bottomSteps.push(step)
-  }
-
-  /**
-        Removes the bottom steps starting from the specified index.
-        @param {Number} index - The start index.
-     */
-  removeBottomSteps (index) {
-    const filteredSteps = []
-    let formula = this.steps[0].equation.formula2 // voor reset van de top steps naar de nieuwe bottomstep
-    let stepCount = 0
-    let i
-
-    for (i = 0; i < this.steps.length; i += 1) {
-      if (this.steps[i].isBottomStep) {
-        if (stepCount < index) {
-          formula = this.steps[i].equation.formula2
-        } else {
-          continue
-        }
-        stepCount += 1
-      } else {
-        if (stepCount >= index) {
-          this.steps[i].equation.formula2 = formula // reset de top steps naar de nieuwe bottomstep
-        }
-      }
-      filteredSteps.push(this.steps[i])
-    }
-
-    this.steps = filteredSteps
   }
 
   /**
@@ -98,25 +85,10 @@ export class TwoWayStepCollection extends StepCollection {
         @param {Number} index - The start index.
      */
   removeTopSteps (index) {
-    const filteredSteps = []
-    let formula = this.steps[0].equation.formula1 // voor reset van de bottom steps naar de nieuwe topstep
-    let stepCount = 0
-    let i
-    for (i = 0; i < this.steps.length; i += 1) {
-      if (this.steps[i].isTopStep) {
-        if (stepCount < index) {
-          formula = this.steps[i].equation.formula1
-        } else {
-          continue
-        }
-        stepCount += 1
-      } else {
-        if (stepCount >= index) {
-          this.steps[i].equation.formula1 = formula // reset de bottom steps naar de nieuwe topstep
-        }
-      }
-      filteredSteps.push(this.steps[i])
-    }
-    this.steps = filteredSteps
+    this.topSteps = this.topSteps.slice(0, index)
+  }
+
+  removeBottomSteps (index) {
+    this.bottomSteps = this.bottomSteps.slice(0, index)
   }
 }

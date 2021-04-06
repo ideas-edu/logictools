@@ -14,7 +14,6 @@ export class TwoWayExercise {
     this.usesStepValidation = stepValidation
     this.isReady = false
     this.equation = new Equation(equationText)
-    console.log(this)
     this.steps = new TwoWayStepCollection(this.equation)
   }
 

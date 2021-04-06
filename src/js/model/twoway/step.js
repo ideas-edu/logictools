@@ -12,7 +12,6 @@ import katex from 'katex'
 export class TwoWayStep {
   constructor (formulaText, rule, direction) {
     this.formula = formulaText
-    console.log(this)
     this.formulaKatex = katex.renderToString(formulaText, {
       throwOnError: false
     })

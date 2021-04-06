@@ -75,21 +75,6 @@ class OneWayController extends LogExController {
     document.getElementById('validate-exercise').addEventListener('click', function () {
       this.validateExercise()
     }.bind(this))
-
-    $('body').on('focusout', '.retryFormula', function () {
-      this.retryFormula($(this))
-    })
-
-    $('body').on('focusout', '.retryRule', function () {
-      $('#formula').popover('hide')
-      this.retryRule($(this))
-    })
-
-    $('body').on('focus', '.retryRule', function () {
-      $('#formula').popover('hide')
-      $('.retryFormula').popover('hide')
-      this.retryRule($(this))
-    })
   }
 
   /**
@@ -167,20 +152,10 @@ class OneWayController extends LogExController {
     $('#exercise-steps').hide()
     $(newExerciseHtml).insertBefore('#exercise-steps')
     $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
-    $('#formula').focus()
 
     $('#create-exercise-button').click(function () {
       this.createExercise()
     }.bind(this))
-
-    $('#formula').bind('paste cut', function () {
-      setTimeout(function () {
-        // $('#formula').kbinput('tidy')
-        $('#equivsign').attr('src', 'img/equivsignok.png')
-        $('#formula').removeClass('error')
-        $('#formula').tooltip('dispose')
-      }, 100)
-    })
 
     const language = LogEXSession.getLanguage()
     $('#newexercise').html(Resources.getText(language, 'newexercise'))
@@ -243,8 +218,7 @@ class OneWayController extends LogExController {
       $('#new-exercise-content').remove()
     }
 
-    $('#formula').val(this.exercise.formula)
-    $('#formulaoriginal').val($('#formula').val())
+    document.getElementById('formula').value = this.exercise.formula
 
     this.disableUI(false)
 
@@ -343,9 +317,7 @@ class OneWayController extends LogExController {
       this.disableUI(false) // UI hier terug enabled, anders worden de popovers verkeerd gepositioneerd.
 
       // bij auto step is formula nog niet goed gevuld
-      $('#formula').val(nextStep.formula)
-      // $('#formula').kbinput('setPreviousValue', $('#formula').val())
-      $('#formulaoriginal').val($('#formula').val())
+      document.getElementById('formula').value = nextStep.formula
 
       // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
       $('#formula').blur()
@@ -418,7 +390,8 @@ class OneWayController extends LogExController {
       return false
     }
 
-    if ($('#formulaoriginal').val() === $('#formula').val()) {
+    const newFormula = document.getElementById('formula').value
+    if (newFormula === this.exercise.getCurrentStep().formula) {
       this.setErrorLocation('formula')
       this.updateAlert('shared.error.notChanged', null, 'error')
       return false
@@ -426,7 +399,7 @@ class OneWayController extends LogExController {
 
     this.disableUI(true)
     this.clearErrors()
-    this.exercise.steps.push(new OneWayStep($('#formula').val(), ruleKey))
+    this.exercise.steps.push(new OneWayStep(newFormula, ruleKey))
     if (this.exercise.usesStepValidation) {
       this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
@@ -458,7 +431,6 @@ class OneWayController extends LogExController {
       if (data.ready) {
         document.getElementById('active-step').style.display = 'none'
         $('#bottom').hide()
-        $('#formula').blur()
 
         const elements = document.getElementsByClassName('remove-step')
         for (const element of elements) {
@@ -532,12 +504,8 @@ class OneWayController extends LogExController {
       i += 1
     })
 
-    $('#formula').val(this.exercise.getCurrentStep().formula)
-    // $('#formula').kbinput('setPreviousValue', $('#formula').val())
-    $('#formulaoriginal').val($('#formula').val())
+    document.getElementById('formula').value = this.exercise.getCurrentStep().formula
 
-    $('#formula').blur()
-    // $('.retryFormula').kbinput('hide')
     this.disableUI(false)
 
     if (!isReady) {
@@ -597,14 +565,9 @@ class OneWayController extends LogExController {
 
       // bij auto step is formula nog niet goed gevuld
       document.getElementById('formula').value = currentStep.formula
-      // $('#formula').kbinput('setPreviousValue', $('#formula').val())
-      $('#formulaoriginal').val($('#formula').val())
 
       this.disableUI(false)
 
-      // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
-      $('#formula').blur()
-      $('#formula').focus()
 
       //    Reset rule value after valid step
       document.getElementById('rule').selectedIndex = 0
@@ -628,7 +591,7 @@ class OneWayController extends LogExController {
      */
   validateInput (afterInputValidated) {
     this.clearErrors()
-    this.validateFormula($('#formula'), function (isValid, formulaText) {
+    this.validateFormula(document.getElementById('formula'), function (isValid, formulaText) {
       this.onInputValidated(isValid, formulaText, afterInputValidated)
     })
   }
@@ -728,7 +691,6 @@ class OneWayController extends LogExController {
     $('#active-step').before(exerciseStepHtml)
     $('#active-step').hide()
     $('#bottom').hide()
-    $('#formula').blur()
 
     document.getElementById('header-actions').style.display = 'none'
     const elements = document.getElementsByClassName('remove-step')
