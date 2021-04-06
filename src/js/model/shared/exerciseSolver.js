@@ -98,7 +98,7 @@ export class ExerciseSolver {
           rule: result.step.rule
         })
       }
-    }.bind(this)
+    }
 
     const state = this._getState(exercise)
 

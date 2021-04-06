@@ -16,12 +16,10 @@ import { LogExController } from './LogExController.js'
 import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
-import { Equation } from '../model/twoway/equation.js'
 import { TwoWayExerciseGenerator } from '../model/twoway/exerciseGenerator.js'
 import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
 import { TwoWayExerciseValidator } from '../model/twoway/exerciseValidator.js'
 import { TwoWayStep } from '../model/twoway/step.js'
-import { TwoWayExercise } from '../model/twoway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
@@ -58,22 +56,6 @@ function setUp () {
 }
 
 ready(setUp)
-
-const EXERCISE_TYPE = 'exerciseType'
-const RULE_LISTBOX_TOP = '#rule-top'
-const RULE_LISTBOX_BOTTOM = '#rule-bottom'
-const FORMULA1 = '#formula1'
-const FORMULA2 = '#formula2'
-const EXERCISE_BOTTOM_STEPS = '#exercise-steps div.exercise-step-added-bottom'
-const EXERCISE_TOP_STEPS = '#exercise-steps div.exercise-step-added-top'
-
-const TOP = 'top'
-const ERROR = 'error'
-const SUCCESS = 'success'
-const DIV_TOOLTIP_ERROR = "<div class='tooltip error'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>"
-const SHOW = 'show'
-const DESTROY = 'dispose'
-const ERROR_TIMEOUT = 5000
 
 class TwoWayController extends LogExController {
   constructor () {
@@ -175,7 +157,6 @@ class TwoWayController extends LogExController {
 
     $(newExerciseHtml).insertBefore('#exercise-steps')
     $('#create-exercise-button-content').html("<i class='icon-ok'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
-    $(FORMULA1).focus()
     $('#create-exercise-button').click(function () {
       this.createExercise()
     }.bind(this))
@@ -189,47 +170,45 @@ class TwoWayController extends LogExController {
         Creates a new exercise
      */
   createExercise () {
-    const formula1 = $(FORMULA1).val()
-    const formula2 = $(FORMULA2).val()
 
     // if (formula1 === formula2) {
     //    this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), "identical"));
     //    return false;
     // }
 
-    const equation = new Equation()
-    const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
-    equation.setFormula1(formula1)
-    equation.setFormula2(formula2)
-    this.exercise = new TwoWayExercise(equation.getText(), exerciseMethod, true)
+    // const equation = new Equation()
+    // const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
+    // equation.setFormula1(formula1)
+    // equation.setFormula2(formula2)
+    // this.exercise = new TwoWayExercise(equation.getText(), exerciseMethod, true)
 
-    // this.exerciseSolver.solve(this.exercise, this.onNewExerciseValidated, this.onErrorCreatingExercise);
-    this.exerciseGenerator.create(this.exerciseType, stepValidation, this.exercise.equation.getText(), this.onExerciseGenerated.bind(this), this.onErrorCreatingExercise.bind(this))
+    // // this.exerciseSolver.solve(this.exercise, this.onNewExerciseValidated, this.onErrorCreatingExercise);
+    // this.exerciseGenerator.create(this.exerciseType, stepValidation, this.exercise.equation.getText(), this.onExerciseGenerated.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
         Handles the error that an exercise can not be created
      */
   onErrorCreatingExercise (errorMessage) {
-    let syntaxError,
-      column
+    // let syntaxError,
+    //   column
 
-    switch (errorMessage) {
-      case 'Not suitable':
-        this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), errorMessage))
-        break
-      case 'Is ready':
-        this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'identical'))
-        break
-      default:
-        syntaxError = errorMessage.split(':')[1].replace('\\n', ' ').replace('\\8594', '→').replace('\\8596', '↔').replace('\\8743', '∧').replace('\\8744', '∨').replace('\\172', '¬').replace('\\', '').replace('nexpecting', ', expecting')
-        column = errorMessage.split(':')[0].split(',')[1].replace(')', '').replace('column', '').trim() - 4
-        if (column <= $(FORMULA1).val().length) {
-          this.showErrorToolTip($(FORMULA1), syntaxError)
-        } else {
-          this.showErrorToolTip($(FORMULA2), syntaxError)
-        }
-    }
+    // switch (errorMessage) {
+    //   case 'Not suitable':
+    //     this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), errorMessage))
+    //     break
+    //   case 'Is ready':
+    //     this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'identical'))
+    //     break
+    //   default:
+    //     syntaxError = errorMessage.split(':')[1].replace('\\n', ' ').replace('\\8594', '→').replace('\\8596', '↔').replace('\\8743', '∧').replace('\\8744', '∨').replace('\\172', '¬').replace('\\', '').replace('nexpecting', ', expecting')
+    //     column = errorMessage.split(':')[0].split(',')[1].replace(')', '').replace('column', '').trim() - 4
+    //     if (column <= $(FORMULA1).val().length) {
+    //       this.showErrorToolTip($(FORMULA1), syntaxError)
+    //     } else {
+    //       this.showErrorToolTip($(FORMULA2), syntaxError)
+    //     }
+    // }
   }
 
   /**
@@ -315,7 +294,7 @@ class TwoWayController extends LogExController {
     document.getElementById('rule').selectedIndex = 0
 
     // doh: zorg dat regelverantwoording niet undefined kan zijn
-    this.exercise.usesRuleJustification = true //$('#rule-switch').bootstrapSwitch('state')
+    this.exercise.usesRuleJustification = true // $('#rule-switch').bootstrapSwitch('state')
 
     // rvl: Check if rule justification is needed
     // if (this.exercise.usesRuleJustification) {
@@ -669,7 +648,6 @@ class TwoWayController extends LogExController {
       newStep = new TwoWayStep(newFormula, ruleKey, 'top')
       previousStep = this.exercise.steps.getCurrentTopStep()
       this.exercise.steps.pushTopStep(newStep)
-
     } else {
       newStep = new TwoWayStep(newFormula, ruleKey, 'bottom')
       previousStep = this.exercise.steps.getCurrentBottomStep()
@@ -708,7 +686,7 @@ class TwoWayController extends LogExController {
   }
 
   getCurrentStep () {
-    if (this.proofDirection == 'down') {
+    if (this.proofDirection === 'down') {
       return this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1]
     } else {
       return this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1]
@@ -716,7 +694,7 @@ class TwoWayController extends LogExController {
   }
 
   removeCurrentStep () {
-    if (this.proofDirection == 'down') {
+    if (this.proofDirection === 'down') {
       return this.exercise.steps.topSteps.pop()
     } else {
       return this.exercise.steps.bottomSteps.pop()
@@ -735,8 +713,6 @@ class TwoWayController extends LogExController {
         $('#active-step-top').hide()
         $('#active-step-bottom').hide()
         $('#bottom').hide()
-        $(FORMULA1).blur()
-        $(FORMULA2).blur()
 
         $('.close').each(function () {
           $(this).hide()
@@ -744,9 +720,6 @@ class TwoWayController extends LogExController {
 
         const stepTemplate = $('#exercise-last-step-template')
         const exerciseStepHtml = stepTemplate.render({
-          leftformula: $(FORMULA1).val(),
-          rightformula: $(FORMULA2).val() //,
-          // "stepsremaining": 123
         })
 
         $('#active-step-top').before(exerciseStepHtml)
@@ -756,8 +729,6 @@ class TwoWayController extends LogExController {
         IdeasServiceProxy.log(state, 'Ready: true (call)')
       } else {
         this.clearErrors()
-        $(FORMULA1).addClass('error')
-        $(FORMULA2).addClass('error')
         this.disableUI(false)
 
         this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'))
@@ -842,19 +813,6 @@ class TwoWayController extends LogExController {
       i++
     })
 
-    $('#formula1').val(this.getCurrentStep().equation.formula1)
-    // $('#formula1').kbinput('setPreviousValue', $('#formula1').val())
-    $('#formula1original').val($('#formula1').val())
-
-    $('#formula2').val(this.getCurrentStep().equation.formula2)
-    // $('#formula2').kbinput('setPreviousValue', $('#formula2').val())
-    $('#formula2original').val($('#formula2').val())
-
-    this.colorRows()
-    $('#formula1').blur()
-    $('#formula2').blur()
-    // $('.retryFormula').kbinput('hide')
-
     this.disableUI(false)
 
     if (!isReady) {
@@ -885,7 +843,6 @@ class TwoWayController extends LogExController {
   onStepValidated (currentStep) {
     this.clearErrors()
     document.getElementById('formula').value = currentStep.formula
-    let ruleListBox
 
     document.getElementById('step-validation-switch').checked = false
 
@@ -930,7 +887,6 @@ class TwoWayController extends LogExController {
       document.getElementById('formula').value = currentStep.formula
 
       this.disableUI(false)
-
 
       //    Reset rule value after valid step
       document.getElementById('rule').selectedIndex = 0
@@ -1059,20 +1015,7 @@ class TwoWayController extends LogExController {
         @param {String} formulaText - The text of the formula
      */
   onFormulaValidated (isValid, formulaText) {
-    if (!isValid) {
-      let formula = $(FORMULA1)
-      if ($(FORMULA1).val() !== formulaText) {
-        formula = $(FORMULA2)
-      }
 
-      this.showErrorToolTip(formula, Resources.getSpecificMessage(LogEXSession.getLanguage(), 'invalidformula'), 'bottom')
-    }
-
-    if ($(FORMULA1).val() === formulaText) {
-      this.isFormula1Valid = isValid
-    } else {
-      this.isFormula2Valid = isValid
-    }
   }
 
   setProofDirection (direction) {
@@ -1225,8 +1168,6 @@ class TwoWayController extends LogExController {
     $('#active-step-top').hide()
     $('#active-step-bottom').hide()
     $('#bottom').hide()
-    $(FORMULA1).blur()
-    $(FORMULA2).blur()
 
     this.clearErrors()
 
@@ -1252,7 +1193,7 @@ class TwoWayController extends LogExController {
     // Move top-down button
     const topDownButton = document.getElementById('top-step')
     for (let i = 0; i < exerciseStepTable.children.length; i++) {
-      if (exerciseStepTable.children[i].getAttribute('number') == index - 1 && exerciseStepTable.children[i].classList.contains('exercise-top-step')) {
+      if (Number(exerciseStepTable.children[i].getAttribute('number')) === index - 1 && exerciseStepTable.children[i].classList.contains('exercise-top-step')) {
         const newTop = exerciseStepTable.children[i].getElementsByClassName('step-actions')[0]
         newTop.appendChild(topDownButton)
       }
@@ -1298,7 +1239,7 @@ class TwoWayController extends LogExController {
     // Move bottomUp button
     const bottomUpButton = document.getElementById('bottom-step')
     for (let i = 0; i < exerciseStepTable.children.length; i++) {
-      if (exerciseStepTable.children[i].getAttribute('number') == index - 1 && exerciseStepTable.children[i].classList.contains('exercise-bottom-step')) {
+      if (Number(exerciseStepTable.children[i].getAttribute('number')) === index - 1 && exerciseStepTable.children[i].classList.contains('exercise-bottom-step')) {
         const newBottom = exerciseStepTable.children[i].getElementsByClassName('step-actions')[0]
         newBottom.appendChild(bottomUpButton)
       }
@@ -1313,7 +1254,6 @@ class TwoWayController extends LogExController {
     if (this.proofDirection === 'up') {
       this.formulaPopover.previousValue = this.exercise.steps.bottomSteps[index - 2].formula
     }
-
   }
 
   changeStepValidation (stepValidation) {

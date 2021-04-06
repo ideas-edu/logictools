@@ -16,8 +16,8 @@ export class TwoWayStepCollection extends StepCollection {
     this.bottomSteps[0].number = 1
   }
 
-    /**
-        Gets the current step.
+  /**
+    Gets the current step.
         @return {OneWayStep} The current step.
      */
   getCurrentStep () {

@@ -22,7 +22,7 @@ import { OneWayExerciseValidator } from '../model/oneway/exerciseValidator.js'
 import { OneWayStep } from '../model/oneway/step.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
-import { Rules, UserRules } from '../model/rules.js'
+import { Rules } from '../model/rules.js'
 import { showdiff } from '../showdiff.js'
 import { translate, loadLanguage } from '../translate.js'
 
@@ -567,7 +567,6 @@ class OneWayController extends LogExController {
       document.getElementById('formula').value = currentStep.formula
 
       this.disableUI(false)
-
 
       //    Reset rule value after valid step
       document.getElementById('rule').selectedIndex = 0
