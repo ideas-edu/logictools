@@ -1,21 +1,40 @@
-import $ from 'jquery'
+import katex from 'katex'
 import jsrender from 'jsrender'
 import 'katex/dist/katex.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '@fortawesome/fontawesome-free/js/fontawesome'
+import '@fortawesome/fontawesome-free/js/solid'
+import '@fortawesome/fontawesome-free/js/regular'
+import '@fortawesome/fontawesome-free/js/brands'
 
 import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
-import { Resources } from '../resources.js'
+import { Rules } from '../model/rules.js'
 import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
 import { TwoWayExercise } from '../model/twoway/exercise.js'
+import { translate, loadLanguage } from '../translate.js'
 
-jsrender($); // load JsRender jQuery plugin methods
+const $ = jsrender(null)
 
-(function () {
-  $(document).ready(function () {
+function ready (fn) {
+  if (document.readyState !== 'loading') {
+    fn()
+  } else {
+    document.addEventListener('DOMContentLoaded', fn)
+  }
+}
+
+function setUp () {
+  const language = LogEXSession.getLanguage()
+  loadLanguage(language, function () {
     const controller = new TwoWaySolutionController()
     controller.solveExercise()
+    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
+    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
   })
-})()
+}
+
+ready(setUp)
 
 /**
     TwoWayController is responsible for handling all user interaction and manipulation of the user interface.
@@ -30,63 +49,26 @@ class TwoWaySolutionController extends LogExSolutionController {
   }
 
   /**
-      Gets the formula as given in the querystring
-  */
-  getFormula () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-
-    for (const i in sURLVariables) {
-      const sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === 'formula') {
-        return decodeURIComponent(sParameterName[1] + '==' + sParameterName[3])
-      }
-    }
-  }
-
-  /**
-        Zebra stripes the proof steps.
-
-        @param rows - The proof step rows
-     */
-  colorRows (rows) {
-    if (rows === undefined) {
-      this.colorRows($('.exercise-step-added-top'))
-      this.colorRows($($('.exercise-step-added-bottom').get().reverse()))
-
-      return
-    }
-
-    let toggle = -1
-
-    rows.each(function () {
-      if (toggle < 0) {
-        $(this).addClass('oneven')
-      } else {
-        $(this).removeClass('oneven')
-      }
-      toggle = toggle * -1
-    })
-  }
-
-  /**
         Handles the event that an exercise is solved
         @param {TwoWayStepCollection} solution - The solution
      */
   onExerciseSolved (solution) {
     let lastStep = null
+    this.exercise = solution
 
-    document.getElementById('exercise-left-formula').innerHTML = solution.steps[0].equation.formula1katex
-    document.getElementById('exercise-right-formula').innerHTML = solution.steps[0].equation.formula2katex
-
-    solution.steps.forEach(function (item) {
-      lastStep = item
+    solution.topSteps.forEach(function (item) {
       this.insertStep(item, false)
     }.bind(this))
-    if (lastStep) {
-      this.insertLastStep(lastStep)
+
+    for (let i = solution.bottomSteps.length - 1; i >= 0; i--) {
+      this.insertStep(solution.bottomSteps[i], false)
     }
-    this.colorRows()
+    const arrow = katex.renderToString('\\Leftrightarrow', {
+      throwOnError: false
+    })
+    const message = solution.topSteps[0].formulaKatex + ' ' + arrow + ' ' + solution.bottomSteps[0].formulaKatex
+
+    this.updateAlert(message, 'complete')
   }
 
   /**
@@ -95,58 +77,73 @@ class TwoWaySolutionController extends LogExSolutionController {
         @param {TwoWayStep} step - The proof step
         @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
      */
-  insertStep (step, canDelete) {
-    const exerciseStepHtml = this.renderStep(step, canDelete)
+  // insertStep (step, canDelete) {
+  //   const exerciseStepHtml = this.renderStep(step, canDelete)
 
-    if (step.isTopStep) {
-      $('#active-step').before(exerciseStepHtml)
-    } else {
-      $('#active-step').after(exerciseStepHtml)
-    }
-  }
+  //   if (step.isTopStep) {
+  //     $('#active-step').before(exerciseStepHtml)
+  //   } else {
+  //     $('#active-step').after(exerciseStepHtml)
+  //   }
+  // }
 
-  /**
-        Inserts the last proof step
+  // *
+  //       Inserts the last proof step
 
-        @param {TwoWayStep} step - The proof step
-     */
-  insertLastStep (step) {
-    const stepTemplate = $('#exercise-last-step-template')
-    const exerciseStepHtml = stepTemplate.render({
-      leftformula: step.equation.formula1katex,
-      rightformula: step.equation.formula2katex
-    })
+  //       @param {TwoWayStep} step - The proof step
 
-    $('#active-step').before(exerciseStepHtml)
-  }
+  // insertLastStep (step) {
+  //   const stepTemplate = $('#exercise-last-step-template')
+  //   const exerciseStepHtml = stepTemplate.render({
+  //     leftformula: step.equation.formula1katex,
+  //     rightformula: step.equation.formula2katex
+  //   })
+
+  //   $('#active-step').before(exerciseStepHtml)
+  // }
 
   renderStep (step) {
-    const rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
-    let stepTemplate
-    let error
-
-    // dit is de start opgave
-    if (!step.isTopStep && !step.isBottomStep) {
-      return ''
+    let rule = ''
+    let arrow = null
+    if (step.rule !== undefined) {
+      rule = translate(Rules[step.rule])
     }
 
-    if (step.isTopStep) {
-      stepTemplate = $('#exercise-top-step-template')
-    } else {
-      stepTemplate = $('#exercise-bottom-step-template')
+    const stepTemplate = $.templates('#exercise-step-template')
+
+    if (step.number > 1 || step.isBottomStep) {
+      arrow = katex.renderToString('\\Leftrightarrow', {
+        throwOnError: false
+      })
     }
 
     const exerciseStepHtml = stepTemplate.render({
-      error: error,
       rule: rule,
-      leftformula: step.equation.formula1katex,
-      rightformula: step.equation.formula2katex,
-      canDelete: false,
-      isWrong: false,
-      hasRule: this.rule !== undefined,
-      step: 1,
-      stepValidation: true
+      formula: step.formulaKatex,
+      basis: step === this.exercise.topSteps[0] || step === this.exercise.bottomSteps[0],
+      topStep: step.isTopStep,
+      bottomStep: step.isBottomStep,
+      arrow: arrow
     })
     return exerciseStepHtml
+  }
+
+  updateAlert (innerHTML, type) {
+    document.getElementById('exercise-alert-container').style.display = ''
+    switch (type) {
+      case 'hint':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 hint-alert'
+        break
+      case 'error':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-exclamation-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 error-alert'
+        break
+      case 'complete':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
+        break
+    }
+    document.getElementById('exercise-alert-span').innerHTML = innerHTML
   }
 }

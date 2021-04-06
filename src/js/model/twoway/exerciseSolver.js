@@ -36,6 +36,34 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
     return state
   }
 
+  solve (exercise, onExerciseSolved, onErrorSolvingExercise) {
+    const onError = onErrorSolvingExercise
+    const onSuccess = function (data) {
+      if (data === null || data.error !== undefined || data.derivation.derivation.derivationsteps === null) {
+        onErrorSolvingExercise()
+        return
+      }
+      const steps = new this.StepCollection(exercise.equation)
+      const ds = data.derivation.derivation.derivationsteps
+      for (const i in ds) {
+        const step = ds[i]
+        if (step.context.term.split('==')[0] === steps.topSteps[steps.topSteps.length - 1].formula) { // && equation.formula2 != exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1].formula) {
+          const nextStep = new this.Step(step.context.term.split('==')[1], step.step.rule, 'bottom')
+          steps.pushBottomStep(nextStep)
+        } else {
+          const nextStep = new this.Step(step.context.term.split('==')[0], step.step.rule, 'top')
+          steps.pushTopStep(nextStep)
+        }
+      }
+
+      onExerciseSolved(steps)
+    }.bind(this)
+
+    const state = this._getState(exercise)
+
+    IdeasServiceProxy.derivation(state, onSuccess, onError)
+  }
+
   /**
         Solves the next step of an exercise.
         @param {OneWayExercise} exercise - the exercise of which the next step must be solved.

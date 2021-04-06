@@ -57,7 +57,6 @@ class OneWaySolutionController extends LogExSolutionController {
     let lastStep = null
     let firstStep = null
 
-    // document.getElementById('exercise-left-formula').innerHTML = solution.steps[0].formulaKatex
     firstStep = solution.steps[0]
     solution.steps.forEach(function (item) {
       lastStep = item
