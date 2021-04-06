@@ -53,7 +53,6 @@ class TwoWaySolutionController extends LogExSolutionController {
         @param {TwoWayStepCollection} solution - The solution
      */
   onExerciseSolved (solution) {
-    let lastStep = null
     this.exercise = solution
 
     solution.topSteps.forEach(function (item) {
