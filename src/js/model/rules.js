@@ -1,28 +1,43 @@
 /**
-    Rules is a dictionary of all the possible rules and their translations.
+    Rules is a dictionary of all the possible rules and their keys.
  */
-export const Rules = {} // 0 = NL, 1=EN
-Rules[''] = ['Regel..', 'Rule..']
+export const Rules = {}
+export const UserRules = [
+  'logic.propositional.absorption',
+  'logic.propositional.commutativity',
+  'logic.propositional.demorgan',
+  'logic.propositional.distribution',
+  'logic.propositional.doublenegation',
+  'logic.propositional.equivalence',
+  'logic.propositional.falsecomplement',
+  'logic.propositional.falseconjunction',
+  'logic.propositional.falsedisjunction',
+  'logic.propositional.nottrue',
+  'logic.propositional.idempotency',
+  'logic.propositional.implication',
+  'logic.propositional.truecomplement',
+  'logic.propositional.trueconjunction',
+  'logic.propositional.truedisjunction',
+  'logic.propositional.notfalse'
+]
 
 // basisarray's die hieronder hergebruikt worden
-const absorbtie = ['Absorptie', 'Absorption']
-
-// var associativiteit               = ["Associativiteit", "Associativity"];
-const commutativiteit = ['Commutativiteit', 'Commutativity']
-const deMorgan = ['De Morgan', 'De Morgan']
-const distributie = ['Distributie', 'Distribution']
-const dubbeleNegatie = ['Dubbele negatie', 'Double negation']
-const equivalentieDefinitie = ['Equivalentie-eliminatie', 'Equivalention definition']
-const FRegelComplement = ['F-regel complement', 'F-rule complement']
-const FRegelConjunctie = ['F-regel conjunctie', 'F-rule conjunction']
-const FRegelDisjunctie = ['F-regel disjunctie', 'F-rule disjunction']
-const FRegelNietT = ['F-regel niet T', 'F-rule not T']
-const implicatieDefinitie = ['Implicatie-eliminatie', 'Implication definition']
-const idempotentie = ['Idempotentie', 'Idempotency']
-const TRegelComplement = ['T-regel complement', 'T-rule complement']
-const TRegelConjunctie = ['T-regel conjunctie', 'T-rule conjunction']
-const TRegelDisjunctie = ['T-regel disjunctie', 'T-rule disjunction']
-const TRegelNietF = ['T-regel niet F', 'T-rule not F']
+const absorbtie = 'rule.logic.propositional.absorption'
+const commutativiteit = 'rule.logic.propositional.commutativity'
+const deMorgan = 'rule.logic.propositional.demorgan'
+const distributie = 'rule.logic.propositional.distribution'
+const dubbeleNegatie = 'rule.logic.propositional.doublenegation'
+const equivalentieDefinitie = 'rule.logic.propositional.equivalence'
+const FRegelComplement = 'rule.logic.propositional.falsecomplement'
+const FRegelConjunctie = 'rule.logic.propositional.falseconjunction'
+const FRegelDisjunctie = 'rule.logic.propositional.falsedisjunction'
+const FRegelNietT = 'rule.logic.propositional.nottrue'
+const implicatieDefinitie = 'rule.logic.propositional.implication'
+const idempotentie = 'rule.logic.propositional.idempotency'
+const TRegelComplement = 'rule.logic.propositional.truecomplement'
+const TRegelConjunctie = 'rule.logic.propositional.trueconjunction'
+const TRegelDisjunctie = 'rule.logic.propositional.truedisjunction'
+const TRegelNietF = 'rule.logic.propositional.notfalse'
 
 // Absorptie
 Rules['logic.propositional.absorption'] = absorbtie // group id

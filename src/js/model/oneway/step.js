@@ -8,21 +8,23 @@ import katex from 'katex'
     @property {string} formula The formula.
     @property {string} rule The applied rule.
  */
-export function OneWayStep (formulaText, rule) {
-  'use strict'
-  this.formula = formulaText
-  this.formulaKatex = katex.renderToString(formulaText, {
-    throwOnError: false
-  })
-  this.rule = rule
-  this.isValid = false
-  this.isSyntaxValid = true
-  this.syntaxError = ''
-  this.isRuleValid = false
-  this.isBuggy = false
-  this.isCorrect = true
-  this.isSimilar = true
-  this.buggyRule = ''
-  this.isReady = false
-  this.strategyStatus = '[]'
+export class OneWayStep {
+  constructor (formulaText, rule) {
+    this.formula = formulaText
+    this.formulaKatex = katex.renderToString(formulaText, {
+      throwOnError: false
+    })
+    this.rule = rule
+    this.number = null
+    this.isValid = false
+    this.isSyntaxValid = true
+    this.syntaxError = ''
+    this.isRuleValid = false
+    this.isBuggy = false
+    this.isCorrect = true
+    this.isSimilar = true
+    this.buggyRule = ''
+    this.isReady = false
+    this.strategyStatus = '[]'
+  }
 }

@@ -1,3 +1,5 @@
+import katex from 'katex'
+
 export function showdiff (active, oldString, newString) {
   // alert(oldString);
 
@@ -29,21 +31,27 @@ export function showdiff (active, oldString, newString) {
 
     // als er aan het begin tekens gelijk zijn zetten we die in s
     if (equalHead > 0) {
-      s = oldString.substr(0, equalHead)
+      s = katex.renderToString(oldString.substr(0, equalHead), {
+        throwOnError: false
+      })
     }
 
     // zet nu een kleuraccent
     s = s + "<font color='red'>"
 
     // kopieer het veranderde tussenstuk
-    s = s + oldString.substr(equalHead, oldString.length - equalHead - equalTail)
+    s = s + katex.renderToString(oldString.substr(equalHead, oldString.length - equalHead - equalTail), {
+      throwOnError: false
+    })
 
     // zet nu een kleuraccent
     s = s + '</font>'
 
     // zet nu het deel van de overeenkomstige staart erbij
     if (equalTail > 0) {
-      s = s + oldString.substr(oldString.length - equalTail, equalTail)
+      s = s + katex.renderToString(oldString.substr(oldString.length - equalTail, equalTail), {
+        throwOnError: false
+      })
     }
     return s
   } else {

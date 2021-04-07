@@ -1,5 +1,4 @@
-import { Equation } from './equation.js'
-
+import katex from 'katex'
 /**
     Represents a proof step.
     @constructor
@@ -10,23 +9,32 @@ import { Equation } from './equation.js'
     @property {Boolean} isTopStep True if the step is applied to the top formula, false otherwise.
     @property {Boolean} isBottomStep True if the step is applied to the bottom formula, false otherwise.
  */
-export function TwoWayStep (equationText, rule) {
-  'use strict'
+export class TwoWayStep {
+  constructor (formulaText, rule, direction) {
+    this.formula = formulaText
+    this.formulaKatex = katex.renderToString(formulaText, {
+      throwOnError: false
+    })
+    this.rule = rule
+    if (direction === 'top') {
+      this.isTopStep = true
+      this.isBottomStep = false
+    }
+    if (direction === 'bottom') {
+      this.isTopStep = false
+      this.isBottomStep = true
+    }
 
-  this.equation = new Equation(equationText)
-  this.rule = rule
-  this.isTopStep = false
-  this.isBottomStep = false
-
-  this.isValid = false
-  this.isSyntaxValid = true
-  this.isRuleValid = false
-  this.isBuggy = false
-  this.isCorrect = true
-  this.isSimilar = true
-  this.buggyRule = ''
-  this.isReady = false
-  this.strategyStatus = '[]'
-  this.stepsRemaining = ''
-  this.strategyLocation = ''
+    this.isValid = false
+    this.isSyntaxValid = true
+    this.isRuleValid = false
+    this.isBuggy = false
+    this.isCorrect = true
+    this.isSimilar = true
+    this.buggyRule = ''
+    this.isReady = false
+    this.strategyStatus = '[]'
+    this.stepsRemaining = ''
+    this.strategyLocation = ''
+  }
 }

@@ -1,5 +1,4 @@
 import { Equation } from './equation.js'
-import { TwoWayStep } from './step.js'
 import { TwoWayStepCollection } from './stepCollection.js'
 
 /**
@@ -15,7 +14,7 @@ export class TwoWayExercise {
     this.usesStepValidation = stepValidation
     this.isReady = false
     this.equation = new Equation(equationText)
-    this.steps = new TwoWayStepCollection(new TwoWayStep(equationText))
+    this.steps = new TwoWayStepCollection(this.equation)
   }
 
   /**
