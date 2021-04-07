@@ -38,23 +38,19 @@ class Translate {
       return 'Key not found'
     }
 
-    // Find all cases of {{param}}. () makes group so that we can retrieve the key with match[1]
-    const paramRegex = /{{(\w+?)}}/g
-    let match
+    // Find all cases of {{param}}.
+    const paramRegex = /\{\{(.*?)\}\}/g
 
-    while ((match = paramRegex.exec(string)) !== null) {
-      const matchKey = match[1]
-      string = string.replace(match[0], params[matchKey])
-    }
+    string = string.replace(paramRegex, function(match, token) {
+      return params[token]
+    })
 
     // Find all cases of [[param]]. param will get translate using the key given
-    const paramKeyRegex = /\[\[(\w+?)\]\]/g
+    const paramKeyRegex = /\[\[(.*?)\]\]/g
 
-    while ((match = paramKeyRegex.exec(string)) !== null) {
-      const matchKey = match[1]
-      const translateString = this.string(params[matchKey], null)
-      string = string.replace(match[0], translateString)
-    }
+    string = string.replace(paramKeyRegex, function(match, token) {
+      return this.string(params[token])
+    }.bind(this))
 
     return string
   }

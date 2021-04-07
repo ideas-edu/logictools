@@ -397,6 +397,10 @@ class OneWayController extends LogExController {
       return false
     }
 
+    if (!this.validateFormula(newFormula)){
+      return false
+    }
+
     this.disableUI(true)
     this.clearErrors()
     this.exercise.steps.push(new OneWayStep(newFormula, ruleKey))
@@ -584,60 +588,24 @@ class OneWayController extends LogExController {
   }
 
   /**
-        Validates the formulas
-
-        @param onFormulasValidated - The callback function
-     */
-  validateInput (afterInputValidated) {
-    this.clearErrors()
-    this.validateFormula(document.getElementById('formula'), function (isValid, formulaText) {
-      this.onInputValidated(isValid, formulaText, afterInputValidated)
-    })
-  }
-
-  /**
-        Handles the event that formula 1 is validated
-
-        @param {Boolean} isValid - True if valid, false otherwise
-        @param {String} formulaText - The text of the formula
-        @param onFormulasValidated - The callback function
-     */
-  onInputValidated (isValid, formulaText, afterInputValidated) {
-    this.onFormulaValidated(isValid, formulaText)
-    afterInputValidated()
-  }
-
-  /**
-        Handles the event that a formula is validated
-
-        @param {Boolean} isValid - True if the formula is valid, false otherwise
-        @param {String} formulaText - The text of the formula
-     */
-  // this.onFormulaValidated = function (isValid, formulaText) {
-  onFormulaValidated (isValid) {
-    if (!isValid) {
-      this.setErrorLocation('formula')
-      this.updateAlert('shared.error.invalidFormula', null, 'error')
-    }
-    this.isFormulaValid = isValid
-  }
-
-  /**
         Validates the formula
 
         @param formula - The DOM element that contains the formula
         @param onFormulasValidated - The callback function
      */
-  validateFormula (formula, callbackFunc) {
-    if (callbackFunc === undefined) {
-      callbackFunc = this.onFormulaValidated
-    }
-
+  validateFormula (formula) {
     if (this.exercise.usesStepValidation) {
-      this.syntaxValidator.validateSyntax(formula.val(), callbackFunc)
-    } else {
-      callbackFunc(true, formula.val())
+      const result = this.syntaxValidator.validateSyntax(formula)
+      if (result !== null) {
+        this.setErrorLocation('formula')
+        console.log(result)
+        this.updateAlert(result.key, result.params, 'error')
+        this.isFormulaValid = false
+        return false
+      }
     }
+    this.isFormulaValid = true
+    return true
   }
 
   insertStep (step, canDelete) {

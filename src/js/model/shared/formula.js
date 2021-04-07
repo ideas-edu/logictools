@@ -11,6 +11,10 @@ class ParenthesisGroup extends Expression {
   printUnicode () {
     return `(${this.expression.printUnicode()})`
   }
+
+  length () {
+    return 2 + this.expression.length()
+  }
 }
 
 class Literal extends Expression {
@@ -21,6 +25,10 @@ class Literal extends Expression {
 
   printUnicode () {
     return `${this.expression}`
+  }
+
+  length () {
+    return 1
   }
 }
 
@@ -34,6 +42,10 @@ class UnaryOperator extends Expression {
   printUnicode () {
     return `${this.operator}{${this.expression.printUnicode()}}`
   }
+
+  length () {
+    return 1 + this.expression.length()
+  }
 }
 
 class BinaryOperator extends Expression {
@@ -46,6 +58,13 @@ class BinaryOperator extends Expression {
 
   printUnicode () {
     return `${this.lhe.printUnicode()} ${this.operator} ${this.rhe.printUnicode()}`
+  }
+
+  length () {
+    if (this.rhe !== null) {
+      return 1 + this.lhe.length() + this.rhe.length()
+    }
+    return 1 + this.lhe.length()
   }
 }
 
@@ -64,10 +83,17 @@ export class Formula {
     // }
   }
 
-  parse (expressionString, contextIndex) {
+  parse (expressionString, givenContextIndex) {
     let leftExpression = null
+    let contextIndex = null
+
     while (expressionString && expressionString.length > 0) {
-      contextIndex += 1
+      if (leftExpression === null) {
+        contextIndex = givenContextIndex + 1
+      } else {
+        contextIndex = givenContextIndex + leftExpression.length()
+      }
+
       if (unaryOperators.includes(expressionString[0])) {
         const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
         leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
@@ -77,8 +103,12 @@ export class Formula {
       if (binaryOperators.includes(expressionString[0])) {
         if (leftExpression === null) {
           this.error = {
-            message: 'Missing literal or group',
-            index: contextIndex
+            message: 'Missing operand',
+            key: 'shared.syntaxError.missingOperand',
+            params: {
+              index: contextIndex,
+              length: 0
+            }
           }
           return
         }
@@ -86,7 +116,11 @@ export class Formula {
           if (leftExpression.operator !== expressionString[0]) {
             this.error = {
               message: 'Ambiguous associativity',
-              index: contextIndex
+              key: 'shared.syntaxError.ambiguougAssoc',
+              params: {
+                index: contextIndex,
+                length: 1
+              }
             }
             return
           }
@@ -100,7 +134,11 @@ export class Formula {
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
-            index: contextIndex
+            key: 'shared.syntaxError.missingOperator',
+            params: {
+              index: contextIndex + 1,
+              length: 0
+            }
           }
           return
         }
@@ -113,7 +151,11 @@ export class Formula {
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
-            index: contextIndex
+            key: 'shared.syntaxError.missingOperator',
+            params: {
+              index: contextIndex,
+              length: 0
+            }
           }
           return
         }
@@ -123,7 +165,11 @@ export class Formula {
           if (i > expressionString.length) {
             this.error = {
               message: 'Missing closing parenthesis',
-              index: contextIndex
+              key: 'shared.syntaxError.missingClose',
+              params: {
+                index: contextIndex,
+                length: 1
+              }
             }
             return
           }
@@ -141,7 +187,11 @@ export class Formula {
       }
       this.error = {
         message: 'Unexpected character',
-        index: contextIndex
+        key: 'shared.syntaxError.unexpectedChar',
+            params: {
+              index: contextIndex,
+              length: 1
+            }
       }
       return
     }
@@ -172,7 +222,11 @@ export class Formula {
         if (i > expressionString.length) {
           this.error = {
             message: 'Missing closing parenthesis',
-            index: contextIndex
+            key: 'shared.syntaxError.missingClose',
+            params: {
+              index: contextIndex,
+              length: 1
+            }
           }
           return {
             exp: null,
@@ -187,15 +241,19 @@ export class Formula {
         }
         i++
       }
+
       return {
         exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1)),
         tailString: expressionString.substring(i)
       }
     }
-
     this.error = {
-      message: 'Missing literal or group',
-      index: contextIndex
+      message: 'Missing operand',
+      key: 'shared.syntaxError.missingOperand',
+      params: {
+        index: contextIndex,
+        length: 0
+      }
     }
     return {
       exp: null,
