@@ -639,6 +639,10 @@ class TwoWayController extends LogExController {
       return false
     }
 
+    if (!this.validateFormula(newFormula)){
+      return false
+    }
+
     this.disableUI(true)
     this.clearErrors()
 
@@ -992,30 +996,6 @@ class TwoWayController extends LogExController {
     this.disableUI(false)
     this.setErrorLocation('validate-step')
     this.updateAlert('shared.error.validatingStep', null, 'error')
-  }
-
-  /**
-        Validates the formula
-
-        @param formula - The DOM element that contains the formula
-        @param onFormulasValidated - The callback function
-     */
-  validateFormula (formula, callback) {
-    if (typeof callback === 'undefined') {
-      callback = this.onFormulaValidated.bind(this)
-    }
-
-    this.syntaxValidator.validateSyntax(formula, callback)
-  }
-
-  /**
-        Handles the event that a formula is validated
-
-        @param {Boolean} isValid - True if the formula is valid, false otherwise
-        @param {String} formulaText - The text of the formula
-     */
-  onFormulaValidated (isValid, formulaText) {
-
   }
 
   setProofDirection (direction) {

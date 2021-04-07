@@ -145,6 +145,7 @@
 			"ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
 			"missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
 			"missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
+			"emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
 			"unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
 		},
 		"error": {

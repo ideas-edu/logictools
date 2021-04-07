@@ -18,7 +18,6 @@ export class SyntaxValidator {
     const formulaTrimmed = formulaText.replaceAll(' ', '')
     const formula = new Formula(formulaTrimmed)
     if (formula.error !== null) {
-      // const formulaWithNotation = formulaTrimmed.slice(0, formula.error.params.index) + '\\underline{\\hspace{1em}}' + formulaTrimmed.slice(formula.error.params.index)
       const formulaWithNotation = this._underlineText(formulaTrimmed, formula.error.params.index - 1, formula.error.params.index + formula.error.params.length - 1)
       formula.error.params.formula = katex.renderToString(formulaWithNotation, {
         throwOnError: false

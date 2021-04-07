@@ -103,7 +103,7 @@ export class Formula {
       if (binaryOperators.includes(expressionString[0])) {
         if (leftExpression === null) {
           this.error = {
-            message: 'Missing operand',
+            message: 'Missing operand2',
             key: 'shared.syntaxError.missingOperand',
             params: {
               index: contextIndex,
@@ -118,7 +118,7 @@ export class Formula {
               message: 'Ambiguous associativity',
               key: 'shared.syntaxError.ambiguougAssoc',
               params: {
-                index: contextIndex,
+                index: contextIndex + 1,
                 length: 1
               }
             }
@@ -153,7 +153,7 @@ export class Formula {
             message: 'Missing operator',
             key: 'shared.syntaxError.missingOperator',
             params: {
-              index: contextIndex,
+              index: contextIndex + 1,
               length: 0
             }
           }
@@ -180,6 +180,17 @@ export class Formula {
             numLeft -= 1
           }
           i++
+        }
+        if (i === 2) {
+          this.error = {
+            message: 'Empty parentheses',
+            key: 'shared.syntaxError.emptyParentheses',
+            params: {
+              index: contextIndex,
+              length: 0
+            }
+          }
+          return
         }
         leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1))
         expressionString = expressionString.substring(i)
@@ -241,6 +252,20 @@ export class Formula {
         }
         i++
       }
+      if (i === 2) {
+        this.error = {
+          message: 'Empty parentheses',
+          key: 'shared.syntaxError.emptyParentheses',
+          params: {
+            index: contextIndex + 2,
+            length: 0
+          }
+        }
+        return {
+          exp: null,
+          tailString: ''
+        }
+      }
 
       return {
         exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1)),
@@ -251,7 +276,7 @@ export class Formula {
       message: 'Missing operand',
       key: 'shared.syntaxError.missingOperand',
       params: {
-        index: contextIndex,
+        index: contextIndex + 1,
         length: 0
       }
     }

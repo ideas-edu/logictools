@@ -19,37 +19,55 @@ describe('formulaSyntax', function () {
     it('should have error Missing operator', function () {
       const formula = new Formula('p∧s(p∧¬r)')
       assert.equal(formula.error.message, 'Missing operator')
-      assert.equal(formula.error.params.index, 3)
+      assert.equal(formula.error.params.index, 4)
+    })
+
+    it('should have error Missing operator (group)', function () {
+      const formula = new Formula('(p∨q)r')
+      assert.equal(formula.error.message, 'Missing operator')
+      assert.equal(formula.error.params.index, 6)
     })
 
     it('should have error Ambiguous associativity', function () {
       const formula = new Formula('p∧s∨(p∧¬r)')
       assert.equal(formula.error.message, 'Ambiguous associativity')
-      assert.equal(formula.error.params.index, 3)
+      assert.equal(formula.error.params.index, 4)
+    })
+
+    it('should have error Empty parentheses', function () {
+      const formula = new Formula('q→()')
+      assert.equal(formula.error.message, 'Empty parentheses')
+      assert.equal(formula.error.params.index, 4)
     })
 
     it('should have error Missing operand', function () {
       const formula = new Formula('p∧r∧')
       assert.equal(formula.error.message, 'Missing operand')
-      assert.equal(formula.error.params.index, 4)
+      assert.equal(formula.error.params.index, 5)
     })
 
     it('should have error Missing operand (subroutine)', function () {
-      const formula = new Formula('¬(q→r)∨q∨')
+      const formula = new Formula('¬(q→r)∨q∨∨r')
       assert.equal(formula.error.message, 'Missing operand')
-      assert.equal(formula.error.params.index, 9)
+      assert.equal(formula.error.params.index, 10)
     })
 
     it('should have error Missing operand (subroutine 2)', function () {
       const formula = new Formula('¬(q→r)∨q∨(r∨r)∨r∨')
       assert.equal(formula.error.message, 'Missing operand')
-      assert.equal(formula.error.params.index, 17)
+      assert.equal(formula.error.params.index, 18)
     })
 
-    it('should have error Missing operator (subroutine 2)', function () {
-      const formula = new Formula('(p∨q)r')
-      assert.equal(formula.error.message, 'Missing operator')
-      assert.equal(formula.error.params.index, 6)
+    it('should have error Missing operand (unary)', function () {
+      const formula = new Formula('¬(p∧q)∨s∨¬')
+      assert.equal(formula.error.message, 'Missing operand')
+      assert.equal(formula.error.params.index, 11)
+    })
+
+    it('should have error Missing operand (group)', function () {
+      const formula = new Formula('¬(p∧q)∨')
+      assert.equal(formula.error.message, 'Missing operand')
+      assert.equal(formula.error.params.index, 8)
     })
   })
 })
