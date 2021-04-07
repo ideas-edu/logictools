@@ -1032,7 +1032,7 @@ class TwoWayController extends LogExController {
       activeStep.style.display = ''
       activeArrow.innerHTML = '<i class="fas fa-arrow-down"></i>'
       activeEquiv.style.display = ''
-      document.getElementById('formula').value = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula
+      this.formulaPopover.setText(this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula)
       this.formulaPopover.previousValue = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula
     }
     if (direction === 'up') {
@@ -1041,7 +1041,7 @@ class TwoWayController extends LogExController {
       activeStep.style.display = ''
       activeArrow.innerHTML = '<i class="fas fa-arrow-up"></i>'
       activeEquiv.style.display = 'none'
-      document.getElementById('formula').value = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula
+      this.formulaPopover.setText(this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula)
       this.formulaPopover.previousValue = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula
     }
     if (direction === 'complete') {
@@ -1207,6 +1207,7 @@ class TwoWayController extends LogExController {
     this.exercise.steps.removeTopSteps(index - 1)
     if (this.proofDirection === 'down') {
       this.formulaPopover.previousValue = this.exercise.steps.topSteps[index - 2].formula
+      this.formulaPopover.setText(this.exercise.steps.topSteps[index - 2].formula)
     }
   }
 
@@ -1253,6 +1254,7 @@ class TwoWayController extends LogExController {
     this.exercise.steps.removeBottomSteps(index - 1)
     if (this.proofDirection === 'up') {
       this.formulaPopover.previousValue = this.exercise.steps.bottomSteps[index - 2].formula
+      this.formulaPopover.setText(this.exercise.steps.bottomSteps[index - 2].formula)
     }
   }
 
