@@ -1,3 +1,5 @@
+import { StepCollection } from '../shared/stepCollection.js'
+import { TwoWayStep } from './step.js'
 import { Rules } from '../rules.js'
 
 /**
@@ -5,55 +7,56 @@ import { Rules } from '../rules.js'
     @constructor
     @param {ProofStep} baseStep - The first proof step.
  */
-export function TwoWayStepCollection (baseStep) {
-  'use strict'
-
-  this.steps = []
-
-  if (baseStep !== null) {
-    this.steps.push(baseStep)
+export class TwoWayStepCollection extends StepCollection {
+  constructor (equation) {
+    super()
+    this.topSteps = [new TwoWayStep(equation.formula1, undefined, 'top')]
+    this.topSteps[0].number = 1
+    this.bottomSteps = [new TwoWayStep(equation.formula2, undefined, 'bottom')]
+    this.bottomSteps[0].number = 1
   }
 
   /**
-        Gets the current step.
-        @return {ProofStep} The current step.
-    */
-  this.getCurrentStep = function () {
-    return this.steps[this.steps.length - 1]
+    Gets the current step.
+        @return {OneWayStep} The current step.
+     */
+  getCurrentStep () {
+    return this.topSteps[this.topSteps.length - 1]
   }
 
-  /**
-        Gets the previous step.
-        @return {ProofStep} The previous step.
-    */
-  this.getPreviousStep = function () {
-    if (this.steps.length === 1) {
-      return baseStep
-    }
-    return this.steps[this.steps.length - 2]
+  getCurrentTopStep () {
+    return this.topSteps[this.topSteps.length - 1]
+  }
+
+  getCurrentBottomStep () {
+    return this.bottomSteps[this.bottomSteps.length - 1]
   }
 
   /**
     Gets all the top step.
         @return {ProofStep[]} The top steps.
     */
-  this.getTopSteps = function () {
-    return this.steps.filter(step => step.isTopStep)
+  getTopSteps () {
+    return this.topSteps
   }
 
   /**
         Gets all the bottom step.
         @return {ProofStep[]} The bottom steps.
     */
-  this.getBottomSteps = function () {
-    return this.steps.filter(step => step.isBottomStep)
+  getBottomSteps () {
+    return this.bottomSteps
+  }
+
+  isComplete () {
+    return this.topSteps[this.topSteps.length - 1].formula === this.bottomSteps[this.bottomSteps.length - 1].formula
   }
 
   /**
         Adds a proof step to the collection.
         @param {ProofStep} proofStep - The proof step.
      */
-  this.push = function (proofStep) {
+  push (proofStep) {
     // deze stappen filteren we eruit omdat dit geen stappen zijn die een normale gebruiker zou doen
     if (Rules[proofStep.rule] === null) {
       return
@@ -67,66 +70,25 @@ export function TwoWayStepCollection (baseStep) {
     this.steps.push(proofStep)
   }
 
-  /**
-        Removes the latest proof step from the collection.
-     */
-  this.pop = function () {
-    this.steps.pop()
+  pushTopStep (step) {
+    step.number = this.topSteps.length + 1
+    this.topSteps.push(step)
   }
 
-  /**
-        Removes the bottom steps starting from the specified index.
-        @param {Number} index - The start index.
-     */
-  this.removeBottomSteps = function (index) {
-    const filteredSteps = []
-    let formula = this.steps[0].equation.formula2 // voor reset van de top steps naar de nieuwe bottomstep
-    let stepCount = 0
-    let i
-
-    for (i = 0; i < this.steps.length; i += 1) {
-      if (this.steps[i].isBottomStep) {
-        if (stepCount < index) {
-          formula = this.steps[i].equation.formula2
-        } else {
-          continue
-        }
-        stepCount += 1
-      } else {
-        if (stepCount >= index) {
-          this.steps[i].equation.formula2 = formula // reset de top steps naar de nieuwe bottomstep
-        }
-      }
-      filteredSteps.push(this.steps[i])
-    }
-
-    this.steps = filteredSteps
+  pushBottomStep (step) {
+    step.number = this.bottomSteps.length + 1
+    this.bottomSteps.push(step)
   }
 
   /**
         Removes the top steps starting from the specified index.
         @param {Number} index - The start index.
      */
-  this.removeTopSteps = function (index) {
-    const filteredSteps = []
-    let formula = this.steps[0].equation.formula1 // voor reset van de bottom steps naar de nieuwe topstep
-    let stepCount = 0
-    let i
-    for (i = 0; i < this.steps.length; i += 1) {
-      if (this.steps[i].isTopStep) {
-        if (stepCount < index) {
-          formula = this.steps[i].equation.formula1
-        } else {
-          continue
-        }
-        stepCount += 1
-      } else {
-        if (stepCount >= index) {
-          this.steps[i].equation.formula1 = formula // reset de bottom steps naar de nieuwe topstep
-        }
-      }
-      filteredSteps.push(this.steps[i])
-    }
-    this.steps = filteredSteps
+  removeTopSteps (index) {
+    this.topSteps = this.topSteps.slice(0, index)
+  }
+
+  removeBottomSteps (index) {
+    this.bottomSteps = this.bottomSteps.slice(0, index)
   }
 }

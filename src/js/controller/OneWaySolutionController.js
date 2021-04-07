@@ -1,21 +1,41 @@
-import $ from 'jquery'
+import katex from 'katex'
 import jsrender from 'jsrender'
 import 'katex/dist/katex.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '@fortawesome/fontawesome-free/js/fontawesome'
+import '@fortawesome/fontawesome-free/js/solid'
+import '@fortawesome/fontawesome-free/js/regular'
+import '@fortawesome/fontawesome-free/js/brands'
 
 import { LogExSolutionController } from './LogExSolutionController.js'
 import { LogEXSession } from '../logEXSession.js'
-import { Resources } from '../resources.js'
+import { Rules } from '../model/rules.js'
 import { OneWayExerciseSolver } from '../model/oneway/exerciseSolver.js'
 import { OneWayExercise } from '../model/oneway/exercise.js'
+import { translate, loadLanguage } from '../translate.js'
 
-jsrender($); // load JsRender jQuery plugin methods
+const $ = jsrender(null)
 
-(function () {
-  $(document).ready(function () {
+function ready (fn) {
+  if (document.readyState !== 'loading') {
+    fn()
+  } else {
+    document.addEventListener('DOMContentLoaded', fn)
+  }
+}
+
+function setUp () {
+  const language = LogEXSession.getLanguage()
+  loadLanguage(language, function () {
     const controller = new OneWaySolutionController()
     controller.solveExercise()
+    document.getElementById('header-step').innerHTML = translate('shared.header.step')
+    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
+    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
   })
-})()
+}
+
+ready(setUp)
 
 /**
     OneWayController is responsible for handling all user interaction and manipulation of the user interface.
@@ -30,29 +50,6 @@ class OneWaySolutionController extends LogExSolutionController {
   }
 
   /**
-        Zebra stripes the proof steps.
-
-        @param rows - The proof step rows
-     */
-  colorRows (rows) {
-    let toggle = -1
-
-    if (rows === undefined) {
-      this.colorRows($('.exercise-step-added'))
-      return
-    }
-
-    rows.each(function () {
-      if (toggle < 0) {
-        $(this).addClass('oneven')
-      } else {
-        $(this).removeClass('oneven')
-      }
-      toggle = toggle * -1
-    })
-  }
-
-  /**
         Handles the event that an exercise is solved
         @param {ProofStepCollection} solution - The solution
      */
@@ -60,7 +57,6 @@ class OneWaySolutionController extends LogExSolutionController {
     let lastStep = null
     let firstStep = null
 
-    document.getElementById('exercise-left-formula').innerHTML = solution.steps[0].formulaKatex
     firstStep = solution.steps[0]
     solution.steps.forEach(function (item) {
       lastStep = item
@@ -69,47 +65,31 @@ class OneWaySolutionController extends LogExSolutionController {
     if (lastStep) {
       this.insertLastStep(firstStep, lastStep)
     }
-    this.colorRows()
-  }
-
-  /**
-        Inserts a proof step
-
-        @param {ProofStep} step - The proof step
-        @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
-     */
-  insertStep (step, canDelete) {
-    const exerciseStepHtml = this.renderStep(step, canDelete)
-    if (exerciseStepHtml === undefined) {
-      return
-    }
-    const exerciseStep = document.createElement('div')
-    exerciseStep.innerHTML = exerciseStepHtml
-    document.getElementById('active-step').insertAdjacentElement('beforebegin', exerciseStep)
   }
 
   renderStep (step, canDelete) {
     let rule = ''
-    const stepTemplate = $('#exercise-step-template')
-    const error = ''
+    let arrow = null
+    const stepTemplate = $.templates('#exercise-step-template')
 
-    if (step.rule === null) { // dit is de startopgave
-      return
+    if (step.rule !== null) {
+      rule = translate(Rules[step.rule])
     }
 
-    if (step.rule !== '') {
-      rule = Resources.getRule(LogEXSession.getLanguage(), step.rule)
+    if (step.number > 1) {
+      arrow = katex.renderToString('\\Leftrightarrow', {
+        throwOnError: false
+      })
     }
 
     const exerciseStepHtml = stepTemplate.render({
-      error: error,
       rule: rule,
       formula: step.formulaKatex,
-      isWrong: false,
-      hasRule: true,
       canDelete: canDelete,
-      step: 1,
-      stepValidation: true
+      step: step.number,
+      arrow: arrow,
+      stepValidation: true,
+      ruleJustification: true
     })
     return exerciseStepHtml
   }
@@ -120,12 +100,30 @@ class OneWaySolutionController extends LogExSolutionController {
         @param {ProofStep} step - The proof step
      */
   insertLastStep (firstStep, lastStep) {
-    const stepTemplate = $('#exercise-last-step-template')
-    const exerciseStepHtml = stepTemplate.render({
-      leftformula: firstStep.formulaKatex,
-      rightformula: lastStep.formulaKatex
+    const arrow = katex.renderToString('\\Leftrightarrow', {
+      throwOnError: false
     })
+    const message = firstStep.formulaKatex + ' ' + arrow + ' ' + lastStep.formulaKatex
 
-    $('#active-step').before(exerciseStepHtml)
+    this.updateAlert(message, 'complete')
+  }
+
+  updateAlert (innerHTML, type) {
+    document.getElementById('exercise-alert-container').style.display = ''
+    switch (type) {
+      case 'hint':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 hint-alert'
+        break
+      case 'error':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-exclamation-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 error-alert'
+        break
+      case 'complete':
+        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
+        document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
+        break
+    }
+    document.getElementById('exercise-alert-span').innerHTML = innerHTML
   }
 }

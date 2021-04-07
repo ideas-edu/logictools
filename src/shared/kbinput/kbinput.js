@@ -1,3 +1,4 @@
+import katex from 'katex'
 
 // Sets location of cursor in inputElement
 function setCursor (inputElement, start, end) {
@@ -33,17 +34,42 @@ export class FormulaPopover {
     for (const i in this.options.characters) {
       const button = document.createElement('button')
       button.type = 'button'
-      button.innerHTML = this.options.characters[i].charStyled || this.options.characters[i].char
+      if (this.options.characters[i].latex) {
+        button.innerHTML = katex.renderToString(this.options.characters[i].latex, {
+          throwOnError: false
+        })
+      } else {
+        button.innerHTML = this.options.characters[i].charStyled || this.options.characters[i].char
+      }
       button.setAttribute('char', this.options.characters[i].char)
+      button.classList = 'btn btn-sm btn-outline-secondary'
       this.wrapper.appendChild(button)
       button.addEventListener('mousedown', this.addText.bind(this))
     }
+    // Undo button
+    const unButton = document.createElement('button')
+    unButton.type = 'button'
+    unButton.innerHTML = '&#9100;'
+    unButton.classList = 'btn btn-sm btn-outline-secondary'
+
+    this.wrapper.appendChild(unButton)
+    unButton.addEventListener('mousedown', function () {
+      this.inputElement.value = this.previousValue
+      this.tidy()
+      // Keep focus on inputElement after pressing button
+      window.setTimeout(() => {
+        this.inputElement.focus()
+      }, 1)
+    }.bind(this))
+
     // Backspace button
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.innerHTML = '⌫' // <i class="fas fa-backspace"></i>'
-    this.wrapper.appendChild(button)
-    button.addEventListener('mousedown', function () {
+    const bsButton = document.createElement('button')
+    bsButton.type = 'button'
+    bsButton.innerHTML = '⌫' // <i class="fas fa-backspace"></i>'
+    bsButton.classList = 'btn btn-sm btn-outline-secondary'
+
+    this.wrapper.appendChild(bsButton)
+    bsButton.addEventListener('mousedown', function () {
       this.remove('backspace')
       // Keep focus on inputElement after pressing button
       window.setTimeout(() => {

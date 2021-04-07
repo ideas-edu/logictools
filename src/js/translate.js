@@ -1,4 +1,4 @@
-import { LogEXSession } from './logexSession.js'
+import { LogEXSession } from './logEXSession.js'
 
 class Translate {
   constructor () {
@@ -45,6 +45,15 @@ class Translate {
     while ((match = paramRegex.exec(string)) !== null) {
       const matchKey = match[1]
       string = string.replace(match[0], params[matchKey])
+    }
+
+    // Find all cases of [[param]]. param will get translate using the key given
+    const paramKeyRegex = /\[\[(\w+?)\]\]/g
+
+    while ((match = paramKeyRegex.exec(string)) !== null) {
+      const matchKey = match[1]
+      const translateString = this.string(params[matchKey], null)
+      string = string.replace(match[0], translateString)
     }
 
     return string

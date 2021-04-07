@@ -1,6 +1,7 @@
 import 'bootstrap'
 import { iframeResize } from 'iframe-resizer'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@fontsource/open-sans'
 import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
@@ -19,6 +20,7 @@ function ready (fn) {
 
 class MainFrameController {
   constructor () {
+    this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
       LogEXSession.setLanguage('nl')
       this.initializeLabels()
@@ -43,7 +45,7 @@ class MainFrameController {
      */
   initializeLanguage () {
     let language
-    if (LogEXSession.getLanguage() === null) {
+    if (LogEXSession.getLanguage() === null || !this.supportedLanguages.includes(LogEXSession.getLanguage())) {
       // Default language = EN overrule with browser language
       language = 'en'
       const browserLanguage = window.navigator.userLanguage || window.navigator.language
@@ -69,15 +71,15 @@ class MainFrameController {
     helpButton.href = `pdf/LogEX_manual_${language}.pdf`
     helpButton.target = '_new'
 
-    // All iFrames must be updated to English.
+    // All iFrames must be updated to new language.
     if (document.getElementById('fra-logeq').getAttribute('src') !== '') {
       document.getElementById('fra-logeq').contentWindow.UITranslate('LOGEQ')
     }
     if (document.getElementById('fra-dnv').getAttribute('src') !== '') {
-      document.getElementById('fra-dnv').contentWindow.UITranslate('DNV')
+      document.getElementById('fra-dnv').contentWindow.UITranslate()
     }
     if (document.getElementById('fra-cnv').getAttribute('src') !== '') {
-      document.getElementById('fra-cnv').contentWindow.UITranslate('CNV')
+      document.getElementById('fra-cnv').contentWindow.UITranslate()
     }
   }
 

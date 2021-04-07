@@ -1,7 +1,6 @@
 import { Texts } from './texts.js'
 import { Rules } from './model/rules.js'
 import { exerciseTypes } from './model/exerciseTypes.js'
-import { BuggyRules } from './model/buggyRules.js'
 
 /**
     Resources contains the logic for returning user interface resources in the correct culture.
@@ -25,25 +24,6 @@ export const Resources = {
       default:
         return 0
     }
-  },
-
-  /**
-        Gets the culture specific message for the specified buggy rule.
-        @param {string} language - The language { "NL" | "EN" }
-        @param {string} buggyRule - The buggy rule
-        @return {string} The message for the buggy rule.
-
-     */
-  getMessageForBuggyRule: function (language, buggyRule) {
-    'use strict'
-    let message
-
-    if (Object.prototype.hasOwnProperty.call(BuggyRules, buggyRule) && BuggyRules[buggyRule].length >= this.getLanguageIndex(language) + 1) {
-      message = BuggyRules[buggyRule][this.getLanguageIndex(language)]
-    } else {
-      message = buggyRule + ' undefined'
-    }
-    return message
   },
 
   /**

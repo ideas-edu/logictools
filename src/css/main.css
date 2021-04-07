@@ -1,3 +1,58 @@
-a.active {
+
+
+
+
+
+body {
+	font-family: "Open Sans"!important;
+}
+
+
+li > a.active {
 	color: #000;
+}
+
+li > a {
+	color: #AAA;
+}
+
+
+iframe {
+	border-radius: 4px;
+	min-height: 430px;
+}
+
+
+
+.navbar {
+	padding: 17.5px 15px!important;
+	border-bottom: 1px solid #e8e8e8;
+}
+
+.navbar .navbar-brand {
+	padding:0;
+	margin:0;
+	font-size: 16px;
+	font-weight: 600;
+	color:#000;
+}
+
+ul.nav {
+	border-bottom: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.nav-item a.nav-link{
+	padding: 15px 15px;
+	font-size: 13px;
+	color:#999;
+}
+
+.nav-item a.nav-link.active {
+	font-weight: 600;
+	color:#000;
+}
+
+.nav-item a.nav-link:hover {
+	color:#000;
 }
