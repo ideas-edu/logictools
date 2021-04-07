@@ -20,6 +20,7 @@ function ready (fn) {
 
 class MainFrameController {
   constructor () {
+    this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
       LogEXSession.setLanguage('nl')
       this.initializeLabels()
@@ -44,7 +45,7 @@ class MainFrameController {
      */
   initializeLanguage () {
     let language
-    if (LogEXSession.getLanguage() === null) {
+    if (LogEXSession.getLanguage() === null || !this.supportedLanguages.includes(LogEXSession.getLanguage())) {
       // Default language = EN overrule with browser language
       language = 'en'
       const browserLanguage = window.navigator.userLanguage || window.navigator.language
@@ -70,7 +71,7 @@ class MainFrameController {
     helpButton.href = `pdf/LogEX_manual_${language}.pdf`
     helpButton.target = '_new'
 
-    // All iFrames must be updated to English.
+    // All iFrames must be updated to new language.
     if (document.getElementById('fra-logeq').getAttribute('src') !== '') {
       document.getElementById('fra-logeq').contentWindow.UITranslate('LOGEQ')
     }
