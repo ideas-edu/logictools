@@ -1,6 +1,5 @@
 import katex from 'katex'
 
-import { IdeasServiceProxy } from './ideasServiceProxy.js'
 import { Formula } from './shared/formula.js'
 
 /**
@@ -31,7 +30,6 @@ export class SyntaxValidator {
       return `${text.slice(0, startIndex)}\\underline{\\hspace{1em}}${text.slice(endIndex)}`
     } else {
       return `${text.slice(0, startIndex)}\\underline{${text.slice(startIndex, endIndex)}}${text.slice(endIndex)}`
-
     }
   }
 }
