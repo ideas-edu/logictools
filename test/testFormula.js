@@ -4,10 +4,16 @@ import { assert } from 'chai'
 
 describe('formulaSyntax', function () {
   describe('errors', function () {
-    it('should have error Missing closing parenthesis', function () {
+    it('should have error Missing closing parenthesis (nested groups)', function () {
       const formula = new Formula('p∧(s∧(s∧¬r)')
       assert.equal(formula.error.message, 'Missing closing parenthesis')
-      assert.equal(formula.error.params.index, 2)
+      assert.equal(formula.error.params.index, 3)
+    })
+
+    it('should have error Missing closing parenthesis (multiple separate groups)', function () {
+      const formula = new Formula('(p∧q)→(s∨¬r')
+      assert.equal(formula.error.message, 'Missing closing parenthesis')
+      assert.equal(formula.error.params.index, 7)
     })
 
     it('should have error Unexpected character', function () {

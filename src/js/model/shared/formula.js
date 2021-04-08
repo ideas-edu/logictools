@@ -103,7 +103,7 @@ export class Formula {
       if (binaryOperators.includes(expressionString[0])) {
         if (leftExpression === null) {
           this.error = {
-            message: 'Missing operand2',
+            message: 'Missing operand',
             key: 'shared.syntaxError.missingOperand',
             params: {
               index: contextIndex,
@@ -199,10 +199,10 @@ export class Formula {
       this.error = {
         message: 'Unexpected character',
         key: 'shared.syntaxError.unexpectedChar',
-            params: {
-              index: contextIndex,
-              length: 1
-            }
+        params: {
+          index: contextIndex,
+          length: 1
+        }
       }
       return
     }
@@ -235,7 +235,7 @@ export class Formula {
             message: 'Missing closing parenthesis',
             key: 'shared.syntaxError.missingClose',
             params: {
-              index: contextIndex,
+              index: contextIndex + 1,
               length: 1
             }
           }
