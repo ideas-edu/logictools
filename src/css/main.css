@@ -22,7 +22,10 @@ iframe {
 	min-height: 430px;
 }
 
-
+.navbar-nav li.nav-item{
+	font-size: 13px;
+	padding: 0 7px!important;
+}
 
 .navbar {
 	padding: 17.5px 15px!important;
@@ -56,3 +59,4 @@ ul.nav {
 .nav-item a.nav-link:hover {
 	color:#000;
 }
+
