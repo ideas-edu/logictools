@@ -41,14 +41,14 @@ class Translate {
     // Find all cases of {{param}}.
     const paramRegex = /\{\{(.*?)\}\}/g
 
-    string = string.replace(paramRegex, function(match, token) {
+    string = string.replace(paramRegex, function (match, token) {
       return params[token]
     })
 
     // Find all cases of [[param]]. param will get translate using the key given
     const paramKeyRegex = /\[\[(.*?)\]\]/g
 
-    string = string.replace(paramKeyRegex, function(match, token) {
+    string = string.replace(paramKeyRegex, function (match, token) {
       return this.string(params[token])
     }.bind(this))
 
