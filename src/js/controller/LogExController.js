@@ -223,7 +223,7 @@ export class LogExController extends ExerciseController {
     }
   }
 
-    /**
+  /**
         Validates the formula
 
         @param formula - The DOM element that contains the formula

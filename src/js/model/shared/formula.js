@@ -13,6 +13,9 @@ class ParenthesisGroup extends Expression {
   }
 
   length () {
+    if (this.expression === undefined) {
+      return 2
+    }
     return 2 + this.expression.length()
   }
 }

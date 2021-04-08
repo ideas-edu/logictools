@@ -372,60 +372,6 @@ class TwoWayController extends LogExController {
     window.open('twowaysolution.html?formula=' + this.exercise.equation.getText() + '&exerciseType=' + this.exercise.type, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
-  // exercise solving
-  // this.exerciseSolver = new TwoWayExerciseSolver();
-
-  /**
-        Solves the exercise
-     */
-  /* this.solveExercise = function () {
-        this.disableUI(true);
-        this.exerciseSolver.solve(this.exercise, this.onExerciseSolved, this.onErrorSolvingExercise);
-    };
-    */
-
-  /**
-        Handles the event that an exercise is solved
-        @param {TwoWayStepCollection} solution - The solution
-     */
-  /* this.onExerciseSolved = function (solution) {
-        $('#active-step').hide();
-        $(BTN_SOLVEEXERCISE).hide();
-        $('#validate-exercise').hide();
-        $(EXERCISE_BOTTOM_STEPS).remove();
-        $(EXERCISE_TOP_STEPS).remove();
-        $(EXERCISE_LAST_STEP).remove();
-        $(FORMULA1).blur();
-        $(FORMULA2).blur();
-
-        var lastStep = null;
-        jQuery.each(solution.steps, function (index) {
-            lastStep = this;
-            this.insertStep(this, false);
-        });
-        if (lastStep) {
-            this.insertLastStep(lastStep);
-        }
-        this.disableUI(false);
-    };
-*/
-  /**
-        Handles the error that an exercise can not be solved
-     */
-  /*   this.onErrorSolvingExercise = function () {
-        this.showErrorToolTip($(BTN_SOLVEEXERCISE), Resources.getSpecificMessage(LogEXSession.getLanguage(), "error-solving-exercise"), "right");
-        this.disableUI(false);
-    };
-   */
-
-  /**
-        Shows the next step
-     */
-  // this.showNextStep = function () {
-  //    this.disableUI(true);
-  //    this.exerciseSolver.solveNextStep(this.exercise, this.onNextStepSolved, this.onErrorSolvingNextStep);
-  // };
-
   showNextStep () {
     this.disableUI(true)
     this.exerciseSolver.solveNextStep(this.exercise, this.onNextStepSolved.bind(this), this.onErrorSolvingNextStep.bind(this))
@@ -454,23 +400,7 @@ class TwoWayController extends LogExController {
     }
 
     this.insertStep(nextStep, true)
-    this.disableUI(false) // UI hier terug enabled, anders worden de popovers verkeerd gepositioneerd.
-    // nextStep.isValid = true
-    // nextStep.isRuleValid = true
-
-    // // Reset rule value after valid step
-    // $('#rule').val('')
-    // this.getStepsRemaining(this.exercise.type, this.getCurrentStep())
-    // if (this.exercise.usesStepValidation) {
-
-    //   // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.getCurrentStep(), this.onStepValidated, this.onErrorValidatingStep);
-    //   // this.exerciseValidator.validateStep(this.exercise.type, this.exercise.getPreviousStep(), this.getCurrentStep(), this.getStepsRemaining, this.onErrorValidatingStep);
-
-    // } else {
-
-    //   // this.onStepValidated();
-    //   // this.getStepsRemaining(this.exercise.type,this.getCurrentStep());
-    // }
+    this.disableUI(false)
   }
 
   /**
@@ -512,101 +442,6 @@ class TwoWayController extends LogExController {
   }
 
   /**
-        Handles the event that help for a next step is found
-        @param {TwoWayStep} nextProofStep - The next proof step
-     */
-  // onHelpForNextStepFound (nextProofStep) {
-  //   $(FORMULA1).popover(DESTROY)
-  //   $(FORMULA2).popover(DESTROY)
-
-  //   const language = LogEXSession.getLanguage()
-  //   let helpText = Resources.getText(language, 'nohint')
-  //   let formula = $(FORMULA1)
-  //   const step = this.getCurrentStep()
-  //   const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
-
-  //   // formula is nodig om te weten waar de popover getoond moet worden
-  //   if ($(FORMULA1).is(':visible')) {
-  //     formula = $(FORMULA1)
-  //   } else {
-  //     formula = $(FORMULA2)
-  //   }
-
-  //   // het kan echter zijn dat formule die bewerkt moet worden in de volgende stap
-  //   // juist de andere formule is (die niet zichtbaar is)
-  //   // geef afhankelijk van de situatie een passende hint
-
-  //   if ($(FORMULA1).is(':visible') && nextProofStep.isBottomStep) {
-  //     helpText = Resources.getSpecificMessage(language, 'do-bottom-up-step')
-  //   } else if ($(FORMULA2).is(':visible') && nextProofStep.isTopStep) {
-  //     helpText = Resources.getSpecificMessage(language, 'do-top-down-step')
-  //   } else if (Rules[nextProofStep.rule] !== null) {
-  //     helpText = '<div id="hint1">' + Resources.getSpecificMessage(language, 'rewritethis') + '<br/><a href="#" id="toggle-hint1">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
-  //   }
-
-  //   // overbodig?
-  //   // if (nextProofStep.isBottomStep) {
-  //   //    formula = $(FORMULA2);
-  //   // }
-
-  //   formula.popover({
-  //     trigger: 'manual',
-  //     placement: 'top',
-  //     title: 'Hint',
-  //     content: helpText,
-  //     html: true
-  //   })
-  //   formula.popover('show')
-
-  //   $('#toggle-hint1').on('click', function () {
-  //     formula.popover(DESTROY)
-  //     helpText = '<div id="hint2">' + Resources.getUseRuleMessage(language, nextProofStep.rule) + '<br/><a href="#" id="toggle-hint2">» ' + Resources.getText(language, 'nexthint') + '</a></div>'
-  //     formula.popover({
-  //       trigger: 'manual',
-  //       placement: 'top',
-  //       title: 'Hint',
-  //       content: helpText,
-  //       html: true
-  //     })
-  //     formula.popover('show')
-
-  //     // Log hint
-  //     IdeasServiceProxy.log(state, 'Hint: useRule')
-
-  //     $('#toggle-hint2').on('click', function () {
-  //       formula.popover(DESTROY)
-
-  //       const oldFormula = formula.val()
-  //       let newFormula = nextProofStep.equation.formula1
-
-  //       if (nextProofStep.isBottomStep) {
-  //         newFormula = nextProofStep.equation.formula2
-  //       }
-
-  //       helpText = '<div id="hint3">' + Resources.getFullHintMessage(language, nextProofStep.rule, showdiff(true, newFormula, oldFormula)) + ' <button type="button" id="auto-step" class="btn btn-success pull-right">' + Resources.getText(language, 'dostep') + '</button></div>'
-  //       formula.popover({
-  //         trigger: 'manual',
-  //         placement: 'top',
-  //         title: 'Hint',
-  //         content: helpText,
-  //         html: true
-  //       })
-  //       formula.popover('show')
-
-  //       $('#auto-step').on('click', function () {
-  //         $(FORMULA1).popover(DESTROY)
-  //         $(FORMULA2).popover(DESTROY)
-  //         this.disableUI(true)
-  //         this.showNextStep()
-  //       })
-
-  //       // Log hint
-  //       IdeasServiceProxy.log(state, 'Hint: rewriteThisUsing')
-  //     })
-  //   })
-  // }
-
-  /**
         Handles the error that the next step can not be solved
      */
   onErrorGettingHelpForNextStep () {
@@ -639,7 +474,7 @@ class TwoWayController extends LogExController {
       return false
     }
 
-    if (!this.validateFormula(newFormula)){
+    if (!this.validateFormula(newFormula)) {
       return false
     }
 
@@ -895,98 +730,6 @@ class TwoWayController extends LogExController {
       //    Reset rule value after valid step
       document.getElementById('rule').selectedIndex = 0
     }
-    // if (!currentStep.isValid && this.exercise.usesStepValidation) {
-    //   let message = Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongstep')
-    //   this.removeCurrentStep()
-
-    //   if (!currentStep.isSyntaxValid && this.exercise.usesStepValidation) {
-    //     message = Resources.getInvalidFormulaMessage()
-    //     if (currentStep.isTopStep) {
-    //       this.showErrorToolTip($(FORMULA1), Resources.getInvalidFormulaMessage(LogEXSession.getLanguage()))
-    //     } else {
-    //       this.showErrorToolTip($(FORMULA2), Resources.getInvalidFormulaMessage(LogEXSession.getLanguage()))
-    //     }
-    //     this.disableUI(false)
-    //     return
-    //   }
-
-    //   if (!currentStep.isRuleValid && this.exercise.usesStepValidation) {
-    //     this.showErrorToolTip($(ruleListBox), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'wrongrule'))
-    //     this.disableUI(false)
-    //     return
-    //   }
-
-    //   // if (this.exercise.isCorrect) {
-    //   if (currentStep.isCorrect && this.exercise.usesStepValidation) {
-    //     if (currentStep.isTopStep) {
-    //       this.showErrorToolTip($(FORMULA1), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'correctnotval'))
-    //     } else {
-    //       this.showErrorToolTip($(FORMULA2), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'correctnotval'))
-    //     }
-    //     this.disableUI(false)
-    //     return
-    //   }
-
-    //   // if (this.exercise.isSimilar) {
-    //   if (currentStep.isSimilar && this.exercise.usesStepValidation) {
-    //     this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'similar'))
-    //     this.disableUI(false)
-    //     return
-    //   }
-
-    //   // if (this.exercise.isBuggy) {
-    //   if (currentStep.isBuggy && this.exercise.usesStepValidation) {
-    //     message = Resources.getMessageForBuggyRule(LogEXSession.getLanguage(), currentStep.buggyRule)
-    //   }
-
-    //   if (currentStep.isTopStep) {
-    //     this.showErrorToolTip($(FORMULA1), message)
-    //   } else {
-    //     this.showErrorToolTip($(FORMULA2), message)
-    //   }
-
-    //   $('#equivsign').attr('src', 'img/equivsignerr.png')
-
-    //   //    Reset rule value after valid step
-    //   $(RULE_LISTBOX_TOP).val('')
-    //   $(RULE_LISTBOX_BOTTOM).val('')
-
-    //   this.disableUI(false)
-    //   return
-    // }
-
-    // this.clearErrors()
-
-    // // bij auto step is formula1 nog niet goed gevuld
-    // // $(FORMULA1).val(this.getCurrentStep().equation.formula1);
-    // // $(FORMULA1).val(currentStep.equation.formula1)
-    // // $(FORMULA1).kbinput('setPreviousValue', $(FORMULA1).val())
-    // // $('#formula1original').val($(FORMULA1).val())
-
-    // // bij auto step is formula2 nog niet goed gevuld
-    // // $(FORMULA2).val(currentStep.equation.formula2)
-    // // $(FORMULA2).kbinput('setPreviousValue', $(FORMULA2).val())
-    // // $('#formula2original').val($(FORMULA2).val())
-
-    // this.insertStep(currentStep, true)
-    // if (currentStep.isReady) {
-    //   this.insertLastStep(currentStep)
-    // }
-
-    // this.disableUI(false)
-
-    // // Bij het gebruik van hotkeys moet de focus van het formula veld worden reset
-    // if ($(FORMULA1).is(':focus')) {
-    //   $(FORMULA1).blur()
-    //   $(FORMULA1).focus()
-    // } else if ($(FORMULA2).is(':focus')) {
-    //   $(FORMULA2).blur()
-    //   $(FORMULA2).focus()
-    // }
-
-    // //    Reset rule value after valid step
-    // $(RULE_LISTBOX_TOP).val('')
-    // $(RULE_LISTBOX_BOTTOM).val('')
   }
 
   /**

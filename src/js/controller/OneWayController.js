@@ -397,7 +397,7 @@ class OneWayController extends LogExController {
       return false
     }
 
-    if (!this.validateFormula(newFormula)){
+    if (!this.validateFormula(newFormula)) {
       return false
     }
 

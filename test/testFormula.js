@@ -76,4 +76,10 @@ describe('formulaSyntax', function () {
       assert.equal(formula.error.params.index, 8)
     })
   })
+  describe('success', function () {
+    it('should succeed', function () {
+      const formula = new Formula('¬q∧¬(q→q)∧p')
+      assert.equal(formula.error, null)
+    })
+  })
 })
