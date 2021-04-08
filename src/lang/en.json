@@ -41,6 +41,7 @@
 		"logic": {
 			"propositional": {
 				"absorption": "Absorption",
+				"assoc": "Associativity",
 				"commutativity": "Commutativity",
 				"demorgan": "De Morgan",
 				"distribution": "Distribution",
