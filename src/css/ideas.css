@@ -196,7 +196,7 @@ input.kbinput {
 }
 
 .oneway-formula{
-    padding: 4px 6px;
+    padding: 4px 12px;
     display: inline-block;
     text-align:left;
 }
@@ -218,7 +218,7 @@ input.kbinput {
 }
 
 #active-step td:first-child {
-	padding-top:18px;
+	padding-top:18px!important;
 }
 
 
@@ -372,7 +372,6 @@ input.error, select.error {
 	font-weight: bold;
 	float: left;
 	margin-right: 6px;
-	margin-left: 4px;
 	width: 24px;
 	height: 24px;
 	line-height: 22px;
@@ -388,7 +387,6 @@ input.error, select.error {
 	font-weight: bold;
 	float: left;
 	margin-right: 6px;
-	margin-left: 4px;
 	width: 24px;
 	height: 24px;
 	line-height: 22px;
@@ -404,7 +402,6 @@ th {
 }
 
 #validate-step, .remove-step > button {
-	margin-right: 17px;
 	margin-left: 6px;
 }
 
@@ -419,7 +416,7 @@ table {
 
 table thead th {
 	background-color: #fdfdfd;
-	padding: 9px 10px 9px!important;
+	padding: 9px 15px 9px!important;
 	border-bottom: 1px solid #e8e8e8!important;
 	color:#999;
 	font-size: 11px;
@@ -432,8 +429,12 @@ table td {
 	border-top: 1px solid #e8e8e8!important;
 }
 
+table td {
+	padding: 12px 15px!important;
+}
+
 table td:first-child {
-	padding-right: 0;
+	padding-right: 0!important;
 }
 
 table td:first-child .katex {
@@ -442,6 +443,10 @@ table td:first-child .katex {
 }
 
 
+
+#bottom {
+	margin-right:0!important;
+}
 
 
 
@@ -539,7 +544,8 @@ button {
 }
 
 .btn-sm {
-	padding: 5px 7.5px;
+	padding: 5px 10px;
+	font-size: 12px;
 }
 
 .btn-primary,
@@ -567,3 +573,30 @@ button {
 .active {
 	color: #2B68D1;
 }
+
+
+
+
+
+
+.oneWay-body .exercise-step .col-rule{
+	vertical-align: middle;
+}
+
+
+/* Logische Equivalentie */
+.twoWay-body #empty-bottom-step td{
+	background-color:#FBFBFB;
+	height: 52px;
+}
+
+
+.twoWay-body .col-direction {
+	padding-left:15px;
+	width: 50px;
+}
+
+.twoWay-body .exercise-step td{
+	vertical-align: middle;
+}
+
