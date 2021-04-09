@@ -379,10 +379,10 @@ class OneWayController extends LogExController {
   }
 
   /**
-        Validates a step
-
+    Validates a step
+      Runs callback after correct step has been validated
      */
-  validateStep () {
+  validateStep (callback) {
     const ruleKey = this.getSelectedRuleKey()
     if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
       this.setErrorLocation('rule')
@@ -401,9 +401,16 @@ class OneWayController extends LogExController {
     this.clearErrors()
     this.exercise.steps.push(new OneWayStep(newFormula, ruleKey))
     if (this.exercise.usesStepValidation) {
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+      const validatorCallback = function () {
+        if (this.onStepValidated()) {
+          callback()
+        }
+      }.bind(this)
+      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), validatorCallback, this.onErrorValidatingStep.bind(this))
     } else {
-      this.onStepValidated()
+      if (this.onStepValidated()) {
+        callback()
+      }
     }
   }
 
@@ -412,6 +419,13 @@ class OneWayController extends LogExController {
       */
 
   validateExercise () {
+    // Exercise is still validate if user forgets to click validate step on last step. So validate the current step if formula has changed
+    const newFormula = document.getElementById('formula').value
+    if (newFormula !== this.exercise.getCurrentStep().formula) {
+      this.validateStep(this.validateExercise.bind(this))
+      return
+    }
+
     if (this.exercise.usesStepValidation) {
       this.checkIfReady()
     } else {
@@ -559,6 +573,7 @@ class OneWayController extends LogExController {
       this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
       this.setErrorLocation(errorLocation)
       this.updateAlert(message, null, 'error')
+      return false
     } else {
       this.insertStep(currentStep, true)
       this.exercise.isReady = currentStep.isReady
@@ -570,6 +585,7 @@ class OneWayController extends LogExController {
 
       //    Reset rule value after valid step
       document.getElementById('rule').selectedIndex = 0
+      return true
     }
   }
 
