@@ -131,15 +131,11 @@ class TwoWayController extends LogExController {
         Generates an exercise.
      */
   generateExercise () {
-    const stepValidation = true
+    const properties = {
+      stepValidation: true
+    }
 
-    this.reset()
-    $('#show-hint').hide()
-    $('#show-next-step').hide()
-    this.disableUI(true)
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    this.exerciseGenerator.generate(this.exerciseType, stepValidation, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    super.generateExercise(properties)
   }
 
   /**
@@ -279,10 +275,6 @@ class TwoWayController extends LogExController {
     if (config.displayDerivationButton) {
       $('#solve-exercise').show()
     }
-    $('#validate-exercise').show()
-    $('#exercise-right-formula').show()
-    $('#bottom').show()
-    $('#equivsign').attr('src', 'img/equivsignok.png')
 
     // When using hotkeys focus on formula field must be reset
     if ((LogEXSession.getStudentId() > 0)) {
