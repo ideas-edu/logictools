@@ -72,7 +72,7 @@ class OneWayController extends LogExController {
     this.exerciseValidator = new OneWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
 
-    document.getElementById('validate-exercise').addEventListener('click', function () {
+    document.getElementById('validate-exercise').addEventListener('mousedown', function () {
       this.validateExercise()
     }.bind(this))
   }
