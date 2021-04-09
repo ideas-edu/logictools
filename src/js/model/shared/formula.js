@@ -97,12 +97,25 @@ export class Formula {
         contextIndex = givenContextIndex + leftExpression.length()
       }
 
+      // Unary
       if (unaryOperators.includes(expressionString[0])) {
+        if (leftExpression !== null) {
+          this.error = {
+            message: 'Missing operator',
+            key: 'shared.syntaxError.missingOperand',
+            params: {
+              index: contextIndex + 1,
+              length: 0
+            }
+          }
+          return
+        }
         const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
         leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
         expressionString = unaryExpression.tailString
         continue
       }
+      // Binary
       if (binaryOperators.includes(expressionString[0])) {
         if (leftExpression === null) {
           this.error = {
@@ -133,6 +146,7 @@ export class Formula {
         expressionString = rightExpression.tailString
         continue
       }
+      // Literal
       if (literals.includes(expressionString[0])) {
         if (leftExpression !== null) {
           this.error = {
@@ -150,6 +164,7 @@ export class Formula {
         expressionString = rightExpression
         continue
       }
+      // Parenthesis
       if (expressionString[0] === '(') {
         if (leftExpression !== null) {
           this.error = {
@@ -199,6 +214,7 @@ export class Formula {
         expressionString = expressionString.substring(i)
         continue
       }
+      // Error
       this.error = {
         message: 'Unexpected character',
         key: 'shared.syntaxError.unexpectedChar',
