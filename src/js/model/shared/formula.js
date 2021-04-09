@@ -102,7 +102,7 @@ export class Formula {
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
-            key: 'shared.syntaxError.missingOperand',
+            key: 'shared.syntaxError.missingOperator',
             params: {
               index: contextIndex + 1,
               length: 0
