@@ -36,7 +36,6 @@ describe('formulaSyntax', function () {
 
     it('should have error Missing operator (before unary)', function () {
       const formula = new Formula('(q∨¬r)∧(q¬q)')
-      // console.log(formula.result.printUnicode())
       assert.equal(formula.error.message, 'Missing operator')
       assert.equal(formula.error.params.index, 10)
     })
