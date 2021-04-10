@@ -17,7 +17,7 @@ module.exports = {
     twoWaySolution: path.resolve(jsDir, 'controller/TwoWaySolutionController.js'),
     twoWay: path.resolve(jsDir, 'controller/TwoWayController.js'),
     main: path.resolve(jsDir, 'controller/mainFrameController.js'),
-    help: path.resolve(jsDir, 'controller/helpController.js')
+    help: path.resolve(jsDir, 'controller/HelpController.js')
   },
   output: {
     path: distDir,
