@@ -1,58 +1,35 @@
-import $ from 'jquery'
-
 /**
     KeyBindings is responsible for handling the key strokes of the user.
     @constructor
     @param {LogEQController} logEQController - The ideas controller
  */
-export function KeyBindings (logEQController) {
-  'use strict'
-  this.logEQController = logEQController
+export class KeyBindings {
+  constructor (logEQController) {
+    this.logEQController = logEQController
+  }
 
   /**
         Handles the key down event.
         @param e - The event
      */
-  this.onKeyDown = function (e) {
+  onKeyDown (e) {
     if (e.shiftKey) { // shift key bindings
       if (e.ctrlKey) { // ctrl-shift key bindings
         if (e.keyCode === 13) { // ctrl-shift-enter
-          $('#solve-exercise').click()
+          document.getElementById('solve-exercise').click()
           e.preventDefault()
-        } else if (e.keyCode === 191) {
-          $('#validate-exercise').click()
+        } else if (e.keyCode === 191) { // ctrl-?
+          document.getElementById('validate-exercise').click()
           e.preventDefault()
-        } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'n') { // ctrl-?
-          $('#new-exercise').click()
-          e.preventDefault()
-        } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'y') { // ctrl-shift-n
-          $('#new-exercise').click()
-          e.preventDefault()
-        } // ctrl-shift-y
+        }
       } else {
-        if (e.keyCode === 191) {
-          if ($('#hint1').length !== 0) {
-            $('#toggle-hint1').click()
-          } else if ($('#hint2').length !== 0) {
-            $('#toggle-hint2').click()
-          } else if ($('#hint3').length !== 0) {
-            $('#show-next-step').click()
-          } else {
-            $('#show-hint').click()
-          }
+        if (e.keyCode === 191) { // ?
+          this.showHint()
           e.preventDefault()
-        } else if (e.keyCode === 9) { // ?
-          if ($('#rule').is(':focus')) {
-            $('#formula2').focus()
-          } else if ($('#formula2').is(':focus')) {
-            $('#formula1').focus()
-          } else if ($('#formula1').is(':focus') && !$('#validate-step').attr('disabled')) {
-            $('#validate-step').focus()
-          } else {
-            $('#rule').focus()
-          }
+        } else if (e.keyCode === 9) { // shift-tab
+          this.switchFocus()
           e.preventDefault()
-        } // shift-tab
+        }
       }
     } else if (e.ctrlKey) {
       // ctrl key bindings
@@ -66,90 +43,50 @@ export function KeyBindings (logEQController) {
         // allow default action
 
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'n') { // ctrl-n
-        $('#generate-exercise').click()
+        document.getElementById('generate-exercise-normal').click()
         e.preventDefault()
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'y') { // ctrl-y
-        $('#generate-exercise').click()
+        document.getElementById('generate-exercise-normal').click()
         e.preventDefault()
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'b') { // ctrl-b
-        $('#generate-exercise-easy').click()
+        document.getElementById('generate-exercise-easy').click()
         e.preventDefault()
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'm') { // ctrl-m
-        $('#generate-exercise-difficult').click()
+        document.getElementById('generate-exercise-difficult').click()
         e.preventDefault()
       } else if (e.keyCode === 13) { // ctrl-enter
-        $('#show-next-step').click()
+        document.getElementById('show-next-step').click()
         e.preventDefault()
       } else if (e.keyCode === 191) { // ctrl-/
-        $('#validate-exercise').click()
+        document.getElementById('validate-exercise').click()
         e.preventDefault()
-      } else if (e.keyCode === 49) { // ctrl-1
-        $('#rule').prop('selectedIndex', 1)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 50) { // ctrl-2
-        $('#rule').prop('selectedIndex', 2)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 51) { // ctrl-3
-        $('#rule').prop('selectedIndex', 3)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 52) { // ctrl-4
-        $('#rule').prop('selectedIndex', 4)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 53) { // ctrl-5
-        $('#rule').prop('selectedIndex', 5)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 54) { // ctrl-6
-        $('#rule').prop('selectedIndex', 6)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 55) { // ctrl-7
-        $('#rule').prop('selectedIndex', 7)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 56) { // ctrl-8
-        $('#rule').prop('selectedIndex', 8)
-        $('#rule').change()
-        e.preventDefault()
-      } else if (e.keyCode === 57) { // ctrl-9
-        $('#rule').prop('selectedIndex', 9)
-        $('#rule').change()
+      } else if (e.keyCode === 192) { // ctrl-`
+        document.getElementById('rule').selectedIndex = 1
+      } else if (e.keyCode >= 49 && e.keyCode <= 57) { // ctrl-1 thru ctrl-9
+        document.getElementById('rule').selectedIndex = e.keyCode - 47
         e.preventDefault()
       } else if (e.keyCode === 48) { // ctrl-0
-        $('#rule').prop('selectedIndex', 10)
-        $('#rule').change()
+        document.getElementById('rule').selectedIndex = 11
         e.preventDefault()
       } else if (e.keyCode === 189) { // ctrl--
-        $('#rule').prop('selectedIndex', 11)
-        $('#rule').change()
+        document.getElementById('rule').selectedIndex = 12
         e.preventDefault()
       } else if (e.keyCode === 187) { // ctrl-=
-        $('#rule').prop('selectedIndex', 12)
-        $('#rule').change()
+        document.getElementById('rule').selectedIndex = 13
         e.preventDefault()
       } else if (e.keyCode === 40) { // ctrl-down
-        this.logEQController.removeBottomStep($('button.remove-bottom-step').first())
+        this.removeBottomStep()
         e.preventDefault()
       } else if (e.keyCode === 38) { // ctrl-up
-        this.logEQController.removeTopStep($('button.remove-top-step').last())
-        e.preventDefault()
-      } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'd') { // ctrl-d
-        this.logEQController.removeBottomStep($('button.remove-bottom-step').first())
-        e.preventDefault()
-      } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'e') { // ctrl-e
-        this.logEQController.removeTopStep($('button.remove-top-step').last())
+        this.removeTopStep()
         e.preventDefault()
       }
     } else if (e.altKey) {
       if (e.keyCode === 40) { // alt-down
-        this.logEQController.removeBottomStep($('button.remove-bottom-step').first())
+        this.removeBottomStep()
         e.preventDefault()
       } else if (e.keyCode === 38) { // alt-up
-        this.logEQController.removeTopStep($('button.remove-top-step').last())
+        this.removeTopStep()
         e.preventDefault()
       }
     } else if (e.metaKey) {
@@ -166,65 +103,62 @@ export function KeyBindings (logEQController) {
     } else {
       // geen ctrl, alt, command of shift bindings
       if (e.keyCode === 191) { // /
-        if ($('#hint1').length !== 0) {
-          $('#toggle-hint1').click()
-        } else if ($('#hint2').length !== 0) {
-          $('#toggle-hint2').click()
-        } else if ($('#hint3').length !== 0) {
-          $('#show-next-step').click()
-        } else {
-          $('#show-hint').click()
-        }
+        this.showHint()
         e.preventDefault()
       } else if (e.keyCode === 38) { // arrow up
-        if ($('#rule').prop('selectedIndex') > 0) {
-          $('#rule').prop('selectedIndex', $('#rule').prop('selectedIndex') - 1)
+        const rule = document.getElementById('rule')
+        if (rule.selectedIndex > 0) {
+          rule.selectedIndex -= 1
         }
-        $('#rule').change()
       } else if (e.keyCode === 40) { // arrow down
-        if ($('#rule').prop('selectedIndex') < $('#rule option').size() - 1) {
-          $('#rule').prop('selectedIndex', $('#rule').prop('selectedIndex') + 1)
+        const rule = document.getElementById('rule')
+        if (rule.selectedIndex < rule.length - 1) {
+          rule.selectedIndex += 1
         }
-        $('#rule').change()
       } else if (e.keyCode === 9) { // tab
-        if ($('#formula1').is(':focus')) {
-          $('#formula2').focus()
-        } else if ($('#formula2').is(':focus')) {
-          if (($('#new-exercise-content').length === 0)) {
-            $('#rule').focus()
-          } else {
-            $('#create-exercise-button').focus()
-          }
-        } else if ($('#rule').is(':focus') && !$('#validate-step').attr('disabled')) {
-          $('#validate-step').focus()
-        } else {
-          $('#formula1').focus()
-        }
+        this.switchFocus()
         e.preventDefault()
       } else if (e.keyCode === 13) { // enter
-        if ($('#new-exercise-content').length === 0) { // Standaard actie bij valideren stap
-          $('#validate-step').click()
-        } else if (!($('#new-exercise-content').length === 0)) { // submit bij toevoegen handmatige opgave
-          $('#create-exercise-button').click()
-        } else {
-          $('#rule').change()
-        }
+        document.getElementById('validate-step').click()
         e.preventDefault()
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'u') { // u
+        this.logEQController.formulaPopover.undo()
         e.preventDefault()
-        if ($('#formula1').is(':focus')) {
-          $('#formula1').formulaPopover('undo')
-        } else {
-          $('#formula2').formulaPopover('undo')
-        }
       } else if (e.keyCode === 27) { // escape
         this.logEQController.clearErrors()
-
-        $('#formula1').popover('destroy')
-        $('#formula2').popover('destroy')
-        $('#equivsign').popover('destroy')
+        this.logEQController.dismissAlert()
         e.preventDefault()
       }
+    }
+  }
+
+  showHint () {
+    if (document.getElementById('exercise-alert').classList.contains('hint-alert') && document.getElementById('exercise-alert-container').style.display === '') {
+      document.getElementById('exercise-alert-button').click()
+    } else {
+      document.getElementById('show-hint').click()
+    }
+  }
+
+  switchFocus () {
+    if (document.getElementById('formula') === document.activeElement) {
+      document.getElementById('rule').focus()
+    } else {
+      document.getElementById('formula').focus()
+    }
+  }
+
+  removeTopStep () {
+    if (['CNV', 'DNV'].includes(this.logEQController.exerciseType)) {
+      this.logEQController.removeStep(this.logEQController.exercise.steps.steps.length)
+    } else if (this.logEQController.exerciseType === 'LOGEQ') {
+      this.logEQController.removeTopStep(this.logEQController.exercise.steps.topSteps.length)
+    }
+  }
+
+  removeBottomStep () {
+    if (this.logEQController.exerciseType === 'LOGEQ') {
+      this.logEQController.removeBottomStep(this.logEQController.exercise.steps.bottomSteps.length)
     }
   }
 }

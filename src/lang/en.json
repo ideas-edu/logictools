@@ -7,6 +7,93 @@
 		},
 		"help": "<i class='fas fa-question-circle'></i> Help"
 	},
+	"help": {
+		"hotKeys": {
+			"title": "Hot Keys",
+			"description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+			"header": {
+				"action": "Action",
+				"input": "Input",
+				"keys": "Key combination"
+			},
+			"not": {
+				"input": "$$\\neg$$",
+				"keys": "-, ~, n"
+			},
+			"and": {
+				"input": "$$\\land$$",
+				"keys": "a, &, ^"
+			},
+			"or": {
+				"input": "$$\\lor$$",
+				"keys": "o, v, |"
+			},
+			"implies": {
+				"input": "$$\\rightarrow$$",
+				"keys": "i, ."
+			},
+			"equiv": {
+				"input": "$$\\leftrightarrow$$",
+				"keys": "e, ="
+			},
+			"hide": {
+				"action": "Hide alert",
+				"keys": "esc"
+			},
+			"undo": {
+				"action": "Undo",
+				"keys": "u"
+			},
+			"hint": {
+				"action": "Hint",
+				"keys": "/, ?"
+			},
+			"validateStep": {
+				"action": "Validate step",
+				"keys": "enter"
+			},
+			"selectRule": {
+				"action": "Select rule",
+				"keys": "arrow up/arrow downctrl-1, ctrl-2, ... ctrl-="
+			},
+			"showStep": {
+				"action": "Show step",
+				"keys": "ctrl-enter"
+			},
+			"showProof": {
+				"action": "Show proof",
+				"keys": "ctrl-shift-enter"
+			},
+			"validateProof": {
+				"action": "Validate proof",
+				"keys": "ctrl-?, ctrl-/"
+			},
+			"generateExerciseEasy": {
+				"action": "New easy exercise",
+				"keys": "ctrl-b"
+			},
+			"generateExerciseNormal": {
+				"action": "New normal exercise",
+				"keys": "ctrl-n, ctrl-y"
+			},
+			"generateExerciseDifficult": {
+				"action": "New difficult exercise",
+				"keys": "ctrl-m"
+			},
+			"createExercise": {
+				"action": "New exercise manual input",
+				"keys": "ctrl-shift-n, ctrl-shift-y"
+			},
+			"removeTopStep": {
+				"action": "Remove top step",
+				"keys": "ctrl-up, alt-up"
+			},
+			"removeBottomStep": {
+				"action": "Remove bottom step",
+				"keys": "ctrl-down, alt-down"
+			}
+		}
+	},
 	"oneWay": {
 		"title": {
 			"DNV": "Convert to Disjunctive Normal Form",

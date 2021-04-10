@@ -7,6 +7,98 @@
 		},
 		"help": "<i class='fas fa-question-circle'></i> Hulp"
 	},
+	"help": {
+		"hotKeys": {
+			"title": "Sneltoetsen"
+		}
+	},
+	"help": {
+		"hotKeys": {
+			"title": "Sneltoetsen",
+			"description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+			"header": {
+				"action": "Actie",
+				"input": "Invoer",
+				"keys": "Sneltoets"
+			},
+			"not": {
+				"input": "$$\\neg$$",
+				"keys": "-, ~, n"
+			},
+			"and": {
+				"input": "$$\\land$$",
+				"keys": "a, &, ^"
+			},
+			"or": {
+				"input": "$$\\lor$$",
+				"keys": "o, v, |"
+			},
+			"implies": {
+				"input": "$$\\rightarrow$$",
+				"keys": "i, ."
+			},
+			"equiv": {
+				"input": "$$\\leftrightarrow$$",
+				"keys": "e, ="
+			},
+			"hide": {
+				"action": "Verberg melding",
+				"keys": "esc"
+			},
+			"undo": {
+				"action": "Ongedaan maken",
+				"keys": "u"
+			},
+			"hint": {
+				"action": "Hint",
+				"keys": "/, ?"
+			},
+			"validateStep": {
+				"action": "Valideer stap",
+				"keys": "enter"
+			},
+			"selectRule": {
+				"action": "Selecteer regel",
+				"keys": "pijl omhoog/pijl omlaagctrl-1, ctrl-2, ... ctrl-="
+			},
+			"showStep": {
+				"action": "Toon stap",
+				"keys": "ctrl-enter"
+			},
+			"showProof": {
+				"action": "Toon bewijs",
+				"keys": "ctrl-shift-enter"
+			},
+			"validateProof": {
+				"action": "Valideer bewijs",
+				"keys": "ctrl-?, ctrl-/"
+			},
+			"generateExerciseEasy": {
+				"action": "Nieuwe opgave eenvoudig",
+				"keys": "ctrl-b"
+			},
+			"generateExerciseNormal": {
+				"action": "Nieuwe opgave normaal",
+				"keys": "ctrl-n, ctrl-y"
+			},
+			"generateExerciseDifficult": {
+				"action": "Nieuwe opgave moeilijk",
+				"keys": "ctrl-m"
+			},
+			"createExercise": {
+				"action": "Nieuwe opgave zelf invoeren",
+				"keys": "ctrl-shift-n, ctrl-shift-y"
+			},
+			"removeTopStep": {
+				"action": "Verwijder bovenste regel",
+				"keys": "ctrl-omhoog, alt-omhoog"
+			},
+			"removeBottomStep": {
+				"action": "Verwijder onderste regel",
+				"keys": "ctrl-omlaag, alt-omlaag"
+			}
+		}
+	},
 	"oneWay": {
 		"title": {
 			"DNV": "Omzetten naar Disjunctieve Normaalvorm",

@@ -1188,6 +1188,11 @@ class TwoWayController extends LogExController {
         @param source - The source DOM element
      */
   removeTopStep (index) {
+    if (index === 1) {
+      // Don't remove base step
+      return
+    }
+
     const exerciseStepTable = document.getElementById('exercise-step-table')
 
     // Move top-down button
@@ -1234,6 +1239,11 @@ class TwoWayController extends LogExController {
         @param source - The source DOM element
      */
   removeBottomStep (index) {
+    if (index === 1) {
+      // Don't remove base step
+      return
+    }
+
     const exerciseStepTable = document.getElementById('exercise-step-table')
 
     // Move bottomUp button

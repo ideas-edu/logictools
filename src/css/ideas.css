@@ -31,7 +31,11 @@ body {
 	min-height: 430px;
 }
 
-.oneWay-body, .twoWay-body
+.help-body {
+	padding: 15px;
+}
+
+.oneWay-body, .twoWay-body, .help-body
 {
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;
@@ -437,7 +441,7 @@ table td:first-child {
 	padding-right: 0!important;
 }
 
-table td:first-child .katex {
+#oneway-body, #twoway-body > table td:first-child .katex {
 	margin-top:2px;
 	float:right;
 }
