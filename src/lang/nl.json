@@ -23,11 +23,11 @@
 			},
 			"not": {
 				"input": "$$\\neg$$",
-				"keys": "-, ~, n"
+				"keys": "-, n"
 			},
 			"and": {
 				"input": "$$\\land$$",
-				"keys": "a, &, ^"
+				"keys": "a, &"
 			},
 			"or": {
 				"input": "$$\\lor$$",
@@ -59,7 +59,7 @@
 			},
 			"selectRule": {
 				"action": "Selecteer regel",
-				"keys": "pijl omhoog/pijl omlaagctrl-1, ctrl-2, ... ctrl-="
+				"keys": "pijl omhoog/pijl omlaag ctrl-1, ctrl-2, ... ctrl-="
 			},
 			"showStep": {
 				"action": "Toon stap",

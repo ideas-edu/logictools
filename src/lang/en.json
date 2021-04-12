@@ -18,11 +18,11 @@
 			},
 			"not": {
 				"input": "$$\\neg$$",
-				"keys": "-, ~, n"
+				"keys": "-, n"
 			},
 			"and": {
 				"input": "$$\\land$$",
-				"keys": "a, &, ^"
+				"keys": "a, &"
 			},
 			"or": {
 				"input": "$$\\lor$$",
