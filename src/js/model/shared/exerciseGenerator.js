@@ -54,7 +54,7 @@ export class ExerciseGenerator {
   }
 
   onSuccess (result, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties) {
-    if (result.state === null || result.state.context.term === null) {
+    if (result === undefined || result.state === undefined || result.state.context.term === null) {
       onErrorGeneratingExercise()
     } else {
       LogEXSession.setIdentifiers(exerciseId, result.state)

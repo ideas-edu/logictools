@@ -72,7 +72,7 @@ class OneWayController extends LogExController {
     this.exerciseValidator = new OneWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
 
-    document.getElementById('validate-exercise').addEventListener('click', function () {
+    document.getElementById('validate-exercise').addEventListener('mousedown', function () {
       this.validateExercise()
     }.bind(this))
   }
@@ -83,9 +83,15 @@ class OneWayController extends LogExController {
   initializeInput () {
     const formulaOptions = {
       id: 1,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const newFormulaOptions = {
+      id: 2,
       characters: this.characterOptions
     }
     this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('one-way-input'), formulaOptions)
+    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
   }
 
   /**
@@ -100,6 +106,8 @@ class OneWayController extends LogExController {
     document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
     if (this.exercise !== null) {
       document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
+    } else if (document.getElementById('new-exercise-container').style.display === '') {
+      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
     } else {
       document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
     }
@@ -144,22 +152,8 @@ class OneWayController extends LogExController {
         Shows the form for creating a new exercise
      */
   newExercise () {
-    const newExerciseTemplate = $('#new-exercise-template')
-    const newExerciseHtml = newExerciseTemplate.render()
-
-    this.reset()
-    $('#bottom').hide()
-    $('#exercise-steps').hide()
-    $(newExerciseHtml).insertBefore('#exercise-steps')
-    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
-
-    $('#create-exercise-button').click(function () {
-      this.createExercise()
-    }.bind(this))
-
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
+    super.newExercise()
+    document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
   }
 
   /**
@@ -173,24 +167,29 @@ class OneWayController extends LogExController {
       stepValidation: document.getElementById('step-validation-switch').checked
     }
 
+    const formula = document.getElementById('new-formula').value
+
     this.disableUI(true)
     LogEXSession.setDifficulty('normal')
-    this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, $('#formula').val(), properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise(formula, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
         Handles the error that an exercise can not be created
      */
   onErrorCreatingExercise () {
+    this.exercise = null
     this.disableUI(false)
-    this.setErrorLocation('formula')
-    this.updateAlert('shared.error.creatingExercise', null, 'error')
+    this.setErrorLocation('new-formula')
+    this.newExerciseAlert.updateAlert('shared.error.creatingExercise', null, 'error')
   }
 
   /**
     */
   showExercise () {
+    document.getElementById('exercise-container').style.display = ''
+    document.getElementById('new-exercise-container').style.display = 'none'
     this.clearErrors()
 
     // Remove old rows
@@ -379,10 +378,10 @@ class OneWayController extends LogExController {
   }
 
   /**
-        Validates a step
-
+    Validates a step
+      Runs callback after correct step has been validated
      */
-  validateStep () {
+  validateStep (callback) {
     const ruleKey = this.getSelectedRuleKey()
     if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
       this.setErrorLocation('rule')
@@ -401,9 +400,16 @@ class OneWayController extends LogExController {
     this.clearErrors()
     this.exercise.steps.push(new OneWayStep(newFormula, ruleKey))
     if (this.exercise.usesStepValidation) {
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+      const validatorCallback = function () {
+        if (this.onStepValidated()) {
+          callback()
+        }
+      }.bind(this)
+      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), validatorCallback, this.onErrorValidatingStep.bind(this))
     } else {
-      this.onStepValidated()
+      if (this.onStepValidated()) {
+        callback()
+      }
     }
   }
 
@@ -412,6 +418,13 @@ class OneWayController extends LogExController {
       */
 
   validateExercise () {
+    // Exercise is still validate if user forgets to click validate step on last step. So validate the current step if formula has changed
+    const newFormula = document.getElementById('formula').value
+    if (newFormula !== this.exercise.getCurrentStep().formula) {
+      this.validateStep(this.validateExercise.bind(this))
+      return
+    }
+
     if (this.exercise.usesStepValidation) {
       this.checkIfReady()
     } else {
@@ -559,6 +572,7 @@ class OneWayController extends LogExController {
       this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
       this.setErrorLocation(errorLocation)
       this.updateAlert(message, null, 'error')
+      return false
     } else {
       this.insertStep(currentStep, true)
       this.exercise.isReady = currentStep.isReady
@@ -570,6 +584,7 @@ class OneWayController extends LogExController {
 
       //    Reset rule value after valid step
       document.getElementById('rule').selectedIndex = 0
+      return true
     }
   }
 
@@ -703,6 +718,11 @@ class OneWayController extends LogExController {
   }
 
   removeStep (index) {
+    if (index === 1) {
+      // Don't remove base step
+      return
+    }
+
     const exerciseStepTable = document.getElementById('exercise-step-table')
 
     for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {

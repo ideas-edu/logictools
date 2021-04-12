@@ -47,19 +47,21 @@ export class FormulaPopover {
       button.addEventListener('mousedown', this.addText.bind(this))
     }
     // Undo button
-    const unButton = document.createElement('button')
-    unButton.type = 'button'
-    unButton.innerHTML = '&#9100;'
-    unButton.classList = 'btn btn-sm btn-outline-secondary'
+    if (this.options.allowUndo) {
+      const unButton = document.createElement('button')
+      unButton.type = 'button'
+      unButton.innerHTML = '&#9100;'
+      unButton.classList = 'btn btn-sm btn-outline-secondary'
 
-    this.wrapper.appendChild(unButton)
-    unButton.addEventListener('mousedown', function () {
-      this.setText(this.previousValue)
-      // Keep focus on inputElement after pressing button
-      window.setTimeout(() => {
-        this.inputElement.focus()
-      }, 1)
-    }.bind(this))
+      this.wrapper.appendChild(unButton)
+      unButton.addEventListener('mousedown', function () {
+        this.undo()
+        // Keep focus on inputElement after pressing button
+        window.setTimeout(() => {
+          this.inputElement.focus()
+        }, 1)
+      }.bind(this))
+    }
 
     // Backspace button
     const bsButton = document.createElement('button')
@@ -75,6 +77,13 @@ export class FormulaPopover {
         this.inputElement.focus()
       }, 1)
     }.bind(this))
+  }
+
+  /**
+    Resets the input field to value stored in previousValue
+    */
+  undo () {
+    this.setText(this.previousValue)
   }
 
   /**
