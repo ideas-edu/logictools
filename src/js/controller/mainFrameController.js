@@ -20,6 +20,7 @@ function ready (fn) {
 
 class MainFrameController {
   constructor () {
+    this.getUserId()
     this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
       LogEXSession.setLanguage('nl')
@@ -38,6 +39,26 @@ class MainFrameController {
       document.getElementById('lang-en').classList.add('active')
       document.getElementById('lang-nl').classList.remove('active')
     }.bind(this))
+  }
+
+  /**
+      Gets the exercisetype as given in the querystring
+    */
+  getUserId () {
+    const sPageURL = window.location.search.substring(1)
+    const sURLVariables = sPageURL.split('&')
+    let sParameterName
+    let i
+
+    for (i = 0; i < sURLVariables.length; i += 1) {
+      sParameterName = sURLVariables[i].split('=')
+      console.log(sParameterName)
+      if (sParameterName[0] === 'userId') {
+        console.log(sParameterName[1])
+        LogEXSession.setStudentId(sParameterName[1])
+        return
+      }
+    }
   }
 
   /**
@@ -67,9 +88,9 @@ class MainFrameController {
     loadLanguage(language, langCallback)
     document.getElementById(`lang-${language}`).classList.add('active')
 
-    const helpButton = document.getElementById('help')
-    helpButton.href = `pdf/LogEX_manual_${language}.pdf`
-    helpButton.target = '_new'
+    // const helpButton = document.getElementById('help')
+    // helpButton.href = `pdf/LogEX_manual_${language}.pdf`
+    // helpButton.target = '_new'
 
     // All iFrames must be updated to new language.
     if (document.getElementById('fra-logeq').getAttribute('src') !== '') {
@@ -81,13 +102,16 @@ class MainFrameController {
     if (document.getElementById('fra-cnv').getAttribute('src') !== '') {
       document.getElementById('fra-cnv').contentWindow.UITranslate()
     }
+    if (document.getElementById('fra-help-container').getAttribute('src') !== '') {
+      document.getElementById('fra-help-container').contentWindow.UITranslate()
+    }
   }
 
   updateTexts () {
     document.getElementById('tab-logeq').innerHTML = translate('main.tabTitle.logeq')
     document.getElementById('tab-dnv').innerHTML = translate('main.tabTitle.dnf')
     document.getElementById('tab-cnv').innerHTML = translate('main.tabTitle.cnf')
-    document.getElementById('help').innerHTML = translate('main.help')
+    document.getElementById('tab-help').innerHTML = translate('main.help')
   }
 }
 
@@ -99,10 +123,11 @@ function setUp () {
 
   // Make sure tabs are only loaded when they are clicked for the first time.
   const elements = document.getElementsByClassName('nav-link')
+  // elements.push(document.getElementById('tab-help'))
 
   for (const element of elements) {
     element.addEventListener('click', function (e) {
-      const paneID = e.target.getAttribute('href').replace('#', '')
+      const paneID = this.getAttribute('href').replace('#', '')
       const tab = document.getElementById(paneID)
       const src = tab.getAttribute('data-src')
       const frame = document.getElementById(`fra-${paneID}`)
@@ -111,7 +136,9 @@ function setUp () {
       if (frame.getAttribute('src') === '') {
         frame.setAttribute('src', src)
       }
-    })
+      // Set focus to iframe so that keydown events are passed to the iframe contents
+      frame.contentWindow.focus()
+    }.bind(element))
   }
 
   iframeResize({

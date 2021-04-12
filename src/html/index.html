@@ -12,8 +12,6 @@
 
 		<link rel="stylesheet" href="css/main.css">
 		<script type="module" src="main.bundle.js" type="text/javascript"></script>
-
-		<link rel="stylesheet" href="css/main.css">
     </head>
     <body style="background-color: #efefef">
         <!--[if lt IE 9]>
@@ -25,13 +23,14 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item" style="padding:0px 10px;" id="button-nl"><a href="#" id="lang-nl">NL</a></li>
 				<li class="nav-item" style="padding:0px 10px;" id="button-en"><a href="#" id="lang-en">EN</a></li>
-				<li class="nav-item" style="padding:0px 10px;"><a href="" target="_new" id="help"> </a></li>
+
 			</ul>
         </nav>
         <ul class="nav" id="myTabs" style="border-bottom: 1px solid #ddd; background-color: #fff">
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#dnv" id="tab-dnv">Section 1</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#cnv" id="tab-cnv">Section 2</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#logeq" id="tab-logeq">Section 3</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#help-container" id="tab-help">Help</a></li>
         </ul>
 
         <div class="container" style="padding-top: 25px; padding-bottom: 25px">
@@ -46,6 +45,9 @@
 		                </div>
 		                <div id="logeq" class="tab-pane" data-src="twoway.html?exerciseType=LOGEQ">
 		                	<iframe src="" seamless frameBorder="0" id="fra-logeq" width="100%" scrolling="no"></iframe>
+		                </div>
+		                <div id="help-container" class="tab-pane" data-src="help.html">
+		                	<iframe src="" seamless frameBorder="0" id="fra-help-container" width="100%" scrolling="no"></iframe>
 		                </div>
 		            </div>
 				</div>

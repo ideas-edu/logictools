@@ -55,8 +55,7 @@ export class FormulaPopover {
 
       this.wrapper.appendChild(unButton)
       unButton.addEventListener('mousedown', function () {
-        this.inputElement.value = this.previousValue
-        this.tidy()
+        this.undo()
         // Keep focus on inputElement after pressing button
         window.setTimeout(() => {
           this.inputElement.focus()
@@ -78,6 +77,14 @@ export class FormulaPopover {
         this.inputElement.focus()
       }, 1)
     }.bind(this))
+  }
+
+  /**
+    Resets the input field to value stored in previousValue
+    */
+  undo () {
+    this.inputElement.value = this.previousValue
+    this.tidy()
   }
 
   /**
