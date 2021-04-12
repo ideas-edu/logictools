@@ -73,6 +73,7 @@ class BinaryOperator extends Expression {
 
 const unaryOperators = ['¬']
 const binaryOperators = ['∧', '∨', '→', '↔']
+const implicitAssociativeBinaryOperators = ['∧', '∨']
 const literals = ['p', 'q', 'r', 's', 'T', 'F']
 
 export class Formula {
@@ -129,7 +130,7 @@ export class Formula {
           return
         }
         if (leftExpression instanceof BinaryOperator) {
-          if (leftExpression.operator !== expressionString[0]) {
+          if (leftExpression.operator !== expressionString[0] || !implicitAssociativeBinaryOperators.includes(expressionString[0])) {
             this.error = {
               message: 'Ambiguous associativity',
               key: 'shared.syntaxError.ambiguougAssoc',

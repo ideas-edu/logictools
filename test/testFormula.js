@@ -46,6 +46,12 @@ describe('formulaSyntax', function () {
       assert.equal(formula.error.params.index, 4)
     })
 
+    it('should have error Ambiguous associativity (non-implicit)', function () {
+      const formula = new Formula('p→s→r')
+      assert.equal(formula.error.message, 'Ambiguous associativity')
+      assert.equal(formula.error.params.index, 4)
+    })
+
     it('should have error Empty parentheses', function () {
       const formula = new Formula('q→()')
       assert.equal(formula.error.message, 'Empty parentheses')
@@ -85,6 +91,11 @@ describe('formulaSyntax', function () {
   describe('success', function () {
     it('should succeed', function () {
       const formula = new Formula('¬q∧¬(q→q)∧p')
+      assert.equal(formula.error, null)
+    })
+
+    it('should succeed implicit associativity', function () {
+      const formula = new Formula('p∧s∧r')
       assert.equal(formula.error, null)
     })
   })
