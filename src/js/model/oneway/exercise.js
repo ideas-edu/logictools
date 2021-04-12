@@ -14,6 +14,8 @@ export class OneWayExercise {
     this.type = exerciseType
     this.usesRuleJustification = properties.ruleJustification
     this.usesStepValidation = properties.stepValidation
+    this.titleKey = properties.titleKey
+    this.titleParams = properties.titleParams
     this.isReady = false
     this.formula = formulaText
     this.formulaKatex = katex.renderToString(formulaText, {

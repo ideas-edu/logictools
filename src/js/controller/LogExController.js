@@ -166,17 +166,15 @@ export class LogExController extends ExerciseController {
 
     // installs event handlers
     document.getElementById('generate-exercise-easy').addEventListener('click', function () {
-      LogEXSession.setDifficulty('easy')
-      this.generateExercise()
+      this.generateExercise('easy')
     }.bind(this))
+
     document.getElementById('generate-exercise-normal').addEventListener('click', function () {
-      LogEXSession.setDifficulty('medium')
-      this.generateExercise()
+      this.generateExercise('medium')
     }.bind(this))
 
     document.getElementById('generate-exercise-difficult').addEventListener('click', function () {
-      LogEXSession.setDifficulty('difficult')
-      this.generateExercise()
+      this.generateExercise('difficult')
     }.bind(this))
 
     document.getElementById('new-exercise').addEventListener('click', function () {

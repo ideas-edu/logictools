@@ -7,12 +7,12 @@ export const config = {
   exampleExercises: {
     CNV: [0, 1, 2, 3, 4],
     DNV: [0, 1, 2, 3, 4],
-    LOGEQ: [0, 1, 2, 3, 4]
+    LOGEQ: [0, 15, 16, 29, 30]
   },
   randomExercises: true,
   inputOwnExercise: true,
   source: 'logex',
-  backend_url: 'https://ideastest.science.uu.nl/cgi-bin/ideas-logic-new.cgi',
+  backend_url: 'https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi',
   useRuleJustification: true,
   displayRuleJustification: false,
   useStepValidation: true,

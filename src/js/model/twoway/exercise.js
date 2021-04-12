@@ -9,9 +9,11 @@ import { TwoWayStepCollection } from './stepCollection.js'
     @property {ProofStepCollection} steps The collection of proof steps.
  */
 export class TwoWayExercise {
-  constructor (equationText, exerciseType, stepValidation, ruleJustification) {
+  constructor (equationText, exerciseType, properties) {
     this.type = exerciseType
-    this.usesStepValidation = stepValidation
+    this.usesStepValidation = properties.stepValidation
+    this.titleKey = properties.titleKey
+    this.titleParams = properties.titleParams
     this.isReady = false
     this.equation = new Equation(equationText)
     this.steps = new TwoWayStepCollection(this.equation)

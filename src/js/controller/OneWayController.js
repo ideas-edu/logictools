@@ -105,7 +105,15 @@ class OneWayController extends LogExController {
     super.updateTexts()
     document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
     if (this.exercise !== null) {
-      document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
+      document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`,
+        {
+          formula: this.exercise.formulaKatex,
+          title: {
+            key: this.exercise.titleKey,
+            params: this.exercise.titleParams
+          }
+        }
+      )
     } else if (document.getElementById('new-exercise-container').style.display === '') {
       document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
     } else {
@@ -130,7 +138,11 @@ class OneWayController extends LogExController {
   useExercise (exnr) {
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked
+      stepValidation: document.getElementById('step-validation-switch').checked,
+      titleKey: 'shared.exerciseName.example',
+      titleParams: {
+        number: exnr + 1
+      }
     }
 
     super.useExercise(exnr, properties)
@@ -139,10 +151,12 @@ class OneWayController extends LogExController {
   /**
         Generates an exercise.
      */
-  generateExercise () {
+  generateExercise (difficulty) {
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked
+      stepValidation: document.getElementById('step-validation-switch').checked,
+      difficulty: difficulty,
+      titleKey: `shared.exerciseName.${difficulty}`
     }
 
     super.generateExercise(properties)
@@ -164,13 +178,13 @@ class OneWayController extends LogExController {
     const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked
+      stepValidation: document.getElementById('step-validation-switch').checked,
+      titleKey: 'shared.exerciseName.user'
     }
 
     const formula = document.getElementById('new-formula').value
 
     this.disableUI(true)
-    LogEXSession.setDifficulty('normal')
     this.exercise = new OneWayExercise(formula, exerciseMethod, properties)
     this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
@@ -209,7 +223,14 @@ class OneWayController extends LogExController {
     // Insert first row
     this.insertStep(this.exercise.steps.steps[0], false)
 
-    document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
+    document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`,
+      {
+        formula: this.exercise.formulaKatex,
+        title: {
+          key: this.exercise.titleKey,
+          params: this.exercise.titleParams
+        }
+      })
     document.getElementById('active-step').style.display = ''
 
     $('#exercise-steps').show()

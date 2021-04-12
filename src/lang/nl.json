@@ -91,8 +91,8 @@
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
 			"create": "Schrijf de formule voor je eigen opgave",
-			"DNV": "Zet {{formula}} om naar disjunctieve normaalvorm",
-			"CNV": "Zet {{formula}} om naar conjunctieve normaalvorm"
+			"DNV": "<b>[[title]]:</b> Zet {{formula}} om naar disjunctieve normaalvorm",
+			"CNV": "<b>[[title]]:</b> Zet {{formula}} om naar conjunctieve normaalvorm"
 		},
 		"button": {
 			"validateExercise": {
@@ -107,7 +107,7 @@
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
 			"create": "Schrijf de formule voor je eigen opgave",
-			"exercise": "Bewijs dat {{topFormula}} logisch equivalent met {{bottomFormula}} is"
+			"exercise": "<b>[[title]]:</b> Bewijs dat {{topFormula}} logisch equivalent met {{bottomFormula}} is"
 		},
 		"button": {
 			"topDown": "<i class='fas fa-chevron-down'></i> Omlaag",
@@ -209,7 +209,11 @@
 			"actions": "Acties"
 		},
 		"exerciseName": {
-			"example": "Opgave {{number}}"
+			"easy": "Eenvoudige Opgave",
+			"medium": "Normale Opgave",
+			"difficult": "Moeilijke Opgave",
+			"example": "Opgave {{number}}",
+			"user": "Zelfgemaakte Opgave"
 		},
 		"hint": {
 			"unavailable": "Geen hint beschikbaar",

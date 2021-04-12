@@ -51,7 +51,10 @@ class Translate {
     const paramKeyRegex = /\[\[(.*?)\]\]/g
 
     string = string.replace(paramKeyRegex, function (match, token) {
-      return this.string(params[token])
+      if (typeof params[token] === 'string') {
+        return this.string(params[token])
+      }
+      return this.string(params[token].key, params[token].params)
     }.bind(this))
 
     // Find all cases of $$param$$. param will get rendered using KaTeX
