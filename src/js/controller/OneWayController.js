@@ -167,12 +167,17 @@ class OneWayController extends LogExController {
       stepValidation: document.getElementById('step-validation-switch').checked
     }
 
-    const formula = document.getElementById('new-formula').value
+    const formula = document.getElementById('new-formula')
+
+    if (!this.validateFormula(formula, this.newExerciseAlert)) {
+      return
+    }
 
     this.disableUI(true)
+    this.dismissAlert()
     LogEXSession.setDifficulty('normal')
-    this.exercise = new OneWayExercise(formula, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise(formula.value, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, formula.value, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
@@ -383,20 +388,20 @@ class OneWayController extends LogExController {
       return false
     }
 
-    const newFormula = document.getElementById('formula').value
-    if (newFormula === this.exercise.getCurrentStep().formula) {
+    const newFormula = document.getElementById('formula')
+    if (newFormula.value === this.exercise.getCurrentStep().formula) {
       this.setErrorLocation('formula')
       this.updateAlert('shared.error.notChanged', null, 'error')
       return false
     }
 
-    if (!this.validateFormula(newFormula)) {
+    if (this.exercise.usesStepValidation && !this.validateFormula(newFormula, this.exerciseAlert)) {
       return false
     }
 
     this.disableUI(true)
     this.clearErrors()
-    this.exercise.steps.push(new OneWayStep(newFormula, ruleKey))
+    this.exercise.steps.push(new OneWayStep(newFormula.value, ruleKey))
     if (this.exercise.usesStepValidation) {
       const validatorCallback = function () {
         if (this.onStepValidated()) {

@@ -177,7 +177,16 @@ class TwoWayController extends LogExController {
     const formula2 = document.getElementById('new-formula-2').value
     const formula = `${formula1}==${formula2}`
 
+    if (!this.validateFormula(document.getElementById('new-formula-1'), this.newExerciseAlert)) {
+      return
+    }
+
+    if (!this.validateFormula(document.getElementById('new-formula-2'), this.newExerciseAlert)) {
+      return
+    }
+
     this.disableUI(true)
+    this.dismissAlert()
     LogEXSession.setDifficulty('normal')
     this.exercise = new TwoWayExercise(formula, exerciseMethod, properties)
     this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
@@ -449,7 +458,7 @@ class TwoWayController extends LogExController {
       return false
     }
 
-    if (!this.validateFormula(newFormula)) {
+    if (this.exercise.usesStepValidation && !this.validateFormula(document.getElementById('formula'), this.exerciseAlert)) {
       return false
     }
 
