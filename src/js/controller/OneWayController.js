@@ -732,6 +732,8 @@ class OneWayController extends LogExController {
     }
     this.exercise.steps.removeTopSteps(index - 1)
     document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
+    this.formulaPopover.previousValue = this.exercise.steps.steps[index - 2].formula
+    this.formulaPopover.setText(this.exercise.steps.steps[index - 2].formula)
   }
 
   retryFormula (source) {
