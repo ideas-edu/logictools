@@ -47,20 +47,22 @@ export class FormulaPopover {
       button.addEventListener('mousedown', this.addText.bind(this))
     }
     // Undo button
-    const unButton = document.createElement('button')
-    unButton.type = 'button'
-    unButton.innerHTML = '&#9100;'
-    unButton.classList = 'btn btn-sm btn-outline-secondary'
+    if (this.options.allowUndo) {
+      const unButton = document.createElement('button')
+      unButton.type = 'button'
+      unButton.innerHTML = '&#9100;'
+      unButton.classList = 'btn btn-sm btn-outline-secondary'
 
-    this.wrapper.appendChild(unButton)
-    unButton.addEventListener('mousedown', function () {
-      this.inputElement.value = this.previousValue
-      this.tidy()
-      // Keep focus on inputElement after pressing button
-      window.setTimeout(() => {
-        this.inputElement.focus()
-      }, 1)
-    }.bind(this))
+      this.wrapper.appendChild(unButton)
+      unButton.addEventListener('mousedown', function () {
+        this.inputElement.value = this.previousValue
+        this.tidy()
+        // Keep focus on inputElement after pressing button
+        window.setTimeout(() => {
+          this.inputElement.focus()
+        }, 1)
+      }.bind(this))
+    }
 
     // Backspace button
     const bsButton = document.createElement('button')

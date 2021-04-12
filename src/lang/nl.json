@@ -14,6 +14,7 @@
 		},
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
+			"create": "Schrijf de formule voor je eigen opgave",
 			"DNV": "Zet {{formula}} om naar disjunctieve normaalvorm",
 			"CNV": "Zet {{formula}} om naar conjunctieve normaalvorm"
 		},
@@ -29,6 +30,7 @@
 		"title": "Bewijs Logische Equivalentie",
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
+			"create": "Schrijf de formule voor je eigen opgave",
 			"exercise": "Bewijs dat {{topFormula}} logisch equivalent met {{bottomFormula}} is"
 		},
 		"button": {
@@ -119,6 +121,7 @@
 			"generateExerciseEasy": "Eenvoudig",
 			"generateExerciseNormal": "Normaal",
 			"generateExerciseDifficult": "Moeilijk",
+			"createExercise": "Maak aan",
 			"help": "Hulp",
 			"selectRule": "-- Selecteer regel --"
 		},

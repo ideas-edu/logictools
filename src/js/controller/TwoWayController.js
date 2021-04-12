@@ -17,6 +17,7 @@ import { config } from '../config.js'
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
 import { TwoWayExerciseGenerator } from '../model/twoway/exerciseGenerator.js'
+import { TwoWayExercise } from '../model/twoway/exercise.js'
 import { TwoWayExerciseSolver } from '../model/twoway/exerciseSolver.js'
 import { TwoWayExerciseValidator } from '../model/twoway/exerciseValidator.js'
 import { TwoWayStep } from '../model/twoway/step.js'
@@ -67,6 +68,8 @@ class TwoWayController extends LogExController {
     this.syntaxValidator = new SyntaxValidator()
     this.exerciseType = 'logeq'
     this.proofDirection = null
+    this.newFormulaPopover1 = null
+    this.newFormulaPopover2 = null
 
     $('#generate-exercise').click(function () {
       if (config.randomExercises) {
@@ -81,9 +84,20 @@ class TwoWayController extends LogExController {
   initializeInput () {
     const formulaOptions = {
       id: 1,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const newFormula1Options = {
+      id: 2,
+      characters: this.characterOptions
+    }
+    const newFormula2Options = {
+      id: 3,
       characters: this.characterOptions
     }
     this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('two-way-input'), formulaOptions)
+    this.newFormulaPopover1 = new FormulaPopover(document.getElementById('new-formula-1'), document.getElementById('new-input-1'), newFormula1Options)
+    this.newFormulaPopover2 = new FormulaPopover(document.getElementById('new-formula-2'), document.getElementById('new-input-2'), newFormula2Options)
   }
 
   /**
@@ -101,6 +115,8 @@ class TwoWayController extends LogExController {
         topFormula: this.exercise.equation.formula1katex,
         bottomFormula: this.exercise.equation.formula2katex
       })
+    } else if (document.getElementById('new-exercise-container').style.display === '') {
+      document.getElementById('instruction').innerHTML = translate('twoWay.instruction.create')
     } else {
       document.getElementById('instruction').innerHTML = translate('twoWay.instruction.begin')
     }
@@ -142,69 +158,39 @@ class TwoWayController extends LogExController {
         Shows the form for creating a new exercise
      */
   newExercise () {
-    this.reset()
-    $('#show-hint').hide()
-    $('#show-next-step').hide()
-    $('#bottom').hide()
-    $('#exercise-steps').hide()
-
-    const newExerciseTemplate = $('#new-exercise-template')
-    const newExerciseHtml = newExerciseTemplate.render()
-
-    $(newExerciseHtml).insertBefore('#exercise-steps')
-    $('#create-exercise-button-content').html("<i class='icon-ok'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
-    $('#create-exercise-button').click(function () {
-      this.createExercise()
-    }.bind(this))
-
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    $('#create-exercise-button-content').html("<i class='icon-ok'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
+    super.newExercise()
+    document.getElementById('instruction').innerHTML = translate('twoWay.instruction.create')
   }
 
   /**
         Creates a new exercise
      */
+
   createExercise () {
+    const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
+    const properties = {
+      ruleJustification: document.getElementById('rule-switch').checked,
+      stepValidation: document.getElementById('step-validation-switch').checked
+    }
 
-    // if (formula1 === formula2) {
-    //    this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), "identical"));
-    //    return false;
-    // }
+    const formula1 = document.getElementById('new-formula-1').value
+    const formula2 = document.getElementById('new-formula-2').value
+    const formula = `${formula1}==${formula2}`
 
-    // const equation = new Equation()
-    // const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
-    // equation.setFormula1(formula1)
-    // equation.setFormula2(formula2)
-    // this.exercise = new TwoWayExercise(equation.getText(), exerciseMethod, true)
-
-    // // this.exerciseSolver.solve(this.exercise, this.onNewExerciseValidated, this.onErrorCreatingExercise);
-    // this.exerciseGenerator.create(this.exerciseType, stepValidation, this.exercise.equation.getText(), this.onExerciseGenerated.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.disableUI(true)
+    LogEXSession.setDifficulty('normal')
+    this.exercise = new TwoWayExercise(formula, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
         Handles the error that an exercise can not be created
      */
-  onErrorCreatingExercise (errorMessage) {
-    // let syntaxError,
-    //   column
-
-    // switch (errorMessage) {
-    //   case 'Not suitable':
-    //     this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), errorMessage))
-    //     break
-    //   case 'Is ready':
-    //     this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'identical'))
-    //     break
-    //   default:
-    //     syntaxError = errorMessage.split(':')[1].replace('\\n', ' ').replace('\\8594', '→').replace('\\8596', '↔').replace('\\8743', '∧').replace('\\8744', '∨').replace('\\172', '¬').replace('\\', '').replace('nexpecting', ', expecting')
-    //     column = errorMessage.split(':')[0].split(',')[1].replace(')', '').replace('column', '').trim() - 4
-    //     if (column <= $(FORMULA1).val().length) {
-    //       this.showErrorToolTip($(FORMULA1), syntaxError)
-    //     } else {
-    //       this.showErrorToolTip($(FORMULA2), syntaxError)
-    //     }
-    // }
+  onErrorCreatingExercise () {
+    this.exercise = null
+    this.disableUI(false)
+    this.setErrorLocation('new-formula-1')
+    this.newExerciseAlert.updateAlert('shared.error.creatingExercise', null, 'error')
   }
 
   /**
@@ -228,6 +214,8 @@ class TwoWayController extends LogExController {
   /**
     */
   showExercise () {
+    document.getElementById('exercise-container').style.display = ''
+    document.getElementById('new-exercise-container').style.display = 'none'
     this.clearErrors()
 
     // Remove old rows
