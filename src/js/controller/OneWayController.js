@@ -719,6 +719,11 @@ class OneWayController extends LogExController {
   }
 
   removeStep (index) {
+    if (index === 1) {
+      // Don't remove base step
+      return
+    }
+
     const exerciseStepTable = document.getElementById('exercise-step-table')
 
     for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {

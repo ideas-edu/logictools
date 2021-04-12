@@ -11,12 +11,12 @@ export class LogExController extends ExerciseController {
       {
         char: '¬',
         latex: '\\neg',
-        triggers: ['-', 'n', '~', '1', '`', '!', 'N']
+        triggers: ['-', 'n', '1', '`', '!', 'N']
       },
       {
         char: '∧',
         latex: '\\land',
-        triggers: ['a', '7', '6', '^', '&', 'A'],
+        triggers: ['a', '7', '&', 'A'],
         spaces: true
       },
       {
