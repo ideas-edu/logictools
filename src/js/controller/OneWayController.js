@@ -342,7 +342,9 @@ class OneWayController extends LogExController {
         Shows the hint
      */
   showHint () {
-    this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    if (!this.exercise.isReady) {
+      this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    }
   }
 
   /**
@@ -367,14 +369,6 @@ class OneWayController extends LogExController {
     const newFormula = nextOneWayStep.formula
     const formulaDiff = showdiff(true, newFormula, oldFormula)
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
-  }
-
-  /**
-        Handles the error that the next step can not be solved
-     */
-  onErrorGettingHelpForNextStep (msg) {
-    this.setErrorLocation('show-hint')
-    this.updateAlert(msg, null, 'error')
   }
 
   /**
@@ -464,6 +458,7 @@ class OneWayController extends LogExController {
           endFormula: this.exercise.getCurrentStep().formulaKatex,
           arrow: arrow
         }
+        this.exercise.isReady = true
         this.updateAlert('oneWay.solution', alertParams, 'complete')
         this.disableUI(false)
       } else {

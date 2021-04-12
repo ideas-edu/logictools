@@ -394,7 +394,9 @@ class TwoWayController extends LogExController {
         Shows the hint
      */
   showHint () {
-    this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    if (!this.exercise.isReady) {
+      this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    }
   }
 
   /**
@@ -419,13 +421,6 @@ class TwoWayController extends LogExController {
     const newFormula = nextOneWayStep.formula
     const formulaDiff = showdiff(true, newFormula, oldFormula)
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
-  }
-
-  /**
-        Handles the error that the next step can not be solved
-     */
-  onErrorGettingHelpForNextStep () {
-    this.showErrorToolTip($('#show-hint'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-showing-hint'))
   }
 
   /**
@@ -500,6 +495,7 @@ class TwoWayController extends LogExController {
       endFormula: this.exercise.equation.formula2katex,
       arrow: arrow
     }
+    this.exercise.isReady = true
     this.updateAlert('twoWay.solution', alertParams, 'complete')
     this.setProofDirection('complete')
   }
@@ -517,46 +513,6 @@ class TwoWayController extends LogExController {
       return this.exercise.steps.topSteps.pop()
     } else {
       return this.exercise.steps.bottomSteps.pop()
-    }
-  }
-
-  /**
-        Validates an exercise
-     */
-  validateExercise () {
-    const step = this.getCurrentStep()
-    const state = [this.exercise.type, step.strategyStatus, step.equation.getText(), step.strategyLocation]
-    this.disableUI(true)
-    if (this.exercise.usesStepValidation) {
-      if (this.exercise.isReady) {
-        $('#active-step-top').hide()
-        $('#active-step-bottom').hide()
-        $('#bottom').hide()
-
-        $('.close').each(function () {
-          $(this).hide()
-        })
-
-        const stepTemplate = $('#exercise-last-step-template')
-        const exerciseStepHtml = stepTemplate.render({
-        })
-
-        $('#active-step-top').before(exerciseStepHtml)
-        this.disableUI(false)
-
-        // Log the check ready event
-        IdeasServiceProxy.log(state, 'Ready: true (call)')
-      } else {
-        this.clearErrors()
-        this.disableUI(false)
-
-        this.showErrorToolTip($('#equivsign'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'incomplete'))
-
-        // Log the check ready event
-        IdeasServiceProxy.log(state, 'Ready: false (call)')
-      }
-    } else {
-      this.exerciseValidator.validateExercise(this.exercise, 0, 0, this.onExerciseValidated.bind(this), this.onErrorExerciseValidate.bind(this))
     }
   }
 

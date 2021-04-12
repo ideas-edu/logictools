@@ -19,7 +19,7 @@ export class KeyBindings {
           document.getElementById('solve-exercise').click()
           e.preventDefault()
         } else if (e.keyCode === 191) { // ctrl-?
-          document.getElementById('validate-exercise').click()
+          this.validateExercise()
           e.preventDefault()
         }
       } else {
@@ -37,7 +37,7 @@ export class KeyBindings {
         document.getElementById('show-next-step').click()
         e.preventDefault()
       } else if (e.keyCode === 191) { // ctrl-/
-        document.getElementById('validate-exercise').click()
+        this.validateExercise()
         e.preventDefault()
       } else if (e.keyCode === 40) { // ctrl-down
         this.removeBottomStep()
@@ -91,6 +91,12 @@ export class KeyBindings {
       document.getElementById('exercise-alert-button').click()
     } else {
       document.getElementById('show-hint').click()
+    }
+  }
+
+  validateExercise () {
+    if (['CNV', 'DNV'].includes(this.logEQController.exerciseType)) {
+      this.logEQController.validateExercise()
     }
   }
 

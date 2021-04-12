@@ -176,6 +176,14 @@ export class ExerciseController {
   }
 
   /**
+        Handles the error that the next step can not be solved
+     */
+  onErrorGettingHelpForNextStep (msg) {
+    this.setErrorLocation('show-hint')
+    this.updateAlert(msg, null, 'error')
+  }
+
+  /**
         Inserts a proof step
 
         @param {ProofStep} step - The proof step
