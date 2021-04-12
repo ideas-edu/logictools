@@ -5,7 +5,7 @@ import { ExerciseValidator } from '../shared/exerciseValidator.js'
     @constructor
  */
 export class OneWayExerciseValidator extends ExerciseValidator {
-  getState (exercise, step1) {
+  getState (exercise, step1, step2) {
     const state = {
       exerciseid: exercise.type,
       prefix: step1.strategyStatus,
@@ -19,7 +19,7 @@ export class OneWayExerciseValidator extends ExerciseValidator {
     return state
   }
 
-  getContext (step2) {
+  getContext (exercise, step2) {
     const context = {
       term: step2.formula,
       environment: {},

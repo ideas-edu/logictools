@@ -1,5 +1,6 @@
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
+// import { ExerciseController } from './ExerciseController.js'
 
 export class LogExSolutionController {
   /**
@@ -28,7 +29,7 @@ export class LogExSolutionController {
     let sParameterName
     let i
     for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
+      sParameterName = sURLVariables[i].split(/=(.+)/)
       if (sParameterName[0] === 'formula') {
         return decodeURIComponent(sParameterName[1])
       }
@@ -76,5 +77,18 @@ export class LogExSolutionController {
   onErrorSolvingExercise () {
     this.showErrorToolTip(document.getElementById('solve-exercise'), Resources.getSpecificMessage(LogEXSession.getLanguage(), 'error-solving-exercise'), 'right')
     this.disableUI(false)
+  }
+
+  insertStep (step, canDelete) {
+    const exerciseStep = document.createElement('tr')
+    exerciseStep.classList.add('exercise-step')
+    exerciseStep.innerHTML = this.renderStep(step, canDelete)
+
+    const tableBody = document.getElementById('active-step')
+    if (step.isBottomStep) {
+      tableBody.insertAdjacentElement('afterend', exerciseStep)
+    } else {
+      tableBody.insertAdjacentElement('beforebegin', exerciseStep)
+    }
   }
 }

@@ -15,114 +15,45 @@
     <body>
         <script src="twoWaySolution.bundle.js"></script>
         <div class="container">
-            <div class="row">
-                <div class="col-md-1 cell">
-                    &nbsp;
-                </div>
-                <div class="col-md-8 cell">
-                    <div id="exercise">
-                          <span class="left-formula" id="exercise-left-formula"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="exercise-steps" class="row">
-				<div class="col-md-9">
-                    <div id="active-step" class="exercise-step-even" style="display: none;"></div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-1 cell">
-                    &nbsp;
-                </div>
-                <div class="col-md-8 cell">
-                    <div>
-                       <span class="right-formula" id="exercise-right-formula"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" id="bottom">
-                <div class="col-md-9">
-                    &nbsp;
-                </div>
-            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr id="exercise-table-header">
+                        <th scope="col" id="header-direction"></th>
+                        <th scope="col" id="header-formula">Formule</th>
+                        <th scope="col" id="header-rule">Regel</th>
+                    </tr>
+                </thead>
+                <tbody id="exercise-step-table">
+                <tr id="active-step">
+                    <td colspan="4" class="no-row-divider">
+                    <div class="row" id="exercise-alert-container" style="display: none">
+                        <div class="alert" id="exercise-alert" role="alert">
+                            <span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+                        </div>
+                    </div></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
 
-        <script id="exercise-top-step-template" type="text/x-jsrender">
-            <div class="exercise-step-even exercise-step-added-top bar">
-                <div class="row">
-                    <div class="col-md-1">
-                        <span class="arrow pull-right">&#8660;</span>
-                    </div>
-                    <div class="col-md-7">
-                        <span class="pull-right">{{>rule}}</span>
-                    </div>
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-                    <div class="col-md-7">
-                        <span class="oneway-formula pull-left">{{:leftformula}}</span>
-                    </div>
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-                </div>
-            </div>
-		</script>
-
-
-		<script id="exercise-bottom-step-template" type="text/x-jsrender">
-			<div class="exercise-step-even exercise-step-added-bottom bar">
-                <div class="row">
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-                    <div class="col-md-7">
-                        <span class="oneway-formula pull-left">{{:rightformula}}</span>
-                    </div>
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-1">
-                        <span class="arrow pull-right">&#8660;</span>
-                    </div>
-                    <div class="col-md-7">
-                        <span class="pull-right">{{>rule}}</span>
-                    </div>
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-                </div>
-			</div>
-		</script>
-		<script id="exercise-last-step-template" type="text/x-jsrender">
-			<div class="exercise-step-even last-step success">
-				<div class="row">
-                    <div class="col-md-1">
-                        <div class="v-center h-center">
-                            <img src="img/tick.png" />
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <span class="pull-left">
-                            <label>{{:leftformula}} &#x021D4; {{:rightformula}}</label>
-                        </span>
-                    </div>
-                    <div class="col-md-1">
-                        &nbsp;
-                    </div>
-				</div>
-			</div>
-		</script>
-
+        <script id="exercise-step-template" type="text/x-jsrender">
+            <td scope="row">
+                {{if topStep && !basis}}
+                    <i class='fas fa-arrow-down'></i>
+                {{/if}}
+                {{if bottomStep && !basis}}
+                    <i class='fas fa-arrow-up'></i>
+                {{/if}}
+                {{:arrow}}
+            </td>
+            <td>
+                <span class="twoway-formula">{{:formula}}</span>
+            </td>
+            <td>
+                {{if rule }}
+                    <span>{{>rule}}</span>
+                {{/if}}
+            </td>
+        </script>
     </body>
 </html>
