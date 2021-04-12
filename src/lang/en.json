@@ -85,6 +85,7 @@
 		},
 		"instruction": {
 			"begin": "Select an exercise to get started!",
+			"create": "Write the formula for your own exercise",
 			"DNV": "Convert {{formula}} to disjunctive normal form",
 			"CNV": "Convert {{formula}} to conjunctive normal form"
 		},
@@ -100,6 +101,7 @@
 		"title": "Prove Logical Equivalence",
 		"instruction": {
 			"begin": "Select an exercise to get started!",
+			"create": "Write the formula for your own exercise",
 			"exercise": "Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
 		},
 		"button": {
@@ -190,6 +192,7 @@
 			"generateExerciseEasy": "Easy",
 			"generateExerciseNormal": "Normal",
 			"generateExerciseDifficult": "Difficult",
+			"createExercise": "Create",
 			"help": "Help",
 			"selectRule": "-- Select rule --"
 		},
