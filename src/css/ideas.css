@@ -31,7 +31,11 @@ body {
 	min-height: 430px;
 }
 
-.oneWay-body, .twoWay-body
+.help-body {
+	padding: 15px;
+}
+
+.oneWay-body, .twoWay-body, .help-body
 {
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;

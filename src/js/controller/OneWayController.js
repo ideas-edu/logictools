@@ -83,9 +83,15 @@ class OneWayController extends LogExController {
   initializeInput () {
     const formulaOptions = {
       id: 1,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const newFormulaOptions = {
+      id: 2,
       characters: this.characterOptions
     }
     this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('one-way-input'), formulaOptions)
+    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
   }
 
   /**
@@ -100,6 +106,8 @@ class OneWayController extends LogExController {
     document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
     if (this.exercise !== null) {
       document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`, { formula: this.exercise.formulaKatex })
+    } else if (document.getElementById('new-exercise-container').style.display === '') {
+      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
     } else {
       document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
     }
@@ -144,22 +152,8 @@ class OneWayController extends LogExController {
         Shows the form for creating a new exercise
      */
   newExercise () {
-    const newExerciseTemplate = $('#new-exercise-template')
-    const newExerciseHtml = newExerciseTemplate.render()
-
-    this.reset()
-    $('#bottom').hide()
-    $('#exercise-steps').hide()
-    $(newExerciseHtml).insertBefore('#exercise-steps')
-    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
-
-    $('#create-exercise-button').click(function () {
-      this.createExercise()
-    }.bind(this))
-
-    const language = LogEXSession.getLanguage()
-    $('#newexercise').html(Resources.getText(language, 'newexercise'))
-    $('#create-exercise-button-content').html("<i class='fas fa-check'></i> " + Resources.getText(LogEXSession.getLanguage(), 'create-exercise-button'))
+    super.newExercise()
+    document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
   }
 
   /**
@@ -173,24 +167,29 @@ class OneWayController extends LogExController {
       stepValidation: document.getElementById('step-validation-switch').checked
     }
 
+    const formula = document.getElementById('new-formula').value
+
     this.disableUI(true)
     LogEXSession.setDifficulty('normal')
-    this.exercise = new OneWayExercise($('#formula').val(), exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, $('#formula').val(), properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise(formula, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
         Handles the error that an exercise can not be created
      */
   onErrorCreatingExercise () {
+    this.exercise = null
     this.disableUI(false)
-    this.setErrorLocation('formula')
-    this.updateAlert('shared.error.creatingExercise', null, 'error')
+    this.setErrorLocation('new-formula')
+    this.newExerciseAlert.updateAlert('shared.error.creatingExercise', null, 'error')
   }
 
   /**
     */
   showExercise () {
+    document.getElementById('exercise-container').style.display = ''
+    document.getElementById('new-exercise-container').style.display = 'none'
     this.clearErrors()
 
     // Remove old rows
@@ -666,6 +665,11 @@ class OneWayController extends LogExController {
   }
 
   removeStep (index) {
+    if (index === 1) {
+      // Don't remove base step
+      return
+    }
+
     const exerciseStepTable = document.getElementById('exercise-step-table')
 
     for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {
@@ -675,6 +679,8 @@ class OneWayController extends LogExController {
     }
     this.exercise.steps.removeTopSteps(index - 1)
     document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
+    this.formulaPopover.previousValue = this.exercise.steps.steps[index - 2].formula
+    this.formulaPopover.setText(this.exercise.steps.steps[index - 2].formula)
   }
 
   retryFormula (source) {

@@ -7,6 +7,82 @@
 		},
 		"help": "<i class='fas fa-question-circle'></i> Hulp"
 	},
+	"help": {
+		"hotKeys": {
+			"title": "Sneltoetsen"
+		}
+	},
+	"help": {
+		"hotKeys": {
+			"title": "Sneltoetsen",
+			"description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+			"header": {
+				"action": "Actie",
+				"input": "Invoer",
+				"keys": "Sneltoets"
+			},
+			"not": {
+				"input": "$$\\neg$$",
+				"keys": "-, n"
+			},
+			"and": {
+				"input": "$$\\land$$",
+				"keys": "a, &"
+			},
+			"or": {
+				"input": "$$\\lor$$",
+				"keys": "o, v, |"
+			},
+			"implies": {
+				"input": "$$\\rightarrow$$",
+				"keys": "i, ."
+			},
+			"equiv": {
+				"input": "$$\\leftrightarrow$$",
+				"keys": "e, ="
+			},
+			"hide": {
+				"action": "Verberg melding",
+				"keys": "esc"
+			},
+			"undo": {
+				"action": "Ongedaan maken",
+				"keys": "u"
+			},
+			"hint": {
+				"action": "Hint",
+				"keys": "/, ?"
+			},
+			"validateStep": {
+				"action": "Valideer stap",
+				"keys": "enter"
+			},
+			"selectRule": {
+				"action": "Selecteer regel",
+				"keys": "pijl omhoog/pijl omlaag"
+			},
+			"showStep": {
+				"action": "Toon stap",
+				"keys": "ctrl-enter"
+			},
+			"showProof": {
+				"action": "Toon bewijs",
+				"keys": "ctrl-shift-enter"
+			},
+			"validateProof": {
+				"action": "Valideer bewijs",
+				"keys": "ctrl-?, ctrl-/"
+			},
+			"removeTopStep": {
+				"action": "Verwijder bovenste regel",
+				"keys": "ctrl-omhoog, alt-omhoog"
+			},
+			"removeBottomStep": {
+				"action": "Verwijder onderste regel",
+				"keys": "ctrl-omlaag, alt-omlaag"
+			}
+		}
+	},
 	"oneWay": {
 		"title": {
 			"DNV": "Omzetten naar Disjunctieve Normaalvorm",
@@ -14,6 +90,7 @@
 		},
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
+			"create": "Schrijf de formule voor je eigen opgave",
 			"DNV": "Zet {{formula}} om naar disjunctieve normaalvorm",
 			"CNV": "Zet {{formula}} om naar conjunctieve normaalvorm"
 		},
@@ -29,6 +106,7 @@
 		"title": "Bewijs Logische Equivalentie",
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
+			"create": "Schrijf de formule voor je eigen opgave",
 			"exercise": "Bewijs dat {{topFormula}} logisch equivalent met {{bottomFormula}} is"
 		},
 		"button": {
@@ -119,6 +197,7 @@
 			"generateExerciseEasy": "Eenvoudig",
 			"generateExerciseNormal": "Normaal",
 			"generateExerciseDifficult": "Moeilijk",
+			"createExercise": "Maak aan",
 			"help": "Hulp",
 			"selectRule": "-- Selecteer regel --"
 		},

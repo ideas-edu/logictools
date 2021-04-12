@@ -1,3 +1,5 @@
+import katex from 'katex'
+
 import { LogEXSession } from './logEXSession.js'
 
 class Translate {
@@ -51,6 +53,15 @@ class Translate {
     string = string.replace(paramKeyRegex, function (match, token) {
       return this.string(params[token])
     }.bind(this))
+
+    // Find all cases of $$param$$. param will get rendered using KaTeX
+    const paramKatexRegex = /\$\$(.*?)\$\$/g
+
+    string = string.replace(paramKatexRegex, function (match, token) {
+      return katex.renderToString(token, {
+        throwOnError: false
+      })
+    })
 
     return string
   }
