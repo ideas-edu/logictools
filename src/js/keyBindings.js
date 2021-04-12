@@ -33,46 +33,11 @@ export class KeyBindings {
       }
     } else if (e.ctrlKey) {
       // ctrl key bindings
-      if (e.keyCode === 67) { // ctrl-c
-        // allow default action
-
-      } else if (e.keyCode === 86) { // ctrl-v
-        // allow default action
-
-      } else if (e.keyCode === 88) { // ctrl-x
-        // allow default action
-
-      } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'n') { // ctrl-n
-        document.getElementById('generate-exercise-normal').click()
-        e.preventDefault()
-      } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'y') { // ctrl-y
-        document.getElementById('generate-exercise-normal').click()
-        e.preventDefault()
-      } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'b') { // ctrl-b
-        document.getElementById('generate-exercise-easy').click()
-        e.preventDefault()
-      } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'm') { // ctrl-m
-        document.getElementById('generate-exercise-difficult').click()
-        e.preventDefault()
-      } else if (e.keyCode === 13) { // ctrl-enter
+      if (e.keyCode === 13) { // ctrl-enter
         document.getElementById('show-next-step').click()
         e.preventDefault()
       } else if (e.keyCode === 191) { // ctrl-/
         document.getElementById('validate-exercise').click()
-        e.preventDefault()
-      } else if (e.keyCode === 192) { // ctrl-`
-        document.getElementById('rule').selectedIndex = 1
-      } else if (e.keyCode >= 49 && e.keyCode <= 57) { // ctrl-1 thru ctrl-9
-        document.getElementById('rule').selectedIndex = e.keyCode - 47
-        e.preventDefault()
-      } else if (e.keyCode === 48) { // ctrl-0
-        document.getElementById('rule').selectedIndex = 11
-        e.preventDefault()
-      } else if (e.keyCode === 189) { // ctrl--
-        document.getElementById('rule').selectedIndex = 12
-        e.preventDefault()
-      } else if (e.keyCode === 187) { // ctrl-=
-        document.getElementById('rule').selectedIndex = 13
         e.preventDefault()
       } else if (e.keyCode === 40) { // ctrl-down
         this.removeBottomStep()
@@ -88,17 +53,6 @@ export class KeyBindings {
       } else if (e.keyCode === 38) { // alt-up
         this.removeTopStep()
         e.preventDefault()
-      }
-    } else if (e.metaKey) {
-      if (e.keyCode === 67) { // cmd-c
-        // allow default action
-
-      } else if (e.keyCode === 86) { // cmd-v
-        // allow default action
-
-      } else if (e.keyCode === 88) { // cmd-x
-        // allow default action
-
       }
     } else {
       // geen ctrl, alt, command of shift bindings

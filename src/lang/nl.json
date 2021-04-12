@@ -59,7 +59,7 @@
 			},
 			"selectRule": {
 				"action": "Selecteer regel",
-				"keys": "pijl omhoog/pijl omlaag ctrl-1, ctrl-2, ... ctrl-="
+				"keys": "pijl omhoog/pijl omlaag"
 			},
 			"showStep": {
 				"action": "Toon stap",
@@ -72,22 +72,6 @@
 			"validateProof": {
 				"action": "Valideer bewijs",
 				"keys": "ctrl-?, ctrl-/"
-			},
-			"generateExerciseEasy": {
-				"action": "Nieuwe opgave eenvoudig",
-				"keys": "ctrl-b"
-			},
-			"generateExerciseNormal": {
-				"action": "Nieuwe opgave normaal",
-				"keys": "ctrl-n, ctrl-y"
-			},
-			"generateExerciseDifficult": {
-				"action": "Nieuwe opgave moeilijk",
-				"keys": "ctrl-m"
-			},
-			"createExercise": {
-				"action": "Nieuwe opgave zelf invoeren",
-				"keys": "ctrl-shift-n, ctrl-shift-y"
 			},
 			"removeTopStep": {
 				"action": "Verwijder bovenste regel",

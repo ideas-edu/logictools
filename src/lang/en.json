@@ -54,7 +54,7 @@
 			},
 			"selectRule": {
 				"action": "Select rule",
-				"keys": "arrow up/arrow downctrl-1, ctrl-2, ... ctrl-="
+				"keys": "arrow up/arrow down"
 			},
 			"showStep": {
 				"action": "Show step",
@@ -67,22 +67,6 @@
 			"validateProof": {
 				"action": "Validate proof",
 				"keys": "ctrl-?, ctrl-/"
-			},
-			"generateExerciseEasy": {
-				"action": "New easy exercise",
-				"keys": "ctrl-b"
-			},
-			"generateExerciseNormal": {
-				"action": "New normal exercise",
-				"keys": "ctrl-n, ctrl-y"
-			},
-			"generateExerciseDifficult": {
-				"action": "New difficult exercise",
-				"keys": "ctrl-m"
-			},
-			"createExercise": {
-				"action": "New exercise manual input",
-				"keys": "ctrl-shift-n, ctrl-shift-y"
 			},
 			"removeTopStep": {
 				"action": "Remove top step",
