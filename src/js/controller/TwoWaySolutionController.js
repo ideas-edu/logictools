@@ -55,11 +55,12 @@ class TwoWaySolutionController extends LogExSolutionController {
   onExerciseSolved (solution) {
     this.exercise = solution
 
-    solution.topSteps.forEach(function (item) {
-      this.insertStep(item, false)
-    }.bind(this))
+    for (let i = 0; i < solution.topSteps.length; i++) {
+      this.insertStep(solution.topSteps[i], false)
+    }
 
-    for (let i = solution.bottomSteps.length - 1; i >= 0; i--) {
+    // for (let i = solution.bottomSteps.length - 1; i >= 0; i--) {
+    for (let i = 0; i < solution.bottomSteps.length; i++) {
       this.insertStep(solution.bottomSteps[i], false)
     }
     const arrow = katex.renderToString('\\Leftrightarrow', {
@@ -69,37 +70,6 @@ class TwoWaySolutionController extends LogExSolutionController {
 
     this.updateAlert(message, 'complete')
   }
-
-  /**
-        Inserts a proof step
-
-        @param {TwoWayStep} step - The proof step
-        @param {Boolean} canDelete - True if the proof step can be deleted, false otherwise
-     */
-  // insertStep (step, canDelete) {
-  //   const exerciseStepHtml = this.renderStep(step, canDelete)
-
-  //   if (step.isTopStep) {
-  //     $('#active-step').before(exerciseStepHtml)
-  //   } else {
-  //     $('#active-step').after(exerciseStepHtml)
-  //   }
-  // }
-
-  // *
-  //       Inserts the last proof step
-
-  //       @param {TwoWayStep} step - The proof step
-
-  // insertLastStep (step) {
-  //   const stepTemplate = $('#exercise-last-step-template')
-  //   const exerciseStepHtml = stepTemplate.render({
-  //     leftformula: step.equation.formula1katex,
-  //     rightformula: step.equation.formula2katex
-  //   })
-
-  //   $('#active-step').before(exerciseStepHtml)
-  // }
 
   renderStep (step) {
     let rule = ''
