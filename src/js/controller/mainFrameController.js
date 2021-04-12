@@ -20,6 +20,7 @@ function ready (fn) {
 
 class MainFrameController {
   constructor () {
+    this.getUserId()
     this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
       LogEXSession.setLanguage('nl')
@@ -38,6 +39,26 @@ class MainFrameController {
       document.getElementById('lang-en').classList.add('active')
       document.getElementById('lang-nl').classList.remove('active')
     }.bind(this))
+  }
+
+  /**
+      Gets the exercisetype as given in the querystring
+    */
+  getUserId () {
+    const sPageURL = window.location.search.substring(1)
+    const sURLVariables = sPageURL.split('&')
+    let sParameterName
+    let i
+
+    for (i = 0; i < sURLVariables.length; i += 1) {
+      sParameterName = sURLVariables[i].split('=')
+      console.log(sParameterName)
+      if (sParameterName[0] === 'userId') {
+        console.log(sParameterName[1])
+        LogEXSession.setStudentId(sParameterName[1])
+        return
+      }
+    }
   }
 
   /**
