@@ -433,6 +433,10 @@ table td {
 	border-top: 1px solid #e8e8e8!important;
 }
 
+td.no-row-divider {
+	border-top: 0px !important;
+}
+
 table td {
 	padding: 12px 15px!important;
 }
@@ -441,7 +445,7 @@ table td:first-child {
 	padding-right: 0!important;
 }
 
-#oneway-body, #twoway-body > table td:first-child .katex {
+table .col-step .katex {
 	margin-top:2px;
 	float:right;
 }

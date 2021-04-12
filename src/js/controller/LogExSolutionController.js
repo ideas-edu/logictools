@@ -85,6 +85,10 @@ export class LogExSolutionController {
     exerciseStep.innerHTML = this.renderStep(step, canDelete)
 
     const tableBody = document.getElementById('active-step')
-    tableBody.insertAdjacentElement('beforebegin', exerciseStep)
+    if (step.isBottomStep) {
+      tableBody.insertAdjacentElement('afterend', exerciseStep)
+    } else {
+      tableBody.insertAdjacentElement('beforebegin', exerciseStep)
+    }
   }
 }
