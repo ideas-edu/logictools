@@ -54,7 +54,7 @@ export class ExerciseController {
     const exampleExercises = config.exampleExercises[this.exerciseType]
     for (let i = 0; i < exampleExercises.length; i++) {
       const nr = exampleExercises[i] + 1
-      document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: nr })
+      document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: i + 1 })
     }
     this.exerciseAlert.updateTexts()
     this.newExerciseAlert.updateTexts()
@@ -130,7 +130,7 @@ export class ExerciseController {
       const nr = this.exampleExercises[i]
       const id = 'exercise' + (nr + 1)
       document.getElementById(id).addEventListener('click', function () {
-        this.useExercise(nr)
+        this.useExercise(nr, i + 1)
       }.bind(this))
     }
   }

@@ -83,11 +83,18 @@
 			"DNV": "Convert to Disjunctive Normal Form",
 			"CNV": "Convert to Conjunctive Normal Form"
 		},
+		"exerciseTitle": {
+			"easy": "Easy Exercise",
+			"medium": "Medium Exercise",
+			"difficult": "Difficult Exercise",
+			"example": "Exercise {{number}}",
+			"user": "User Exercise"
+		},
 		"instruction": {
 			"begin": "Select an exercise to get started!",
 			"create": "Write the formula for your own exercise",
-			"DNV": "Convert {{formula}} to disjunctive normal form",
-			"CNV": "Convert {{formula}} to conjunctive normal form"
+			"DNV": "<b>[[title]]:</b> Convert {{formula}} to disjunctive normal form",
+			"CNV": "<b>[[title]]:</b> Convert {{formula}} to conjunctive normal form"
 		},
 		"button": {
 			"validateExercise": {
@@ -102,7 +109,7 @@
 		"instruction": {
 			"begin": "Select an exercise to get started!",
 			"create": "Write the formula for your own exercise",
-			"exercise": "Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
+			"exercise": "<b>[[title]]:</b> Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
 		},
 		"button": {
 			"topDown": "<i class='fas fa-chevron-down'></i> Top-down",
@@ -207,7 +214,11 @@
 			"actions": "Actions"
 		},
 		"exerciseName": {
-			"example": "Exercise {{number}}"
+			"easy": "Easy Exercise",
+			"medium": "Medium Exercise",
+			"difficult": "Difficult Exercise",
+			"example": "Exercise {{number}}",
+			"user": "User Exercise"
 		},
 		"hint": {
 			"unavailable": "No hint available",

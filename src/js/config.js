@@ -7,7 +7,7 @@ export const config = {
   exampleExercises: {
     CNV: [0, 1, 2, 3, 4],
     DNV: [0, 1, 2, 3, 4],
-    LOGEQ: [0, 1, 2, 3, 4]
+    LOGEQ: [0, 15, 16, 29, 30]
   },
   randomExercises: true,
   inputOwnExercise: true,

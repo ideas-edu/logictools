@@ -37,14 +37,6 @@ export class LogEXSession {
   }
 
   /**
-        Gets the difficulty.
-        @returns {String} The difficulty
-     */
-  static getDifficulty () {
-    return localStorage.getItem('logex:difficulty')
-  }
-
-  /**
         Gets the language.
         @returns {String} The language
      */
@@ -72,14 +64,6 @@ export class LogEXSession {
       taskid: state.taskid
     }
     localStorage.setItem('logex:' + exerciseId, JSON.stringify(recordedState))
-  }
-
-  /**
-        Sets the difficulty.
-        @param {String} difficulty - The difficulty
-     */
-  static setDifficulty (difficulty) {
-    localStorage.setItem('logex:difficulty', difficulty)
   }
 
   /**
