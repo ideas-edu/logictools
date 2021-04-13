@@ -52,9 +52,7 @@ class MainFrameController {
 
     for (i = 0; i < sURLVariables.length; i += 1) {
       sParameterName = sURLVariables[i].split('=')
-      console.log(sParameterName)
       if (sParameterName[0] === 'userId') {
-        console.log(sParameterName[1])
         LogEXSession.setStudentId(sParameterName[1])
         return
       }

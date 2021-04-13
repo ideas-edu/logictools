@@ -55,10 +55,9 @@ class Translate {
     }.bind(this))
 
     // Find all cases of $$param$$. param will get rendered using KaTeX
-    const paramKatexRegex = /\$\$(.+?)\$\$/g
+    const paramKatexRegex = /\$\$(.*?)\$\$/g
 
     string = string.replace(paramKatexRegex, function (match, token) {
-      console.log(match, token)
       return katex.renderToString(token, {
         throwOnError: false
       })

@@ -19,7 +19,7 @@ export class KeyBindings {
           document.getElementById('solve-exercise').click()
           e.preventDefault()
         } else if (e.keyCode === 191) { // ctrl-?
-          document.getElementById('validate-exercise').click()
+          this.validateExercise()
           e.preventDefault()
         }
       } else {
@@ -37,7 +37,7 @@ export class KeyBindings {
         document.getElementById('show-next-step').click()
         e.preventDefault()
       } else if (e.keyCode === 191) { // ctrl-/
-        document.getElementById('validate-exercise').click()
+        this.validateExercise()
         e.preventDefault()
       } else if (e.keyCode === 40) { // ctrl-down
         this.removeBottomStep()
@@ -73,7 +73,11 @@ export class KeyBindings {
         this.switchFocus()
         e.preventDefault()
       } else if (e.keyCode === 13) { // enter
-        document.getElementById('validate-step').click()
+        if (document.getElementById('exercise-container').style.display === '') {
+          document.getElementById('validate-step').click()
+        } else if (document.getElementById('new-exercise-alert-container').style.display === '') {
+          document.getElementById('create-exercise').click()
+        }
         e.preventDefault()
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'u') { // u
         this.logEQController.formulaPopover.undo()
@@ -94,8 +98,25 @@ export class KeyBindings {
     }
   }
 
+  validateExercise () {
+    if (['CNV', 'DNV'].includes(this.logEQController.exerciseType)) {
+      this.logEQController.validateExercise()
+    }
+  }
+
   switchFocus () {
-    if (document.getElementById('formula') === document.activeElement) {
+    if (document.getElementById('new-exercise-container').style.display === '') {
+      // new exercise menu
+      if (['CNV', 'DNV'].includes(this.logEQController.exerciseType)) {
+        document.getElementById('new-formula').focus()
+      } else {
+        if (document.getElementById('new-formula-1') === document.activeElement) {
+          document.getElementById('new-formula-2').focus()
+        } else {
+          document.getElementById('new-formula-1').focus()
+        }
+      }
+    } else if (document.getElementById('formula') === document.activeElement) { // in exercise
       document.getElementById('rule').focus()
     } else {
       document.getElementById('formula').focus()

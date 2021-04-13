@@ -167,12 +167,17 @@ class OneWayController extends LogExController {
       stepValidation: document.getElementById('step-validation-switch').checked
     }
 
-    const formula = document.getElementById('new-formula').value
+    const formula = document.getElementById('new-formula')
+
+    if (!this.validateFormula(formula, this.newExerciseAlert)) {
+      return
+    }
 
     this.disableUI(true)
+    this.dismissAlert()
     LogEXSession.setDifficulty('normal')
-    this.exercise = new OneWayExercise(formula, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise(formula.value, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, formula.value, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
@@ -342,7 +347,9 @@ class OneWayController extends LogExController {
         Shows the hint
      */
   showHint () {
-    this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    if (!this.exercise.isReady) {
+      this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    }
   }
 
   /**
@@ -370,14 +377,6 @@ class OneWayController extends LogExController {
   }
 
   /**
-        Handles the error that the next step can not be solved
-     */
-  onErrorGettingHelpForNextStep (msg) {
-    this.setErrorLocation('show-hint')
-    this.updateAlert(msg, null, 'error')
-  }
-
-  /**
     Validates a step
       Runs callback after correct step has been validated
      */
@@ -389,16 +388,20 @@ class OneWayController extends LogExController {
       return false
     }
 
-    const newFormula = document.getElementById('formula').value
-    if (newFormula === this.exercise.getCurrentStep().formula) {
+    const newFormula = document.getElementById('formula')
+    if (newFormula.value === this.exercise.getCurrentStep().formula) {
       this.setErrorLocation('formula')
       this.updateAlert('shared.error.notChanged', null, 'error')
       return false
     }
 
+    if (this.exercise.usesStepValidation && !this.validateFormula(newFormula, this.exerciseAlert)) {
+      return false
+    }
+
     this.disableUI(true)
     this.clearErrors()
-    this.exercise.steps.push(new OneWayStep(newFormula, ruleKey))
+    this.exercise.steps.push(new OneWayStep(newFormula.value, ruleKey))
     if (this.exercise.usesStepValidation) {
       const validatorCallback = function () {
         if (this.onStepValidated()) {
@@ -460,6 +463,7 @@ class OneWayController extends LogExController {
           endFormula: this.exercise.getCurrentStep().formulaKatex,
           arrow: arrow
         }
+        this.exercise.isReady = true
         this.updateAlert('oneWay.solution', alertParams, 'complete')
         this.disableUI(false)
       } else {
@@ -597,63 +601,6 @@ class OneWayController extends LogExController {
     this.disableUI(false)
     this.setErrorLocation('validate-step')
     this.updateAlert('shared.error.validatingStep', null, 'error')
-  }
-
-  /**
-        Validates the formulas
-
-        @param onFormulasValidated - The callback function
-     */
-  validateInput (afterInputValidated) {
-    this.clearErrors()
-    this.validateFormula(document.getElementById('formula'), function (isValid, formulaText) {
-      this.onInputValidated(isValid, formulaText, afterInputValidated)
-    })
-  }
-
-  /**
-        Handles the event that formula 1 is validated
-
-        @param {Boolean} isValid - True if valid, false otherwise
-        @param {String} formulaText - The text of the formula
-        @param onFormulasValidated - The callback function
-     */
-  onInputValidated (isValid, formulaText, afterInputValidated) {
-    this.onFormulaValidated(isValid, formulaText)
-    afterInputValidated()
-  }
-
-  /**
-        Handles the event that a formula is validated
-
-        @param {Boolean} isValid - True if the formula is valid, false otherwise
-        @param {String} formulaText - The text of the formula
-     */
-  // this.onFormulaValidated = function (isValid, formulaText) {
-  onFormulaValidated (isValid) {
-    if (!isValid) {
-      this.setErrorLocation('formula')
-      this.updateAlert('shared.error.invalidFormula', null, 'error')
-    }
-    this.isFormulaValid = isValid
-  }
-
-  /**
-        Validates the formula
-
-        @param formula - The DOM element that contains the formula
-        @param onFormulasValidated - The callback function
-     */
-  validateFormula (formula, callbackFunc) {
-    if (callbackFunc === undefined) {
-      callbackFunc = this.onFormulaValidated
-    }
-
-    if (this.exercise.usesStepValidation) {
-      this.syntaxValidator.validateSyntax(formula.val(), callbackFunc)
-    } else {
-      callbackFunc(true, formula.val())
-    }
   }
 
   insertStep (step, canDelete) {
