@@ -57,6 +57,23 @@
 		</div>
 	</div>
 
+	<div id="new-exercise-container" style="display: none">
+		<div class="row">
+			<div>
+				<form class="kbinput">
+					<input type="text" class="form-control kbinput" id="new-formula">
+					<div id="new-input" class="kbinput-wrapper"></div>
+				</form>
+			</div>
+			<button type="button" id="create-exercise" class="btn btn-outline-secondary"></button>
+			<div class="row" id="new-exercise-alert-container" style="display: none">
+				<div class="alert col-12" id="new-exercise-alert" role="alert">
+					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span><button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div id="exercise-container" style="display: none">
 		<table class="table table-striped">
 			<thead>
@@ -95,14 +112,17 @@
 						</div>
 					</td>
 				</tr>
+				<tr id="exercise-alert-container" style="display: none">
+					<td colspan="4" class="no-row-divider">
+						<div class="row">
+							<div class="alert col-12" id="exercise-alert" role="alert">
+								<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+							</div>
+						</div>
+					</td>
+				</tr>
 			</tbody>
 		</table>
-
-		<div class="row" id="exercise-alert-container" style="display: none">
-			<div class="alert col-12" id="exercise-alert" role="alert">
-				<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
-			</div>
-		</div>
 
 		<div class="row">
 			<div class="col-12 d-flex justify-content-center">
@@ -139,23 +159,6 @@
 					<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
 				{{/if}}
 			</td>
-		</script>
-
-		<script id="new-exercise-template" type="text/x-jsrender">
-			<div id="new-exercise-content">
-				<div class="row">
-					<div class="col-12">
-						<div class="exercise-step-even">
-							<form class="form-inline padded-left">
-								  <input type="text" class="input-xlarge" id="formula" />
-
-								  <!-- <input type="text" class="input-xlarge" id="formula2" rel="popover" /> -->
-								  <button type="button" id="create-exercise-button" class="btn btn-success"><div id="create-exercise-button-content"> </div></button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
 		</script>
 	</div>
 </body>

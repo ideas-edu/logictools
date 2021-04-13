@@ -1,6 +1,7 @@
 import { config } from '../config.js'
 import { KeyBindings } from '../keyBindings.js'
 import { translate } from '../translate.js'
+import { ExerciseAlert } from '../exerciseAlert.js'
 
 export class ExerciseController {
   constructor () {
@@ -11,12 +12,11 @@ export class ExerciseController {
     this.isFormulaValid = true
     this.keyBindings = new KeyBindings(this)
     this.exampleExercises = null
-    this.alertKey = null
-    this.alertParams = null
-    this.alertButtonCallback = undefined
+    this.exerciseAlert = new ExerciseAlert('exercise-alert')
+    this.newExerciseAlert = new ExerciseAlert('new-exercise-alert')
 
     document.getElementById('exercise-alert-button').addEventListener('click', function () {
-      this.alertButtonCallback()
+      this.exerciseAlert.buttonCallback()
     }.bind(this))
 
     document.getElementById('solve-exercise').addEventListener('click', function () {
@@ -31,6 +31,10 @@ export class ExerciseController {
       this.showHint()
     }.bind(this))
 
+    document.getElementById('create-exercise').addEventListener('mousedown', function () {
+      this.createExercise()
+    }.bind(this))
+
     // key bindings
     document.addEventListener('keydown', function (e) {
       this.keyBindings.onKeyDown(e)
@@ -43,6 +47,7 @@ export class ExerciseController {
     document.getElementById('solve-exercise').innerHTML = translate('shared.button.solveExercise')
     document.getElementById('new-exercise').innerHTML = translate('shared.button.newExercise')
     document.getElementById('select-exercise').innerHTML = translate('shared.button.selectExercise')
+    document.getElementById('create-exercise').innerHTML = translate('shared.button.createExercise')
     document.getElementById('generate-exercise-easy').innerHTML = translate('shared.button.generateExerciseEasy')
     document.getElementById('generate-exercise-normal').innerHTML = translate('shared.button.generateExerciseNormal')
     document.getElementById('generate-exercise-difficult').innerHTML = translate('shared.button.generateExerciseDifficult')
@@ -51,12 +56,8 @@ export class ExerciseController {
       const nr = exampleExercises[i] + 1
       document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: nr })
     }
-    if (this.alertKey !== null) {
-      document.getElementById('exercise-alert-span').innerHTML = translate(this.alertKey, this.alertParams)
-      if (this.buttonKey !== undefined) {
-        document.getElementById('exercise-alert-button').innerHTML = translate(this.buttonKey)
-      }
-    }
+    this.exerciseAlert.updateTexts()
+    this.newExerciseAlert.updateTexts()
 
     document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
     document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
@@ -141,6 +142,7 @@ export class ExerciseController {
     this.reset()
     this.disableUI(true)
     document.getElementById('exercise-container').style.display = ''
+    document.getElementById('new-exercise-container').style.display = 'none'
 
     this.exerciseGenerator.generate(this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
@@ -152,8 +154,17 @@ export class ExerciseController {
     this.reset()
     this.disableUI(true)
     document.getElementById('exercise-container').style.display = ''
+    document.getElementById('new-exercise-container').style.display = 'none'
 
     this.exerciseGenerator.example(exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+  }
+
+  /**
+        Shows the form for creating a new exercise
+     */
+  newExercise () {
+    document.getElementById('exercise-container').style.display = 'none'
+    document.getElementById('new-exercise-container').style.display = ''
   }
 
   /**
@@ -194,35 +205,36 @@ export class ExerciseController {
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.
   // We use keys and params here so that they are updated when switching language
   updateAlert (alertKey, alertParams, type, buttonKey, buttonCallback) {
-    document.getElementById('exercise-alert-container').style.display = ''
-    switch (type) {
-      case 'hint':
-        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'
-        document.getElementById('exercise-alert').classList = 'alert col-md-12 hint-alert'
-        break
-      case 'error':
-        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-exclamation-circle"></i>'
-        document.getElementById('exercise-alert').classList = 'alert col-md-12 error-alert'
-        break
-      case 'complete':
-        document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
-        document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
-        break
-    }
-    this.alertKey = alertKey
-    this.alertParams = alertParams
-    this.buttonKey = buttonKey
+    this.exerciseAlert.updateAlert(alertKey, alertParams, type, buttonKey, buttonCallback)
+    // document.getElementById('exercise-alert-container').style.display = ''
+    // switch (type) {
+    //   case 'hint':
+    //     document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'
+    //     document.getElementById('exercise-alert').classList = 'alert col-md-12 hint-alert'
+    //     break
+    //   case 'error':
+    //     document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-exclamation-circle"></i>'
+    //     document.getElementById('exercise-alert').classList = 'alert col-md-12 error-alert'
+    //     break
+    //   case 'complete':
+    //     document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
+    //     document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
+    //     break
+    // }
+    // this.alertKey = alertKey
+    // this.alertParams = alertParams
+    // this.buttonKey = buttonKey
 
-    const alertButton = document.getElementById('exercise-alert-button')
-    if (buttonKey !== undefined) {
-      alertButton.innerHTML = translate(buttonKey)
-      this.alertButtonCallback = buttonCallback
-      alertButton.style.display = ''
-    } else {
-      this.alertButtonCallback = undefined
-      alertButton.style.display = 'none'
-    }
-    document.getElementById('exercise-alert-span').innerHTML = translate(alertKey, alertParams)
+    // const alertButton = document.getElementById('exercise-alert-button')
+    // if (buttonKey !== undefined) {
+    //   alertButton.innerHTML = translate(buttonKey)
+    //   this.alertButtonCallback = buttonCallback
+    //   alertButton.style.display = ''
+    // } else {
+    //   this.alertButtonCallback = undefined
+    //   alertButton.style.display = 'none'
+    // }
+    // document.getElementById('exercise-alert-span').innerHTML = translate(alertKey, alertParams)
   }
 
   // Highlights the location of an error

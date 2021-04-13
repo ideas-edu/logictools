@@ -7,6 +7,77 @@
 		},
 		"help": "<i class='fas fa-question-circle'></i> Help"
 	},
+	"help": {
+		"hotKeys": {
+			"title": "Hot Keys",
+			"description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+			"header": {
+				"action": "Action",
+				"input": "Input",
+				"keys": "Key combination"
+			},
+			"not": {
+				"input": "$$\\neg$$",
+				"keys": "-, n"
+			},
+			"and": {
+				"input": "$$\\land$$",
+				"keys": "a, &"
+			},
+			"or": {
+				"input": "$$\\lor$$",
+				"keys": "o, v, |"
+			},
+			"implies": {
+				"input": "$$\\rightarrow$$",
+				"keys": "i, ."
+			},
+			"equiv": {
+				"input": "$$\\leftrightarrow$$",
+				"keys": "e, ="
+			},
+			"hide": {
+				"action": "Hide alert",
+				"keys": "esc"
+			},
+			"undo": {
+				"action": "Undo",
+				"keys": "u"
+			},
+			"hint": {
+				"action": "Hint",
+				"keys": "/, ?"
+			},
+			"validateStep": {
+				"action": "Validate step",
+				"keys": "enter"
+			},
+			"selectRule": {
+				"action": "Select rule",
+				"keys": "arrow up/arrow down"
+			},
+			"showStep": {
+				"action": "Show step",
+				"keys": "ctrl-enter"
+			},
+			"showProof": {
+				"action": "Show proof",
+				"keys": "ctrl-shift-enter"
+			},
+			"validateProof": {
+				"action": "Validate proof",
+				"keys": "ctrl-?, ctrl-/"
+			},
+			"removeTopStep": {
+				"action": "Remove top step",
+				"keys": "ctrl-up, alt-up"
+			},
+			"removeBottomStep": {
+				"action": "Remove bottom step",
+				"keys": "ctrl-down, alt-down"
+			}
+		}
+	},
 	"oneWay": {
 		"title": {
 			"DNV": "Convert to Disjunctive Normal Form",
@@ -14,6 +85,7 @@
 		},
 		"instruction": {
 			"begin": "Select an exercise to get started!",
+			"create": "Write the formula for your own exercise",
 			"DNV": "Convert {{formula}} to disjunctive normal form",
 			"CNV": "Convert {{formula}} to conjunctive normal form"
 		},
@@ -29,6 +101,7 @@
 		"title": "Prove Logical Equivalence",
 		"instruction": {
 			"begin": "Select an exercise to get started!",
+			"create": "Write the formula for your own exercise",
 			"exercise": "Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
 		},
 		"button": {
@@ -120,6 +193,7 @@
 			"generateExerciseEasy": "Easy",
 			"generateExerciseNormal": "Normal",
 			"generateExerciseDifficult": "Difficult",
+			"createExercise": "Create",
 			"help": "Help",
 			"selectRule": "-- Select rule --"
 		},
