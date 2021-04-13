@@ -73,7 +73,7 @@ export class KeyBindings {
         this.switchFocus()
         e.preventDefault()
       } else if (e.keyCode === 13) { // enter
-        if (document.getElementById('exercise-alert-container').style.display === '') {
+        if (document.getElementById('exercise-container').style.display === '') {
           document.getElementById('validate-step').click()
         } else if (document.getElementById('new-exercise-alert-container').style.display === '') {
           document.getElementById('create-exercise').click()
