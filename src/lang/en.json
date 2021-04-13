@@ -185,7 +185,9 @@
 					"idemequiv.inv": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
 					"demorgan3.inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
 					"demorgan4.inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
-					"distr.inv": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions."
+					"distr.inv": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions.",
+ 					"oroveror" : "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
+ 					"andoverand" : "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction"
 				}
 			}
 		}
@@ -221,7 +223,6 @@
 		"hint": {
 			"unavailable": "No hint available",
 			"useRule": "Use <i>[[rule]]</i>.",
-			"rewriteThis": "Rewrite this formula {{formula}}",
 			"full": "Rewrite this formula using the <i>[[rule]]</i> rule to {{formula}}.",
 			"nextHint": "Next hint",
 			"autoStep": "Perform Step"
