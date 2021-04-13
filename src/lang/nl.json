@@ -91,8 +91,8 @@
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
 			"create": "Schrijf de formule voor je eigen opgave",
-			"DNV": "Zet {{formula}} om naar disjunctieve normaalvorm",
-			"CNV": "Zet {{formula}} om naar conjunctieve normaalvorm"
+			"DNV": "<b>[[title]]:</b> Zet {{formula}} om naar disjunctieve normaalvorm",
+			"CNV": "<b>[[title]]:</b> Zet {{formula}} om naar conjunctieve normaalvorm"
 		},
 		"button": {
 			"validateExercise": {
@@ -106,8 +106,8 @@
 		"title": "Bewijs Logische Equivalentie",
 		"instruction": {
 			"begin": "Selecteer een opgave om mee te beginnen!",
-			"create": "Schrijf de formule voor je eigen opgave",
-			"exercise": "Bewijs dat {{topFormula}} logisch equivalent met {{bottomFormula}} is"
+			"create": "Schrijf de formules voor je eigen opgave",
+			"exercise": "<b>[[title]]:</b> Bewijs dat {{topFormula}} logisch equivalent is met {{bottomFormula}}"
 		},
 		"button": {
 			"topDown": "<i class='fas fa-chevron-down'></i> Omlaag",
@@ -119,6 +119,7 @@
 		"logic": {
 			"propositional": {
 				"absorption": "Absorptie",
+				"assoc": "Associativiteit",
 				"commutativity": "Commutativiteit",
 				"demorgan": "De Morgan",
 				"distribution": "Distributie",
@@ -182,7 +183,9 @@
 					"idemequiv.inv": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
 					"demorgan3.inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
 					"demorgan4.inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
-					"distr.inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan."
+					"distr.inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan.",
+					"oroveror" : "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
+					"andoverand" : "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie."
 				}
 			}
 		}
@@ -209,7 +212,11 @@
 			"actions": "Acties"
 		},
 		"exerciseName": {
-			"example": "Opgave {{number}}"
+			"easy": "Eenvoudige Opgave",
+			"medium": "Normale Opgave",
+			"difficult": "Moeilijke Opgave",
+			"example": "Opgave {{number}}",
+			"user": "Zelfgemaakte Opgave"
 		},
 		"hint": {
 			"unavailable": "Geen hint beschikbaar",
@@ -220,25 +227,25 @@
 		},
 		"syntaxError": {
 			"missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
-			"ambiguougAssoc": "De associativiteit van de operaties bij positie {{index}} zijn dubbelzinnig: {{formula}}",
-			"missingOperator": "Er ontbreekt een operatie bij positie {{index}}: {{formula}}",
-			"missingClose": "Er ontbreekt een sluitingshaakje voor de openingshaakje bij positie {{index}}: {{formula}}",
+			"ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
+			"missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
+			"missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
 			"emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
 			"unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
 		},
 		"error": {
 			"noRule": "U moet aangeven welke regel u heeft toegepast",
-			"notChanged": "U heeft de vergelijking niet gewijzigd",
+			"notChanged": "U heeft de formule niet gewijzigd",
 			"wrongStep": "U heeft een verkeerde stap uitgevoerd",
 			"wrongRule": "U heeft de verkeerde regel gekozen",
-			"similar": "Er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.",
+			"similar": "Er is geen stap gemaakt, de vorige en huidige formule zijn gelijk.",
 			"correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
 			"invalidFormula": "Deze formule is grammaticaal niet correct",
 			"incomplete": {
 				"oneWay": "Afleiding is nog niet voltooid",
 				"twoWay": "Bewijs is nog niet voltooid"
 			},
-			"notEquivalent": "De beide expressies zijn niet equivalent.",
+			"notEquivalent": "De beide formules zijn niet equivalent.",
 			"identical": "U moet twee verschillende formules opgeven.",
 			"creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
 			"validatingExercise": "Er is een probleem opgetreden bij het valideren van de uitwerking. Probeert u het nog een keer.",

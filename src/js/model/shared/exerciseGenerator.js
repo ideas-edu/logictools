@@ -18,7 +18,7 @@ export class ExerciseGenerator {
   generate (exerciseType, properties, onExerciseGenerated, onErrorGeneratingExercise) {
     const exerciseId = Resources.getExerciseMethod(exerciseType)
     const userId = LogEXSession.getStudentId()
-    const difficulty = LogEXSession.getDifficulty()
+    const difficulty = properties.difficulty
     const onError = onErrorGeneratingExercise
     const onSuccess = function (data) {
       this.onSuccess(data.generate, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties)

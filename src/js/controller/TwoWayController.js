@@ -113,7 +113,11 @@ class TwoWayController extends LogExController {
     if (this.exercise !== null) {
       document.getElementById('instruction').innerHTML = translate('twoWay.instruction.exercise', {
         topFormula: this.exercise.equation.formula1katex,
-        bottomFormula: this.exercise.equation.formula2katex
+        bottomFormula: this.exercise.equation.formula2katex,
+        title: {
+          key: this.exercise.titleKey,
+          params: this.exercise.titleParams
+        }
       })
     } else if (document.getElementById('new-exercise-container').style.display === '') {
       document.getElementById('instruction').innerHTML = translate('twoWay.instruction.create')
@@ -135,9 +139,13 @@ class TwoWayController extends LogExController {
   /**
         Get an example exercise.
      */
-  useExercise (exnr) {
+  useExercise (exnr, displayNumber) {
     const properties = {
-      stepValidation: true
+      stepValidation: true,
+      titleKey: 'shared.exerciseName.example',
+      titleParams: {
+        number: displayNumber
+      }
     }
 
     super.useExercise(exnr, properties)
@@ -146,9 +154,11 @@ class TwoWayController extends LogExController {
   /**
         Generates an exercise.
      */
-  generateExercise () {
+  generateExercise (difficulty) {
     const properties = {
-      stepValidation: true
+      stepValidation: true,
+      difficulty: difficulty,
+      titleKey: `shared.exerciseName.${difficulty}`
     }
 
     super.generateExercise(properties)
@@ -170,7 +180,8 @@ class TwoWayController extends LogExController {
     const exerciseMethod = Resources.getExerciseMethod(this.exerciseType)
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked
+      stepValidation: document.getElementById('step-validation-switch').checked,
+      titleKey: 'shared.exerciseName.user'
     }
 
     const formula1 = document.getElementById('new-formula-1').value
@@ -187,7 +198,6 @@ class TwoWayController extends LogExController {
 
     this.disableUI(true)
     this.dismissAlert()
-    LogEXSession.setDifficulty('normal')
     this.exercise = new TwoWayExercise(formula, exerciseMethod, properties)
     this.exerciseGenerator.create(exerciseMethod, formula, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
@@ -257,7 +267,11 @@ class TwoWayController extends LogExController {
 
     document.getElementById('instruction').innerHTML = translate('twoWay.instruction.exercise', {
       topFormula: this.exercise.equation.formula1katex,
-      bottomFormula: this.exercise.equation.formula2katex
+      bottomFormula: this.exercise.equation.formula2katex,
+      title: {
+        key: this.exercise.titleKey,
+        params: this.exercise.titleParams
+      }
     })
 
     document.getElementById('active-step').style.display = ''
@@ -452,7 +466,7 @@ class TwoWayController extends LogExController {
     const newFormula = document.getElementById('formula').value
 
     const ruleKey = this.getSelectedRuleKey()
-    if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
+    if (ruleKey === null && this.exercise.usesStepValidation) {
       this.setErrorLocation('rule')
       this.updateAlert('shared.error.noRule', null, 'error')
       return false

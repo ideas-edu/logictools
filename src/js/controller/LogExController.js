@@ -1,6 +1,5 @@
 import { ExerciseController } from './ExerciseController.js'
 import { config } from '../config.js'
-import { LogEXSession } from '../logEXSession.js'
 import { UserRules } from '../model/rules.js'
 import { translate } from '../translate.js'
 
@@ -166,17 +165,15 @@ export class LogExController extends ExerciseController {
 
     // installs event handlers
     document.getElementById('generate-exercise-easy').addEventListener('click', function () {
-      LogEXSession.setDifficulty('easy')
-      this.generateExercise()
+      this.generateExercise('easy')
     }.bind(this))
+
     document.getElementById('generate-exercise-normal').addEventListener('click', function () {
-      LogEXSession.setDifficulty('medium')
-      this.generateExercise()
+      this.generateExercise('medium')
     }.bind(this))
 
     document.getElementById('generate-exercise-difficult').addEventListener('click', function () {
-      LogEXSession.setDifficulty('difficult')
-      this.generateExercise()
+      this.generateExercise('difficult')
     }.bind(this))
 
     document.getElementById('new-exercise').addEventListener('click', function () {
