@@ -1,8 +1,28 @@
-class Expression {
+import katex from 'katex'
 
+function kt (string) {
+  return katex.renderToString(string, {
+    throwOnError: false
+  })
 }
 
-class ParenthesisGroup extends Expression {
+class Expression {
+  printStyled () {
+    if (this.style !== undefined) {
+      return `<span class='${this.style}'>${this.printUnicode()}</span>`
+    }
+    return this.printSubStyled()
+  }
+
+  printKatexStyled () {
+    if (this.style !== undefined) {
+      return `<span class='${this.style}'>${kt(this.printUnicode())}</span>`
+    }
+    return this.printSubKatexStyled()
+  }
+}
+
+export class ParenthesisGroup extends Expression {
   constructor (expression) {
     super()
     this.expression = expression
@@ -10,6 +30,14 @@ class ParenthesisGroup extends Expression {
 
   printUnicode () {
     return `(${this.expression.printUnicode()})`
+  }
+
+  printSubStyled () {
+    return `(${this.expression.printStyled()})`
+  }
+
+  printSubKatexStyled () {
+    return `${kt('(')}${this.expression.printKatexStyled()}${kt(')')}`
   }
 
   length () {
@@ -20,7 +48,7 @@ class ParenthesisGroup extends Expression {
   }
 }
 
-class Literal extends Expression {
+export class Literal extends Expression {
   constructor (expression) {
     super()
     this.expression = expression
@@ -30,12 +58,20 @@ class Literal extends Expression {
     return `${this.expression}`
   }
 
+  printSubStyled () {
+    return `${this.expression}`
+  }
+
+  printSubKatexStyled () {
+    return `${kt(this.expression)}`
+  }
+
   length () {
     return 1
   }
 }
 
-class UnaryOperator extends Expression {
+export class UnaryOperator extends Expression {
   constructor (operator, expression) {
     super()
     this.operator = operator
@@ -43,7 +79,15 @@ class UnaryOperator extends Expression {
   }
 
   printUnicode () {
-    return `${this.operator}{${this.expression.printUnicode()}}`
+    return `${this.operator}${this.expression.printUnicode()}`
+  }
+
+  printSubStyled () {
+    return `${this.operator}${this.expression.printStyled()}`
+  }
+
+  printSubKatexStyled () {
+    return `${kt(this.operator)}${this.expression.printKatexStyled()}`
   }
 
   length () {
@@ -51,7 +95,7 @@ class UnaryOperator extends Expression {
   }
 }
 
-class BinaryOperator extends Expression {
+export class BinaryOperator extends Expression {
   constructor (operator, lhe, rhe) {
     super()
     this.operator = operator
@@ -59,8 +103,33 @@ class BinaryOperator extends Expression {
     this.rhe = rhe
   }
 
+  flatten () {
+    const expressions = []
+    let leftExp = this.lhe
+    expressions.push(this.rhe)
+    while (leftExp instanceof BinaryOperator) {
+      if (leftExp.operator === this.operator) {
+        expressions.unshift(leftExp.rhe)
+      } else {
+        break
+      }
+      leftExp = leftExp.lhe
+    }
+    expressions.unshift(leftExp)
+
+    return new FlattenedSummation(this.operator, expressions)
+  }
+
   printUnicode () {
-    return `${this.lhe.printUnicode()} ${this.operator} ${this.rhe.printUnicode()}`
+    return `${this.lhe.printUnicode()}${this.operator}${this.rhe.printUnicode()}`
+  }
+
+  printSubStyled () {
+    return `${this.lhe.printStyled()}${this.operator}${this.rhe.printStyled()}`
+  }
+
+  printSubKatexStyled () {
+    return `${this.lhe.printKatexStyled()}${kt(this.operator)}${this.rhe.printKatexStyled()}`
   }
 
   length () {
@@ -68,6 +137,86 @@ class BinaryOperator extends Expression {
       return 1 + this.lhe.length() + this.rhe.length()
     }
     return 1 + this.lhe.length()
+  }
+}
+
+class FlattenedSummation extends Expression {
+  constructor (operator, expressions) {
+    super()
+    this.operator = operator
+    this.expressions = expressions
+  }
+
+  printUnicode () {
+    const exp = this.expressions.map(e => e.printUnicode())
+    const reducer = (accumulator, currentValue) => `${accumulator}${this.operator}${currentValue}`
+    return exp.reduce(reducer)
+  }
+
+  printSubStyled () {
+    const exp = this.expressions.map(e => e.printStyled())
+    const reducer = (accumulator, currentValue) => `${accumulator}${this.operator}${currentValue}`
+    return exp.reduce(reducer)
+  }
+
+  printSubKatexStyled () {
+    const exp = this.expressions.map(e => e.printKatexStyled())
+    const reducer = (accumulator, currentValue) => `${accumulator}${kt(this.operator)}${currentValue}`
+    return exp.reduce(reducer)
+  }
+
+  printStyled () {
+    if (this.style !== undefined) {
+      const exp = this.expressions.map(e => e.printUnicode())
+      const reducer = (accumulator, currentValue, currentIndex) => {
+        if (currentIndex === this.firstDifferenceIndex && currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${this.operator}${this.expressions[currentIndex].printStyled()}`
+        } else if (currentIndex === this.firstDifferenceIndex) {
+          return `${accumulator}${this.operator}<span class='${this.style}'>${currentValue}`
+        } else if (currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${this.operator}${currentValue}</span>`
+        } else {
+          return `${accumulator}${this.operator}${currentValue}`
+        }
+      }
+      if (this.firstDifferenceIndex === 0) {
+        if (this.lastDifferenceIndex === 0) {
+          exp[0] = this.expressions[0].printStyled()
+        } else {
+          exp[0] = `<span class='${this.style}'>${exp[0]}`
+        }
+      }
+      return exp.reduce(reducer)
+    }
+    return this.printSubStyled()
+  }
+
+  printKatexStyled () {
+    if (this.style !== undefined) {
+      const exp = this.expressions.map(e => e.printUnicode())
+      const reducer = (accumulator, currentValue, currentIndex) => {
+        if (currentIndex === this.firstDifferenceIndex && currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${kt(this.operator)}${this.expressions[currentIndex].printKatexStyled()}`
+        } else if (currentIndex === this.firstDifferenceIndex) {
+          return `${accumulator}${kt(this.operator)}<span class='${this.style}'>${kt(currentValue)}`
+        } else if (currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${kt(this.operator)}${kt(currentValue)}</span>`
+        } else {
+          return `${accumulator}${kt(this.operator)}${kt(currentValue)}`
+        }
+      }
+      if (this.firstDifferenceIndex === 0) {
+        if (this.lastDifferenceIndex === 0) {
+          exp[0] = this.expressions[0].printKatexStyled()
+        } else {
+          exp[0] = `<span class='${this.style}'>${kt(exp[0])}`
+        }
+      } else {
+        exp[0] = kt(exp[0])
+      }
+      return exp.reduce(reducer)
+    }
+    return this.printSubKatexStyled()
   }
 }
 
