@@ -130,7 +130,7 @@ export class ExerciseController {
       const nr = this.exampleExercises[i]
       const id = 'exercise' + (nr + 1)
       document.getElementById(id).addEventListener('click', function () {
-        this.useExercise(nr)
+        this.useExercise(nr, i + 1)
       }.bind(this))
     }
   }

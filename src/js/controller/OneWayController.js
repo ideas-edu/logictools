@@ -135,13 +135,13 @@ class OneWayController extends LogExController {
         Get an example exercise.
      */
 
-  useExercise (exnr) {
+  useExercise (exnr, displayNumber) {
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
       stepValidation: document.getElementById('step-validation-switch').checked,
       titleKey: 'shared.exerciseName.example',
       titleParams: {
-        number: exnr + 1
+        number: displayNumber
       }
     }
 

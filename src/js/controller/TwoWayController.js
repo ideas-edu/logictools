@@ -139,12 +139,12 @@ class TwoWayController extends LogExController {
   /**
         Get an example exercise.
      */
-  useExercise (exnr) {
+  useExercise (exnr, displayNumber) {
     const properties = {
       stepValidation: true,
       titleKey: 'shared.exerciseName.example',
       titleParams: {
-        number: exnr + 1
+        number: displayNumber
       }
     }
 
