@@ -425,10 +425,22 @@ class TwoWayController extends LogExController {
   }
 
   showNextHint (nextOneWayStep) {
-    const formula = document.getElementById('formula')
-    const oldFormula = formula.value.replaceAll(' ', '')
-    const newFormula = nextOneWayStep.formula.replaceAll(' ', '')
-    const formulaDiff = showdiff(newFormula, oldFormula)
+    console.log(nextOneWayStep)
+    const currentTopFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
+    let newFormula
+    let oldFormula
+    if (nextOneWayStep.formula.split('==')[0].replaceAll(' ', '') === currentTopFormula) {
+      // new bottom step
+      oldFormula = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula.replaceAll(' ', '')
+      newFormula = nextOneWayStep.formula.split('==')[1].replaceAll(' ', '')
+    } else {
+      // new top step
+      oldFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
+      newFormula = nextOneWayStep.formula.split('==')[0].replaceAll(' ', '')
+    }
+    console.log(oldFormula)
+    console.log(newFormula)
+    const formulaDiff = showdiff(oldFormula, newFormula).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }
 

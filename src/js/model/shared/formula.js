@@ -150,21 +150,18 @@ class FlattenedSummation extends Expression {
   printUnicode () {
     const exp = this.expressions.map(e => e.printUnicode())
     const reducer = (accumulator, currentValue) => `${accumulator}${this.operator}${currentValue}`
-    console.log(exp.reduce(reducer))
     return exp.reduce(reducer)
   }
 
   printSubStyled () {
     const exp = this.expressions.map(e => e.printStyled())
     const reducer = (accumulator, currentValue) => `${accumulator}${this.operator}${currentValue}`
-    console.log(exp.reduce(reducer))
     return exp.reduce(reducer)
   }
 
   printSubKatexStyled () {
     const exp = this.expressions.map(e => e.printKatexStyled())
     const reducer = (accumulator, currentValue) => `${accumulator}${kt(this.operator)}${currentValue}`
-    console.log(exp.reduce(reducer))
     return exp.reduce(reducer)
   }
 }
