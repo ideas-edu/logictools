@@ -176,6 +176,14 @@ export class ExerciseController {
   }
 
   /**
+        Handles the error that the next step can not be solved
+     */
+  onErrorGettingHelpForNextStep (msg) {
+    this.setErrorLocation('show-hint')
+    this.updateAlert(msg, null, 'error')
+  }
+
+  /**
         Inserts a proof step
 
         @param {ProofStep} step - The proof step
@@ -245,8 +253,11 @@ export class ExerciseController {
 
   dismissAlert () {
     document.getElementById('exercise-alert-container').style.display = 'none'
-    this.alertKey = null
-    this.alertParams = null
+    document.getElementById('new-exercise-alert-container').style.display = 'none'
+    this.exerciseAlert.alertKey = null
+    this.newExerciseAlert.alertKey = null
+    this.exerciseAlert.alertParams = null
+    this.newExerciseAlert.alertParams = null
   }
 
   clearErrors () {

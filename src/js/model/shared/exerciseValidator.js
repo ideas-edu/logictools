@@ -20,7 +20,13 @@ export class ExerciseValidator {
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined) {
-        step2.isSyntaxValid = false
+        if (data.error.slice(0, 7) === '(line 1') { // syntax error
+          step2.isSyntaxValid = false
+          onValidated(step2)
+          return
+        }
+        onErrorValidatingStep()
+        return
       }
       switch (data.diagnose.diagnosetype) {
         case 'syntaxerror':
@@ -175,6 +181,11 @@ export class ExerciseValidator {
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined) {
+        if (data.error.slice(0, 7) === '(line 1') { // syntax error
+          step2.isSyntaxValid = false
+          onValidated(step2)
+          return
+        }
         onErrorValidatingStep()
         return
       }

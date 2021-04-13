@@ -219,6 +219,14 @@
 			"nextHint": "Volgende hint",
 			"autoStep": "Deze stap uitvoeren"
 		},
+		"syntaxError": {
+			"missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
+			"ambiguougAssoc": "De associativiteit van de operaties bij positie {{index}} zijn dubbelzinnig: {{formula}}",
+			"missingOperator": "Er ontbreekt een operatie bij positie {{index}}: {{formula}}",
+			"missingClose": "Er ontbreekt een sluitingshaakje voor de openingshaakje bij positie {{index}}: {{formula}}",
+			"emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
+			"unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
+		},
 		"error": {
 			"noRule": "U moet aangeven welke regel u heeft toegepast",
 			"notChanged": "U heeft de vergelijking niet gewijzigd",
