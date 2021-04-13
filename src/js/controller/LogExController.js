@@ -219,4 +219,22 @@ export class LogExController extends ExerciseController {
       this.exercise.usesStepValidation = usesStepValidation
     }
   }
+
+  /**
+        Validates the formula
+
+        @param formula - The DOM element that contains the formula
+        @param onFormulasValidated - The callback function
+     */
+  validateFormula (formulaElement, alert) {
+    const result = this.syntaxValidator.validateSyntax(formulaElement.value)
+    if (result !== null) {
+      this.setErrorLocation(formulaElement.id)
+      alert.updateAlert(result.key, result.params, 'error')
+      this.isFormulaValid = false
+      return false
+    }
+    this.isFormulaValid = true
+    return true
+  }
 }
