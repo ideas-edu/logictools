@@ -439,7 +439,6 @@ class TwoWayController extends LogExController {
   }
 
   showNextHint (nextOneWayStep) {
-    console.log(nextOneWayStep)
     const currentTopFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
     let newFormula
     let oldFormula
@@ -452,8 +451,6 @@ class TwoWayController extends LogExController {
       oldFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
       newFormula = nextOneWayStep.formula.split('==')[0].replaceAll(' ', '')
     }
-    console.log(oldFormula)
-    console.log(newFormula)
     const formulaDiff = showdiff(oldFormula, newFormula).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }

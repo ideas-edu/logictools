@@ -29,6 +29,7 @@ function checkDifferences (oldSub, newSub) {
       break
     case oldSub instanceof BinaryOperator:
       if (!(newSub instanceof BinaryOperator)) {
+        console.log(newSub)
         newSub.style = hl
       } else if (newSub.operator !== oldSub.operator) {
         newSub.style = hl
@@ -39,12 +40,35 @@ function checkDifferences (oldSub, newSub) {
 
         let i = 0
         while ((i < oldSub2.expressions.length && i < newSub2.expressions.length)) {
-          // console.log(oldSub2.expressions[i], newSub2.expressions[i])
-          let result = checkDifferences(oldSub2.expressions[i], newSub2.expressions[i])
-          oldSub2.expressions[i] = result[0]
-          newSub2.expressions[i] = result[1]
+          if (oldSub2.expressions[i].printUnicode() !== newSub2.expressions[i].printUnicode()) {
+            break
+          }
           i++
         }
+        let firstDifferenceIndex = i
+
+        i = 0
+        while ((i < oldSub2.expressions.length && i < newSub2.expressions.length)) {
+          if (oldSub2.expressions[oldSub2.expressions.length - 1 - i].printUnicode() !== newSub2.expressions[newSub2.expressions.length - 1 - i].printUnicode()) {
+            break
+          }
+          i++
+        }
+        let lastDifferenceIndex = newSub2.expressions.length - 1 - i
+
+        if (firstDifferenceIndex === lastDifferenceIndex) {
+          const index = firstDifferenceIndex
+          let result = checkDifferences(oldSub2.expressions[index], newSub2.expressions[index])
+          oldSub2.expressions[index] = result[0]
+          newSub2.expressions[index] = result[1]
+        }
+
+        if (firstDifferenceIndex <= lastDifferenceIndex) {
+          newSub2.style = hl
+          newSub2.firstDifferenceIndex = firstDifferenceIndex
+          newSub2.lastDifferenceIndex = lastDifferenceIndex
+        }
+
         return [oldSub2, newSub2]
       }
       break

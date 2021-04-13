@@ -164,6 +164,60 @@ class FlattenedSummation extends Expression {
     const reducer = (accumulator, currentValue) => `${accumulator}${kt(this.operator)}${currentValue}`
     return exp.reduce(reducer)
   }
+
+  printStyled () {
+    if (this.style !== undefined) {
+      const exp = this.expressions.map(e => e.printUnicode())
+      const reducer = (accumulator, currentValue, currentIndex) => {
+        if (currentIndex === this.firstDifferenceIndex && currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${this.operator}${this.expressions[currentIndex].printStyled()}`
+        } else if (currentIndex === this.firstDifferenceIndex) {
+          return `${accumulator}${this.operator}<span class='${this.style}'>${currentValue}`
+        } else if (currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${this.operator}${currentValue}</span>`
+        } else {
+          return `${accumulator}${this.operator}${currentValue}`
+        }
+      }
+      if (this.firstDifferenceIndex === 0) {
+        if (this.lastDifferenceIndex === 0) {
+          exp[0] = this.expressions[0].printStyled()
+        } else {
+          exp[0] = `<span class='${this.style}'>${exp[0]}`
+        }
+      }
+      return exp.reduce(reducer)
+    }
+    return this.printSubStyled()
+  }
+
+  printKatexStyled () {
+    if (this.style !== undefined) {
+      const exp = this.expressions.map(e => e.printUnicode())
+      const reducer = (accumulator, currentValue, currentIndex) => {
+        if (currentIndex === this.firstDifferenceIndex && currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${kt(this.operator)}${this.expressions[currentIndex].printKatexStyled()}`
+        } else if (currentIndex === this.firstDifferenceIndex) {
+          return `${accumulator}${kt(this.operator)}<span class='${this.style}'>${kt(currentValue)}`
+        } else if (currentIndex === this.lastDifferenceIndex) {
+          return `${accumulator}${kt(this.operator)}${kt(currentValue)}</span>`
+        } else {
+          return `${accumulator}${kt(this.operator)}${kt(currentValue)}`
+        }
+      }
+      if (this.firstDifferenceIndex === 0) {
+        if (this.lastDifferenceIndex === 0) {
+          exp[0] = this.expressions[0].printKatexStyled()
+        } else {
+          exp[0] = `<span class='${this.style}'>${kt(exp[0])}`
+        }
+      } else {
+        exp[0] = kt(exp[0])
+      }
+      return exp.reduce(reducer)
+    }
+    return this.printSubKatexStyled()
+  }
 }
 
 const unaryOperators = ['¬']

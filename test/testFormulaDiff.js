@@ -29,6 +29,11 @@ describe('formulaSyntax', function () {
       assert.equal(diff, '<span class=\'formula-highlight\'>¬r∨s</span>')
     })
 
+    it('should show no difference (multiple and)', function () {
+      const diff = showdiff('p∧q∧r∧s', 'p∧q∧r∧s').printStyled()
+      assert.equal(diff, 'p∧q∧r∧s')
+    })
+
     it('should show difference (implication def (nested))', function () {
       const diff = showdiff('q∧(r→s)', 'q∧(¬r∨s)').printStyled()
       assert.equal(diff, 'q∧(<span class=\'formula-highlight\'>¬r∨s</span>)')
@@ -41,7 +46,7 @@ describe('formulaSyntax', function () {
 
     it('should show difference (implication def (nested, lost parentheses))', function () {
       const diff = showdiff('(q∨¬r)∧(q∨p)∧¬q', '(q∨¬r)∧((q∧¬q)∨(p∧¬q))').printStyled()
-      assert.equal(diff, '(q∨¬r)∧(<span class=\'formula-highlight\'>((q∧¬q)∨(p∧¬q))</span>))∨p')
+      assert.equal(diff, '(q∨¬r)∧(<span class=\'formula-highlight\'>(q∧¬q)∨(p∧¬q)</span>)')
     })
   })
 })
