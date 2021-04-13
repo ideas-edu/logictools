@@ -99,4 +99,31 @@ describe('formulaSyntax', function () {
       assert.equal(formula.error, null)
     })
   })
+  describe('flatten', function () {
+    it('single operator', function () {
+      const formula = new Formula('p∧q').result
+      assert.equal(formula.printUnicode(), formula.flatten().printUnicode())
+    })
+
+    it('two operators', function () {
+      const formula = new Formula('p∧q∧r').result
+      const flattened = formula.flatten()
+      assert.equal(formula.printUnicode(), flattened.printUnicode())
+      assert.deepEqual(flattened.expressions.map(e => e.printUnicode()), ['p', 'q', 'r'])
+    })
+
+    it('three operators', function () {
+      const formula = new Formula('p∧q∧r∧s').result
+      const flattened = formula.flatten()
+      assert.equal(formula.printUnicode(), flattened.printUnicode())
+      assert.deepEqual(flattened.expressions.map(e => e.printUnicode()), ['p', 'q', 'r', 's'])
+    })
+
+    it('parentheses child', function () {
+      const formula = new Formula('p∧(q∧r)∧s').result
+      const flattened = formula.flatten()
+      assert.equal(formula.printUnicode(), flattened.printUnicode())
+      assert.deepEqual(flattened.expressions.map(e => e.printUnicode()), ['p', '(q∧r)', 's'])
+    })
+  })
 })

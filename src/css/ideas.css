@@ -364,6 +364,10 @@ input.error, select.error {
 	vertical-align: -.125em;
 }
 
+.formula-highlight {
+	background-color: red;
+}
+
 
 
 

@@ -214,7 +214,6 @@
 		"hint": {
 			"unavailable": "Geen hint beschikbaar",
 			"useRule": "Gebruik <i>[[rule]]</i>.",
-			"rewriteThis": "Rewrite this formula {{formula}}",
 			"full": "Herschrijf deze formule met behulp van de <i>[[rule]]</i>  regel naar {{formula}}.",
 			"nextHint": "Volgende hint",
 			"autoStep": "Deze stap uitvoeren"

@@ -370,9 +370,12 @@ class OneWayController extends LogExController {
 
   showNextHint (nextOneWayStep) {
     const formula = document.getElementById('formula')
-    const oldFormula = formula.value
-    const newFormula = nextOneWayStep.formula
-    const formulaDiff = showdiff(true, newFormula, oldFormula)
+    const oldFormula = formula.value.replaceAll(' ', '')
+    const newFormula = nextOneWayStep.formula.replaceAll(' ', '')
+    const formulaDiff = showdiff(oldFormula, newFormula).printKatexStyled()
+    // const formulaDiff = katex.renderToString(showdiff(newFormula, oldFormula), {
+    //   throwOnError: false
+    // })
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }
 
