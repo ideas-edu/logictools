@@ -4,6 +4,7 @@
 export const Rules = {}
 export const UserRules = [
   'logic.propositional.absorption',
+  'logic.propositional.assoc',
   'logic.propositional.commutativity',
   'logic.propositional.demorgan',
   'logic.propositional.distribution',
@@ -23,6 +24,7 @@ export const UserRules = [
 
 // basisarray's die hieronder hergebruikt worden
 const absorbtie = 'rule.logic.propositional.absorption'
+const associativiteit = 'rule.logic.propositional.assoc'
 const commutativiteit = 'rule.logic.propositional.commutativity'
 const deMorgan = 'rule.logic.propositional.demorgan'
 const distributie = 'rule.logic.propositional.distribution'
@@ -47,8 +49,9 @@ Rules['logic.propositional.absorpand'] = absorbtie
 Rules['absorpand.inv'] = absorbtie
 Rules['absorpor-subset'] = absorbtie
 
-// Rules["logic.propositional.assocand"]            = associativiteit;
-// Rules["logic.propositional.assocor"]             = associativiteit;
+Rules['logic.propositional.assoc'] = associativiteit
+Rules['logic.propositional.assocand'] = associativiteit
+Rules['logic.propositional.assocor'] = associativiteit
 
 // Commutativiteit
 Rules['logic.propositional.commutativity'] = commutativiteit // group id
