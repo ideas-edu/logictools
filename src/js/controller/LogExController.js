@@ -1,6 +1,5 @@
 import { ExerciseController } from './ExerciseController.js'
 import { config } from '../config.js'
-import { LogEXSession } from '../logEXSession.js'
 import { UserRules } from '../model/rules.js'
 import { translate } from '../translate.js'
 
