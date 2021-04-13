@@ -48,5 +48,10 @@ describe('formulaSyntax', function () {
       const diff = showdiff('(q∨¬r)∧(q∨p)∧¬q', '(q∨¬r)∧((q∧¬q)∨(p∧¬q))').printStyled()
       assert.equal(diff, '(q∨¬r)∧(<span class=\'formula-highlight\'>(q∧¬q)∨(p∧¬q)</span>)')
     })
+
+    it('should show difference (implication def (nested, lost parentheses))', function () {
+      const diff = showdiff('(p∧¬q)∨F∨(q∧¬p)', '(p∧¬q)∨(q∧¬p)').printStyled()
+      assert.equal(diff, '(p∧¬q)∨(q∧¬p)')
+    })
   })
 })

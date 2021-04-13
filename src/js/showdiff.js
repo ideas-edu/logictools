@@ -29,7 +29,6 @@ function checkDifferences (oldSub, newSub) {
       break
     case oldSub instanceof BinaryOperator:
       if (!(newSub instanceof BinaryOperator)) {
-        console.log(newSub)
         newSub.style = hl
       } else if (newSub.operator !== oldSub.operator) {
         newSub.style = hl
