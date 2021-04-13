@@ -1,3 +1,4 @@
+import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { ExerciseController } from './ExerciseController.js'
 import { config } from '../config.js'
 import { UserRules } from '../model/rules.js'
@@ -232,6 +233,7 @@ export class LogExController extends ExerciseController {
       this.setErrorLocation(formulaElement.id)
       alert.updateAlert(result.key, result.params, 'error')
       this.isFormulaValid = false
+      IdeasServiceProxy.log({ exerciseid: this.exercise.type, formula: formulaElement.value, syntaxError: result.key })
       return false
     }
     this.isFormulaValid = true

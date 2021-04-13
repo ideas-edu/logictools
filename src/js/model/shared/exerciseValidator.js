@@ -237,13 +237,11 @@ export class ExerciseValidator {
         case 'similar':
           // Exception for associativity, the step is structurally identical but user explicitly uses associativity
           if (data.diagnose.rule === 'logic.propositional.assoc') {
-            console.log('again')
             step2.isValid = true
             step2.isCorrect = true
             if (!checkRule) {
               step2.rule = data.diagnose.rule
             }
-            console.log(step2)
           } else {
             // similar: er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.
             step2.isSimilar = true
@@ -273,7 +271,6 @@ export class ExerciseValidator {
           }
           break
       }
-      console.log(step2)
       onValidated(step2)
     }
 

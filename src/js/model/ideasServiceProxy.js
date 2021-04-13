@@ -25,11 +25,15 @@ export class IdeasServiceProxy {
 
     request.onload = function () {
       const resp = this.response
-      onSuccess(resp)
+      if (onSuccess !== undefined) {
+        onSuccess(resp)
+      }
     }
     request.onerror = function () {
       const resp = this.response
-      onError(resp)
+      if (onError !== undefined) {
+        onError(resp)
+      }
     }
 
     request.send(data)
@@ -145,8 +149,5 @@ export class IdeasServiceProxy {
     }
 
     IdeasServiceProxy.post(request, undefined, undefined)
-
-    // state.push(LogEXSession.getIdentifiers(state[0]))
-    // IdeasServiceProxy.post2('log', [state], null, null, requestinfo)
   }
 }
