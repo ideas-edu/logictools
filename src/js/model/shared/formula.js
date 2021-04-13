@@ -104,7 +104,7 @@ export class BinaryOperator extends Expression {
   }
 
   flatten () {
-    let expressions = []
+    const expressions = []
     let leftExp = this.lhe
     expressions.push(this.rhe)
     while (leftExp instanceof BinaryOperator) {
