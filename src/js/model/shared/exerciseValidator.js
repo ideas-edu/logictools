@@ -62,8 +62,19 @@ export class ExerciseValidator {
           }
           break
         case 'similar':
-          // similar: er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.
-          step2.isSimilar = true
+          // Exception for associativity, the step is structurally identical but user explicitly uses associativity
+          if (data.diagnose.rule === 'logic.propositional.assoc') {
+            if (index1 < exercise.steps.steps.length) { // Regels mogen niet gevalideerd worden of aangepast worden -> tellen niet ter controle tov van de opgave
+              step2.isValid = true
+            }
+            step2.isCorrect = true
+            if (!checkRule && index1 < exercise.steps.steps.length) {
+              step2.rule = data.diagnose.rule
+            }
+          } else {
+            // similar: er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.
+            step2.isSimilar = true
+          }
           break
         case 'notequiv':
           // notequivalent: er is een fout gemaakt, maar we weten niet wat.
@@ -213,8 +224,19 @@ export class ExerciseValidator {
           }
           break
         case 'similar':
-          // similar: er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.
-          step2.isSimilar = true
+          // Exception for associativity, the step is structurally identical but user explicitly uses associativity
+          if (data.diagnose.rule === 'logic.propositional.assoc') {
+            console.log('again')
+            step2.isValid = true
+            step2.isCorrect = true
+            if (!checkRule) {
+              step2.rule = data.diagnose.rule
+            }
+            console.log(step2)
+          } else {
+            // similar: er is geen stap gemaakt, de begin- en eindtermen zijn gelijk.
+            step2.isSimilar = true
+          }
           break
         case 'notequiv':
           // notequivalent: er is een fout gemaakt, maar we weten niet wat.
@@ -240,6 +262,7 @@ export class ExerciseValidator {
           }
           break
       }
+      console.log(step2)
       onValidated(step2)
     }
 

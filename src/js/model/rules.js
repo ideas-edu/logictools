@@ -49,6 +49,7 @@ Rules['logic.propositional.absorpand'] = absorbtie
 Rules['absorpand.inv'] = absorbtie
 Rules['absorpor-subset'] = absorbtie
 
+Rules['logic.propositional.assoc'] = associativiteit
 Rules['logic.propositional.assocand'] = associativiteit
 Rules['logic.propositional.assocor'] = associativiteit
 
