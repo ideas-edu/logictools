@@ -4,19 +4,6 @@
  */
 export class LogEXSession {
   /**
-        Initializes the session.
-        @name LogEXSession#initialize
-        @param {Number} studentId - The student id
-        @param {String} difficulty - The chosen difficulty (default medium)
-        @param {String} language - The language (default nl)
-     */
-  static initialize (studentId, difficulty, language) {
-    localStorage.setItem('logex:studentId', studentId)
-    localStorage.setItem('logex:difficulty', difficulty || 'medium')
-    localStorage.setItem('logex:language', language || 'nl')
-  }
-
-  /**
         Gets the student id.
         @returns {Number} The student id
      */
@@ -73,29 +60,4 @@ export class LogEXSession {
   static setLanguage (language) {
     localStorage.setItem('logex:language', language)
   }
-
-  /**
-        Logs the student out and clears the session information
-     */
-  static logout () {
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-      const key = localStorage.key(i)
-      if (key && key.indexOf('logex:') === 0) {
-        localStorage.removeItem(key)
-      }
-    }
-  }
 };
-
-// (function () {
-//   // migrate top-level keys to the logex namespace
-//   if (localStorage.getItem('studentId') && !localStorage.getItem('logex:studentId')) {
-//     for (let i = 0, len = localStorage.length; i < len; i++) {
-//       const key = localStorage.key(i)
-//       if (key && key.indexOf('logex:') === -1 && key.indexOf('logax:') === -1) {
-//         localStorage.setItem('logex:' + key, localStorage.getItem(key))
-//       }
-//     }
-//     localStorage.removeItem('studentId')
-//   }
-// })()

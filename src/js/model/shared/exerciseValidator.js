@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 
 /**
@@ -171,14 +170,6 @@ export class ExerciseValidator {
     } else {
       onValidated()
     }
-
-    $('#rule').hide()
-    $('#validate-step').hide()
-    $('#validate-exercise').hide()
-    $('#validate-exercise').removeClass('error')
-    $('#validate-exercise').tooltip('dispose')
-    $('#equivsign').hide()
-    $('#formula').hide()
   }
 
   /**

@@ -1,4 +1,3 @@
-// import katex from 'katex'
 import { Formula, ParenthesisGroup, Literal, UnaryOperator, BinaryOperator } from './model/shared/formula.js'
 
 const hl = 'formula-highlight'
