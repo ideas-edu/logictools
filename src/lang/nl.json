@@ -13,6 +13,9 @@
 		}
 	},
 	"help": {
+		"video": {
+			"notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
+		},
 		"hotKeys": {
 			"title": "Sneltoetsen",
 			"description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
