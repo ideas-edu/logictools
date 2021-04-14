@@ -8,6 +8,7 @@ const jsDir = path.resolve(__dirname, 'src/js')
 const htmlDir = path.resolve(__dirname, 'src/html')
 const cssDir = path.resolve(__dirname, 'src/css')
 const langDir = path.resolve(__dirname, 'src/lang')
+const assetDir = path.resolve(__dirname, 'src/assets')
 const distDir = path.resolve(__dirname, 'dist')
 
 module.exports = {
@@ -60,7 +61,8 @@ module.exports = {
       patterns: [
         { from: htmlDir }, // to: output.path
         { from: cssDir, to: 'css/' },
-        { from: langDir, to: 'lang/' }
+        { from: langDir, to: 'lang/' },
+        { from: assetDir, to: 'assets/' }
       ]
     })
     // Avoid publishing files when compilation fails
