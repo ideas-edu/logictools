@@ -1,4 +1,4 @@
-import { Resources } from '../../resources.js'
+import { ExerciseTypes } from '../exerciseTypes.js'
 import { LogEXSession } from '../../logEXSession.js'
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 
@@ -16,7 +16,7 @@ export class ExerciseGenerator {
         @param onErrorGeneratingExercise - The callback function that is called if there is a problem generating the exercise.
      */
   generate (exerciseType, properties, onExerciseGenerated, onErrorGeneratingExercise) {
-    const exerciseId = Resources.getExerciseMethod(exerciseType)
+    const exerciseId = ExerciseTypes[exerciseType]
     const userId = LogEXSession.getStudentId()
     const difficulty = properties.difficulty
     const onError = onErrorGeneratingExercise
@@ -28,7 +28,7 @@ export class ExerciseGenerator {
   }
 
   example (exerciseNr, exerciseType, properties, onExerciseGenerated, onErrorGeneratingExercise) {
-    const exerciseId = Resources.getExerciseMethod(exerciseType)
+    const exerciseId = ExerciseTypes[exerciseType]
     const userId = LogEXSession.getStudentId()
     const onError = onErrorGeneratingExercise
     const onSuccess = function (data) {
