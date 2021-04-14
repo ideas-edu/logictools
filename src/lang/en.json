@@ -8,6 +8,9 @@
 		"help": "<i class='fas fa-question-circle'></i> Help"
 	},
 	"help": {
+		"video": {
+			"notSupported": "Your browser does not support embedded videos"
+		},
 		"hotKeys": {
 			"title": "Hot Keys",
 			"description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
