@@ -232,7 +232,7 @@ export class FormulaPopover {
     */
   tidy () {
     const cs = this.inputElement.selectionStart
-    const text = this.inputElement.value.replaceAll(' ', '')
+    const text = this.inputElement.value
     const front = text.substring(0, cs)
     let back = text.substring(cs, text.length)
 
