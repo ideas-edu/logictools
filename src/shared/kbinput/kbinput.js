@@ -223,6 +223,7 @@ export class FormulaPopover {
         this.remove('delete') // als spatie verwijderd, verwijder dan ook volgende char
       }
     }
+    this.tidy()
   }
 
   /**
@@ -231,7 +232,7 @@ export class FormulaPopover {
     */
   tidy () {
     const cs = this.inputElement.selectionStart
-    const text = this.inputElement.value
+    const text = this.inputElement.value.replaceAll(' ', '')
     const front = text.substring(0, cs)
     let back = text.substring(cs, text.length)
 
