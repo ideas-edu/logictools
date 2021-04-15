@@ -14,7 +14,9 @@ class Translate {
     langFile.onreadystatechange = function () {
       if (langFile.readyState === 4 && langFile.status === 200) {
         this.langDicts[language] = JSON.parse(langFile.response)
-        callback()
+        if (callback !== undefined) {
+          callback()
+        }
       }
     }.bind(this)
     langFile.send(null)
@@ -73,4 +75,14 @@ class Translate {
 const translateInstance = new Translate()
 
 export function translate (key, params) { return translateInstance.string(key, params) }
+export function translateElement (element, key, params) {
+  if (key !== undefined) {
+    element.setAttribute('translate-key', key)
+  }
+  if (params !== undefined) {
+    element.setAttribute('translate-params', JSON.stringify(params))
+  }
+
+  element.innerHTML = translate(element.getAttribute('translate-key'), JSON.parse(element.getAttribute('translate-params')))
+}
 export function loadLanguage (language, callback) { return translateInstance.loadLanguage(language, callback) }

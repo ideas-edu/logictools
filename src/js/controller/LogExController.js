@@ -105,13 +105,13 @@ export class LogExController extends ExerciseController {
     // Clear ruleset if already set
     comboRule.innerHTML = ''
     const select = document.createElement('option')
-    select.innerHTML = translate('shared.button.selectRule')
+    select.setAttribute('translate-key', 'shared.button.selectRule')
     comboRule.appendChild(select)
 
     for (const rule of UserRules) {
       // Rule will only be displayed if it has not already been displayed
       const option = document.createElement('option')
-      option.innerHTML = translate(`rule.${rule}`)
+      option.setAttribute('translate-key', `rule.${rule}`)
       comboRule.appendChild(option)
     }
     // Show '-- Select rule --'
@@ -147,21 +147,21 @@ export class LogExController extends ExerciseController {
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = this.exampleExercises[i] + 1
       const id = 'exercise' + nr
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" id="' + id + '"></a>'
+      exerciseMenu.innerHTML += `<a class="dropdown-item" href="#" id="${id}" translate-key="shared.exerciseName.example" translate-params='{ "number": ${nr}}'></a>`
     }
 
     // inserts the randomly generated exercises
     if (config.randomExercises) {
       exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" id="' + 'generate-exercise-easy' + '"></a>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" id="' + 'generate-exercise-normal' + '"></a>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" id="' + 'generate-exercise-difficult' + '"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseDifficult" id="generate-exercise-difficult"></a>'
     }
 
     // inserts own input exercises
     if (config.inputOwnExercise) {
       exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" id="' + 'new-exercise' + '"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.newExercise" id="new-exercise"></a>'
     }
 
     // installs event handlers

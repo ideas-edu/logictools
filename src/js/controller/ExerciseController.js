@@ -41,36 +41,6 @@ export class ExerciseController {
     }.bind(this))
   }
 
-  updateTexts () {
-    document.getElementById('validate-step').innerHTML = translate('shared.button.validateStep')
-    document.getElementById('show-next-step').innerHTML = translate('shared.button.step')
-    document.getElementById('solve-exercise').innerHTML = translate('shared.button.solveExercise')
-    document.getElementById('new-exercise').innerHTML = translate('shared.button.newExercise')
-    document.getElementById('select-exercise').innerHTML = translate('shared.button.selectExercise')
-    document.getElementById('create-exercise').innerHTML = translate('shared.button.createExercise')
-    document.getElementById('generate-exercise-easy').innerHTML = translate('shared.button.generateExerciseEasy')
-    document.getElementById('generate-exercise-normal').innerHTML = translate('shared.button.generateExerciseNormal')
-    document.getElementById('generate-exercise-difficult').innerHTML = translate('shared.button.generateExerciseDifficult')
-    const exampleExercises = config.exampleExercises[this.exerciseType]
-    for (let i = 0; i < exampleExercises.length; i++) {
-      const nr = exampleExercises[i] + 1
-      document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: i + 1 })
-    }
-    this.exerciseAlert.updateTexts()
-    this.newExerciseAlert.updateTexts()
-
-    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
-    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
-    document.getElementById('header-actions').innerHTML = translate('shared.header.actions')
-
-    const elements = document.getElementsByClassName('step-rule')
-    for (const element of elements) {
-      element.innerHTML = translate(element.getAttribute('key'))
-    }
-
-    document.getElementById('help-menu').innerHTML = translate('shared.button.help')
-  }
-
   /**
       Gets the exercisetype as given in the querystring
     */

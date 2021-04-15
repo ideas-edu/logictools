@@ -24,7 +24,7 @@ import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { showdiff } from '../showdiff.js'
-import { translate, loadLanguage } from '../translate.js'
+import { translate, translateElement, loadLanguage } from '../translate.js'
 
 jsrender($) // load JsRender jQuery plugin methods
 
@@ -39,19 +39,13 @@ function ready (fn) {
 function setUp () {
   const controller = new OneWayController()
   controller.getExerciseType()
-  window.UITranslate = function () {
-    const language = LogEXSession.getLanguage()
-    const langCallback = function () {
-      controller.updateTexts()
-    }
-    loadLanguage(language, langCallback)
-  }
+  window.translate = loadLanguage
+  loadLanguage(LogEXSession.getLanguage())
   controller.initializeRuleJustification()
   controller.initializeStepValidation()
   controller.initializeButtons()
   controller.initializeInput()
   controller.setExampleExercises()
-  controller.initializeLabels()
   controller.initializeRules(document.getElementById('rule'))
   controller.bindExampleExercises()
 }
@@ -75,6 +69,10 @@ class OneWayController extends LogExController {
     document.getElementById('validate-exercise').addEventListener('mousedown', function () {
       this.validateExercise()
     }.bind(this))
+
+    this.getExerciseType()
+    translateElement(document.getElementById('exercise-title'), `oneWay.title.${this.exerciseType}`)
+    translateElement(document.getElementById('validate-exercise'), `oneWay.button.validateExercise.${this.exerciseType}`)
   }
 
   /**
@@ -92,36 +90,6 @@ class OneWayController extends LogExController {
     }
     this.formulaPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('one-way-input'), formulaOptions)
     this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
-  }
-
-  /**
-        Initializes all buttons and label to correct language
-     */
-  initializeLabels () {
-    window.UITranslate()
-  }
-
-  updateTexts () {
-    super.updateTexts()
-    document.getElementById('exercise-title').innerHTML = translate(`oneWay.title.${this.exerciseType}`)
-    if (this.exercise !== null) {
-      document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`,
-        {
-          formula: this.exercise.formulaKatex,
-          title: {
-            key: this.exercise.titleKey,
-            params: this.exercise.titleParams
-          }
-        }
-      )
-    } else if (document.getElementById('new-exercise-container').style.display === '') {
-      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
-    } else {
-      document.getElementById('instruction').innerHTML = translate('oneWay.instruction.begin')
-    }
-    this.initializeRules(document.getElementById('rule'))
-    document.getElementById('header-step').innerHTML = translate('shared.header.step')
-    document.getElementById('validate-exercise').innerHTML = translate(`oneWay.button.validateExercise.${this.exerciseType}`)
   }
 
   /**
@@ -167,7 +135,7 @@ class OneWayController extends LogExController {
      */
   newExercise () {
     super.newExercise()
-    document.getElementById('instruction').innerHTML = translate('oneWay.instruction.create')
+    translateElement(document.getElementById('instruction'), 'oneWay.instruction.create')
   }
 
   /**
@@ -228,14 +196,13 @@ class OneWayController extends LogExController {
     // Insert first row
     this.insertStep(this.exercise.steps.steps[0], false)
 
-    document.getElementById('instruction').innerHTML = translate(`oneWay.instruction.${this.exerciseType}`,
-      {
-        formula: this.exercise.formulaKatex,
-        title: {
-          key: this.exercise.titleKey,
-          params: this.exercise.titleParams
-        }
-      })
+    translateElement(document.getElementById('instruction'), `oneWay.instruction.${this.exerciseType}`, {
+      formula: this.exercise.formulaKatex,
+      title: {
+        key: this.exercise.titleKey,
+        params: this.exercise.titleParams
+      }
+    })
     document.getElementById('active-step').style.display = ''
 
     $('#exercise-steps').show()
