@@ -105,7 +105,7 @@
 				"CNV": "Is in CNF?"
 			}
 		},
-		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+		"solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}"
 	},
 	"twoWay": {
 		"title": "Prove Logical Equivalence",
@@ -118,7 +118,7 @@
 			"topDown": "<i class='fas fa-chevron-down'></i> Top-down",
 			"bottomUp": "<i class='fas fa-chevron-up'></i> Bottom-up"
 		},
-		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+		"solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}"
 	},
 	"rule": {
 		"logic": {

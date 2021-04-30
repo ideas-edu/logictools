@@ -15,10 +15,15 @@ class Expression {
   }
 
   printKatexStyled () {
-    if (this.style !== undefined) {
-      return `<span class='${this.style}'>${kt(this.printUnicode())}</span>`
+    const string = this.printStyled()
+
+    const index1 = string.indexOf('<span')
+    if (index1 === -1) {
+      return kt(string)
     }
-    return this.printSubKatexStyled()
+    const index2 = string.indexOf('\'>', index1)
+    const index3 = string.indexOf('</span>', index2)
+    return `${kt(string.substring(0, index1))}<span class='${this.style}'>${kt(string.substring(index2 + 2, index3))}</span>${kt(string.substring(index3 + 7))}`
   }
 }
 
@@ -34,10 +39,6 @@ export class ParenthesisGroup extends Expression {
 
   printSubStyled () {
     return `(${this.expression.printStyled()})`
-  }
-
-  printSubKatexStyled () {
-    return `${kt('(')}${this.expression.printKatexStyled()}${kt(')')}`
   }
 
   length () {
@@ -62,10 +63,6 @@ export class Literal extends Expression {
     return `${this.expression}`
   }
 
-  printSubKatexStyled () {
-    return `${kt(this.expression)}`
-  }
-
   length () {
     return 1
   }
@@ -84,10 +81,6 @@ export class UnaryOperator extends Expression {
 
   printSubStyled () {
     return `${this.operator}${this.expression.printStyled()}`
-  }
-
-  printSubKatexStyled () {
-    return `${kt(this.operator)}${this.expression.printKatexStyled()}`
   }
 
   length () {
@@ -128,10 +121,6 @@ export class BinaryOperator extends Expression {
     return `${this.lhe.printStyled()}${this.operator}${this.rhe.printStyled()}`
   }
 
-  printSubKatexStyled () {
-    return `${this.lhe.printKatexStyled()}${kt(this.operator)}${this.rhe.printKatexStyled()}`
-  }
-
   length () {
     if (this.rhe !== null) {
       return 1 + this.lhe.length() + this.rhe.length()
@@ -156,12 +145,6 @@ class FlattenedSummation extends Expression {
   printSubStyled () {
     const exp = this.expressions.map(e => e.printStyled())
     const reducer = (accumulator, currentValue) => `${accumulator}${this.operator}${currentValue}`
-    return exp.reduce(reducer)
-  }
-
-  printSubKatexStyled () {
-    const exp = this.expressions.map(e => e.printKatexStyled())
-    const reducer = (accumulator, currentValue) => `${accumulator}${kt(this.operator)}${currentValue}`
     return exp.reduce(reducer)
   }
 
@@ -190,34 +173,6 @@ class FlattenedSummation extends Expression {
     }
     return this.printSubStyled()
   }
-
-  printKatexStyled () {
-    if (this.style !== undefined) {
-      const exp = this.expressions.map(e => e.printUnicode())
-      const reducer = (accumulator, currentValue, currentIndex) => {
-        if (currentIndex === this.firstDifferenceIndex && currentIndex === this.lastDifferenceIndex) {
-          return `${accumulator}${kt(this.operator)}${this.expressions[currentIndex].printKatexStyled()}`
-        } else if (currentIndex === this.firstDifferenceIndex) {
-          return `${accumulator}${kt(this.operator)}<span class='${this.style}'>${kt(currentValue)}`
-        } else if (currentIndex === this.lastDifferenceIndex) {
-          return `${accumulator}${kt(this.operator)}${kt(currentValue)}</span>`
-        } else {
-          return `${accumulator}${kt(this.operator)}${kt(currentValue)}`
-        }
-      }
-      if (this.firstDifferenceIndex === 0) {
-        if (this.lastDifferenceIndex === 0) {
-          exp[0] = this.expressions[0].printKatexStyled()
-        } else {
-          exp[0] = `<span class='${this.style}'>${kt(exp[0])}`
-        }
-      } else {
-        exp[0] = kt(exp[0])
-      }
-      return exp.reduce(reducer)
-    }
-    return this.printSubKatexStyled()
-  }
 }
 
 const unaryOperators = ['¬']
@@ -229,11 +184,6 @@ export class Formula {
   constructor (formula) {
     this.error = null
     this.result = this.parse(formula, 0)
-    // if (this.error === null) {
-    //   console.log(`Done: ${result.printUnicode()}`)
-    // } else {
-    //   console.log(`Error at index ${this.error.index}: ${this.error.message}\n${formula.substring(0, this.error.index)}_${formula.substring(this.error.index)}`)
-    // }
   }
 
   parse (expressionString, givenContextIndex) {
