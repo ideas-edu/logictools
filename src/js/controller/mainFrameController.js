@@ -115,7 +115,6 @@ function updateTexts (element) {
   const elements = element.querySelectorAll('[translate-key]')
   for (const element of elements) {
     translateElement(element)
-    // element.innerHTML = translate(element.getAttribute('translate-key'), JSON.parse(element.getAttribute('translate-params')))
   }
 }
 

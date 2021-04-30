@@ -1,8 +1,16 @@
 import { LogEXSession } from '../logEXSession.js'
 import { Resources } from '../resources.js'
+import { translateElement } from '../translate.js'
 // import { ExerciseController } from './ExerciseController.js'
 
 export class LogExSolutionController {
+  updateTexts () {
+    const elements = document.querySelectorAll('[translate-key]')
+    for (const element of elements) {
+      translateElement(element)
+    }
+  }
+
   /**
         Gets the exercisetype as given in the querystring
     */
