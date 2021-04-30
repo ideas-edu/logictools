@@ -43,6 +43,7 @@ class MainFrameController {
     document.getElementById('fra-help-container').onload = () => { updateTexts(document.getElementById('fra-help-container').contentWindow.document) }
     document.getElementById('fra-dnv').onload = () => { updateTexts(document.getElementById('fra-dnv').contentWindow.document) }
     document.getElementById('fra-cnv').onload = () => { updateTexts(document.getElementById('fra-cnv').contentWindow.document) }
+    document.getElementById('fra-logeq').onload = () => { updateTexts(document.getElementById('fra-logeq').contentWindow.document) }
   }
 
   /**
@@ -92,13 +93,13 @@ class MainFrameController {
 
     // All iFrames must be updated to new language.
     if (document.getElementById('fra-logeq').getAttribute('src') !== '') {
-      document.getElementById('fra-logeq').contentWindow.UITranslate('LOGEQ')
+      document.getElementById('fra-logeq').contentWindow.translate(language)
     }
     if (document.getElementById('fra-dnv').getAttribute('src') !== '') {
       document.getElementById('fra-dnv').contentWindow.translate(language)
     }
     if (document.getElementById('fra-cnv').getAttribute('src') !== '') {
-      document.getElementById('fra-cnv').contentWindow.UITranslate()
+      document.getElementById('fra-cnv').contentWindow.translate(language)
     }
   }
 

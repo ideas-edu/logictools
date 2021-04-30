@@ -205,6 +205,7 @@
 			"generateExerciseDifficult": "Moeilijk",
 			"createExercise": "Maak aan",
 			"help": "Hulp",
+			"hint": "Hint",
 			"selectRule": "-- Selecteer regel --"
 		},
 		"header": {

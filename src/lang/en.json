@@ -207,6 +207,7 @@
 			"generateExerciseDifficult": "Difficult",
 			"createExercise": "Create",
 			"help": "Help",
+			"hint": "Hint",
 			"selectRule": "-- Select rule --"
 		},
 		"header": {

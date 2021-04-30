@@ -25,7 +25,7 @@
 		</div>
 		<div class="col-3">
 			<div class="dropdown">
-				<button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="select-exercise" translate-key="shared.button.selectExercise"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+				<button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="select-exercise" translate-key="shared.button.selectExercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 				<div class="dropdown-menu" aria-labelledby="select-exercise" id="new-exercise-menu"></div>
 			</div>
 		</div>
@@ -106,7 +106,7 @@
 
 						</button>
 						<div class="dropdown-menu" aria-labelledby="help-menu">
-							<button type="button" class="dropdown-item" id="show-hint" style="display: none">Hint</button>
+							<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
 							<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
 							<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
 						</div>
@@ -151,7 +151,7 @@
 			</td>
 			<td class="col-rule">
 				{{if ruleJustification && rule }}
-					<span class="step-rule" key="{{:ruleKey}}">{{>rule}}</span>
+					<span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span>
 				{{/if}}
 			</td>
 			<td class="remove-step col-actions">
