@@ -103,7 +103,7 @@
 				"CNV": "Is in CNV?"
 			}
 		},
-		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+		"solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}"
 	},
 	"twoWay": {
 		"title": "Bewijs Logische Equivalentie",
@@ -116,7 +116,7 @@
 			"topDown": "<i class='fas fa-chevron-down'></i> Omlaag",
 			"bottomUp": "<i class='fas fa-chevron-up'></i> Omhoog"
 		},
-		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
+		"solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}"
 	},
 	"rule": {
 		"logic": {
