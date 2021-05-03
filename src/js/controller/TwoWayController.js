@@ -25,7 +25,7 @@ import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { showdiff } from '../showdiff.js'
-import { translate, loadLanguage } from '../translate.js'
+import { translate, loadLanguage, translateElement } from '../translate.js'
 
 jsrender($) // load JsRender jQuery plugin methods
 
@@ -40,17 +40,11 @@ function ready (fn) {
 function setUp () {
   const controller = new TwoWayController()
   controller.getExerciseType()
-  window.UITranslate = function () {
-    const language = LogEXSession.getLanguage()
-    const langCallback = function () {
-      controller.updateTexts()
-    }
-    loadLanguage(language, langCallback)
-  }
+  window.translate = loadLanguage
+  loadLanguage(LogEXSession.getLanguage())
   controller.initializeStepValidation()
   controller.initializeButtons()
   controller.initializeInput()
-  controller.initializeLabels()
   controller.initializeRules(document.getElementById('rule'))
   controller.setExampleExercises()
   controller.bindExampleExercises()
@@ -101,35 +95,6 @@ class TwoWayController extends LogExController {
   }
 
   /**
-        Initializes all buttons and label to correct language
-     */
-  initializeLabels () {
-    window.UITranslate()
-  }
-
-  updateTexts () {
-    super.updateTexts()
-    document.getElementById('exercise-title').innerHTML = translate('twoWay.title')
-    if (this.exercise !== null) {
-      document.getElementById('instruction').innerHTML = translate('twoWay.instruction.exercise', {
-        topFormula: this.exercise.equation.formula1katex,
-        bottomFormula: this.exercise.equation.formula2katex,
-        title: {
-          key: this.exercise.titleKey,
-          params: this.exercise.titleParams
-        }
-      })
-    } else if (document.getElementById('new-exercise-container').style.display === '') {
-      document.getElementById('instruction').innerHTML = translate('twoWay.instruction.create')
-    } else {
-      document.getElementById('instruction').innerHTML = translate('twoWay.instruction.begin')
-    }
-    document.getElementById('header-direction').innerHTML = translate('shared.header.direction')
-
-    this.initializeRules(document.getElementById('rule'))
-  }
-
-  /**
         Resets the UI to its original state.
      */
   reset () {
@@ -169,7 +134,7 @@ class TwoWayController extends LogExController {
      */
   newExercise () {
     super.newExercise()
-    document.getElementById('instruction').innerHTML = translate('twoWay.instruction.create')
+    translateElement(document.getElementById('instruction'), 'twoWay.instruction.create')
   }
 
   /**
@@ -265,7 +230,7 @@ class TwoWayController extends LogExController {
     this.insertStep(this.exercise.steps.topSteps[0], false)
     this.insertStep(this.exercise.steps.bottomSteps[0], false)
 
-    document.getElementById('instruction').innerHTML = translate('twoWay.instruction.exercise', {
+    translateElement(document.getElementById('instruction'), 'twoWay.instruction.exercise', {
       topFormula: this.exercise.equation.formula1katex,
       bottomFormula: this.exercise.equation.formula2katex,
       title: {
@@ -798,12 +763,12 @@ class TwoWayController extends LogExController {
 
     this.formulaPopover.previousValue = step.formula
     if (step.isTopStep) {
-      document.getElementById('top-step').innerHTML = translate('twoWay.button.topDown')
+      translateElement(document.getElementById('top-step'), 'twoWay.button.topDown')
       document.getElementById('top-step').addEventListener('click', function () {
         this.setProofDirection('down')
       }.bind(this))
     } else {
-      document.getElementById('bottom-step').innerHTML = translate('twoWay.button.bottomUp')
+      translateElement(document.getElementById('bottom-step'), 'twoWay.button.bottomUp')
       document.getElementById('bottom-step').addEventListener('click', function () {
         this.setProofDirection('up')
       }.bind(this))

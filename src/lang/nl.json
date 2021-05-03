@@ -192,6 +192,7 @@
       "generateExerciseEasy": "Eenvoudig",
       "generateExerciseNormal": "Normaal",
       "help": "Hulp",
+      "hint": "Hint",
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",

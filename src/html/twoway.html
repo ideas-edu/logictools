@@ -17,11 +17,11 @@
     <body class="twoWay-body">
         <div class="row title">
             <div class="col-9">
-                <h4 id="exercise-title"></h4>
+                <h4 id="exercise-title" translate-key="twoWay.title"></h4>
             </div>
             <div class="col-3">
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="select-exercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="select-exercise" translate-key="shared.button.selectExercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                     <div class="dropdown-menu" aria-labelledby="select-exercise" id="new-exercise-menu"></div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
 
         <div class="row">
             <div class="alert alert-primary col-12" id="instruction-alert" role="alert">
-                <i class="fas fa-info-circle"></i> <span id="instruction"></span>
+                <i class="fas fa-info-circle"></i> <span id="instruction" translate-key="twoWay.instruction.begin"></span>
             </div>
         </div>
 
@@ -89,9 +89,9 @@
                 <thead>
                     <tr id="exercise-table-header">
                         <th scope="col" id="header-direction"></th>
-                        <th scope="col" id="header-formula" style="width: 55%"></th>
-                        <th scope="col" id="header-rule"></th>
-                        <th scope="col" id="header-actions"></th>
+                        <th scope="col" id="header-formula" translate-key="shared.header.formula" style="width: 55%"></th>
+                        <th scope="col" id="header-rule" translate-key="shared.header.rule"></th>
+                        <th scope="col" id="header-actions" translate-key="shared.header.actions"></th>
                     </tr>
                 </thead>
                 <tbody id="exercise-step-table">
@@ -111,14 +111,14 @@
                             <select id="rule" class="form-control input custom-select"></select>
                         </td>
                         <td class="col-actions">
-                            <button type="button" id="validate-step" class="btn btn-outline-secondary float-right"></button>
-                            <button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="help-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" id="validate-step" class="btn btn-outline-secondary float-right" translate-key="shared.button.validateStep"></button>
+                            <button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                             </button>
                             <div class="dropdown-menu" aria-labelledby="help-menu">
-                                <button type="button" class="dropdown-item" id="show-hint" style="display: none">Hint</button>
-                                <button type="button" class="dropdown-item" id="show-next-step" style="display: none"></button>
-                                <button type="button" class="dropdown-item" id="solve-exercise" style="display: none"></button>
+                                <button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
+                                <button type="button" class="dropdown-item" id="show-next-step"  translate-key="shared.button.step" style="display: none"></button>
+                                <button type="button" class="dropdown-item" id="solve-exercise"  translate-key="shared.button.solveExercise" style="display: none"></button>
                             </div>
                         </td>
                     </tr>
@@ -171,7 +171,7 @@
                 </td>
                 <td class="col-actions">
                     {{if ruleJustification && rule }}
-                        <span class="step-rule" key="{{:ruleKey}}">{{>rule}}</span>
+                        <span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span>
                     {{/if}}
                 </td>
                 <td class="step-actions col-actions">
@@ -187,22 +187,5 @@
                 </td>
             </script>
         </div>
-
-		<script id="new-exercise-template" type="text/x-jsrender">
-			<div id="new-exercise-content">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="exercise-step-even">
-								<form class="form-inline padded-left">
-									  <input type="text" class="input-xlarge" id="formula1" />
-									  <span><img id="equivsign" src="img/equivsign.png" width="18" /></span>
-									  <input type="text" class="input-xlarge" id="formula2" rel="popover" />
-									  <button type="button" id="create-exercise-button" class="btn btn-success"><div id="create-exercise-button-content"> </div></button>
-								</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</script>
     </body>
 </html>

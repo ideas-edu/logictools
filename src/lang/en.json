@@ -192,6 +192,7 @@
       "generateExerciseEasy": "Easy",
       "generateExerciseNormal": "Normal",
       "help": "Help",
+      "hint": "Hint",
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
       "selectRule": "-- Select rule --",
