@@ -156,7 +156,7 @@
       "begin": "Selecteer een opgave om mee te beginnen!",
       "create": "Schrijf de formule voor je eigen opgave"
     },
-    "solution": "{{beginFormula}} {{arrow}} {{endFormula}}",
+    "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": {
       "CNV": "Omzetten naar Conjunctieve Normaalvorm",
       "DNV": "Omzetten naar Disjunctieve Normaalvorm"
@@ -266,7 +266,7 @@
       "create": "Schrijf de formules voor je eigen opgave",
       "exercise": "<b>[[title]]:</b> Bewijs dat {{topFormula}} logisch equivalent is met {{bottomFormula}}"
     },
-    "solution": "{{beginFormula}} {{arrow}} {{endFormula}}",
+    "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": "Bewijs Logische Equivalentie"
   }
 }

@@ -441,14 +441,9 @@ class OneWayController extends LogExController {
         }
         document.getElementById('header-actions').style.display = 'none'
 
-        const arrow = katex.renderToString('\\Leftrightarrow', {
-          throwOnError: false
-        })
-
         const alertParams = {
           beginFormula: this.exercise.formulaKatex,
-          endFormula: this.exercise.getCurrentStep().formulaKatex,
-          arrow: arrow
+          endFormula: this.exercise.getCurrentStep().formulaKatex
         }
         this.exercise.isReady = true
         this.updateAlert('oneWay.solution', alertParams, 'complete')

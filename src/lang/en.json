@@ -156,7 +156,7 @@
       "begin": "Select an exercise to get started!",
       "create": "Write the formula for your own exercise"
     },
-    "solution": "{{beginFormula}} {{arrow}} {{endFormula}}",
+    "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": {
       "CNV": "Convert to Conjunctive Normal Form",
       "DNV": "Convert to Disjunctive Normal Form"
@@ -266,7 +266,7 @@
       "create": "Write the formula for your own exercise",
       "exercise": "<b>[[title]]:</b> Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
     },
-    "solution": "{{beginFormula}} {{arrow}} {{endFormula}}",
+    "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": "Prove Logical Equivalence"
   }
 }
