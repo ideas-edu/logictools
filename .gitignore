@@ -3,3 +3,5 @@ docs/
 hints.html
 jslint.txt
 dist/
+*.mp4
+*.webm
