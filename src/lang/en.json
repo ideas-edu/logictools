@@ -1,269 +1,272 @@
 {
-	"main": {
-		"tabTitle": {
-			"dnf": "Disjunctive Normal Form",
-			"cnf": "Conjunctive Normal Form",
-			"logeq": "Logical Equivalence"
-		},
-		"help": "<i class='fas fa-question-circle'></i> Help"
-	},
-	"help": {
-		"video": {
-			"notSupported": "Your browser does not support embedded videos"
-		},
-		"hotKeys": {
-			"title": "Hot Keys",
-			"description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
-			"header": {
-				"action": "Action",
-				"input": "Input",
-				"keys": "Key combination"
-			},
-			"not": {
-				"input": "$$\\neg$$",
-				"keys": "-, n"
-			},
-			"and": {
-				"input": "$$\\land$$",
-				"keys": "a, &"
-			},
-			"or": {
-				"input": "$$\\lor$$",
-				"keys": "o, v, |"
-			},
-			"implies": {
-				"input": "$$\\rightarrow$$",
-				"keys": "i, ."
-			},
-			"equiv": {
-				"input": "$$\\leftrightarrow$$",
-				"keys": "e, ="
-			},
-			"hide": {
-				"action": "Hide alert",
-				"keys": "esc"
-			},
-			"undo": {
-				"action": "Undo",
-				"keys": "u"
-			},
-			"hint": {
-				"action": "Hint",
-				"keys": "/, ?"
-			},
-			"validateStep": {
-				"action": "Validate step",
-				"keys": "enter"
-			},
-			"selectRule": {
-				"action": "Select rule",
-				"keys": "arrow up/arrow down"
-			},
-			"showStep": {
-				"action": "Show step",
-				"keys": "ctrl-enter"
-			},
-			"showProof": {
-				"action": "Show proof",
-				"keys": "ctrl-shift-enter"
-			},
-			"validateProof": {
-				"action": "Validate proof",
-				"keys": "ctrl-?, ctrl-/"
-			},
-			"removeTopStep": {
-				"action": "Remove top step",
-				"keys": "ctrl-up, alt-up"
-			},
-			"removeBottomStep": {
-				"action": "Remove bottom step",
-				"keys": "ctrl-down, alt-down"
-			}
-		}
-	},
-	"oneWay": {
-		"title": {
-			"DNV": "Convert to Disjunctive Normal Form",
-			"CNV": "Convert to Conjunctive Normal Form"
-		},
-		"exerciseTitle": {
-			"easy": "Easy Exercise",
-			"medium": "Medium Exercise",
-			"difficult": "Difficult Exercise",
-			"example": "Exercise {{number}}",
-			"user": "User Exercise"
-		},
-		"instruction": {
-			"begin": "Select an exercise to get started!",
-			"create": "Write the formula for your own exercise",
-			"DNV": "<b>[[title]]:</b> Convert {{formula}} to disjunctive normal form",
-			"CNV": "<b>[[title]]:</b> Convert {{formula}} to conjunctive normal form"
-		},
-		"button": {
-			"validateExercise": {
-				"DNV": "Is in DNF?",
-				"CNV": "Is in CNF?"
-			}
-		},
-		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
-	},
-	"twoWay": {
-		"title": "Prove Logical Equivalence",
-		"instruction": {
-			"begin": "Select an exercise to get started!",
-			"create": "Write the formula for your own exercise",
-			"exercise": "<b>[[title]]:</b> Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
-		},
-		"button": {
-			"topDown": "<i class='fas fa-chevron-down'></i> Top-down",
-			"bottomUp": "<i class='fas fa-chevron-up'></i> Bottom-up"
-		},
-		"solution": "{{beginFormula}} {{arrow}} {{endFormula}}"
-	},
-	"rule": {
-		"logic": {
-			"propositional": {
-				"absorption": "Absorption",
-				"assoc": "Associativity",
-				"commutativity": "Commutativity",
-				"demorgan": "De Morgan",
-				"distribution": "Distribution",
-				"doublenegation": "Double negation",
-				"equivalence": "Equivalence definition",
-				"falsecomplement": "F-rule complement",
-				"falseconjunction": "F-rule conjunction",
-				"falsedisjunction": "F-rule disjunction",
-				"nottrue": "F-rule not T",
-				"idempotency": "Idempotency",
-				"implication": "Implication definition",
-				"truecomplement": "T-rule complement",
-				"trueconjunction": "T-rule conjunction",
-				"truedisjunction": "T-rule disjunction",
-				"notfalse": "T-rule not F"
-			}
-		}
-	},
-	"buggyRule": {
-		"logic": {
-			"propositional": {
-				"buggy": {
-					"absor": "You have applied absorption incorrectly.",
-					"absor2": "You have applied absorption incorrectly: pay attention to which subformula you keep.",
-					"andcompl": "You have applied a complement rule incorrectly.",
-					"andcompl2": "You have applied a complement rule incorrectly.",
-					"andsame": "You have applied idempoteny incorrectly.",
-					"assimp": "You have incorrectly applied associativity to an implication.",
-					"assoc": "Associativity is only allowed on similar connectives (either only conjunctions or only disjunctions).",
-					"commimp": "You have incorrectly applied commutativity to an implication.",
-					"demorgan1": "You have applied De Morgan incorrectly, don't forget the negation signs.",
-					"demorgan2": "When applying De Morgan, don't forget to remove the negation sign outside of the brackets.",
-					"demorgan3": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
-					"demorgan4": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
-					"demorgan5": "When applying De Morgan, take care where you place the brackets. You have inadvertently changed the application range of the negation.",
-					"distr": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions.",
-					"distrnot": "You have forgotten a negation when applying distribution.",
-					"equivelim1": "You have applied equivalence definition incorrecly. Take care of the negation signs.",
-					"equivelim2": "You have applied equivalence definition incorrecly. Take care of the place of the disjunctions and conjunctions.",
-					"equivelim3": "You have applied implication definition instead of equivalence definition.",
-					"falseprop": "You have applied an F-rule incorrectly.",
-					"idemequi": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
-					"idemimp": "Idempotency does not apply to implications, only to conjunctions and disjunctions.",
-					"implelim": "You have applied implication definition incorrectly.",
-					"implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
-					"implelim2": "You have applied equivalence definition instead of implication definition.",
-					"implnotelim": "You forgot the negation in front of the implication.",
-					"notoverimpl": "You are not allowed to distribute a negation sign over an implication. First rewrite the implication and then apply De Morgan.",
-					"orcompl": "You have applied a complement rule incorrectly.",
-					"orcompl2": "You have applied a complement rule incorrectly.",
-					"orsame": "You have applied a T-rule incorrectly.",
-					"parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
-					"parenth2": "Take care of the brackets. Remember to keep the negation out of the brackets when applying equivalence definition.",
-					"parenth3": "Double negation can only be applied if both negations apply to the same subformula.",
-					"trueprop": "You have applied a T-rule incorrectly.",
-					"andcompl.inv": "You have applied a complement rule incorrectly.",
-					"orcompl.inv": "You have applied a complement rule incorrectly.",
-					"trueprop.inv": "You have applied a T-rule incorrectly.",
-					"falseprop.inv": "You have applied an F-rule incorrectly.",
-					"idemimp.inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions.",
-					"idemequiv.inv": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
-					"demorgan3.inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
-					"demorgan4.inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
-					"distr.inv": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions.",
- 					"oroveror" : "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
- 					"andoverand" : "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction"
-				}
-			}
-		}
-	},
-	"shared": {
-		"button": {
-			"validateStep": "<i class='fas fa-check'></i>",
-			"step": "Show step",
-			"solveExercise": "Show complete derivation",
-			"newExercise": "Manual entry",
-			"selectExercise": "Select Exercise",
-			"generateExerciseEasy": "Easy",
-			"generateExerciseNormal": "Normal",
-			"generateExerciseDifficult": "Difficult",
-			"createExercise": "Create",
-			"help": "Help",
-			"hint": "Hint",
-			"selectRule": "-- Select rule --"
-		},
-		"header": {
-			"direction": "",
-			"step": "Step",
-			"formula": "Formula",
-			"rule": "Rule",
-			"actions": "Actions"
-		},
-		"exerciseName": {
-			"easy": "Easy Exercise",
-			"medium": "Medium Exercise",
-			"difficult": "Difficult Exercise",
-			"example": "Exercise {{number}}",
-			"user": "User Exercise"
-		},
-		"hint": {
-			"unavailable": "No hint available",
-			"useRule": "Use <i>[[rule]]</i>.",
-			"full": "Rewrite this formula using the <i>[[rule]]</i> rule to {{formula}}.",
-			"nextHint": "Next hint",
-			"autoStep": "Perform Step"
-		},
-		"syntaxError": {
-			"missingOperand": "There is a missing operand at index {{index}}: {{formula}}",
-			"ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
-			"missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
-			"missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
-			"emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
-			"unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
-		},
-		"error": {
-			"noRule": "You must indicate which rule you have applied",
-			"notChanged": "You have not changed the equation",
-			"wrongStep": "You have performed an incorrect step",
-			"wrongRule": "You have chosen an incorrect rule",
-			"similar": "No changes have been made. Both terms have remained the same.",
-			"correctNotVal": "This formula is equivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
-			"invalidFormula": "This formula has an incorrect syntax",
-			"incomplete": {
-				"oneWay": "Derivation is not yet completed",
-				"twoWay": "The proof is not yet completed"
-			},
-			"notEquivalent": "The two expressions are not equivalent.",
-			"identical": "You have to specify two different formulas.",
-			"creatingExercise": "An error occured while creating the exercise. Did you create a valid exercise?",
-			"validatingExercise": "An error occured while validating the exercise. Please try again.",
-			"generatingExercise": "An error occured while creating the exercise. Please try again.",
-			"solvingExercise": "An error occured while showing the complete proof. Please try again.",
-			"solvingNextStep": "An error occured while showing the next step. Please try again.",
-			"solvingNextStepInv": "Next step cannot be shown. There's an incorrect step in your solution",
-			"solvingLastStep": "An error occured while showing the next step. There are no more steps.",
-			"showingHint": "An error occured while showing the help for the next step. Please try again.",
-			"validatingStep": "An error occured while validating the step. Please try again.",
-			"notSuitable": "Formulas are not equivalent",
-			"noStepPossible": "The formula is in normal form."
-		}
-	}
+  "buggyRule": {
+    "logic": {
+      "propositional": {
+        "buggy": {
+          "absor": "You have applied absorption incorrectly.",
+          "absor2": "You have applied absorption incorrectly: pay attention to which subformula you keep.",
+          "andcompl": {
+            "inv": "You have applied a complement rule incorrectly."
+          },
+          "andcompl2": "You have applied a complement rule incorrectly.",
+          "andoverand": "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction",
+          "andsame": "You have applied idempoteny incorrectly.",
+          "assimp": "You have incorrectly applied associativity to an implication.",
+          "assoc": "Associativity is only allowed on similar connectives (either only conjunctions or only disjunctions).",
+          "commimp": "You have incorrectly applied commutativity to an implication.",
+          "demorgan1": "You have applied De Morgan incorrectly, don't forget the negation signs.",
+          "demorgan2": "When applying De Morgan, don't forget to remove the negation sign outside of the brackets.",
+          "demorgan3": {
+            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
+          },
+          "demorgan4": {
+            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
+          },
+          "demorgan5": "When applying De Morgan, take care where you place the brackets. You have inadvertently changed the application range of the negation.",
+          "distr": {
+            "inv": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions."
+          },
+          "distrnot": "You have forgotten a negation when applying distribution.",
+          "equivelim1": "You have applied equivalence definition incorrecly. Take care of the negation signs.",
+          "equivelim2": "You have applied equivalence definition incorrecly. Take care of the place of the disjunctions and conjunctions.",
+          "equivelim3": "You have applied implication definition instead of equivalence definition.",
+          "falseprop": {
+            "inv": "You have applied an F-rule incorrectly."
+          },
+          "idemequi": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
+          "idemequiv": {
+            "inv": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions."
+          },
+          "idemimp": {
+            "inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions."
+          },
+          "implelim": "You have applied implication definition incorrectly.",
+          "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
+          "implelim2": "You have applied equivalence definition instead of implication definition.",
+          "implnotelim": "You forgot the negation in front of the implication.",
+          "notoverimpl": "You are not allowed to distribute a negation sign over an implication. First rewrite the implication and then apply De Morgan.",
+          "orcompl": {
+            "inv": "You have applied a complement rule incorrectly."
+          },
+          "orcompl2": "You have applied a complement rule incorrectly.",
+          "oroveror": "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
+          "orsame": "You have applied a T-rule incorrectly.",
+          "parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
+          "parenth2": "Take care of the brackets. Remember to keep the negation out of the brackets when applying equivalence definition.",
+          "parenth3": "Double negation can only be applied if both negations apply to the same subformula.",
+          "trueprop": {
+            "inv": "You have applied a T-rule incorrectly."
+          }
+        }
+      }
+    }
+  },
+  "help": {
+    "hotKeys": {
+      "and": {
+        "input": "$$\\land$$",
+        "keys": "a, &"
+      },
+      "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+      "equiv": {
+        "input": "$$\\leftrightarrow$$",
+        "keys": "e, ="
+      },
+      "header": {
+        "action": "Action",
+        "input": "Input",
+        "keys": "Key combination"
+      },
+      "hide": {
+        "action": "Hide alert",
+        "keys": "esc"
+      },
+      "hint": {
+        "action": "Hint",
+        "keys": "/, ?"
+      },
+      "implies": {
+        "input": "$$\\rightarrow$$",
+        "keys": "i, ."
+      },
+      "not": {
+        "input": "$$\\neg$$",
+        "keys": "-, n"
+      },
+      "or": {
+        "input": "$$\\lor$$",
+        "keys": "o, v, |"
+      },
+      "removeBottomStep": {
+        "action": "Remove bottom step",
+        "keys": "ctrl-down, alt-down"
+      },
+      "removeTopStep": {
+        "action": "Remove top step",
+        "keys": "ctrl-up, alt-up"
+      },
+      "selectRule": {
+        "action": "Select rule",
+        "keys": "arrow up/arrow down"
+      },
+      "showProof": {
+        "action": "Show proof",
+        "keys": "ctrl-shift-enter"
+      },
+      "showStep": {
+        "action": "Show step",
+        "keys": "ctrl-enter"
+      },
+      "title": "Hot Keys",
+      "undo": {
+        "action": "Undo",
+        "keys": "u"
+      },
+      "validateProof": {
+        "action": "Validate proof",
+        "keys": "ctrl-?, ctrl-/"
+      },
+      "validateStep": {
+        "action": "Validate step",
+        "keys": "enter"
+      }
+    },
+    "video": {
+      "notSupported": "Your browser does not support embedded videos"
+    }
+  },
+  "main": {
+    "help": "<i class='fas fa-question-circle'></i> Help",
+    "tabTitle": {
+      "cnf": "Conjunctive Normal Form",
+      "dnf": "Disjunctive Normal Form",
+      "logeq": "Logical Equivalence"
+    }
+  },
+  "oneWay": {
+    "button": {
+      "validateExercise": {
+        "CNV": "Is in CNF?",
+        "DNV": "Is in DNF?"
+      }
+    },
+    "instruction": {
+      "CNV": "<b>[[title]]:</b> Convert {{formula}} to conjunctive normal form",
+      "DNV": "<b>[[title]]:</b> Convert {{formula}} to disjunctive normal form",
+      "begin": "Select an exercise to get started!",
+      "create": "Write the formula for your own exercise"
+    },
+    "solution": "{{beginFormula}} {{arrow}} {{endFormula}}",
+    "title": {
+      "CNV": "Convert to Conjunctive Normal Form",
+      "DNV": "Convert to Disjunctive Normal Form"
+    }
+  },
+  "rule": {
+    "logic": {
+      "propositional": {
+        "absorption": "Absorption",
+        "assoc": "Associativity",
+        "commutativity": "Commutativity",
+        "demorgan": "De Morgan",
+        "distribution": "Distribution",
+        "doublenegation": "Double negation",
+        "equivalence": "Equivalence definition",
+        "falsecomplement": "F-rule complement",
+        "falseconjunction": "F-rule conjunction",
+        "falsedisjunction": "F-rule disjunction",
+        "idempotency": "Idempotency",
+        "implication": "Implication definition",
+        "notfalse": "T-rule not F",
+        "nottrue": "F-rule not T",
+        "truecomplement": "T-rule complement",
+        "trueconjunction": "T-rule conjunction",
+        "truedisjunction": "T-rule disjunction"
+      }
+    }
+  },
+  "shared": {
+    "button": {
+      "createExercise": "Create",
+      "generateExerciseDifficult": "Difficult",
+      "generateExerciseEasy": "Easy",
+      "generateExerciseNormal": "Normal",
+      "help": "Help",
+      "hint": "Hint",
+      "newExercise": "Manual entry",
+      "selectExercise": "Select Exercise",
+      "selectRule": "-- Select rule --",
+      "solveExercise": "Show complete derivation",
+      "step": "Show step",
+      "validateStep": "<i class='fas fa-check'></i>"
+    },
+    "error": {
+      "correctNotVal": "This formula is equivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
+      "creatingExercise": "An error occured while creating the exercise. Did you create a valid exercise?",
+      "generatingExercise": "An error occured while creating the exercise. Please try again.",
+      "identical": "You have to specify two different formulas.",
+      "incomplete": {
+        "oneWay": "Derivation is not yet completed",
+        "twoWay": "The proof is not yet completed"
+      },
+      "invalidFormula": "This formula has an incorrect syntax",
+      "noRule": "You must indicate which rule you have applied",
+      "noStepPossible": "The formula is in normal form.",
+      "notChanged": "You have not changed the equation",
+      "notEquivalent": "The two expressions are not equivalent.",
+      "notSuitable": "Formulas are not equivalent",
+      "showingHint": "An error occured while showing the help for the next step. Please try again.",
+      "similar": "No changes have been made. Both terms have remained the same.",
+      "solvingExercise": "An error occured while showing the complete proof. Please try again.",
+      "solvingLastStep": "An error occured while showing the next step. There are no more steps.",
+      "solvingNextStep": "An error occured while showing the next step. Please try again.",
+      "solvingNextStepInv": "Next step cannot be shown. There's an incorrect step in your solution",
+      "validatingExercise": "An error occured while validating the exercise. Please try again.",
+      "validatingStep": "An error occured while validating the step. Please try again.",
+      "wrongRule": "You have chosen an incorrect rule",
+      "wrongStep": "You have performed an incorrect step"
+    },
+    "exerciseName": {
+      "difficult": "Difficult Exercise",
+      "easy": "Easy Exercise",
+      "example": "Exercise {{number}}",
+      "medium": "Medium Exercise",
+      "user": "User Exercise"
+    },
+    "header": {
+      "actions": "Actions",
+      "direction": "",
+      "formula": "Formula",
+      "rule": "Rule",
+      "step": "Step"
+    },
+    "hint": {
+      "autoStep": "Perform Step",
+      "full": "Rewrite this formula using the <i>[[rule]]</i> rule to {{formula}}.",
+      "nextHint": "Next hint",
+      "unavailable": "No hint available",
+      "useRule": "Use <i>[[rule]]</i>."
+    },
+    "syntaxError": {
+      "ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
+      "emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
+      "missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
+      "missingOperand": "There is a missing operand at index {{index}}: {{formula}}",
+      "missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
+      "unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
+    }
+  },
+  "twoWay": {
+    "button": {
+      "bottomUp": "<i class='fas fa-chevron-up'></i> Bottom-up",
+      "topDown": "<i class='fas fa-chevron-down'></i> Top-down"
+    },
+    "instruction": {
+      "begin": "Select an exercise to get started!",
+      "create": "Write the formula for your own exercise",
+      "exercise": "<b>[[title]]:</b> Prove {{topFormula}} is logically equivalent to {{bottomFormula}}"
+    },
+    "solution": "{{beginFormula}} {{arrow}} {{endFormula}}",
+    "title": "Prove Logical Equivalence"
+  }
 }
