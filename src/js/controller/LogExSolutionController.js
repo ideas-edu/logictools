@@ -1,3 +1,4 @@
+import { translateElement } from '../translate.js'
 export class LogExSolutionController {
   updateTexts () {
     const elements = document.querySelectorAll('[translate-key]')
