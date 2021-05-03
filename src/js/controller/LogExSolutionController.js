@@ -1,4 +1,11 @@
 export class LogExSolutionController {
+  updateTexts () {
+    const elements = document.querySelectorAll('[translate-key]')
+    for (const element of elements) {
+      translateElement(element)
+    }
+  }
+
   /**
         Gets the exercisetype as given in the querystring
     */
@@ -47,8 +54,6 @@ export class LogExSolutionController {
         Handles the error that an exercise can not be solved
      */
   onErrorSolvingExercise () {
-    this.updateAlert('shared.error.solvingExercise', null, 'error')
-    this.disableUI(false)
     this.disableUI(false)
   }
 

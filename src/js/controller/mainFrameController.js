@@ -8,7 +8,7 @@ import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 
 import { LogEXSession } from '../logEXSession.js'
-import { translate, loadLanguage } from '../translate.js'
+import { translateElement, loadLanguage } from '../translate.js'
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -39,6 +39,11 @@ class MainFrameController {
       document.getElementById('lang-en').classList.add('active')
       document.getElementById('lang-nl').classList.remove('active')
     }.bind(this))
+
+    document.getElementById('fra-help-container').onload = () => { updateTexts(document.getElementById('fra-help-container').contentWindow.document) }
+    document.getElementById('fra-dnv').onload = () => { updateTexts(document.getElementById('fra-dnv').contentWindow.document) }
+    document.getElementById('fra-cnv').onload = () => { updateTexts(document.getElementById('fra-cnv').contentWindow.document) }
+    document.getElementById('fra-logeq').onload = () => { updateTexts(document.getElementById('fra-logeq').contentWindow.document) }
   }
 
   /**
@@ -86,30 +91,31 @@ class MainFrameController {
     loadLanguage(language, langCallback)
     document.getElementById(`lang-${language}`).classList.add('active')
 
-    // const helpButton = document.getElementById('help')
-    // helpButton.href = `pdf/LogEX_manual_${language}.pdf`
-    // helpButton.target = '_new'
-
     // All iFrames must be updated to new language.
     if (document.getElementById('fra-logeq').getAttribute('src') !== '') {
-      document.getElementById('fra-logeq').contentWindow.UITranslate('LOGEQ')
+      document.getElementById('fra-logeq').contentWindow.translate(language)
     }
     if (document.getElementById('fra-dnv').getAttribute('src') !== '') {
-      document.getElementById('fra-dnv').contentWindow.UITranslate()
+      document.getElementById('fra-dnv').contentWindow.translate(language)
     }
     if (document.getElementById('fra-cnv').getAttribute('src') !== '') {
-      document.getElementById('fra-cnv').contentWindow.UITranslate()
-    }
-    if (document.getElementById('fra-help-container').getAttribute('src') !== '') {
-      document.getElementById('fra-help-container').contentWindow.UITranslate()
+      document.getElementById('fra-cnv').contentWindow.translate(language)
     }
   }
 
   updateTexts () {
-    document.getElementById('tab-logeq').innerHTML = translate('main.tabTitle.logeq')
-    document.getElementById('tab-dnv').innerHTML = translate('main.tabTitle.dnf')
-    document.getElementById('tab-cnv').innerHTML = translate('main.tabTitle.cnf')
-    document.getElementById('tab-help').innerHTML = translate('main.help')
+    updateTexts(document)
+    document.querySelectorAll('iframe').forEach(item => {
+      updateTexts(item.contentWindow.document)
+    })
+  }
+}
+
+// Updates text of all descendant elements of element with translate-key attribute
+function updateTexts (element) {
+  const elements = element.querySelectorAll('[translate-key]')
+  for (const element of elements) {
+    translateElement(element)
   }
 }
 

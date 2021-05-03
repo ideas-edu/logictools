@@ -1,6 +1,5 @@
 import { config } from '../config.js'
 import { KeyBindings } from '../keyBindings.js'
-import { translate } from '../translate.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
 
 export class ExerciseController {
@@ -39,36 +38,6 @@ export class ExerciseController {
     document.addEventListener('keydown', function (e) {
       this.keyBindings.onKeyDown(e)
     }.bind(this))
-  }
-
-  updateTexts () {
-    document.getElementById('validate-step').innerHTML = translate('shared.button.validateStep')
-    document.getElementById('show-next-step').innerHTML = translate('shared.button.step')
-    document.getElementById('solve-exercise').innerHTML = translate('shared.button.solveExercise')
-    document.getElementById('new-exercise').innerHTML = translate('shared.button.newExercise')
-    document.getElementById('select-exercise').innerHTML = translate('shared.button.selectExercise')
-    document.getElementById('create-exercise').innerHTML = translate('shared.button.createExercise')
-    document.getElementById('generate-exercise-easy').innerHTML = translate('shared.button.generateExerciseEasy')
-    document.getElementById('generate-exercise-normal').innerHTML = translate('shared.button.generateExerciseNormal')
-    document.getElementById('generate-exercise-difficult').innerHTML = translate('shared.button.generateExerciseDifficult')
-    const exampleExercises = config.exampleExercises[this.exerciseType]
-    for (let i = 0; i < exampleExercises.length; i++) {
-      const nr = exampleExercises[i] + 1
-      document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: i + 1 })
-    }
-    this.exerciseAlert.updateTexts()
-    this.newExerciseAlert.updateTexts()
-
-    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
-    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
-    document.getElementById('header-actions').innerHTML = translate('shared.header.actions')
-
-    const elements = document.getElementsByClassName('step-rule')
-    for (const element of elements) {
-      element.innerHTML = translate(element.getAttribute('key'))
-    }
-
-    document.getElementById('help-menu').innerHTML = translate('shared.button.help')
   }
 
   /**

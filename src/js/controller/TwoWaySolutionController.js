@@ -29,8 +29,7 @@ function setUp () {
   loadLanguage(language, function () {
     const controller = new TwoWaySolutionController()
     controller.solveExercise()
-    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
-    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
+    controller.updateTexts()
   })
 }
 
