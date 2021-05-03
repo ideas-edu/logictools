@@ -108,7 +108,7 @@ export class ExerciseController {
         Generates an exercise.
      */
   generateExercise (properties) {
-    this.reset()
+    this.clearErrors()
     this.disableUI(true)
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('new-exercise-container').style.display = 'none'
@@ -120,7 +120,7 @@ export class ExerciseController {
         Get an example exercise.
      */
   useExercise (exerciseNumber, properties) {
-    this.reset()
+    this.clearErrors()
     this.disableUI(true)
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('new-exercise-container').style.display = 'none'
