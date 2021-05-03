@@ -4,7 +4,8 @@
   "description": "Logic tools",
   "main": "index.js",
   "dependencies": {
-    "@fontsource/open-sans": "^4.2.2"
+    "@fontsource/open-sans": "^4.2.2",
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
