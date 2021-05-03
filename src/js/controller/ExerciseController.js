@@ -1,6 +1,5 @@
 import { config } from '../config.js'
 import { KeyBindings } from '../keyBindings.js'
-import { translate } from '../translate.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
 
 export class ExerciseController {
@@ -39,36 +38,6 @@ export class ExerciseController {
     document.addEventListener('keydown', function (e) {
       this.keyBindings.onKeyDown(e)
     }.bind(this))
-  }
-
-  updateTexts () {
-    document.getElementById('validate-step').innerHTML = translate('shared.button.validateStep')
-    document.getElementById('show-next-step').innerHTML = translate('shared.button.step')
-    document.getElementById('solve-exercise').innerHTML = translate('shared.button.solveExercise')
-    document.getElementById('new-exercise').innerHTML = translate('shared.button.newExercise')
-    document.getElementById('select-exercise').innerHTML = translate('shared.button.selectExercise')
-    document.getElementById('create-exercise').innerHTML = translate('shared.button.createExercise')
-    document.getElementById('generate-exercise-easy').innerHTML = translate('shared.button.generateExerciseEasy')
-    document.getElementById('generate-exercise-normal').innerHTML = translate('shared.button.generateExerciseNormal')
-    document.getElementById('generate-exercise-difficult').innerHTML = translate('shared.button.generateExerciseDifficult')
-    const exampleExercises = config.exampleExercises[this.exerciseType]
-    for (let i = 0; i < exampleExercises.length; i++) {
-      const nr = exampleExercises[i] + 1
-      document.getElementById(`exercise${nr}`).innerHTML = translate('shared.exerciseName.example', { number: i + 1 })
-    }
-    this.exerciseAlert.updateTexts()
-    this.newExerciseAlert.updateTexts()
-
-    document.getElementById('header-formula').innerHTML = translate('shared.header.formula')
-    document.getElementById('header-rule').innerHTML = translate('shared.header.rule')
-    document.getElementById('header-actions').innerHTML = translate('shared.header.actions')
-
-    const elements = document.getElementsByClassName('step-rule')
-    for (const element of elements) {
-      element.innerHTML = translate(element.getAttribute('key'))
-    }
-
-    document.getElementById('help-menu').innerHTML = translate('shared.button.help')
   }
 
   /**
@@ -214,35 +183,6 @@ export class ExerciseController {
   // We use keys and params here so that they are updated when switching language
   updateAlert (alertKey, alertParams, type, buttonKey, buttonCallback) {
     this.exerciseAlert.updateAlert(alertKey, alertParams, type, buttonKey, buttonCallback)
-    // document.getElementById('exercise-alert-container').style.display = ''
-    // switch (type) {
-    //   case 'hint':
-    //     document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'
-    //     document.getElementById('exercise-alert').classList = 'alert col-md-12 hint-alert'
-    //     break
-    //   case 'error':
-    //     document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-exclamation-circle"></i>'
-    //     document.getElementById('exercise-alert').classList = 'alert col-md-12 error-alert'
-    //     break
-    //   case 'complete':
-    //     document.getElementById('exercise-alert-icon').innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
-    //     document.getElementById('exercise-alert').classList = 'alert col-md-12 complete-alert'
-    //     break
-    // }
-    // this.alertKey = alertKey
-    // this.alertParams = alertParams
-    // this.buttonKey = buttonKey
-
-    // const alertButton = document.getElementById('exercise-alert-button')
-    // if (buttonKey !== undefined) {
-    //   alertButton.innerHTML = translate(buttonKey)
-    //   this.alertButtonCallback = buttonCallback
-    //   alertButton.style.display = ''
-    // } else {
-    //   this.alertButtonCallback = undefined
-    //   alertButton.style.display = 'none'
-    // }
-    // document.getElementById('exercise-alert-span').innerHTML = translate(alertKey, alertParams)
   }
 
   // Highlights the location of an error

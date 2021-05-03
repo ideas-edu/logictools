@@ -1,266 +1,272 @@
 {
-	"main": {
-		"tabTitle": {
-			"dnf": "Disjunctieve Normaalvorm",
-			"cnf": "Conjunctieve Normaalvorm",
-			"logeq": "Logische Equivalentie"
-		},
-		"help": "<i class='fas fa-question-circle'></i> Hulp"
-	},
-	"help": {
-		"hotKeys": {
-			"title": "Sneltoetsen"
-		}
-	},
-	"help": {
-		"video": {
-			"notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
-		},
-		"hotKeys": {
-			"title": "Sneltoetsen",
-			"description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
-			"header": {
-				"action": "Actie",
-				"input": "Invoer",
-				"keys": "Sneltoets"
-			},
-			"not": {
-				"input": "$$\\neg$$",
-				"keys": "-, n"
-			},
-			"and": {
-				"input": "$$\\land$$",
-				"keys": "a, &"
-			},
-			"or": {
-				"input": "$$\\lor$$",
-				"keys": "o, v, |"
-			},
-			"implies": {
-				"input": "$$\\rightarrow$$",
-				"keys": "i, ."
-			},
-			"equiv": {
-				"input": "$$\\leftrightarrow$$",
-				"keys": "e, ="
-			},
-			"hide": {
-				"action": "Verberg melding",
-				"keys": "esc"
-			},
-			"undo": {
-				"action": "Ongedaan maken",
-				"keys": "u"
-			},
-			"hint": {
-				"action": "Hint",
-				"keys": "/, ?"
-			},
-			"validateStep": {
-				"action": "Valideer stap",
-				"keys": "enter"
-			},
-			"selectRule": {
-				"action": "Selecteer regel",
-				"keys": "pijl omhoog/pijl omlaag"
-			},
-			"showStep": {
-				"action": "Toon stap",
-				"keys": "ctrl-enter"
-			},
-			"showProof": {
-				"action": "Toon bewijs",
-				"keys": "ctrl-shift-enter"
-			},
-			"validateProof": {
-				"action": "Valideer bewijs",
-				"keys": "ctrl-?, ctrl-/"
-			},
-			"removeTopStep": {
-				"action": "Verwijder bovenste regel",
-				"keys": "ctrl-omhoog, alt-omhoog"
-			},
-			"removeBottomStep": {
-				"action": "Verwijder onderste regel",
-				"keys": "ctrl-omlaag, alt-omlaag"
-			}
-		}
-	},
-	"oneWay": {
-		"title": {
-			"DNV": "Omzetten naar Disjunctieve Normaalvorm",
-			"CNV": "Omzetten naar Conjunctieve Normaalvorm"
-		},
-		"instruction": {
-			"begin": "Selecteer een opgave om mee te beginnen!",
-			"create": "Schrijf de formule voor je eigen opgave",
-			"DNV": "<b>[[title]]:</b> Zet {{formula}} om naar disjunctieve normaalvorm",
-			"CNV": "<b>[[title]]:</b> Zet {{formula}} om naar conjunctieve normaalvorm"
-		},
-		"button": {
-			"validateExercise": {
-				"DNV": "Is in DNV?",
-				"CNV": "Is in CNV?"
-			}
-		},
-		"solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}"
-	},
-	"twoWay": {
-		"title": "Bewijs Logische Equivalentie",
-		"instruction": {
-			"begin": "Selecteer een opgave om mee te beginnen!",
-			"create": "Schrijf de formules voor je eigen opgave",
-			"exercise": "<b>[[title]]:</b> Bewijs dat {{topFormula}} logisch equivalent is met {{bottomFormula}}"
-		},
-		"button": {
-			"topDown": "<i class='fas fa-chevron-down'></i> Omlaag",
-			"bottomUp": "<i class='fas fa-chevron-up'></i> Omhoog"
-		},
-		"solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}"
-	},
-	"rule": {
-		"logic": {
-			"propositional": {
-				"absorption": "Absorptie",
-				"assoc": "Associativiteit",
-				"commutativity": "Commutativiteit",
-				"demorgan": "De Morgan",
-				"distribution": "Distributie",
-				"doublenegation": "Dubbele negatie",
-				"equivalence": "Equivalentie-eliminatie",
-				"falsecomplement": "F-regel complement",
-				"falseconjunction": "F-regel conjunctie",
-				"falsedisjunction": "F-regel disjunctie",
-				"nottrue": "F-regel niet T",
-				"idempotency": "Idempotentie",
-				"implication": "Implicatie-eliminatie",
-				"truecomplement": "T-regel complement",
-				"trueconjunction": "T-regel conjunctie",
-				"truedisjunction": "T-regel disjunctie",
-				"notfalse": "T-regel niet F"
-			}
-		}
-	},
-	"buggyRule": {
-		"logic": {
-			"propositional": {
-				"buggy": {
-					"absor": "U heeft absorptie niet correct toegepast.",
-					"absor2": "U heeft absorptie niet correct toegepast: let op welke subformule u overhoudt.",
-					"andcompl": "U heeft een complement regel niet correct toegepast.",
-					"andcompl2": "U heeft een complement regel niet correct toegepast.",
-					"andsame": "U heeft idempotentie niet correct toegepast.",
-					"assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
-					"assoc": "Associativiteit mag alleen toegepast worden tussen gelijke connectieven (enkel conjuncties of enkel disjuncties).",
-					"commimp": "U heeft onterecht commutativiteit bij implicatie toegepast.",
-					"demorgan1": "U heeft De Morgan niet correct toegepast, denk aan de negatietekens.",
-					"demorgan2": "Denk bij het toepassen van De Morgan aan het weghalen van de negatie buiten de haken.",
-					"demorgan3": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
-					"demorgan4": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
-					"demorgan5": "Let bij het toepassen van De Morgan op het plaatsen van de haken, u hebt het bereik van een negatie onbedoeld gewijzigd.",
-					"distr": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan.",
-					"distrnot": "U bent bij de distributie een negatie vergeten.",
-					"equivelim1": "U heeft equivalentie eliminatie niet correct toegepast, let op de negaties",
-					"equivelim2": "U heeft equivalentie eliminatie niet correct toegepast, let op de plaats van de disjuncties en de conjuncties.",
-					"equivelim3": "U heeft de regel voor implicatie eliminatie in plaats van equivalentie eliminatie toegepast.",
-					"falseprop": "U heeft een F regel niet correct toegepast.",
-					"idemequi": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
-					"idemimp": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
-					"implelim": "U heeft implicatie eliminatie niet correct toegepast.",
-					"implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
-					"implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
-					"implnotelim": "U bent de negatie voor de implicatie vergeten.",
-					"notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
-					"orcompl": "U heeft een complement regel niet correct toegepast.",
-					"orcompl2": "U heeft een complement regel niet correct toegepast.",
-					"orsame": "U heeft een T regel onterecht toegepast.",
-					"parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
-					"parenth2": "Let op de haakjes. Denk eraan dat bij equivalentie-eliminatie de negatie buiten haken blijft staan.",
-					"parenth3": "Dubbele negatie is pas toepasbaar als beide negaties betrekking hebben op dezelfde subformule.",
-					"trueprop": "U heeft een T regel niet correct toegepast.",
-					"andcompl.inv": "U heeft een complement regel niet correct toegepast.",
-					"orcompl.inv": "U heeft een complement regel niet correct toegepast.",
-					"trueprop.inv": "U heeft een T regel niet correct toegepast.",
-					"falseprop.inv": "U heeft een F regel niet correct toegepast.",
-					"idemimp.inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
-					"idemequiv.inv": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
-					"demorgan3.inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
-					"demorgan4.inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
-					"distr.inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan.",
-					"oroveror" : "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
-					"andoverand" : "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie."
-				}
-			}
-		}
-	},
-	"shared": {
-		"button": {
-			"validateStep": "<i class='fas fa-check'></i>",
-			"step": "Toon stap",
-			"solveExercise": "Toon oplossing",
-			"newExercise": "Zelf invoeren",
-			"selectExercise": "Selecteer Opgave",
-			"generateExerciseEasy": "Eenvoudig",
-			"generateExerciseNormal": "Normaal",
-			"generateExerciseDifficult": "Moeilijk",
-			"createExercise": "Maak aan",
-			"help": "Hulp",
-			"selectRule": "-- Selecteer regel --"
-		},
-		"header": {
-			"direction": "",
-			"step": "Stap",
-			"formula": "Formule",
-			"rule": "Regel",
-			"actions": "Acties"
-		},
-		"exerciseName": {
-			"easy": "Eenvoudige Opgave",
-			"medium": "Normale Opgave",
-			"difficult": "Moeilijke Opgave",
-			"example": "Opgave {{number}}",
-			"user": "Zelfgemaakte Opgave"
-		},
-		"hint": {
-			"unavailable": "Geen hint beschikbaar",
-			"useRule": "Gebruik <i>[[rule]]</i>.",
-			"full": "Herschrijf deze formule met behulp van de <i>[[rule]]</i>  regel naar {{formula}}.",
-			"nextHint": "Volgende hint",
-			"autoStep": "Deze stap uitvoeren"
-		},
-		"syntaxError": {
-			"missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
-			"ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
-			"missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
-			"missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
-			"emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
-			"unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
-		},
-		"error": {
-			"noRule": "U moet aangeven welke regel u heeft toegepast",
-			"notChanged": "U heeft de formule niet gewijzigd",
-			"wrongStep": "U heeft een verkeerde stap uitgevoerd",
-			"wrongRule": "U heeft de verkeerde regel gekozen",
-			"similar": "Er is geen stap gemaakt, de vorige en huidige formule zijn gelijk.",
-			"correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
-			"invalidFormula": "Deze formule is grammaticaal niet correct",
-			"incomplete": {
-				"oneWay": "Afleiding is nog niet voltooid",
-				"twoWay": "Bewijs is nog niet voltooid"
-			},
-			"notEquivalent": "De beide formules zijn niet equivalent.",
-			"identical": "U moet twee verschillende formules opgeven.",
-			"creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
-			"validatingExercise": "Er is een probleem opgetreden bij het valideren van de uitwerking. Probeert u het nog een keer.",
-			"generatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Probeert u het nog een keer.",
-			"solvingExercise": "Er is een probleem opgetreden bij het tonen van het volledige bewijs. Probeert u het nog een keer.",
-			"solvingNextStep": "Er is een probleem opgetreden bij het tonen van de volgende stap. Probeert u het nog een keer.",
-			"solvingNextStepInv": "Volgende stap kan niet worden getoond. Er bevindt zich een foute stap in de uitwerking.",
-			"solvingLastStep": "Er is een probleem opgetreden bij het tonen van de volgende stap. Er zijn geen overige stappen meer.",
-			"showingHint": "Er is een probleem opgetreden bij het tonen van de hint voor de volgende stap. Probeert u het nog een keer.",
-			"validatingStep": "Er is een probleem opgetreden bij het valideren van de stap. Probeert u het nog een keer.",
-			"notSuitable": "De formules zijn niet equivalent!",
-			"noStepPossible": "De formule is al in normaalvorm."
-		}
-	}
+  "buggyRule": {
+    "logic": {
+      "propositional": {
+        "buggy": {
+          "absor": "U heeft absorptie niet correct toegepast.",
+          "absor2": "U heeft absorptie niet correct toegepast: let op welke subformule u overhoudt.",
+          "andcompl": {
+            "inv": "U heeft een complement regel niet correct toegepast."
+          },
+          "andcompl2": "U heeft een complement regel niet correct toegepast.",
+          "andoverand": "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie.",
+          "andsame": "U heeft idempotentie niet correct toegepast.",
+          "assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
+          "assoc": "Associativiteit mag alleen toegepast worden tussen gelijke connectieven (enkel conjuncties of enkel disjuncties).",
+          "commimp": "U heeft onterecht commutativiteit bij implicatie toegepast.",
+          "demorgan1": "U heeft De Morgan niet correct toegepast, denk aan de negatietekens.",
+          "demorgan2": "Denk bij het toepassen van De Morgan aan het weghalen van de negatie buiten de haken.",
+          "demorgan3": {
+            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie."
+          },
+          "demorgan4": {
+            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie."
+          },
+          "demorgan5": "Let bij het toepassen van De Morgan op het plaatsen van de haken, u hebt het bereik van een negatie onbedoeld gewijzigd.",
+          "distr": {
+            "inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan."
+          },
+          "distrnot": "U bent bij de distributie een negatie vergeten.",
+          "equivelim1": "U heeft equivalentie eliminatie niet correct toegepast, let op de negaties",
+          "equivelim2": "U heeft equivalentie eliminatie niet correct toegepast, let op de plaats van de disjuncties en de conjuncties.",
+          "equivelim3": "U heeft de regel voor implicatie eliminatie in plaats van equivalentie eliminatie toegepast.",
+          "falseprop": {
+            "inv": "U heeft een F regel niet correct toegepast."
+          },
+          "idemequi": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
+          "idemequiv": {
+            "inv": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties."
+          },
+          "idemimp": {
+            "inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties."
+          },
+          "implelim": "U heeft implicatie eliminatie niet correct toegepast.",
+          "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
+          "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
+          "implnotelim": "U bent de negatie voor de implicatie vergeten.",
+          "notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
+          "orcompl": {
+            "inv": "U heeft een complement regel niet correct toegepast."
+          },
+          "orcompl2": "U heeft een complement regel niet correct toegepast.",
+          "oroveror": "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
+          "orsame": "U heeft een T regel onterecht toegepast.",
+          "parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
+          "parenth2": "Let op de haakjes. Denk eraan dat bij equivalentie-eliminatie de negatie buiten haken blijft staan.",
+          "parenth3": "Dubbele negatie is pas toepasbaar als beide negaties betrekking hebben op dezelfde subformule.",
+          "trueprop": {
+            "inv": "U heeft een T regel niet correct toegepast."
+          }
+        }
+      }
+    }
+  },
+  "help": {
+    "hotKeys": {
+      "and": {
+        "input": "$$\\land$$",
+        "keys": "a, &"
+      },
+      "description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+      "equiv": {
+        "input": "$$\\leftrightarrow$$",
+        "keys": "e, ="
+      },
+      "header": {
+        "action": "Actie",
+        "input": "Invoer",
+        "keys": "Sneltoets"
+      },
+      "hide": {
+        "action": "Verberg melding",
+        "keys": "esc"
+      },
+      "hint": {
+        "action": "Hint",
+        "keys": "/, ?"
+      },
+      "implies": {
+        "input": "$$\\rightarrow$$",
+        "keys": "i, ."
+      },
+      "not": {
+        "input": "$$\\neg$$",
+        "keys": "-, n"
+      },
+      "or": {
+        "input": "$$\\lor$$",
+        "keys": "o, v, |"
+      },
+      "removeBottomStep": {
+        "action": "Verwijder onderste regel",
+        "keys": "ctrl-omlaag, alt-omlaag"
+      },
+      "removeTopStep": {
+        "action": "Verwijder bovenste regel",
+        "keys": "ctrl-omhoog, alt-omhoog"
+      },
+      "selectRule": {
+        "action": "Selecteer regel",
+        "keys": "pijl omhoog/pijl omlaag"
+      },
+      "showProof": {
+        "action": "Toon bewijs",
+        "keys": "ctrl-shift-enter"
+      },
+      "showStep": {
+        "action": "Toon stap",
+        "keys": "ctrl-enter"
+      },
+      "title": "Sneltoetsen",
+      "undo": {
+        "action": "Ongedaan maken",
+        "keys": "u"
+      },
+      "validateProof": {
+        "action": "Valideer bewijs",
+        "keys": "ctrl-?, ctrl-/"
+      },
+      "validateStep": {
+        "action": "Valideer stap",
+        "keys": "enter"
+      }
+    },
+    "video": {
+      "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
+    }
+  },
+  "main": {
+    "help": "<i class='fas fa-question-circle'></i> Hulp",
+    "tabTitle": {
+      "cnf": "Conjunctieve Normaalvorm",
+      "dnf": "Disjunctieve Normaalvorm",
+      "logeq": "Logische Equivalentie"
+    }
+  },
+  "oneWay": {
+    "button": {
+      "validateExercise": {
+        "CNV": "Is in CNV?",
+        "DNV": "Is in DNV?"
+      }
+    },
+    "instruction": {
+      "CNV": "<b>[[title]]:</b> Zet {{formula}} om naar conjunctieve normaalvorm",
+      "DNV": "<b>[[title]]:</b> Zet {{formula}} om naar disjunctieve normaalvorm",
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "create": "Schrijf de formule voor je eigen opgave"
+    },
+    "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
+    "title": {
+      "CNV": "Omzetten naar Conjunctieve Normaalvorm",
+      "DNV": "Omzetten naar Disjunctieve Normaalvorm"
+    }
+  },
+  "rule": {
+    "logic": {
+      "propositional": {
+        "absorption": "Absorptie",
+        "assoc": "Associativiteit",
+        "commutativity": "Commutativiteit",
+        "demorgan": "De Morgan",
+        "distribution": "Distributie",
+        "doublenegation": "Dubbele negatie",
+        "equivalence": "Equivalentie-eliminatie",
+        "falsecomplement": "F-regel complement",
+        "falseconjunction": "F-regel conjunctie",
+        "falsedisjunction": "F-regel disjunctie",
+        "idempotency": "Idempotentie",
+        "implication": "Implicatie-eliminatie",
+        "notfalse": "T-regel niet F",
+        "nottrue": "F-regel niet T",
+        "truecomplement": "T-regel complement",
+        "trueconjunction": "T-regel conjunctie",
+        "truedisjunction": "T-regel disjunctie"
+      }
+    }
+  },
+  "shared": {
+    "button": {
+      "createExercise": "Maak aan",
+      "generateExerciseDifficult": "Moeilijk",
+      "generateExerciseEasy": "Eenvoudig",
+      "generateExerciseNormal": "Normaal",
+      "help": "Hulp",
+      "hint": "Hint",
+      "newExercise": "Zelf invoeren",
+      "selectExercise": "Selecteer Opgave",
+      "selectRule": "-- Selecteer regel --",
+      "solveExercise": "Toon oplossing",
+      "step": "Toon stap",
+      "validateStep": "<i class='fas fa-check'></i>"
+    },
+    "error": {
+      "correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
+      "creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
+      "generatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Probeert u het nog een keer.",
+      "identical": "U moet twee verschillende formules opgeven.",
+      "incomplete": {
+        "oneWay": "Afleiding is nog niet voltooid",
+        "twoWay": "Bewijs is nog niet voltooid"
+      },
+      "invalidFormula": "Deze formule is grammaticaal niet correct",
+      "noRule": "U moet aangeven welke regel u heeft toegepast",
+      "noStepPossible": "De formule is al in normaalvorm.",
+      "notChanged": "U heeft de formule niet gewijzigd",
+      "notEquivalent": "De beide formules zijn niet equivalent.",
+      "notSuitable": "De formules zijn niet equivalent!",
+      "showingHint": "Er is een probleem opgetreden bij het tonen van de hint voor de volgende stap. Probeert u het nog een keer.",
+      "similar": "Er is geen stap gemaakt, de vorige en huidige formule zijn gelijk.",
+      "solvingExercise": "Er is een probleem opgetreden bij het tonen van het volledige bewijs. Probeert u het nog een keer.",
+      "solvingLastStep": "Er is een probleem opgetreden bij het tonen van de volgende stap. Er zijn geen overige stappen meer.",
+      "solvingNextStep": "Er is een probleem opgetreden bij het tonen van de volgende stap. Probeert u het nog een keer.",
+      "solvingNextStepInv": "Volgende stap kan niet worden getoond. Er bevindt zich een foute stap in de uitwerking.",
+      "validatingExercise": "Er is een probleem opgetreden bij het valideren van de uitwerking. Probeert u het nog een keer.",
+      "validatingStep": "Er is een probleem opgetreden bij het valideren van de stap. Probeert u het nog een keer.",
+      "wrongRule": "U heeft de verkeerde regel gekozen",
+      "wrongStep": "U heeft een verkeerde stap uitgevoerd"
+    },
+    "exerciseName": {
+      "difficult": "Moeilijke Opgave",
+      "easy": "Eenvoudige Opgave",
+      "example": "Opgave {{number}}",
+      "medium": "Normale Opgave",
+      "user": "Zelfgemaakte Opgave"
+    },
+    "header": {
+      "actions": "Acties",
+      "direction": "",
+      "formula": "Formule",
+      "rule": "Regel",
+      "step": "Stap"
+    },
+    "hint": {
+      "autoStep": "Deze stap uitvoeren",
+      "full": "Herschrijf deze formule met behulp van de <i>[[rule]]</i>  regel naar {{formula}}.",
+      "nextHint": "Volgende hint",
+      "unavailable": "Geen hint beschikbaar",
+      "useRule": "Gebruik <i>[[rule]]</i>."
+    },
+    "syntaxError": {
+      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
+      "emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
+      "missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
+      "missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
+      "missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
+      "unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
+    }
+  },
+  "twoWay": {
+    "button": {
+      "bottomUp": "<i class='fas fa-chevron-up'></i> Omhoog",
+      "topDown": "<i class='fas fa-chevron-down'></i> Omlaag"
+    },
+    "instruction": {
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "create": "Schrijf de formules voor je eigen opgave",
+      "exercise": "<b>[[title]]:</b> Bewijs dat {{topFormula}} logisch equivalent is met {{bottomFormula}}"
+    },
+    "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
+    "title": "Bewijs Logische Equivalentie"
+  }
 }

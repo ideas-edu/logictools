@@ -3,19 +3,7 @@ import { translate } from './translate.js'
 export class ExerciseAlert {
   constructor (id) {
     this.id = id
-    this.alertKey = null
-    this.alertParams = null
-    this.buttonKey = null
     this.buttonCallback = undefined
-  }
-
-  updateTexts () {
-    if (this.alertKey !== null) {
-      document.getElementById(`${this.id}-span`).innerHTML = translate(this.alertKey, this.alertParams)
-      if (this.buttonKey !== undefined) {
-        document.getElementById(`${this.id}-button`).innerHTML = translate(this.buttonKey)
-      }
-    }
   }
 
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.
@@ -36,12 +24,13 @@ export class ExerciseAlert {
         document.getElementById(`${this.id}`).classList = 'alert col-md-12 complete-alert'
         break
     }
-    this.alertKey = alertKey
-    this.alertParams = alertParams
-    this.buttonKey = buttonKey
+    document.getElementById(`${this.id}-span`).setAttribute('translate-key', alertKey)
+    document.getElementById(`${this.id}-span`).setAttribute('translate-params', JSON.stringify(alertParams))
+    document.getElementById(`${this.id}-span`).innerHTML = translate(alertKey, alertParams)
 
     const alertButton = document.getElementById(`${this.id}-button`)
     if (buttonKey !== undefined) {
+      document.getElementById(`${this.id}-button`).setAttribute('translate-key', buttonKey)
       alertButton.innerHTML = translate(buttonKey)
       this.buttonCallback = buttonCallback
       alertButton.style.display = ''
@@ -49,6 +38,5 @@ export class ExerciseAlert {
       this.buttonCallback = undefined
       alertButton.style.display = 'none'
     }
-    document.getElementById(`${this.id}-span`).innerHTML = translate(alertKey, alertParams)
   }
 }
