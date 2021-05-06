@@ -214,15 +214,6 @@ class OneWayController extends LogExController {
     document.getElementById('step-validation-switch').disabled = false
   }
 
-  /**
-        Handles the error that an exercise can not generated
-     */
-  onErrorGeneratingExercise () {
-    this.disableUI(false)
-    this.setErrorLocation('new-exercise-dropdown')
-    this.updateAlert('shared.error.generatingExercise', null, 'error')
-  }
-
   showSolution () {
     window.open('onewaysolution.html?formula=' + this.exercise.formula + '&exerciseType=' + this.exercise.type, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }

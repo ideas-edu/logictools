@@ -153,6 +153,15 @@ export class ExerciseController {
   }
 
   /**
+        Handles the error that an exercise can not generated
+     */
+  onErrorGeneratingExercise () {
+    this.disableUI(false)
+    this.setErrorLocation('new-exercise-dropdown')
+    this.updateAlert('shared.error.generatingExercise', null, 'error')
+  }
+
+  /**
         Inserts a proof step
 
         @param {ProofStep} step - The proof step
