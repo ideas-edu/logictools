@@ -136,11 +136,11 @@
     }
   },
   "main": {
-    "help": "<i class='fas fa-question-circle'></i> Help",
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
-      "logeq": "Logical Equivalence"
+      "logeq": "Logical Equivalence",
+      "help": "<i class='fas fa-question-circle'></i> Help"
     }
   },
   "oneWay": {

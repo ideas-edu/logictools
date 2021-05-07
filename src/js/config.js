@@ -2,6 +2,24 @@
     Configuration options
  */
 export const config = {
+  tools: [
+    {
+      code: 'dnf',
+      url: 'oneway.html?exerciseType=DNV'
+    },
+    {
+      code: 'cnf',
+      url: 'oneway.html?exerciseType=CNV'
+    },
+    {
+      code: 'logeq',
+      url: 'twoway.html?exerciseType=LOGEQ'
+    },
+    {
+      code: 'help',
+      url: 'help.html'
+    },
+  ],
 
   // Example exercises
   exampleExercises: {

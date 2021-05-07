@@ -136,11 +136,11 @@
     }
   },
   "main": {
-    "help": "<i class='fas fa-question-circle'></i> Hulp",
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",
-      "logeq": "Logische Equivalentie"
+      "logeq": "Logische Equivalentie",
+      "help": "<i class='fas fa-question-circle'></i> Hulp"
     }
   },
   "oneWay": {
