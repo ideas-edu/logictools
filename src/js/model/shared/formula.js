@@ -194,7 +194,7 @@ export class Formula {
       if (leftExpression === null) {
         contextIndex = givenContextIndex + 1
       } else {
-        contextIndex = givenContextIndex + leftExpression.length()
+        contextIndex = givenContextIndex + leftExpression.length() + 1
       }
 
       // Unary
@@ -204,7 +204,7 @@ export class Formula {
             message: 'Missing operator',
             key: 'shared.syntaxError.missingOperator',
             params: {
-              index: contextIndex + 1,
+              index: contextIndex,
               length: 0
             }
           }
@@ -234,7 +234,7 @@ export class Formula {
               message: 'Ambiguous associativity',
               key: 'shared.syntaxError.ambiguougAssoc',
               params: {
-                index: contextIndex + 1,
+                index: contextIndex,
                 length: 1
               }
             }
@@ -253,7 +253,7 @@ export class Formula {
             message: 'Missing operator',
             key: 'shared.syntaxError.missingOperator',
             params: {
-              index: contextIndex + 1,
+              index: contextIndex,
               length: 0
             }
           }
@@ -271,7 +271,7 @@ export class Formula {
             message: 'Missing operator',
             key: 'shared.syntaxError.missingOperator',
             params: {
-              index: contextIndex + 1,
+              index: contextIndex,
               length: 0
             }
           }
@@ -310,7 +310,7 @@ export class Formula {
           }
           return
         }
-        leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1))
+        leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex))
         expressionString = expressionString.substring(i)
         continue
       }
@@ -354,7 +354,7 @@ export class Formula {
             message: 'Missing closing parenthesis',
             key: 'shared.syntaxError.missingClose',
             params: {
-              index: contextIndex + 1,
+              index: contextIndex,
               length: 1
             }
           }
@@ -376,7 +376,7 @@ export class Formula {
           message: 'Empty parentheses',
           key: 'shared.syntaxError.emptyParentheses',
           params: {
-            index: contextIndex + 2,
+            index: contextIndex + 1,
             length: 0
           }
         }
@@ -387,7 +387,7 @@ export class Formula {
       }
 
       return {
-        exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex + 1)),
+        exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex)),
         tailString: expressionString.substring(i)
       }
     }
@@ -395,7 +395,7 @@ export class Formula {
       message: 'Missing operand',
       key: 'shared.syntaxError.missingOperand',
       params: {
-        index: contextIndex + 1,
+        index: contextIndex,
         length: 0
       }
     }
