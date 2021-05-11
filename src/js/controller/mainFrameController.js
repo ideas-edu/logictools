@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
+import config from '../../../config.json'
 
 import { LogEXSession } from '../logEXSession.js'
 import { translateElement, loadLanguage } from '../translate.js'
@@ -40,10 +41,22 @@ class MainFrameController {
       document.getElementById('lang-nl').classList.remove('active')
     }.bind(this))
 
-    document.getElementById('fra-help-container').onload = () => { updateTexts(document.getElementById('fra-help-container').contentWindow.document) }
-    document.getElementById('fra-dnv').onload = () => { updateTexts(document.getElementById('fra-dnv').contentWindow.document) }
-    document.getElementById('fra-cnv').onload = () => { updateTexts(document.getElementById('fra-cnv').contentWindow.document) }
-    document.getElementById('fra-logeq').onload = () => { updateTexts(document.getElementById('fra-logeq').contentWindow.document) }
+    // Set up tools/help menu chosen in config
+    for (const tool of Object.values(config.tools)) {
+      const tabItem = document.createElement('li')
+      tabItem.classList = ['nav-item']
+      tabItem.innerHTML = `<a class="nav-link" data-toggle="tab" href="#container-${tool.code}" frame-id="fra-${tool.code}" id="tab-${tool.code}" translate-key="main.tabTitle.${tool.code}"></a>`
+      document.getElementById('myTabs').appendChild(tabItem)
+
+      const containerItem = document.createElement('div')
+      containerItem.setAttribute('id', `container-${tool.code}`)
+      containerItem.classList = ['tab-pane']
+      containerItem.setAttribute('data-src', tool.url)
+      containerItem.innerHTML = `<iframe src="" seamless frameBorder="0" id="fra-${tool.code}" width="100%" scrolling="no"></iframe>`
+      document.getElementById('tab-container').appendChild(containerItem)
+
+      document.getElementById(`fra-${tool.code}`).onload = () => { updateTexts(document.getElementById(`fra-${tool.code}`).contentWindow.document) }
+    }
   }
 
   /**
@@ -87,27 +100,17 @@ class MainFrameController {
      */
   initializeLabels () {
     const language = LogEXSession.getLanguage()
-    const langCallback = this.updateTexts
+    const langCallback = () => {
+      updateTexts(document)
+      document.querySelectorAll('iframe').forEach(item => {
+        if (item.getAttribute('src') !== '') {
+          item.contentWindow.translate(LogEXSession.getLanguage())
+        }
+        updateTexts(item.contentWindow.document)
+      })
+    }
     loadLanguage(language, langCallback)
     document.getElementById(`lang-${language}`).classList.add('active')
-
-    // All iFrames must be updated to new language.
-    if (document.getElementById('fra-logeq').getAttribute('src') !== '') {
-      document.getElementById('fra-logeq').contentWindow.translate(language)
-    }
-    if (document.getElementById('fra-dnv').getAttribute('src') !== '') {
-      document.getElementById('fra-dnv').contentWindow.translate(language)
-    }
-    if (document.getElementById('fra-cnv').getAttribute('src') !== '') {
-      document.getElementById('fra-cnv').contentWindow.translate(language)
-    }
-  }
-
-  updateTexts () {
-    updateTexts(document)
-    document.querySelectorAll('iframe').forEach(item => {
-      updateTexts(item.contentWindow.document)
-    })
   }
 }
 
@@ -127,14 +130,14 @@ function setUp () {
 
   // Make sure tabs are only loaded when they are clicked for the first time.
   const elements = document.getElementsByClassName('nav-link')
-  // elements.push(document.getElementById('tab-help'))
 
   for (const element of elements) {
     element.addEventListener('click', function (e) {
       const paneID = this.getAttribute('href').replace('#', '')
+      const frameID = this.getAttribute('frame-id')
       const tab = document.getElementById(paneID)
       const src = tab.getAttribute('data-src')
-      const frame = document.getElementById(`fra-${paneID}`)
+      const frame = document.getElementById(frameID)
 
       // if the iframe hasnt already been loaded: load it once
       if (frame.getAttribute('src') === '') {

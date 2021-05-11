@@ -6,4 +6,5 @@ git:
 install:
   - npm install
 script:
+  - cp test/config.json config.json
   - npm test
