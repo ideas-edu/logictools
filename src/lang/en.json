@@ -139,8 +139,8 @@
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
-      "logeq": "Logical Equivalence",
-      "help": "<i class='fas fa-question-circle'></i> Help"
+      "help": "<i class='fas fa-question-circle'></i> Help",
+      "logeq": "Logical Equivalence"
     }
   },
   "oneWay": {
