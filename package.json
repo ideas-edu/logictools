@@ -33,7 +33,8 @@
     "xhr2": "^0.2.1",
     "nestedVulnerabilities": {
       "hosted-git-info": ">=2.8.9",
-      "lodash": ">=4.17.21"
+      "lodash": ">=4.17.21",
+      "postcss": ">=8.2.10"
     }
   },
   "scripts": {
