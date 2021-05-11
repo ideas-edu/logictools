@@ -1,0 +1,49 @@
+{
+  "tools": {
+    "DNV": {
+      "code": "dnf",
+      "url": "oneway.html?exerciseType=DNV",
+      "exampleExercises": [0, 1, 2, 3, 4],
+      "bundles": {
+        "oneWaySolution": "controller/OneWaySolutionController.js",
+        "oneWay": "controller/OneWayController.js"
+      }
+    },
+    "CNV": {
+      "code": "cnf",
+      "url": "oneway.html?exerciseType=CNV",
+      "exampleExercises": [0, 1, 2, 3, 4],
+      "bundles": {
+        "oneWaySolution": "controller/OneWaySolutionController.js",
+        "oneWay": "controller/OneWayController.js"
+      }
+    },
+    "LOGEQ": {
+      "code": "logeq",
+      "url": "twoway.html?exerciseType=LOGEQ",
+      "exampleExercises": [0, 15, 16, 29, 30],
+      "bundles": {
+        "twoWaySolution": "controller/TwoWaySolutionController.js",
+        "twoWay": "controller/TwoWayController.js"
+      }
+    },
+    "HELP": {
+      "code": "help",
+      "url": "help.html",
+      "bundles": {
+        "help": "controller/helpController.js"
+      }
+    }
+  },
+  "randomExercises": true,
+  "inputOwnExercise": true,
+  "source": "logex",
+  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi",
+  "useRuleJustification": true,
+  "displayRuleJustification": false,
+  "useStepValidation": true,
+  "displayStepValidation": false,
+  "displayHintButton": true,
+  "displayNextStepButton": true,
+  "displayDerivationButton": true
+}

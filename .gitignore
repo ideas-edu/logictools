@@ -5,4 +5,4 @@ jslint.txt
 dist/
 *.mp4
 *.webm
-config.json
+/config.json
