@@ -1,4 +1,5 @@
 /* global __dirname */
+const config = require('./src/js/config.json')
 
 const path = require('path')
 
@@ -13,12 +14,7 @@ const distDir = path.resolve(__dirname, 'dist')
 
 module.exports = {
   entry: {
-    oneWaySolution: path.resolve(jsDir, 'controller/OneWaySolutionController.js'),
-    oneWay: path.resolve(jsDir, 'controller/OneWayController.js'),
-    twoWaySolution: path.resolve(jsDir, 'controller/TwoWaySolutionController.js'),
-    twoWay: path.resolve(jsDir, 'controller/TwoWayController.js'),
-    main: path.resolve(jsDir, 'controller/mainFrameController.js'),
-    help: path.resolve(jsDir, 'controller/HelpController.js')
+    main: path.resolve(jsDir, 'controller/mainFrameController.js')
   },
   output: {
     path: distDir,
@@ -47,14 +43,6 @@ module.exports = {
       }
     ]
   },
-  // module: {
-  //   loaders: [
-  //     {
-  //       loader: 'babel-loader',
-  //       test: jsDir
-  //     }
-  //   ]
-  // },
   plugins: [
     // Simply copies the files over
     new CopyPlugin({
@@ -74,4 +62,10 @@ module.exports = {
   },
   // Create Sourcemaps for the bundle
   devtool: 'source-map'
+}
+
+for (const tool of Object.values(config.tools)) {
+  for (const [identifier, location] of Object.entries(tool.bundles)) {
+    module.exports.entry[identifier] = path.resolve(jsDir, location)
+  }
 }

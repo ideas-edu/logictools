@@ -1,6 +1,6 @@
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { ExerciseController } from './ExerciseController.js'
-import { config } from '../config.js'
+import config from '../config.json'
 import { UserRules } from '../model/rules.js'
 
 export class LogExController extends ExerciseController {
@@ -139,7 +139,7 @@ export class LogExController extends ExerciseController {
         Sets the example exercises
     */
   setExampleExercises () {
-    this.exampleExercises = config.exampleExercises[this.exerciseType]
+    this.exampleExercises = config.tools[this.exerciseType].exampleExercises
     const exerciseMenu = document.getElementById('new-exercise-menu')
 
     // inserts the example exercises

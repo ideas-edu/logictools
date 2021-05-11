@@ -6,7 +6,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
-import { config } from '../config.js'
+import config from '../config.json'
 
 import { LogEXSession } from '../logEXSession.js'
 import { translateElement, loadLanguage } from '../translate.js'
@@ -42,7 +42,7 @@ class MainFrameController {
     }.bind(this))
 
     // Set up tools/help menu chosen in config
-    for (const tool of config.tools) {
+    for (const tool of Object.values(config.tools)) {
       const tabItem = document.createElement('li')
       tabItem.classList = ['nav-item']
       tabItem.innerHTML = `<a class="nav-link" data-toggle="tab" href="#container-${tool.code}" frame-id="fra-${tool.code}" id="tab-${tool.code}" translate-key="main.tabTitle.${tool.code}"></a>`

@@ -1,4 +1,4 @@
-import { config } from '../config.js'
+import config from '../config.json'
 import { KeyBindings } from '../keyBindings.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
 
