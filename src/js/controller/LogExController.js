@@ -1,6 +1,6 @@
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { ExerciseController } from './ExerciseController.js'
-import config from '../config.json'
+import config from '../../../config.json'
 import { UserRules } from '../model/rules.js'
 
 export class LogExController extends ExerciseController {

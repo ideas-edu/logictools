@@ -6,7 +6,7 @@ import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
-import config from '../config.json'
+import config from '../../../config.json'
 
 import { LogEXSession } from '../logEXSession.js'
 import { translateElement, loadLanguage } from '../translate.js'

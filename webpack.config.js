@@ -1,5 +1,5 @@
 /* global __dirname */
-const config = require('./src/js/config.json')
+const config = require('./config.json')
 
 const path = require('path')
 
