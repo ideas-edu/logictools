@@ -126,61 +126,6 @@ export class LogExController extends ExerciseController {
     return UserRules[index - 1]
   }
 
-  disableUI (disable) {
-    const inputs = document.getElementsByTagName('input')
-    for (const input of inputs) {
-      input.disabled = disable
-    }
-
-    document.getElementById('wait-exercise').style.display = disable ? '' : 'none'
-  }
-
-  /**
-        Sets the example exercises
-    */
-  setExampleExercises () {
-    this.exampleExercises = config.tools[this.exerciseType].exampleExercises
-    const exerciseMenu = document.getElementById('new-exercise-menu')
-
-    // inserts the example exercises
-    for (let i = 0; i < this.exampleExercises.length; i++) {
-      const nr = this.exampleExercises[i] + 1
-      const id = 'exercise' + nr
-      exerciseMenu.innerHTML += `<a class="dropdown-item" href="#" id="${id}" translate-key="shared.exerciseName.example" translate-params='{ "number": ${i + 1}}'></a>`
-    }
-
-    // inserts the randomly generated exercises
-    if (config.randomExercises) {
-      exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseDifficult" id="generate-exercise-difficult"></a>'
-    }
-
-    // inserts own input exercises
-    if (config.inputOwnExercise) {
-      exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.newExercise" id="new-exercise"></a>'
-    }
-
-    // installs event handlers
-    document.getElementById('generate-exercise-easy').addEventListener('click', function () {
-      this.generateExercise('easy')
-    }.bind(this))
-
-    document.getElementById('generate-exercise-normal').addEventListener('click', function () {
-      this.generateExercise('medium')
-    }.bind(this))
-
-    document.getElementById('generate-exercise-difficult').addEventListener('click', function () {
-      this.generateExercise('difficult')
-    }.bind(this))
-
-    document.getElementById('new-exercise').addEventListener('click', function () {
-      this.newExercise()
-    }.bind(this))
-  }
-
   /**
       Initializes rule justification
    */

@@ -36,15 +36,12 @@ function ready (fn) {
 
 function setUp () {
   const controller = new TwoWayController()
-  controller.getExerciseType()
   window.translate = loadLanguage
   loadLanguage(LogEXSession.getLanguage())
   controller.initializeStepValidation()
-  controller.initializeButtons()
   controller.initializeInput()
   controller.initializeRules(document.getElementById('rule'))
   controller.setExampleExercises()
-  controller.bindExampleExercises()
 }
 
 ready(setUp)
@@ -57,7 +54,7 @@ class TwoWayController extends LogExController {
     this.exerciseSolver = new TwoWayExerciseSolver()
     this.exerciseValidator = new TwoWayExerciseValidator()
     this.syntaxValidator = new SyntaxValidator()
-    this.exerciseType = 'logeq'
+    this.exerciseType = 'LOGEQ'
     this.proofDirection = null
     this.newFormulaPopover1 = null
     this.newFormulaPopover2 = null
@@ -88,27 +85,17 @@ class TwoWayController extends LogExController {
   /**
         Get an example exercise.
      */
-  useExercise (exnr, displayNumber) {
-    const properties = {
-      stepValidation: true,
-      titleKey: 'shared.exerciseName.example',
-      titleParams: {
-        number: displayNumber
-      }
-    }
+  useExercise (properties) {
+    properties.stepValidation = true
 
-    super.useExercise(exnr, properties)
+    super.useExercise(properties)
   }
 
   /**
         Generates an exercise.
      */
-  generateExercise (difficulty) {
-    const properties = {
-      stepValidation: true,
-      difficulty: difficulty,
-      titleKey: `shared.exerciseName.${difficulty}`
-    }
+  generateExercise (properties) {
+    properties.stepValidation = true
 
     super.generateExercise(properties)
   }
