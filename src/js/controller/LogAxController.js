@@ -1,4 +1,4 @@
-import jsrender from 'jsrender'
+// import jsrender from 'jsrender'
 import 'bootstrap'
 import 'iframe-resizer'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -7,20 +7,20 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
-import katex from 'katex'
+// import katex from 'katex'
 
-import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
+// import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { LogEXSession } from '../logEXSession.js'
 import { LogAxExerciseGenerator } from '../model/logax/exerciseGenerator.js'
 import { LogAxExerciseSolver } from '../model/logax/exerciseSolver.js'
 import { LogAxExerciseValidator } from '../model/logax/exerciseValidator.js'
-import { LogAxStep } from '../model/logax/step.js'
-import { LogAxExercise } from '../model/logax/exercise.js'
+// import { LogAxStep } from '../model/logax/step.js'
+// import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
-import config from '../../../config.json'
-import { translate, translateElement, loadLanguage } from '../translate.js'
+// import config from '../../../config.json'
+import { translateElement, loadLanguage } from '../translate.js'
 
-const $ = jsrender(null)
+// const $ = jsrender(null)
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -31,7 +31,7 @@ function ready (fn) {
 }
 
 function setUp () {
-  const controller = new LogAxController()
+  window.controller = new LogAxController()
   window.translate = loadLanguage
   loadLanguage(LogEXSession.getLanguage())
 }

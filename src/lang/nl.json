@@ -137,9 +137,9 @@
   },
   "logax": {
     "instruction": {
-      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
       "begin": "Selecteer een opgave om mee te beginnen!",
-      "create": "Schrijf de formule voor je eigen opgave"
+      "create": "Schrijf de formule voor je eigen opgave",
+      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
     }
   },
   "main": {
@@ -195,8 +195,8 @@
   },
   "shared": {
     "button": {
-      "createExercise": "Maak aan",
       "completeExercise": "Volottoi mijn afleiding",
+      "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
       "generateExerciseEasy": "Eenvoudig",
       "generateExerciseNormal": "Normaal",

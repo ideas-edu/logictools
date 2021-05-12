@@ -137,9 +137,9 @@
   },
   "logax": {
     "instruction": {
-      "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
       "begin": "Select an exercise to get started!",
-      "create": "Write the theorem for your own exercise"
+      "create": "Write the theorem for your own exercise",
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
     }
   },
   "main": {
