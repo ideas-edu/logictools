@@ -135,11 +135,19 @@
       "notSupported": "Your browser does not support embedded videos"
     }
   },
+  "logax": {
+    "instruction": {
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
+      "begin": "Select an exercise to get started!",
+      "create": "Write the theorem for your own exercise"
+    }
+  },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
       "help": "<i class='fas fa-question-circle'></i> Help",
+      "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }
   },
@@ -188,6 +196,7 @@
   "shared": {
     "button": {
       "createExercise": "Create",
+      "completeExercise": "Complete my derivation",
       "generateExerciseDifficult": "Difficult",
       "generateExerciseEasy": "Easy",
       "generateExerciseNormal": "Normal",

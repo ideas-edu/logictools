@@ -28,7 +28,7 @@ body {
     margin-left: 120px;
 	padding-top: 60px;
     padding-bottom: 40px;
-	min-height: 430px;
+	min-height: 550px;
 }
 
 .help-body {
@@ -617,4 +617,9 @@ button {
 
 video {
 	width: 100%;
+}
+
+
+#rule-container {
+    border: 1px solid #e5e5e5;
 }

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Ideas - Conjunctive Normal Form</title>
+	<meta name="description" content="">
+	<!-- <meta name="viewport" content="width=1020"> -->
+
+	<script src="logax.bundle.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" href="css/ideas.css">
+</head>
+
+<body class="oneWay-body">
+<!--[if lt IE 9]>
+	<p class="alert alert-error">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
+<![endif]-->
+	<div class="row title">
+		<div class="col-9">
+			<h4 id="exercise-title" translate-key="logax.title"></h4>
+		</div>
+		<div class="col-3">
+			<div class="dropdown">
+				<button class="btn btn-outline-secondary dropdown-toggle float-right" type="button" id="select-exercise" translate-key="shared.button.selectExercise" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+				<div class="dropdown-menu" aria-labelledby="select-exercise" id="new-exercise-menu"></div>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+		<div class="alert alert-primary col-12" id="instruction-alert" role="alert">
+			<i class="fas fa-info-circle"></i> <span id="instruction" translate-key="logax.instruction.begin"></span>
+		</div>
+	</div>
+
+	<div id="new-exercise-container" style="display: none">
+		<div class="row">
+			<div>
+				<form class="kbinput">
+					<input type="text" class="form-control kbinput" id="new-formula">
+					<div id="new-input" class="kbinput-wrapper"></div>
+				</form>
+			</div>
+			<button type="button" id="create-exercise" translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
+			<div class="row" id="new-exercise-alert-container" style="display: none">
+				<div class="alert col-12" id="new-exercise-alert" role="alert">
+					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span><button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="exercise-container" style="display: none">
+		<div class="row">
+			<div class="col-6">
+				<table class="table table-striped">
+					<thead>
+						<tr id="exercise-table-header">
+							<th scope="col" id="header-step" translate-key="shared.header.step"></th>
+							<th scope="col" id="header-formula" translate-key="shared.header.formula" style="width: 55%"></th>
+							<th scope="col" id="header-rule" translate-key="shared.header.rule"></th>
+							<th scope="col" id="header-actions" translate-key="shared.header.actions"></th>
+						</tr>
+					</thead>
+					<tbody id="exercise-step-table">
+						<tr id="exercise-alert-container" style="display: none">
+							<td colspan="4" class="no-row-divider">
+								<div class="row">
+									<div class="alert col-12" id="exercise-alert" role="alert">
+										<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-6">
+				<div id="rule-container">
+					<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+					<div class="dropdown-menu" aria-labelledby="help-menu">
+						<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
+						<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
+						<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
+						<button type="button" class="dropdown-item" id="validate-exercise" translate-key="shared.button.completeExercise"></button>
+					</div>
+					<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.validateStep"></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12 d-flex justify-content-center">
+				<div class="spinner-border" role="status" id="wait-exercise" style="display: none">
+					<span class="sr-only">Loading...</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" id="bottom">
+			<div class="col-12">
+
+		</div>
+
+		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and
+			http://msdn.microsoft.com/en-us/magazine/hh975379.aspx
+
+			BHR+JOL: Some features are disabled by using (&& false)
+			-->
+		<script id="exercise-step-template" type="text/x-jsrender">
+			<td scope="row" class="col-step">
+				<div class="circle">{{>step}}</div> {{:arrow}}
+			</td>
+			<td class="col-formula">
+				<span class="oneway-formula">{{:formula}}</span>
+			</td>
+			<td class="col-rule">
+				{{if ruleJustification && rule }}
+					<span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span>
+				{{/if}}
+			</td>
+			<td class="remove-step col-actions">
+				{{if canDelete && step > 0}}
+					<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+				{{/if}}
+			</td>
+		</script>
+	</div>
+</body>
+</html>

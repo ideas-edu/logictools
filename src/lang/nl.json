@@ -135,11 +135,19 @@
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
     }
   },
+  "logax": {
+    "instruction": {
+      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "create": "Schrijf de formule voor je eigen opgave"
+    }
+  },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",
       "help": "<i class='fas fa-question-circle'></i> Hulp",
+      "logax": "Axiomatisch",
       "logeq": "Logische Equivalentie"
     }
   },
@@ -188,6 +196,7 @@
   "shared": {
     "button": {
       "createExercise": "Maak aan",
+      "completeExercise": "Volottoi mijn afleiding",
       "generateExerciseDifficult": "Moeilijk",
       "generateExerciseEasy": "Eenvoudig",
       "generateExerciseNormal": "Normaal",

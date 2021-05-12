@@ -14,6 +14,9 @@ export class ExerciseController {
     this.exerciseAlert = new ExerciseAlert('exercise-alert')
     this.newExerciseAlert = new ExerciseAlert('new-exercise-alert')
 
+    this.getExerciseType()
+    this.initializeButtons()
+
     document.getElementById('exercise-alert-button').addEventListener('click', function () {
       this.exerciseAlert.buttonCallback()
     }.bind(this))
@@ -92,14 +95,72 @@ export class ExerciseController {
   }
 
   /**
+      Sets the example exercises
+  */
+  setExampleExercises () {
+    const tool = config.tools[this.exerciseType]
+    this.exampleExercises = tool.exampleExercises
+    const exerciseMenu = document.getElementById('new-exercise-menu')
+
+    // inserts the example exercises
+    for (let i = 0; i < this.exampleExercises.length; i++) {
+      const nr = this.exampleExercises[i] + 1
+      const id = 'exercise' + nr
+      exerciseMenu.innerHTML += `<a class="dropdown-item" href="#" id="${id}" translate-key="shared.exerciseName.example" translate-params='{ "number": ${i + 1}}'></a>`
+    }
+
+    // inserts the randomly generated exercises
+    if (tool.randomExercises) {
+      exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseDifficult" id="generate-exercise-difficult"></a>'
+    }
+
+    // inserts own input exercises
+    if (tool.inputOwnExercise) {
+      exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.newExercise" id="new-exercise"></a>'
+    }
+
+    this.bindExampleExercises()
+  }
+
+  /**
       Use the example exercises
     */
   bindExampleExercises () {
+    const tool = config.tools[this.exerciseType]
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = this.exampleExercises[i]
       const id = 'exercise' + (nr + 1)
       document.getElementById(id).addEventListener('click', function () {
-        this.useExercise(nr, i + 1)
+        this.useExercise({
+          exerciseNumber: nr,
+          displayNumber: i + 1
+        })
+      }.bind(this))
+    }
+
+    // inserts the randomly generated exercises
+    if (tool.randomExercises) {
+      document.getElementById('generate-exercise-easy').addEventListener('click', function () {
+        this.generateExercise({ difficulty: 'easy' })
+      }.bind(this))
+
+      document.getElementById('generate-exercise-normal').addEventListener('click', function () {
+        this.generateExercise({ difficulty: 'medium' })
+      }.bind(this))
+
+      document.getElementById('generate-exercise-difficult').addEventListener('click', function () {
+        this.generateExercise({ difficulty: 'difficult' })
+      }.bind(this))
+    }
+
+    // inserts own input exercises
+    if (tool.inputOwnExercise) {
+      document.getElementById('new-exercise').addEventListener('click', function () {
+        this.newExercise()
       }.bind(this))
     }
   }
@@ -113,19 +174,25 @@ export class ExerciseController {
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('new-exercise-container').style.display = 'none'
 
+    properties.titleKey = `shared.exerciseName.${properties.difficulty}`
+
     this.exerciseGenerator.generate(this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
         Get an example exercise.
      */
-  useExercise (exerciseNumber, properties) {
+  useExercise (properties) {
+    properties.titleKey = 'shared.exerciseName.example'
+    properties.titleParams = {
+      number: properties.displayNumber
+    }
     this.clearErrors()
     this.disableUI(true)
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('new-exercise-container').style.display = 'none'
 
-    this.exerciseGenerator.example(exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    this.exerciseGenerator.example(properties.exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
 
   /**
@@ -207,6 +274,15 @@ export class ExerciseController {
     this.newExerciseAlert.alertKey = null
     this.exerciseAlert.alertParams = null
     this.newExerciseAlert.alertParams = null
+  }
+
+  disableUI (disable) {
+    const inputs = document.getElementsByTagName('input')
+    for (const input of inputs) {
+      input.disabled = disable
+    }
+
+    document.getElementById('wait-exercise').style.display = disable ? '' : 'none'
   }
 
   clearErrors () {

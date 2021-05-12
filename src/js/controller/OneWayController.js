@@ -36,16 +36,13 @@ function ready (fn) {
 
 function setUp () {
   const controller = new OneWayController()
-  controller.getExerciseType()
   window.translate = loadLanguage
   loadLanguage(LogEXSession.getLanguage())
   controller.initializeRuleJustification()
   controller.initializeStepValidation()
-  controller.initializeButtons()
   controller.initializeInput()
   controller.setExampleExercises()
   controller.initializeRules(document.getElementById('rule'))
-  controller.bindExampleExercises()
 }
 
 ready(setUp)
@@ -68,7 +65,6 @@ class OneWayController extends LogExController {
       this.validateExercise()
     }.bind(this))
 
-    this.getExerciseType()
     translateElement(document.getElementById('exercise-title'), `oneWay.title.${this.exerciseType}`)
     translateElement(document.getElementById('validate-exercise'), `oneWay.button.validateExercise.${this.exerciseType}`)
   }
@@ -94,29 +90,19 @@ class OneWayController extends LogExController {
         Get an example exercise.
      */
 
-  useExercise (exnr, displayNumber) {
-    const properties = {
-      ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked,
-      titleKey: 'shared.exerciseName.example',
-      titleParams: {
-        number: displayNumber
-      }
-    }
+  useExercise (properties) {
+    properties.ruleJustification = document.getElementById('rule-switch').checked
+    properties.stepValidation = document.getElementById('step-validation-switch').checked
 
-    super.useExercise(exnr, properties)
+    super.useExercise(properties)
   }
 
   /**
         Generates an exercise.
      */
-  generateExercise (difficulty) {
-    const properties = {
-      ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked,
-      difficulty: difficulty,
-      titleKey: `shared.exerciseName.${difficulty}`
-    }
+  generateExercise (properties) {
+    properties.ruleJustification = document.getElementById('rule-switch').checked
+    properties.stepValidation = document.getElementById('step-validation-switch').checked
 
     super.generateExercise(properties)
   }
