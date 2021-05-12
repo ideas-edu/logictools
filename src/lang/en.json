@@ -195,8 +195,8 @@
   },
   "shared": {
     "button": {
-      "createExercise": "Create",
       "completeExercise": "Complete my derivation",
+      "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
       "generateExerciseEasy": "Easy",
       "generateExerciseNormal": "Normal",
