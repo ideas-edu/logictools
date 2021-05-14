@@ -14,7 +14,7 @@ const distDir = path.resolve(__dirname, 'dist')
 
 module.exports = {
   entry: {
-    main: path.resolve(jsDir, 'controller/mainFrameController.js')
+    main: path.join(jsDir, 'controller/mainFrameController.js')
   },
   output: {
     path: distDir,
@@ -66,6 +66,6 @@ module.exports = {
 
 for (const tool of Object.values(config.tools)) {
   for (const [identifier, location] of Object.entries(tool.bundles)) {
-    module.exports.entry[identifier] = path.resolve(jsDir, location)
+    module.exports.entry[identifier] = path.join(jsDir, location)
   }
 }
