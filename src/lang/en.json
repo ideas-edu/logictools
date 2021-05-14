@@ -247,7 +247,8 @@
       "direction": "",
       "formula": "Formula",
       "rule": "Rule",
-      "step": "Step"
+      "step": "Step",
+      "term": "Term"
     },
     "hint": {
       "autoStep": "Perform Step",

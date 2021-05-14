@@ -251,8 +251,6 @@ export class ExerciseController {
 
     const tableBody = document.getElementById('active-step')
     tableBody.insertAdjacentElement('beforebegin', exerciseStep)
-
-    this.formulaPopover.previousValue = step.formula
   }
 
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.

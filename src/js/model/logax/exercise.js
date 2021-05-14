@@ -1,5 +1,3 @@
-import katex from 'katex'
-
 import { LogAxStep } from './step.js'
 import { LogAxStepCollection } from './stepCollection.js'
 /**
@@ -14,11 +12,10 @@ export class LogAxExercise {
     this.type = exerciseType
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
-    this.theorem = theoremText
-    this.theoremKatex = katex.renderToString('Test', {
-      throwOnError: false
-    })
-    this.steps = new LogAxStepCollection(new LogAxStep(theoremText))
+    const initialStep = new LogAxStep(theoremText)
+    this.steps = new LogAxStepCollection(initialStep)
+    this.theorem = initialStep.term
+    this.theoremKatex = initialStep.termKatex
   }
 
   /**
