@@ -165,7 +165,7 @@ export class LogExController extends ExerciseController {
     }
   }
 
-  insertStep(step, canDelete) {
+  insertStep (step, canDelete) {
     super.insertStep(step, canDelete)
 
     this.formulaPopover.previousValue = step.formula
