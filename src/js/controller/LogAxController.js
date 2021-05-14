@@ -1,4 +1,4 @@
-// import jsrender from 'jsrender'
+import jsrender from 'jsrender'
 import 'bootstrap'
 import 'iframe-resizer'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -20,7 +20,7 @@ import { ExerciseController } from './ExerciseController.js'
 // import config from '../../../config.json'
 import { translateElement, loadLanguage } from '../translate.js'
 
-// const $ = jsrender(null)
+const $ = jsrender(null)
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -140,5 +140,23 @@ export class LogAxController extends ExerciseController {
       }
     })
     this.disableUI(false)
+
+    // Insert first step
+    this.insertStep(this.exercise.steps.steps[0], false)
+  }
+
+  renderStep (step, canDelete) {
+    const rule = ''
+    const stepTemplate = $.templates('#exercise-step-template')
+
+    const exerciseStepHtml = stepTemplate.render({
+      rule: rule,
+      ruleKey: '',
+      term: step.termKatex,
+      canDelete: canDelete,
+      step: step.number
+    })
+
+    return exerciseStepHtml
   }
 }

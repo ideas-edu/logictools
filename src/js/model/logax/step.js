@@ -10,11 +10,13 @@ import katex from 'katex'
  */
 export class LogAxStep {
   constructor (theoremText, rule) {
-    this.theorem = theoremText
-    this.theoremKatex = katex.renderToString(theoremText, {
+    this.number = (theoremText.split('.')[0])
+    theoremText = theoremText.replaceAll('->', '→')
+    theoremText = theoremText.replaceAll('|-', '⊢')
+    theoremText = theoremText.replaceAll('~', '¬')
+    this.term = theoremText.split('.')[1]
+    this.termKatex = katex.renderToString(this.term, {
       throwOnError: false
     })
-    this.rule = rule
-    this.number = null
   }
 }

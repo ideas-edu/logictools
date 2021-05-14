@@ -247,7 +247,8 @@
       "direction": "",
       "formula": "Formule",
       "rule": "Regel",
-      "step": "Stap"
+      "step": "Stap",
+      "term": "Term"
     },
     "hint": {
       "autoStep": "Deze stap uitvoeren",

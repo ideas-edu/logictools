@@ -13,4 +13,12 @@ export class LogAxStepCollection extends StepCollection {
       this.push(baseStep)
     }
   }
+
+  /**
+        Adds a one way step to the collection.
+        @param {OneWayStep} onewayStep - The oneway step.
+     */
+  push (step) {
+    this.steps.push(step)
+  }
 }
