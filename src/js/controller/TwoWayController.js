@@ -334,7 +334,7 @@ class TwoWayController extends LogExController {
     }
 
     if (this.exercise.usesStepValidation) {
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, previousStep, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+      this.exerciseValidator.validateStep(this.exercise, previousStep, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
       this.onStepValidated(newStep)
     }
@@ -351,14 +351,9 @@ class TwoWayController extends LogExController {
     }
     document.getElementById('header-actions').style.display = 'none'
 
-    const arrow = katex.renderToString('\\Leftrightarrow', {
-      throwOnError: false
-    })
-
     const alertParams = {
       beginFormula: this.exercise.equation.formula1katex,
-      endFormula: this.exercise.equation.formula2katex,
-      arrow: arrow
+      endFormula: this.exercise.equation.formula2katex
     }
     this.exercise.isReady = true
     this.updateAlert('twoWay.solution', alertParams, 'complete')

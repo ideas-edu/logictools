@@ -1,7 +1,5 @@
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { ExerciseController } from './ExerciseController.js'
-import config from '../../../config.json'
-import { UserRules } from '../model/rules.js'
 
 export class LogExController extends ExerciseController {
   constructor () {
@@ -82,10 +80,6 @@ export class LogExController extends ExerciseController {
       }
     ]
 
-    document.getElementById('validate-step').addEventListener('click', function () {
-      this.validateStep()
-    }.bind(this))
-
     if (document.getElementById('rule-switch')) {
       document.getElementById('rule-switch').addEventListener('click', function () {
         this.changeRuleJustification()
@@ -98,40 +92,11 @@ export class LogExController extends ExerciseController {
   }
 
   /**
-        Initializes drop down box for rules from Rules dictionary
-     */
-  initializeRules (comboRule) {
-    // Clear ruleset if already set
-    comboRule.innerHTML = ''
-    const select = document.createElement('option')
-    select.setAttribute('translate-key', 'shared.button.selectRule')
-    comboRule.appendChild(select)
-
-    for (const rule of UserRules) {
-      // Rule will only be displayed if it has not already been displayed
-      const option = document.createElement('option')
-      option.setAttribute('translate-key', `rule.${rule}`)
-      comboRule.appendChild(option)
-    }
-    // Show '-- Select rule --'
-    comboRule.selectedIndex = 0
-  }
-
-  getSelectedRuleKey () {
-    const index = document.getElementById('rule').selectedIndex
-    if (index === 0) {
-      return null
-    }
-    // Subtract 1 for '-- Select rule --'
-    return UserRules[index - 1]
-  }
-
-  /**
       Initializes rule justification
    */
   initializeRuleJustification () {
-    document.getElementById('rule-switch').checked = config.useRuleJustification
-    if (config.displayRuleJustification) {
+    document.getElementById('rule-switch').checked = this.config.useRuleJustification
+    if (this.config.displayRuleJustification) {
       document.getElementById('rule-switch-div').style.display = ''
     }
   }
@@ -152,8 +117,8 @@ export class LogExController extends ExerciseController {
         Initializes step validation
      */
   initializeStepValidation () {
-    document.getElementById('step-validation-switch').checked = config.useStepValidation
-    if (config.displayStepValidation) {
+    document.getElementById('step-validation-switch').checked = this.config.useStepValidation
+    if (this.config.displayStepValidation) {
       document.getElementById('step-validation-switch-div').style.display = ''
     }
   }

@@ -140,6 +140,16 @@
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+    },
+    "rule": {
+      "label": "<b>Rule</b>",
+      "assumption": {
+        "def": "$$\\phi\\vdash\\phi$$",
+        "addStep": "Add Step",
+        "addMotivation": "Add Motivation",
+        "phi": "$$\\phi$$",
+        "stepnr": "Step"
+      }
     }
   },
   "main": {
@@ -175,6 +185,9 @@
       "propositional": {
         "absorption": "Absorption",
         "assoc": "Associativity",
+        "axiomatic": {
+          "assumption": "Assumption"
+        },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",
         "distribution": "Distribution",

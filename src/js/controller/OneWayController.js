@@ -283,7 +283,7 @@ class OneWayController extends LogExController {
     Validates a step
       Runs callback after correct step has been validated
      */
-  validateStep (callback) {
+  validateStep () {
     const ruleKey = this.getSelectedRuleKey()
     if (ruleKey === null && this.exercise.usesRuleJustification && this.exercise.usesStepValidation) {
       this.setErrorLocation('rule')
@@ -306,16 +306,9 @@ class OneWayController extends LogExController {
     this.clearErrors()
     this.exercise.steps.push(new OneWayStep(newFormula.value, ruleKey))
     if (this.exercise.usesStepValidation) {
-      const validatorCallback = function () {
-        if (this.onStepValidated()) {
-          callback()
-        }
-      }.bind(this)
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), validatorCallback, this.onErrorValidatingStep.bind(this))
+      this.exerciseValidator.validateStep(this.exercise, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
-      if (this.onStepValidated()) {
-        callback()
-      }
+      this.onStepValidated()
     }
   }
 
@@ -334,7 +327,7 @@ class OneWayController extends LogExController {
     if (this.exercise.usesStepValidation) {
       this.checkIfReady()
     } else {
-      this.exerciseValidator.validateExercise(this.exercise, 0, 0, this.onExerciseValidated.bind(this), this.onErrorExerciseValidate.bind(this))
+      this.exerciseValidator.validateExercise(this.exercise, this.onExerciseValidated.bind(this), this.onErrorExerciseValidate.bind(this))
     }
   }
 

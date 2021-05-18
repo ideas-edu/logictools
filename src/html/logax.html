@@ -70,21 +70,55 @@
 					</thead>
 					<tbody id="exercise-step-table">
 						<tr id="active-step"></tr>
-						<tr id="exercise-alert-container" style="display: none">
-							<td colspan="4" class="no-row-divider">
-								<div class="row">
-									<div class="alert col-12" id="exercise-alert" role="alert">
-										<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
-									</div>
-								</div>
-							</td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
 
 			<div class="col-6">
 				<div id="rule-container">
+					<table style="width: 100%">
+						<tbody>
+							<tr>
+								<td style="width: 12%"><span translate-key="logax.rule.label" class="float-right"></span></td>
+								<td><select id="rule" class="form-control input custom-select"></select></td>
+							</tr>
+							<!-- Assumption -->
+							<tr rule="rule.logic.propositional.axiomatic.assumption" style="display: none">
+								<td></td><td><span translate-key="logax.rule.assumption.def"></span></td>
+							</tr>
+							<tr rule="rule.logic.propositional.axiomatic.assumption" style="display: none">
+								<td></td><td><select id="assumption-select" class="form-control input custom-select">
+									<option translate-key="logax.rule.assumption.addStep"></option>
+									<option translate-key="logax.rule.assumption.addMotivation"></option>
+								</select></td>
+							</tr>
+							<tr rule="rule.logic.propositional.axiomatic.assumption" id="assumption-phi" style="display: none">
+								<td><span translate-key="logax.rule.assumption.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="assumption-formula">
+									<div id="one-way-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="rule.logic.propositional.axiomatic.assumption" id="assumption-stepnr" style="display: none">
+								<td><span translate-key="logax.rule.assumption.stepnr" class="float-right"></span></td><td>
+									<select id="assumption-select-stepnr" class="form-control input custom-select">
+										<option>1000</option>
+									</select>
+								</td>
+							</tr>
+							<!--  -->
+						</tbody>
+					</table>
+					<!-- <tr >
+						<td colspan="4" class="no-row-divider"> -->
+							<div class="row" id="exercise-alert-container" style="display: none">
+								<div class="alert col-12" id="exercise-alert" role="alert">
+									<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+								</div>
+							</div>
+						<!-- </td>
+					</tr> -->
+
 					<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 					<div class="dropdown-menu" aria-labelledby="help-menu">
 						<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>

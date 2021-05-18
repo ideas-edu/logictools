@@ -175,6 +175,9 @@
       "propositional": {
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
+        "axiomatic": {
+          "assumption": "Aanname"
+        },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
         "distribution": "Distributie",

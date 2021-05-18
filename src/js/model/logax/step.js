@@ -9,11 +9,12 @@ import katex from 'katex'
     @property {string} rule The applied rule.
  */
 export class LogAxStep {
-  constructor (theoremText, rule) {
+  constructor (theoremText, ruleKey) {
     this.number = (theoremText.split('.')[0])
-    theoremText = theoremText.replaceAll('->', '→')
-    theoremText = theoremText.replaceAll('|-', '⊢')
-    theoremText = theoremText.replaceAll('~', '¬')
+    this.ruleKey = ruleKey
+    theoremText = theoremText.replaceAll('->', '\\rightarrow ')
+    theoremText = theoremText.replaceAll('|-', '\\vdash ')
+    theoremText = theoremText.replaceAll('~', '\\neg ')
     this.term = theoremText.split('.')[1]
     this.termKatex = katex.renderToString(this.term, {
       throwOnError: false
