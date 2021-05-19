@@ -98,10 +98,10 @@ export class LogAxController extends ExerciseController {
     this.setExampleExercises()
     // this.bindExampleExercises()
 
-    this.exerciseGenerator = new LogAxExerciseGenerator()
-    this.exerciseSolver = new LogAxExerciseSolver()
+    this.exerciseGenerator = new LogAxExerciseGenerator(this.config)
+    this.exerciseSolver = new LogAxExerciseSolver(this.config)
     // validation
-    this.exerciseValidator = new LogAxExerciseValidator()
+    this.exerciseValidator = new LogAxExerciseValidator(this.config)
 
     this.initializeRules(document.getElementById('rule'))
     this.initializeInput()
@@ -174,7 +174,7 @@ export class LogAxController extends ExerciseController {
     const exerciseStepTable = document.getElementById('exercise-step-table')
     let stepRow = exerciseStepTable.firstElementChild
     while (true) {
-      if (stepRow.classList.contains('exercise-step')) {
+      if (stepRow && stepRow.classList.contains('exercise-step')) {
         exerciseStepTable.removeChild(stepRow)
         stepRow = exerciseStepTable.firstElementChild
       } else {
@@ -197,18 +197,22 @@ export class LogAxController extends ExerciseController {
   }
 
   getNewStep () {
-    const rule = document.getElementById('rule').selectedOptions[0].getAttribute('translate-key')
-    const ruleKey = `rule.${this.getSelectedRuleKey()}`
+    const rule = this.getSelectedRuleKey()
 
     switch (rule) {
-      case 'rule.logic.propositional.axiomatic.assumption': {
+      case 'logic.propositional.axiomatic.assumption': {
         const newFormula = document.getElementById('assumption-formula')
         if (newFormula.value === this.exercise.getCurrentStep().formula) {
           this.setErrorLocation('assumption-formula')
           this.updateAlert('shared.error.notChanged', null, 'error')
           return false
         }
-        return new LogAxStep(`1.${newFormula.value}|-${newFormula.value}`, ruleKey)
+        return {
+          environment: {
+            phi: LogAxStep.convertToText(newFormula.value)
+          },
+          rule: rule
+        }
       }
     }
   }
@@ -229,19 +233,24 @@ export class LogAxController extends ExerciseController {
 
     this.disableUI(true)
     this.clearErrors()
-    this.exercise.steps.push(newStep)
-    if (this.exercise.usesStepValidation) {
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.getPreviousStep(), this.exercise.getCurrentStep(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
-    } else {
-      this.onStepValidated()
-    }
+    this.exerciseValidator.validateApply(this.exercise, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+  }
+
+  /**
+        Handles the error that the step can not be validated
+     */
+  onErrorValidatingStep () {
+    this.disableUI(false)
+    this.setErrorLocation('validate-step')
+    this.updateAlert('shared.error.validatingStep', null, 'error')
   }
 
   /**
         Handles the event that a step is validated
 
      */
-  onStepValidated () {
+  onStepValidated (step) {
+    this.exercise.steps.push(step)
     const currentStep = this.exercise.getCurrentStep()
     let message
     let errorLocation
@@ -289,6 +298,37 @@ export class LogAxController extends ExerciseController {
     }
   }
 
+  insertStep (step, canDelete) {
+    this.dismissAlert()
+
+    const exerciseStep = document.createElement('tr')
+    exerciseStep.classList.add('exercise-step')
+    exerciseStep.setAttribute('number', step.number)
+    exerciseStep.innerHTML = this.renderStep(step, canDelete)
+
+    if (canDelete) {
+      const deleteButton = exerciseStep.getElementsByClassName('delete-step')[0]
+      deleteButton.addEventListener('click', function () {
+        this.removeStep(step.number)
+      }.bind(this))
+    }
+
+    const steps = [...document.querySelectorAll('.exercise-step')]
+    if (steps.length === 0) {
+      document.getElementById('exercise-step-table').appendChild(exerciseStep)
+    } else {
+      for (let i = 0; i < steps.length; i++) {
+        if (i === 0 && steps[i].getAttribute('number') > step.number) {
+          steps[i].insertAdjacentElement('beforebegin', exerciseStep)
+        }
+
+        if (steps[i].getAttribute('number') < step.number && (steps[i + 1].getAttribute('number') > step.number || i === steps.length - 1)) {
+          steps[i].insertAdjacentElement('afterend', exerciseStep)
+        }
+      }
+    }
+  }
+
   renderStep (step, canDelete) {
     let rule = ''
     const stepTemplate = $.templates('#exercise-step-template')
@@ -306,5 +346,16 @@ export class LogAxController extends ExerciseController {
     })
 
     return exerciseStepHtml
+  }
+
+  removeStep (index) {
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+
+    for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {
+      if (Number(exerciseStepTable.children[i].getAttribute('number')) === index) {
+        exerciseStepTable.removeChild(exerciseStepTable.children[i])
+      }
+    }
+    this.exercise.steps.steps = this.exercise.steps.steps.filter(x => x.number !== index)
   }
 }

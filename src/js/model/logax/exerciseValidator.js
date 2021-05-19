@@ -1,19 +1,28 @@
+import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseValidator } from '../shared/exerciseValidator.js'
+import { LogAxStep } from './step.js'
 
 /**
     LogAxExerciseValidator is responsible for validating one way exercises.
     @constructor
  */
 export class LogAxExerciseValidator extends ExerciseValidator {
-  getState (exercise, step1, step2) {
+  getState (exercise) {
     const state = {
       exerciseid: exercise.type,
-      prefix: step1.strategyStatus,
+      prefix: '[]',
       context: {
-        term: step1.formula,
+        term: [],
         environment: {},
         location: []
       }
+    }
+
+    for (const step of exercise.steps.steps) {
+      state.context.term.push({
+        number: step.number,
+        term: step.term
+      })
     }
 
     return state
@@ -27,5 +36,26 @@ export class LogAxExerciseValidator extends ExerciseValidator {
     }
 
     return context
+  }
+
+  validateApply (exercise, step, onValidated, onErrorValidating) {
+    const state = this.getState(exercise)
+
+    const validated = function (response) {
+      for (const responseStep of response.apply.state.context.term) {
+        let exists = false
+        for (const existingStep of exercise.steps.steps) {
+          if (responseStep.number === existingStep.number) {
+            exists = true
+          }
+        }
+        if (!exists) {
+          const newStep = new LogAxStep(responseStep)
+          onValidated(newStep)
+          return
+        }
+      }
+    }
+    IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
   }
 }

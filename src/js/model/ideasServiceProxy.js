@@ -12,9 +12,9 @@ export class IdeasServiceProxy {
         @param onSuccess - The callback method that gets called on success
         @param onError - The callback method that gets called on error
     */
-  static post (input, onSuccess, onError) {
+  static post (toolConfig, input, onSuccess, onError) {
     const url = config.backend_url
-    input.source = config.source
+    input.source = toolConfig.source
     const data = 'input=' + encodeURI(JSON.stringify(input))
 
     const request = new XMLHttpRequest()
@@ -44,7 +44,7 @@ export class IdeasServiceProxy {
     ----------------------------------------------------- */
 
   // generate :: Exercise, Difficulty, UserId -> State
-  static generate (exerciseId, difficulty, userid, onSuccess, onError) {
+  static generate (toolConfig, exerciseId, difficulty, userid, onSuccess, onError) {
     const request = {
       service: 'generate',
       exerciseid: exerciseId,
@@ -52,11 +52,11 @@ export class IdeasServiceProxy {
       userid: userid
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // example :: Exercise, Int, UserId -> State
-  static example (exerciseId, exerciseNr, userid, onSuccess, onError) {
+  static example (toolConfig, exerciseId, exerciseNr, userid, onSuccess, onError) {
     const request = {
       service: 'example',
       exerciseid: exerciseId,
@@ -64,11 +64,11 @@ export class IdeasServiceProxy {
       userid: userid
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // create :: Exercise, String -> State
-  static create (exerciseId, formula, userid, onSuccess, onError) {
+  static create (toolConfig, exerciseId, formula, userid, onSuccess, onError) {
     const request = {
       service: 'create',
       exerciseid: exerciseId,
@@ -76,7 +76,7 @@ export class IdeasServiceProxy {
       userid: userid
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   /* -----------------------------------------------------
@@ -84,40 +84,40 @@ export class IdeasServiceProxy {
     ----------------------------------------------------- */
 
   // onefirst :: State -> StepInfo, State
-  static onefirst (state, requestinfo, onSuccess, onError) {
+  static onefirst (toolConfig, state, requestinfo, onSuccess, onError) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'onefirst',
       state: state
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // derivation :: State -> Derivation
-  static derivation (state, onSuccess, onError) {
+  static derivation (toolConfig, state, onSuccess, onError) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'derivation',
       state: state
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // derivationtext :: State -> Derivation
-  static derivationtext (state, onSuccess, onError) {
+  static derivationtext (toolConfig, state, onSuccess, onError) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'derivationtext',
       state: state
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // diagnose-string :: State, Context, (Rule)Id -> Diagnosis
-  static diagnose (state, context, rule, onSuccess, onError) {
+  static diagnose (toolConfig, state, context, rule, onSuccess, onError) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'diagnose',
@@ -126,28 +126,42 @@ export class IdeasServiceProxy {
       rule: rule
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // ready:: State -> Boolean
-  static ready (state, onSuccess, onError) {
+  static ready (toolConfig, state, onSuccess, onError) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'ready',
       state: state
     }
 
-    IdeasServiceProxy.post(request, onSuccess, onError)
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
+  }
+
+  // apply:: State -> Boolean
+  static apply (toolConfig, state, environment, location, rule, onSuccess, onError) {
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'apply',
+      state: state,
+      environment: environment,
+      location: location,
+      rule: rule
+    }
+
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
   // log:: ? -> Empty
-  static log (state, requestinfo) {
+  static log (toolConfig, state, requestinfo) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'log',
       state: state
     }
 
-    IdeasServiceProxy.post(request, undefined, undefined)
+    IdeasServiceProxy.post(toolConfig, request, undefined, undefined)
   }
 }

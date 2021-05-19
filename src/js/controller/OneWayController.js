@@ -55,10 +55,10 @@ ready(setUp)
 class OneWayController extends LogExController {
   constructor () {
     super()
-    this.exerciseGenerator = new OneWayExerciseGenerator()
-    this.exerciseSolver = new OneWayExerciseSolver()
+    this.exerciseGenerator = new OneWayExerciseGenerator(this.config)
+    this.exerciseSolver = new OneWayExerciseSolver(this.config)
     // validation
-    this.exerciseValidator = new OneWayExerciseValidator()
+    this.exerciseValidator = new OneWayExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
 
     document.getElementById('validate-exercise').addEventListener('mousedown', function () {
@@ -201,7 +201,7 @@ class OneWayController extends LogExController {
   }
 
   showSolution () {
-    window.open('onewaysolution.html?formula=' + this.exercise.formula + '&exerciseType=' + this.exercise.type, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    window.open('onewaysolution.html?formula=' + this.exercise.formula + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   /**

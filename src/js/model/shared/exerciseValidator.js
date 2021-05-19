@@ -5,6 +5,10 @@ import { IdeasServiceProxy } from '../ideasServiceProxy.js'
     @constructor
  */
 export class ExerciseValidator {
+  constructor (config) {
+    this.config = config
+  }
+
   validateExercise (exercise, onValidated, onErrorValidatingExercise) {
     if (exercise.steps.steps.length > 1) {
       for (let i = 0; i < exercise.steps.steps.length - 1; i++) {
@@ -115,12 +119,12 @@ export class ExerciseValidator {
     if (exercise.usesRuleJustification) { // Er moet regelvalidatie plaatsvinden -> rule wordt meegegeven als parameter in de params-array
       rule = step2.rule
     }
-    IdeasServiceProxy.diagnose(state, context, rule, onSuccess, onError)
+    IdeasServiceProxy.diagnose(this.config, state, context, rule, onSuccess, onError)
   }
 
   validateReady (exercise, onValidated, onErrorValidating) {
     const state = this.getState(exercise, exercise.getCurrentStep())
-    IdeasServiceProxy.ready(state, onValidated, onErrorValidating)
+    IdeasServiceProxy.ready(this.config, state, onValidated, onErrorValidating)
   }
 
   /**

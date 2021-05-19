@@ -5,7 +5,8 @@ import { IdeasServiceProxy } from '../ideasServiceProxy.js'
     @constructor
  */
 export class ExerciseSolver {
-  constructor () {
+  constructor (config) {
+    this.config = config
     this.Step = undefined
     this.StepCollection = undefined
   }
@@ -34,7 +35,7 @@ export class ExerciseSolver {
 
     const state = this._getState(exercise)
 
-    IdeasServiceProxy.derivation(state, onSuccess, onError)
+    IdeasServiceProxy.derivation(this.config, state, onSuccess, onError)
   }
 
   /**
@@ -69,7 +70,7 @@ export class ExerciseSolver {
 
     const state = this._getState(exercise)
 
-    IdeasServiceProxy.onefirst(state, 'nextStep', onSuccess, onError)
+    IdeasServiceProxy.onefirst(this.config, state, 'nextStep', onSuccess, onError)
   }
 
   /**
@@ -101,8 +102,8 @@ export class ExerciseSolver {
     }
 
     const state = this._getState(exercise)
-
-    IdeasServiceProxy.onefirst(state, 'Hint: useRule', onSuccess, onError)
+    console.log(state)
+    IdeasServiceProxy.onefirst(this.config, state, 'Hint: useRule', onSuccess, onError)
   }
 
   _getState (exercise) {
