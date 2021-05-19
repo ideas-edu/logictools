@@ -142,8 +142,7 @@ Rules['logic.propositional.group-notfalse'] = TRegelNietF // group id
 Rules['logic.propositional.notfalse'] = TRegelNietF
 Rules['notfalse.inv'] = TRegelNietF
 
-
-/////////////////
+// ##################
 // LogAx
-/////////////////
+// ##################
 Rules['logic.propositional.axiomatic.assumption'] = assumption
