@@ -140,6 +140,16 @@
       "begin": "Selecteer een opgave om mee te beginnen!",
       "create": "Schrijf de formule voor je eigen opgave",
       "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
+    },
+    "rule": {
+      "assumption": {
+        "addMotivation": "Stap motiveren",
+        "addStep": "Stap toevoegen",
+        "def": "$$\\phi\\vdash\\phi$$",
+        "phi": "$$\\phi$$",
+        "stepnr": "Stap"
+      },
+      "label": "<b>Regel</b>"
     }
   },
   "main": {
@@ -175,6 +185,9 @@
       "propositional": {
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
+        "axiomatic": {
+          "assumption": "Aanname"
+        },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
         "distribution": "Distributie",

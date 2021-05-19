@@ -1,5 +1,12 @@
+import config from '../../../config.json'
 import { translateElement } from '../translate.js'
+
 export class LogExSolutionController {
+  constructor () {
+    this.getExerciseType()
+    this.config = config.tools[this.controllerId]
+  }
+
   updateTexts () {
     const elements = document.querySelectorAll('[translate-key]')
     for (const element of elements) {
@@ -19,7 +26,10 @@ export class LogExSolutionController {
     for (i = 0; i < sURLVariables.length; i += 1) {
       sParameterName = sURLVariables[i].split('=')
       if (sParameterName[0] === 'exerciseType') {
-        return sParameterName[1]
+        this.exerciseType = sParameterName[1]
+      }
+      if (sParameterName[0] === 'controller') {
+        this.controllerId = sParameterName[1]
       }
     }
   }
@@ -44,10 +54,9 @@ export class LogExSolutionController {
         Solves the exercise
      */
   solveExercise () {
-    const exerciseType = this.getExerciseType()
     const formula = this.getFormula()
 
-    const exercise = new this.ExerciseType(formula, exerciseType, false, false)
+    const exercise = new this.ExerciseType(formula, this.exerciseType, false, false)
     this.exerciseSolver.solve(exercise, this.onExerciseSolved.bind(this), this.onErrorSolvingExercise.bind(this))
   }
 

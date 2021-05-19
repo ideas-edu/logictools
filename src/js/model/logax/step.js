@@ -9,14 +9,33 @@ import katex from 'katex'
     @property {string} rule The applied rule.
  */
 export class LogAxStep {
-  constructor (theoremText, rule) {
-    this.number = (theoremText.split('.')[0])
-    theoremText = theoremText.replaceAll('->', '→')
-    theoremText = theoremText.replaceAll('|-', '⊢')
-    theoremText = theoremText.replaceAll('~', '¬')
-    this.term = theoremText.split('.')[1]
-    this.termKatex = katex.renderToString(this.term, {
+  constructor (step, rule) {
+    this.number = step.number
+    this.label = step.label
+    if (rule === undefined && step.label !== undefined) {
+      rule = `logic.propositional.axiomatic.${step.label}`
+    }
+    this.rule = rule
+    if (rule !== undefined) {
+      this.ruleKey = `rule.${rule}`
+    }
+    this.term = step.term
+    this.termKatex = katex.renderToString(LogAxStep.convertToLatex(this.term), {
       throwOnError: false
     })
+  }
+
+  static convertToLatex (term) {
+    term = term.replaceAll('->', '\\rightarrow ')
+    term = term.replaceAll('|-', '\\vdash ')
+    term = term.replaceAll('~', '\\neg ')
+    return term
+  }
+
+  static convertToText (term) {
+    term = term.replaceAll('→', '->')
+    term = term.replaceAll('⊢', '|-')
+    term = term.replaceAll('¬', '~')
+    return term
   }
 }

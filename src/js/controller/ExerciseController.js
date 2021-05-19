@@ -15,6 +15,7 @@ export class ExerciseController {
     this.newExerciseAlert = new ExerciseAlert('new-exercise-alert')
 
     this.getExerciseType()
+    this.config = config.tools[this.exerciseType]
     this.initializeButtons()
 
     document.getElementById('exercise-alert-button').addEventListener('click', function () {
@@ -35,6 +36,10 @@ export class ExerciseController {
 
     document.getElementById('create-exercise').addEventListener('mousedown', function () {
       this.createExercise()
+    }.bind(this))
+
+    document.getElementById('validate-step').addEventListener('click', function () {
+      this.validateStep()
     }.bind(this))
 
     // key bindings
@@ -83,23 +88,51 @@ export class ExerciseController {
       Initializes hint, next step and complete derivation button
    */
   initializeButtons () {
-    if (config.displayHintButton) {
+    if (this.config.displayHintButton) {
       document.getElementById('show-hint').style.display = ''
     }
-    if (config.displayNextStepButton) {
+    if (this.config.displayNextStepButton) {
       document.getElementById('show-next-step').style.display = ''
     }
-    if (config.displayDerivationButton) {
+    if (this.config.displayDerivationButton) {
       document.getElementById('solve-exercise').style.display = ''
     }
+  }
+
+  /**
+        Initializes drop down box for rules from Rules dictionary
+     */
+  initializeRules (comboRule) {
+    // Clear ruleset if already set
+    comboRule.innerHTML = ''
+    const select = document.createElement('option')
+    select.setAttribute('translate-key', 'shared.button.selectRule')
+    comboRule.appendChild(select)
+
+    for (const rule of this.config.rules) {
+      // Rule will only be displayed if it has not already been displayed
+      const option = document.createElement('option')
+      option.setAttribute('translate-key', `rule.${rule}`)
+      comboRule.appendChild(option)
+    }
+    // Show '-- Select rule --'
+    comboRule.selectedIndex = 0
+  }
+
+  getSelectedRuleKey () {
+    const index = document.getElementById('rule').selectedIndex
+    if (index === 0) {
+      return null
+    }
+    // Subtract 1 for '-- Select rule --'
+    return this.config.rules[index - 1]
   }
 
   /**
       Sets the example exercises
   */
   setExampleExercises () {
-    const tool = config.tools[this.exerciseType]
-    this.exampleExercises = tool.exampleExercises
+    this.exampleExercises = this.config.exampleExercises
     const exerciseMenu = document.getElementById('new-exercise-menu')
 
     // inserts the example exercises
@@ -110,7 +143,7 @@ export class ExerciseController {
     }
 
     // inserts the randomly generated exercises
-    if (tool.randomExercises) {
+    if (this.config.randomExercises) {
       exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
@@ -118,7 +151,7 @@ export class ExerciseController {
     }
 
     // inserts own input exercises
-    if (tool.inputOwnExercise) {
+    if (this.config.inputOwnExercise) {
       exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.newExercise" id="new-exercise"></a>'
     }
@@ -130,7 +163,6 @@ export class ExerciseController {
       Use the example exercises
     */
   bindExampleExercises () {
-    const tool = config.tools[this.exerciseType]
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = this.exampleExercises[i]
       const id = 'exercise' + (nr + 1)
@@ -143,7 +175,7 @@ export class ExerciseController {
     }
 
     // inserts the randomly generated exercises
-    if (tool.randomExercises) {
+    if (this.config.randomExercises) {
       document.getElementById('generate-exercise-easy').addEventListener('click', function () {
         this.generateExercise({ difficulty: 'easy' })
       }.bind(this))
@@ -158,7 +190,7 @@ export class ExerciseController {
     }
 
     // inserts own input exercises
-    if (tool.inputOwnExercise) {
+    if (this.config.inputOwnExercise) {
       document.getElementById('new-exercise').addEventListener('click', function () {
         this.newExercise()
       }.bind(this))

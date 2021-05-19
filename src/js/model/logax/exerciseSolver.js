@@ -7,8 +7,8 @@ import { LogAxStep } from './step.js'
     @constructor
  */
 export class LogAxExerciseSolver extends ExerciseSolver {
-  constructor () {
-    super()
+  constructor (config) {
+    super(config)
     this.Step = LogAxStep
     this.StepCollection = LogAxStepCollection
   }

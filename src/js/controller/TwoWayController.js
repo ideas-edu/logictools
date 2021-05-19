@@ -50,9 +50,9 @@ class TwoWayController extends LogExController {
   constructor () {
     super()
 
-    this.exerciseGenerator = new TwoWayExerciseGenerator()
-    this.exerciseSolver = new TwoWayExerciseSolver()
-    this.exerciseValidator = new TwoWayExerciseValidator()
+    this.exerciseGenerator = new TwoWayExerciseGenerator(this.config)
+    this.exerciseSolver = new TwoWayExerciseSolver(this.config)
+    this.exerciseValidator = new TwoWayExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
     this.exerciseType = 'LOGEQ'
     this.proofDirection = null
@@ -214,7 +214,7 @@ class TwoWayController extends LogExController {
   }
 
   showSolution () {
-    window.open('twowaysolution.html?formula=' + this.exercise.equation.getText() + '&exerciseType=' + this.exercise.type, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    window.open('twowaysolution.html?formula=' + this.exercise.equation.getText() + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   showNextStep () {
@@ -334,7 +334,7 @@ class TwoWayController extends LogExController {
     }
 
     if (this.exercise.usesStepValidation) {
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, previousStep, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+      this.exerciseValidator.validateStep(this.exercise, previousStep, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
       this.onStepValidated(newStep)
     }
@@ -351,14 +351,9 @@ class TwoWayController extends LogExController {
     }
     document.getElementById('header-actions').style.display = 'none'
 
-    const arrow = katex.renderToString('\\Leftrightarrow', {
-      throwOnError: false
-    })
-
     const alertParams = {
       beginFormula: this.exercise.equation.formula1katex,
-      endFormula: this.exercise.equation.formula2katex,
-      arrow: arrow
+      endFormula: this.exercise.equation.formula2katex
     }
     this.exercise.isReady = true
     this.updateAlert('twoWay.solution', alertParams, 'complete')

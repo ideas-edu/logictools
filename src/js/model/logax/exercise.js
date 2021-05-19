@@ -8,11 +8,11 @@ import { LogAxStepCollection } from './stepCollection.js'
     @property {LogAxStepCollection} steps The collection of LogAx steps.
  */
 export class LogAxExercise {
-  constructor (theoremText, exerciseType, properties) {
+  constructor (steps, exerciseType, properties) {
     this.type = exerciseType
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
-    const initialStep = new LogAxStep(theoremText)
+    const initialStep = new LogAxStep(steps[0])
     this.steps = new LogAxStepCollection(initialStep)
     this.theorem = initialStep.term
     this.theoremKatex = initialStep.termKatex
