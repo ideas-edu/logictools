@@ -142,14 +142,14 @@
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
     },
     "rule": {
-      "label": "<b>Rule</b>",
       "assumption": {
-        "def": "$$\\phi\\vdash\\phi$$",
-        "addStep": "Add Step",
         "addMotivation": "Add Motivation",
+        "addStep": "Add Step",
+        "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Step"
-      }
+      },
+      "label": "<b>Rule</b>"
     }
   },
   "main": {
