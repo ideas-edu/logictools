@@ -31,11 +31,7 @@ body {
 	min-height: 430px;
 }
 
-.help-body {
-	padding: 15px;
-}
-
-.oneWay-body, .twoWay-body, .help-body
+.oneWay-body, .twoWay-body
 {
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;
@@ -316,7 +312,7 @@ input.error, select.error {
 .alert-primary {
     border-color: #b8b8b8;
     background: #fcfcfc;
-	color:#999;
+	color:#000;
 }
 
 
@@ -326,6 +322,7 @@ input.error, select.error {
 	background-color: #1665d8;
 	border-color:#1665d8;
 }
+
 
 .hint-alert svg {
 	margin-right: 10px;
@@ -341,9 +338,12 @@ input.error, select.error {
 
 .error-alert {
 	font-weight: 600;
-	color: #fff;
+	color: #e2001a;
+	background-color:#ffd7dc;
+	border:0;
+	/* 	color: #fff;
 	background-color: #e2001a;
-	border-color: #e2001a;
+	border-color: #e2001a; */
 }
 .error-alert svg {
 	margin-right: 10px;
@@ -362,10 +362,6 @@ input.error, select.error {
 	margin-right: 10px;
 	font-size: 12px;
 	vertical-align: -.125em;
-}
-
-.formula-highlight {
-	background-color: red;
 }
 
 
@@ -437,10 +433,6 @@ table td {
 	border-top: 1px solid #e8e8e8!important;
 }
 
-td.no-row-divider {
-	border-top: 0px !important;
-}
-
 table td {
 	padding: 12px 15px!important;
 }
@@ -449,7 +441,7 @@ table td:first-child {
 	padding-right: 0!important;
 }
 
-table .col-step .katex {
+table td:first-child .katex {
 	margin-top:2px;
 	float:right;
 }
@@ -481,6 +473,9 @@ body.oneWay-body, body.twoWay-body {
 }
 
 
+.title {
+	margin-right: 0!important;
+}
 
 h4 {
 	margin:0;
@@ -572,6 +567,15 @@ button {
 	background-image: linear-gradient(to bottom, #d32118, #af1e16);
 }
 
+.btn-dark {
+	background-image: linear-gradient(to top,#000,#333);
+	border-color: #000;
+	box-shadow: none;
+}
+
+
+
+
 .form-control,
 .custom-select {
 	font-size: 13px;
@@ -595,6 +599,9 @@ button {
 	vertical-align: middle;
 }
 
+.oneWay-body #header-actions {
+	padding-left:25px!important;
+}
 
 /* Logische Equivalentie */
 .twoWay-body #empty-bottom-step td{
@@ -613,8 +620,14 @@ button {
 }
 
 
+.oneWay-body #header-actions,
+.oneWay-body #col-actions,
+.twoWay-body #header-actions,
+.twoWay-body #col-actions {
+	width: 165px;
+}
 
-
-video {
-	width: 100%;
+.oneWay-body #header-actions,
+.twoWay-body #header-actions {
+	padding-left:25px!important;
 }

@@ -45,6 +45,10 @@ ul.nav {
     background-color: #fff;
 }
 
+ul.nav .nav-item:last-child {
+	float:right;
+}
+
 .nav-item a.nav-link{
 	padding: 15px 15px;
 	font-size: 13px;
@@ -59,4 +63,3 @@ ul.nav {
 .nav-item a.nav-link:hover {
 	color:#000;
 }
-
