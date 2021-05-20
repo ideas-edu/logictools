@@ -149,6 +149,12 @@
         "phi": "$$\\phi$$",
         "stepnr": "Step"
       },
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
       "label": "<b>Rule</b>"
     }
   },
@@ -186,7 +192,8 @@
         "absorption": "Absorption",
         "assoc": "Associativity",
         "axiomatic": {
-          "assumption": "Assumption"
+          "assumption": "Assumption",
+          "axiom-a": "Axiom A"
         },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",

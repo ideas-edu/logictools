@@ -111,16 +111,28 @@ export class LogAxController extends ExerciseController {
         Creates the popover for the input of symbols
     */
   initializeInput () {
-    const formulaOptions = {
+    const assumptionOptions = {
       id: 1,
       allowUndo: true,
       characters: this.characterOptions
     }
-    const newFormulaOptions = {
+    const axiomAOptions1 = {
       id: 2,
+      allowUndo: true,
       characters: this.characterOptions
     }
-    this.formulaPopover = new FormulaPopover(document.getElementById('assumption-formula'), document.getElementById('one-way-input'), formulaOptions)
+    const axiomAOptions2 = {
+      id: 3,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const newFormulaOptions = {
+      id: 0,
+      characters: this.characterOptions
+    }
+    this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions)
+    this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1)
+    this.axiomAPopover2 = new FormulaPopover(document.getElementById('axiom-a-formula-psi'), document.getElementById('axiom-a-psi-input'), axiomAOptions2)
     this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
   }
 
@@ -153,13 +165,14 @@ export class LogAxController extends ExerciseController {
       document.getElementById('rule-definition-row').style.display = 'none'
     }
 
+    let rule = baseRule
+
     if (this.config.rules.includes(`${baseRule}.close`)) {
       document.getElementById('subtype-select-row').style.display = ''
+      rule = baseRule + (subSelect.selectedIndex === 1 ? '.close' : '')
     } else {
       document.getElementById('subtype-select-row').style.display = 'none'
     }
-
-    const rule = baseRule + (subSelect.selectedIndex === 1 ? '.close' : '')
 
     const selectedElements = document.querySelectorAll(`[rule='${rule}']`)
     for (const element of selectedElements) {
@@ -205,12 +218,7 @@ export class LogAxController extends ExerciseController {
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
-        const newFormula = document.getElementById('assumption-formula')
-        if (newFormula.value === this.exercise.getCurrentStep().formula) {
-          this.setErrorLocation('assumption-formula')
-          this.updateAlert('shared.error.notChanged', null, 'error')
-          return false
-        }
+        const newFormula = document.getElementById('assumption-formula-phi')
         return {
           environment: {
             phi: LogAxStep.convertToText(newFormula.value)
@@ -223,6 +231,17 @@ export class LogAxController extends ExerciseController {
         return {
           environment: {
             n: LogAxStep.convertToText(stepnr.value)
+          },
+          rule: rule
+        }
+      }
+      case 'logic.propositional.axiomatic.axiom-a': {
+        const phi = document.getElementById('axiom-a-formula-phi')
+        const psi = document.getElementById('axiom-a-formula-psi')
+        return {
+          environment: {
+            phi: LogAxStep.convertToText(phi.value),
+            psi: LogAxStep.convertToText(psi.value)
           },
           rule: rule
         }

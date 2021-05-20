@@ -149,6 +149,12 @@
         "phi": "$$\\phi$$",
         "stepnr": "Stap"
       },
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
       "label": "<b>Regel</b>"
     }
   },
@@ -186,7 +192,8 @@
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
         "axiomatic": {
-          "assumption": "Aanname"
+          "assumption": "Aanname",
+          "axiom-a": "Axioma A"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
