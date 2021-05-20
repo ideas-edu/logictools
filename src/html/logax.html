@@ -81,27 +81,27 @@
 								<td style="width: 12%"><span translate-key="logax.rule.label" class="float-right"></span></td>
 								<td><select id="rule" class="form-control input custom-select"></select></td>
 							</tr>
-							<!-- Assumption -->
-							<tr rule="rule.logic.propositional.axiomatic.assumption" style="display: none">
-								<td></td><td><span translate-key="logax.rule.assumption.def"></span></td>
+							<tr id="rule-definition-row" style="display: none">
+								<td></td><td><span id="rule-definition" translate-key="logax.rule.assumption.def"></span></td>
 							</tr>
-							<tr rule="rule.logic.propositional.axiomatic.assumption" style="display: none">
-								<td></td><td><select id="assumption-select" class="form-control input custom-select">
-									<option translate-key="logax.rule.assumption.addStep"></option>
-									<option translate-key="logax.rule.assumption.addMotivation"></option>
+							<tr id="subtype-select-row" style="display: none">
+								<td></td><td><select id="subtype-select" class="form-control input custom-select">
+									<option translate-key="logax.rule.addStep"></option>
+									<option translate-key="logax.rule.addMotivation"></option>
 								</select></td>
 							</tr>
-							<tr rule="rule.logic.propositional.axiomatic.assumption" id="assumption-phi" style="display: none">
+							<!-- Assumption -->
+							<tr rule="logic.propositional.axiomatic.assumption" id="assumption-phi" style="display: none">
 								<td><span translate-key="logax.rule.assumption.phi" class="float-right"></span></td>
 								<td><form class="kbinput">
 									<input type="text" class="form-control kbinput" id="assumption-formula">
 									<div id="one-way-input" class="kbinput-wrapper"></div>
 								</form></td>
 							</tr>
-							<tr rule="rule.logic.propositional.axiomatic.assumption" id="assumption-stepnr" style="display: none">
+							<!-- Assumption Close -->
+							<tr rule="logic.propositional.axiomatic.assumption.close" id="assumption-stepnr" style="display: none">
 								<td><span translate-key="logax.rule.assumption.stepnr" class="float-right"></span></td><td>
-									<select id="assumption-select-stepnr" class="form-control input custom-select">
-										<option>1000</option>
+									<select id="assumption-select-stepnr" class="form-control input custom-select stepnr-select">
 									</select>
 								</td>
 							</tr>

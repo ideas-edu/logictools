@@ -125,41 +125,45 @@ export class LogAxController extends ExerciseController {
   }
 
   initializeRules (ruleElement) {
-    super.initializeRules(ruleElement)
+    super.initializeRules(ruleElement, this.config.rules.filter(x => !x.endsWith('.close')))
+    const subSelect = document.getElementById('subtype-select')
 
     ruleElement.addEventListener('change', function () {
-      const elements = document.querySelectorAll('[rule]')
-      for (const element of elements) {
-        element.style.display = 'none'
-      }
-
-      const rule = ruleElement.selectedOptions[0].getAttribute('translate-key')
-
-      const selectedElements = document.querySelectorAll(`[rule='${rule}']`)
-      for (const element of selectedElements) {
-        element.style.display = ''
-      }
-
-      if (rule === 'rule.logic.propositional.axiomatic.assumption') {
-        this.updateAssumptionSelect()
-      }
+      this.updateRuleVisibility(ruleElement, subSelect)
     }.bind(this))
 
-    document.getElementById('assumption-select').addEventListener('change', function () {
-      this.updateAssumptionSelect()
+    subSelect.addEventListener('change', function () {
+      this.updateRuleVisibility(ruleElement, subSelect)
     }.bind(this))
   }
 
-  updateAssumptionSelect () {
-    switch (document.getElementById('assumption-select').selectedIndex) {
-      case 0:
-        document.getElementById('assumption-phi').style.display = ''
-        document.getElementById('assumption-stepnr').style.display = 'none'
-        break
-      case 1:
-        document.getElementById('assumption-phi').style.display = 'none'
-        document.getElementById('assumption-stepnr').style.display = ''
-        break
+  updateRuleVisibility (ruleElement, subSelect) {
+    const elements = document.querySelectorAll('[rule]')
+    for (const element of elements) {
+      element.style.display = 'none'
+    }
+
+    const baseRule = ruleElement.selectedOptions[0].getAttribute('translate-key').substring(5) // Remove 'rule.'
+    const simpleRule = baseRule.split('.')[baseRule.split('.').length - 1]
+
+    if (simpleRule !== 'selectRule') {
+      document.getElementById('rule-definition-row').style.display = ''
+      translateElement(document.getElementById('rule-definition'), `logax.rule.${simpleRule}.def`)
+    } else {
+      document.getElementById('rule-definition-row').style.display = 'none'
+    }
+
+    if (this.config.rules.includes(`${baseRule}.close`)) {
+      document.getElementById('subtype-select-row').style.display = ''
+    } else {
+      document.getElementById('subtype-select-row').style.display = 'none'
+    }
+
+    const rule = baseRule + (subSelect.selectedIndex === 1 ? '.close' : '')
+
+    const selectedElements = document.querySelectorAll(`[rule='${rule}']`)
+    for (const element of selectedElements) {
+      element.style.display = ''
     }
   }
 
@@ -214,7 +218,22 @@ export class LogAxController extends ExerciseController {
           rule: rule
         }
       }
+      case 'logic.propositional.axiomatic.assumption.close': {
+        const stepnr = document.getElementById('assumption-select-stepnr')
+        return {
+          environment: {
+            n: LogAxStep.convertToText(stepnr.value)
+          },
+          rule: rule
+        }
+      }
     }
+  }
+
+  getSelectedRuleKey () {
+    const baseRule = document.getElementById('rule').selectedOptions[0].getAttribute('translate-key').substring(5) // Remove 'rule.'
+
+    return baseRule + (document.getElementById('subtype-select').selectedIndex === 1 ? '.close' : '')
   }
 
   /**
@@ -251,33 +270,32 @@ export class LogAxController extends ExerciseController {
      */
   onStepValidated (step) {
     this.exercise.steps.push(step)
-    const currentStep = this.exercise.getCurrentStep()
     let message
     let errorLocation
 
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
 
     // de stap is niet valid en gebruikt stap validatie
-    if (!currentStep.isValid && this.exercise.usesStepValidation) {
+    if (!step.isValid && this.exercise.usesStepValidation) {
       message = 'shared.error.wrongStep'
       this.exercise.steps.pop()
 
-      if (!currentStep.isSyntaxValid) { // Foutieve syntax
+      if (!step.isSyntaxValid) { // Foutieve syntax
         message = 'shared.error.invalidFormula'
         errorLocation = 'formula'
-      } else if (currentStep.isSimilar) { // Ongewijzigde formule
+      } else if (step.isSimilar) { // Ongewijzigde formule
         message = 'shared.error.similar'
         errorLocation = 'formula'
-      } else if (currentStep.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
+      } else if (step.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
         message = 'shared.error.correctNotVal'
         errorLocation = 'formula'
-      } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
-        message = `buggyRule.${currentStep.buggyRule}`
+      } else if (step.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
+        message = `buggyRule.${step.buggyRule}`
         errorLocation = 'formula'
-      } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
+      } else if (!step.isRuleValid) { // De ingegeven regel is niet correct
         message = 'shared.error.wrongRule'
         errorLocation = 'rule'
-      } else if (!currentStep.isValid) {
+      } else if (!step.isValid) {
         message = 'shared.error.wrongStep'
         errorLocation = 'formula'
       }
@@ -287,8 +305,8 @@ export class LogAxController extends ExerciseController {
       this.updateAlert(message, null, 'error')
       return false
     } else {
-      this.insertStep(currentStep, true)
-      this.exercise.isReady = currentStep.isReady
+      this.insertStep(step, true)
+      this.exercise.isReady = step.isReady
       this.disableUI(false)
 
       //    Reset rule value after valid step
@@ -325,6 +343,19 @@ export class LogAxController extends ExerciseController {
         if (steps[i].getAttribute('number') < step.number && (steps[i + 1].getAttribute('number') > step.number || i === steps.length - 1)) {
           steps[i].insertAdjacentElement('afterend', exerciseStep)
         }
+      }
+    }
+    this.updateStepnrSelectors()
+  }
+
+  updateStepnrSelectors () {
+    const stepnrSelectors = document.querySelectorAll('.stepnr-select')
+    for (const stepnrSelector of stepnrSelectors) {
+      stepnrSelector.innerHTML = ''
+      for (const step of this.exercise.steps.steps) {
+        const option = document.createElement('option')
+        option.innerHTML = step.number
+        stepnrSelector.appendChild(option)
       }
     }
   }

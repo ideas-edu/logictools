@@ -142,9 +142,9 @@
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
     },
     "rule": {
+      "addMotivation": "Add Motivation",
+      "addStep": "Add Step",
       "assumption": {
-        "addMotivation": "Add Motivation",
-        "addStep": "Add Step",
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Step"
