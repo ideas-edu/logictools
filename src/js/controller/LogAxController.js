@@ -268,52 +268,21 @@ export class LogAxController extends ExerciseController {
         Handles the event that a step is validated
 
      */
-  onStepValidated (step) {
-    this.exercise.steps.push(step)
-    let message
-    let errorLocation
-
+  onStepValidated () {
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
 
-    // de stap is niet valid en gebruikt stap validatie
-    if (!step.isValid && this.exercise.usesStepValidation) {
-      message = 'shared.error.wrongStep'
-      this.exercise.steps.pop()
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+    exerciseStepTable.innerHTML = ''
 
-      if (!step.isSyntaxValid) { // Foutieve syntax
-        message = 'shared.error.invalidFormula'
-        errorLocation = 'formula'
-      } else if (step.isSimilar) { // Ongewijzigde formule
-        message = 'shared.error.similar'
-        errorLocation = 'formula'
-      } else if (step.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
-        message = 'shared.error.correctNotVal'
-        errorLocation = 'formula'
-      } else if (step.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
-        message = `buggyRule.${step.buggyRule}`
-        errorLocation = 'formula'
-      } else if (!step.isRuleValid) { // De ingegeven regel is niet correct
-        message = 'shared.error.wrongRule'
-        errorLocation = 'rule'
-      } else if (!step.isValid) {
-        message = 'shared.error.wrongStep'
-        errorLocation = 'formula'
-      }
-
-      this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
-      this.setErrorLocation(errorLocation)
-      this.updateAlert(message, null, 'error')
-      return false
-    } else {
-      this.insertStep(step, true)
-      this.exercise.isReady = step.isReady
-      this.disableUI(false)
-
-      //    Reset rule value after valid step
-      document.getElementById('rule').selectedIndex = 0
-      document.getElementById('rule').dispatchEvent(new Event('change', { bubbles: true }))
-      return true
+    for (const step of this.exercise.steps.steps) {
+      this.insertStep(step, step.number !== 1000)
     }
+    this.disableUI(false)
+
+    //    Reset rule value after valid step
+    document.getElementById('rule').selectedIndex = 0
+    document.getElementById('rule').dispatchEvent(new Event('change', { bubbles: true }))
+    return true
   }
 
   insertStep (step, canDelete) {
@@ -331,20 +300,7 @@ export class LogAxController extends ExerciseController {
       }.bind(this))
     }
 
-    const steps = [...document.querySelectorAll('.exercise-step')]
-    if (steps.length === 0) {
-      document.getElementById('exercise-step-table').appendChild(exerciseStep)
-    } else {
-      for (let i = 0; i < steps.length; i++) {
-        if (i === 0 && steps[i].getAttribute('number') > step.number) {
-          steps[i].insertAdjacentElement('beforebegin', exerciseStep)
-        }
-
-        if (steps[i].getAttribute('number') < step.number && (steps[i + 1].getAttribute('number') > step.number || i === steps.length - 1)) {
-          steps[i].insertAdjacentElement('afterend', exerciseStep)
-        }
-      }
-    }
+    document.getElementById('exercise-step-table').appendChild(exerciseStep)
     this.updateStepnrSelectors()
   }
 
