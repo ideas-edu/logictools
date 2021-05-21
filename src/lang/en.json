@@ -155,6 +155,13 @@
         "psi": "$$\\psi$$",
         "stepnr": "Step"
       },
+      "axiom-b": {
+        "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "chi": "$$\\chi$$",
+        "stepnr": "Step"
+      },
       "label": "<b>Rule</b>"
     }
   },
@@ -193,7 +200,8 @@
         "assoc": "Associativity",
         "axiomatic": {
           "assumption": "Assumption",
-          "axiom-a": "Axiom A"
+          "axiom-a": "Axiom A",
+          "axiom-b": "Axiom B"
         },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",
