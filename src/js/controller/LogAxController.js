@@ -126,6 +126,31 @@ export class LogAxController extends ExerciseController {
       allowUndo: true,
       characters: this.characterOptions
     }
+    const axiomBOptions1 = {
+      id: 4,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const axiomBOptions2 = {
+      id: 5,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const axiomBOptions3 = {
+      id: 6,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const axiomCOptions1 = {
+      id: 7,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const axiomCOptions2 = {
+      id: 8,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
     const newFormulaOptions = {
       id: 0,
       characters: this.characterOptions
@@ -133,6 +158,12 @@ export class LogAxController extends ExerciseController {
     this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions)
     this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1)
     this.axiomAPopover2 = new FormulaPopover(document.getElementById('axiom-a-formula-psi'), document.getElementById('axiom-a-psi-input'), axiomAOptions2)
+    this.axiomBPopover1 = new FormulaPopover(document.getElementById('axiom-b-formula-phi'), document.getElementById('axiom-b-phi-input'), axiomBOptions1)
+    this.axiomBPopover2 = new FormulaPopover(document.getElementById('axiom-b-formula-psi'), document.getElementById('axiom-b-psi-input'), axiomBOptions2)
+    this.axiomBPopover3 = new FormulaPopover(document.getElementById('axiom-b-formula-chi'), document.getElementById('axiom-b-chi-input'), axiomBOptions3)
+    this.axiomCPopover1 = new FormulaPopover(document.getElementById('axiom-c-formula-phi'), document.getElementById('axiom-c-phi-input'), axiomCOptions1)
+    this.axiomCPopover2 = new FormulaPopover(document.getElementById('axiom-c-formula-psi'), document.getElementById('axiom-c-psi-input'), axiomCOptions2)
+
     this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
   }
 
@@ -215,6 +246,7 @@ export class LogAxController extends ExerciseController {
 
   getNewStep () {
     const rule = this.getSelectedRuleKey()
+    console.log(rule)
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
@@ -230,7 +262,7 @@ export class LogAxController extends ExerciseController {
         const stepnr = document.getElementById('assumption-select-stepnr')
         return {
           environment: {
-            n: LogAxStep.convertToText(stepnr.value)
+            n: stepnr.value
           },
           rule: rule
         }
@@ -250,7 +282,7 @@ export class LogAxController extends ExerciseController {
         const stepnr = document.getElementById('axiom-a-select-stepnr')
         return {
           environment: {
-            n: LogAxStep.convertToText(stepnr.value)
+            n: stepnr.value
           },
           rule: rule
         }
@@ -272,7 +304,7 @@ export class LogAxController extends ExerciseController {
         const stepnr = document.getElementById('axiom-b-select-stepnr')
         return {
           environment: {
-            n: LogAxStep.convertToText(stepnr.value)
+            n: stepnr.value
           },
           rule: rule
         }
@@ -292,7 +324,20 @@ export class LogAxController extends ExerciseController {
         const stepnr = document.getElementById('axiom-c-select-stepnr')
         return {
           environment: {
-            n: LogAxStep.convertToText(stepnr.value)
+            n: stepnr.value
+          },
+          rule: rule
+        }
+      }
+      case 'logic.propositional.axiomatic.modusponens': {
+        const stepnr1 = document.getElementById('modusponens-select-stepnr-1')
+        const stepnr2 = document.getElementById('modusponens-select-stepnr-2')
+        const stepnr3 = document.getElementById('modusponens-select-stepnr-3')
+        return {
+          environment: {
+            n1: stepnr1.value,
+            n2: stepnr2.value,
+            n3: stepnr3.value
           },
           rule: rule
         }

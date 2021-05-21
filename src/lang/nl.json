@@ -168,6 +168,13 @@
         "psi": "$$\\psi$$",
         "stepnr": "Stap"
       },
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "stepnr": "Stap"
+      },
       "label": "<b>Regel</b>"
     }
   },
@@ -208,7 +215,8 @@
           "assumption": "Aanname",
           "axiom-a": "Axioma A",
           "axiom-b": "Axioma B",
-          "axiom-c": "Axioma C"
+          "axiom-c": "Axioma C",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
