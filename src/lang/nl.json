@@ -135,11 +135,29 @@
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
     }
   },
+  "logax": {
+    "instruction": {
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "create": "Schrijf de formule voor je eigen opgave",
+      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
+    },
+    "rule": {
+      "assumption": {
+        "addMotivation": "Stap motiveren",
+        "addStep": "Stap toevoegen",
+        "def": "$$\\phi\\vdash\\phi$$",
+        "phi": "$$\\phi$$",
+        "stepnr": "Stap"
+      },
+      "label": "<b>Regel</b>"
+    }
+  },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",
       "help": "<i class='fas fa-question-circle'></i> Hulp",
+      "logax": "Axiomatisch",
       "logeq": "Logische Equivalentie"
     }
   },
@@ -167,6 +185,9 @@
       "propositional": {
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
+        "axiomatic": {
+          "assumption": "Aanname"
+        },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
         "distribution": "Distributie",
@@ -187,6 +208,7 @@
   },
   "shared": {
     "button": {
+      "completeExercise": "Volottoi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
       "generateExerciseEasy": "Eenvoudig",
@@ -238,7 +260,8 @@
       "direction": "",
       "formula": "Formule",
       "rule": "Regel",
-      "step": "Stap"
+      "step": "Stap",
+      "term": "Term"
     },
     "hint": {
       "autoStep": "Deze stap uitvoeren",

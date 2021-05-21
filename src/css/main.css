@@ -19,7 +19,7 @@ li > a {
 
 iframe {
 	border-radius: 4px;
-	min-height: 430px;
+	min-height: 550px;
 }
 
 .navbar-nav li.nav-item{
@@ -60,3 +60,13 @@ ul.nav {
 	color:#000;
 }
 
+footer {
+	text-align: center;
+	font-size: 8pt;
+	position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    opacity: 40%;
+}

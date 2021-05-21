@@ -5,7 +5,7 @@ const path = require('path')
 
 const CopyPlugin = require('copy-webpack-plugin')
 
-const jsDir = path.resolve(__dirname, 'src/js')
+const jsDir = path.resolve('src/js')
 const htmlDir = path.resolve(__dirname, 'src/html')
 const cssDir = path.resolve(__dirname, 'src/css')
 const langDir = path.resolve(__dirname, 'src/lang')
@@ -14,7 +14,7 @@ const distDir = path.resolve(__dirname, 'dist')
 
 module.exports = {
   entry: {
-    main: path.resolve(jsDir, 'controller/mainFrameController.js')
+    main: path.join(jsDir, 'controller/mainFrameController.js')
   },
   output: {
     path: distDir,
@@ -66,6 +66,6 @@ module.exports = {
 
 for (const tool of Object.values(config.tools)) {
   for (const [identifier, location] of Object.entries(tool.bundles)) {
-    module.exports.entry[identifier] = path.resolve(jsDir, location)
+    module.exports.entry[identifier] = path.join(jsDir, location)
   }
 }
