@@ -65,7 +65,7 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
       "description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
       "equiv": {

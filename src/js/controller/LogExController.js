@@ -13,7 +13,7 @@ export class LogExController extends ExerciseController {
       {
         char: '∧',
         latex: '\\land',
-        triggers: ['a', '7', '&', 'A'],
+        triggers: ['a', '7', '&', 'A', '6', '^'],
         spaces: true
       },
       {
