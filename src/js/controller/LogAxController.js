@@ -246,6 +246,15 @@ export class LogAxController extends ExerciseController {
           rule: rule
         }
       }
+      case 'logic.propositional.axiomatic.axiom-a.close': {
+        const stepnr = document.getElementById('axiom-a-select-stepnr')
+        return {
+          environment: {
+            n: LogAxStep.convertToText(stepnr.value)
+          },
+          rule: rule
+        }
+      }
     }
   }
 
