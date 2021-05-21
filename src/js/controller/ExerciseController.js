@@ -26,6 +26,10 @@ export class ExerciseController {
       this.showSolution()
     }.bind(this))
 
+    document.getElementById('show-solve-exercise').addEventListener('click', function () {
+      this.showSolution()
+    }.bind(this))
+
     document.getElementById('show-next-step').addEventListener('click', function () {
       this.showNextStep()
     }.bind(this))

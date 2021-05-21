@@ -193,6 +193,7 @@ class TwoWayController extends LogExController {
     })
 
     document.getElementById('active-step').style.display = ''
+    document.getElementById('show-solve-exercise').style.display = 'none'
 
     this.disableUI(false)
 
@@ -357,6 +358,7 @@ class TwoWayController extends LogExController {
     }
     this.exercise.isReady = true
     this.updateAlert('twoWay.solution', alertParams, 'complete')
+    document.getElementById('show-solve-exercise').style.display = ''
     this.setProofDirection('complete')
   }
 
