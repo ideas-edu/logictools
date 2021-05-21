@@ -162,6 +162,12 @@
         "chi": "$$\\chi$$",
         "stepnr": "Stap"
       },
+      "axiom-c": {
+        "def": "$$\\vdash(\\neg\\phi\\rightarrow\\neg\\psi)\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
       "label": "<b>Regel</b>"
     }
   },
@@ -201,7 +207,8 @@
         "axiomatic": {
           "assumption": "Aanname",
           "axiom-a": "Axioma A",
-          "axiom-b": "Axioma B"
+          "axiom-b": "Axioma B",
+          "axiom-c": "Axioma C"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",

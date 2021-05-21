@@ -277,6 +277,26 @@ export class LogAxController extends ExerciseController {
           rule: rule
         }
       }
+      case 'logic.propositional.axiomatic.axiom-c': {
+        const phi = document.getElementById('axiom-c-formula-phi')
+        const psi = document.getElementById('axiom-c-formula-psi')
+        return {
+          environment: {
+            phi: LogAxStep.convertToText(phi.value),
+            psi: LogAxStep.convertToText(psi.value)
+          },
+          rule: rule
+        }
+      }
+      case 'logic.propositional.axiomatic.axiom-c.close': {
+        const stepnr = document.getElementById('axiom-c-select-stepnr')
+        return {
+          environment: {
+            n: LogAxStep.convertToText(stepnr.value)
+          },
+          rule: rule
+        }
+      }
     }
   }
 
