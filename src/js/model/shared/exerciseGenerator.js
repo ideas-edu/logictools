@@ -4,8 +4,9 @@ import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 
 // Abstract class for generator
 export class ExerciseGenerator {
-  constructor () {
+  constructor (config) {
     this.Exercise = undefined
+    this.config = config
   }
 
   /**
@@ -24,7 +25,7 @@ export class ExerciseGenerator {
       this.onSuccess(data.generate, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties)
     }.bind(this)
 
-    IdeasServiceProxy.generate(exerciseId, difficulty, userId, onSuccess, onError)
+    IdeasServiceProxy.generate(this.config, exerciseId, difficulty, userId, onSuccess, onError)
   }
 
   example (exerciseNr, exerciseType, properties, onExerciseGenerated, onErrorGeneratingExercise) {
@@ -35,7 +36,7 @@ export class ExerciseGenerator {
       this.onSuccess(data.example, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties)
     }.bind(this)
 
-    IdeasServiceProxy.example(exerciseId, exerciseNr, userId, onSuccess, onError)
+    IdeasServiceProxy.example(this.config, exerciseId, exerciseNr, userId, onSuccess, onError)
   }
 
   /**
@@ -50,7 +51,7 @@ export class ExerciseGenerator {
       this.onSuccess(data.create, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties)
     }.bind(this)
 
-    IdeasServiceProxy.create(exerciseId, formula, userId, onSuccess, onError)
+    IdeasServiceProxy.create(this.config, exerciseId, formula, userId, onSuccess, onError)
   }
 
   onSuccess (result, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties) {

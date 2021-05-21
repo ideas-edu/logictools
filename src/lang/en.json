@@ -135,11 +135,29 @@
       "notSupported": "Your browser does not support embedded videos"
     }
   },
+  "logax": {
+    "instruction": {
+      "begin": "Select an exercise to get started!",
+      "create": "Write the theorem for your own exercise",
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+    },
+    "rule": {
+      "assumption": {
+        "addMotivation": "Add Motivation",
+        "addStep": "Add Step",
+        "def": "$$\\phi\\vdash\\phi$$",
+        "phi": "$$\\phi$$",
+        "stepnr": "Step"
+      },
+      "label": "<b>Rule</b>"
+    }
+  },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
       "help": "<i class='fas fa-question-circle'></i> Help",
+      "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }
   },
@@ -167,6 +185,9 @@
       "propositional": {
         "absorption": "Absorption",
         "assoc": "Associativity",
+        "axiomatic": {
+          "assumption": "Assumption"
+        },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",
         "distribution": "Distribution",
@@ -187,6 +208,7 @@
   },
   "shared": {
     "button": {
+      "completeExercise": "Complete my derivation",
       "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
       "generateExerciseEasy": "Easy",
@@ -238,7 +260,8 @@
       "direction": "",
       "formula": "Formula",
       "rule": "Rule",
-      "step": "Step"
+      "step": "Step",
+      "term": "Term"
     },
     "hint": {
       "autoStep": "Perform Step",

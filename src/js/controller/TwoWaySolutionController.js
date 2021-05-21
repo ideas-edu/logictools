@@ -43,7 +43,7 @@ ready(setUp)
 class TwoWaySolutionController extends LogExSolutionController {
   constructor () {
     super()
-    this.exerciseSolver = new TwoWayExerciseSolver()
+    this.exerciseSolver = new TwoWayExerciseSolver(this.config)
     this.ExerciseType = TwoWayExercise
   }
 

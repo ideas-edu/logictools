@@ -39,7 +39,7 @@ class Translate {
 
     let string = this.resolveString(key, dict)
     if (string === undefined) {
-      return 'Key not found'
+      return key
     }
 
     // Find all cases of {{param}}.

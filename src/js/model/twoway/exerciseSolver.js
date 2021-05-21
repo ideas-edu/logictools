@@ -9,8 +9,8 @@ import { Equation } from './equation.js'
     @constructor
  */
 export class TwoWayExerciseSolver extends ExerciseSolver {
-  constructor () {
-    super()
+  constructor (config) {
+    super(config)
     this.Step = TwoWayStep
     this.StepCollection = TwoWayStepCollection
   }
@@ -21,7 +21,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
 
     const currentFormula = `${currentTopStep.formula} == ${currentBottomStep.formula}`
     const currentStrategy = currentTopStep.strategyStatus
-    const currentLocation = currentTopStep.strategyLocation
+    // const currentLocation = currentTopStep.strategyLocation
 
     const state = {
       exerciseid: exercise.type,
@@ -29,7 +29,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
       context: {
         term: currentFormula,
         environment: {},
-        location: currentLocation
+        location: []
       }
     }
 
@@ -61,7 +61,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
 
     const state = this._getState(exercise)
 
-    IdeasServiceProxy.derivation(state, onSuccess, onError)
+    IdeasServiceProxy.derivation(this.config, state, onSuccess, onError)
   }
 
   /**
@@ -102,6 +102,6 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
 
     const state = this._getState(exercise)
 
-    IdeasServiceProxy.onefirst(state, 'nextStep', onSuccess, onError)
+    IdeasServiceProxy.onefirst(this.config, state, 'nextStep', onSuccess, onError)
   }
 }

@@ -2,27 +2,9 @@
     Rules is a dictionary of all the possible rules and their keys.
  */
 export const Rules = {}
-export const UserRules = [
-  'logic.propositional.absorption',
-  'logic.propositional.assoc',
-  'logic.propositional.commutativity',
-  'logic.propositional.demorgan',
-  'logic.propositional.distribution',
-  'logic.propositional.doublenegation',
-  'logic.propositional.equivalence',
-  'logic.propositional.falsecomplement',
-  'logic.propositional.falseconjunction',
-  'logic.propositional.falsedisjunction',
-  'logic.propositional.nottrue',
-  'logic.propositional.idempotency',
-  'logic.propositional.implication',
-  'logic.propositional.truecomplement',
-  'logic.propositional.trueconjunction',
-  'logic.propositional.truedisjunction',
-  'logic.propositional.notfalse'
-]
 
 // basisarray's die hieronder hergebruikt worden
+// LogEx
 const absorbtie = 'rule.logic.propositional.absorption'
 const associativiteit = 'rule.logic.propositional.assoc'
 const commutativiteit = 'rule.logic.propositional.commutativity'
@@ -40,6 +22,8 @@ const TRegelComplement = 'rule.logic.propositional.truecomplement'
 const TRegelConjunctie = 'rule.logic.propositional.trueconjunction'
 const TRegelDisjunctie = 'rule.logic.propositional.truedisjunction'
 const TRegelNietF = 'rule.logic.propositional.notfalse'
+// LogAx
+const assumption = 'rule.logic.propositional.axiomatic.assumption'
 
 // Absorptie
 Rules['logic.propositional.absorption'] = absorbtie // group id
@@ -157,3 +141,8 @@ Rules['truezeroor.inv'] = TRegelDisjunctie
 Rules['logic.propositional.group-notfalse'] = TRegelNietF // group id
 Rules['logic.propositional.notfalse'] = TRegelNietF
 Rules['notfalse.inv'] = TRegelNietF
+
+// ##################
+// LogAx
+// ##################
+Rules['logic.propositional.axiomatic.assumption'] = assumption
