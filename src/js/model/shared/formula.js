@@ -190,7 +190,7 @@ export class Formula {
     let leftExpression = null
     let contextIndex = null
 
-    while (expressionString && expressionString.length > 0) {
+    while (expressionString && expressionString.length > 0 && this.error === null) {
       if (leftExpression === null) {
         contextIndex = givenContextIndex + 1
       } else {
@@ -314,6 +314,18 @@ export class Formula {
         expressionString = expressionString.substring(i)
         continue
       }
+      // Parenthesis
+      if (expressionString[0] === ')') {
+        this.error = {
+          message: 'Missing open parenthesis',
+          key: 'shared.syntaxError.missingOpen',
+          params: {
+            index: contextIndex,
+            length: 1
+          }
+        }
+        return
+      }
       // Error
       this.error = {
         message: 'Unexpected character',
@@ -329,6 +341,7 @@ export class Formula {
   }
 
   findFirstExpression (expressionString, contextIndex) {
+    // Literals
     if (literals.includes(expressionString[0])) {
       return {
         exp: new Literal(expressionString[0]),
@@ -336,6 +349,7 @@ export class Formula {
       }
     }
 
+    // Unary
     if (unaryOperators.includes(expressionString[0])) {
       const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
       const leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
@@ -345,6 +359,7 @@ export class Formula {
       }
     }
 
+    // Parenthesis
     if (expressionString[0] === '(') {
       let i = 1
       let numLeft = 1

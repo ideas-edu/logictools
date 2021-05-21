@@ -105,6 +105,18 @@ describe('formulaSyntax', function () {
       assert.equal(formula.error.message, 'Missing operand')
       assert.equal(formula.error.params.index, 4)
     })
+
+    it('should have error Missing operator', function () {
+      const formula = new Formula('(q∨¬rp)∧(q∨p))∨¬q')
+      assert.equal(formula.error.message, 'Missing operator')
+      assert.equal(formula.error.params.index, 6)
+    })
+
+    it('should have error Missing open parenthesis', function () {
+      const formula = new Formula('(q∨¬r)∧(q∨p))∨¬q')
+      assert.equal(formula.error.message, 'Missing open parenthesis')
+      assert.equal(formula.error.params.index, 13)
+    })
   })
   describe('success', function () {
     it('should succeed', function () {
