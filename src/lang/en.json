@@ -142,9 +142,9 @@
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
     },
     "rule": {
-      "addMotivation": "Add Motivation",
-      "addForwardStep": "Add Forward Step",
       "addBackwardStep": "Add Backward Step",
+      "addForwardStep": "Add Forward Step",
+      "addMotivation": "Add Motivation",
       "addStep": "Add Step",
       "assumption": {
         "def": "$$\\phi\\vdash\\phi$$",
@@ -158,10 +158,10 @@
         "stepnr": "Step"
       },
       "axiom-b": {
+        "chi": "$$\\chi$$",
         "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
         "phi": "$$\\phi$$",
         "psi": "$$\\psi$$",
-        "chi": "$$\\chi$$",
         "stepnr": "Step"
       },
       "axiom-c": {
@@ -170,19 +170,26 @@
         "psi": "$$\\psi$$",
         "stepnr": "Step"
       },
-      "modusponens": {
-        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
-        "n1": "$$\\sum\\vdash_S\\phi$$",
-        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
-        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
-      },
       "deduction": {
         "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
         "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
         "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
         "phi": "$$\\phi$$"
       },
-      "label": "<b>Rule</b>"
+      "goal": {
+        "def": "$$\\phi\\vdash\\psi$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepExp": "Specify the number of the new step, or leave empty to get a default number",
+        "stepnr": "Step"
+      },
+      "label": "<b>Rule</b>",
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      }
     }
   },
   "main": {
@@ -223,8 +230,9 @@
           "axiom-a": "Axiom A",
           "axiom-b": "Axiom B",
           "axiom-c": "Axiom C",
-          "modusponens": "Modus Ponens",
-          "deduction": "Deduction"
+          "deduction": "Deduction",
+          "goal": "Goal",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",

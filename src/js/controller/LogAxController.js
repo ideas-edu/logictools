@@ -162,6 +162,16 @@ export class LogAxController extends ExerciseController {
       allowUndo: true,
       characters: this.characterOptions
     }
+    const goalPhiOptions = {
+      id: 11,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const goalPsiOptions = {
+      id: 12,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
     const newFormulaOptions = {
       id: 0,
       characters: this.characterOptions
@@ -176,6 +186,8 @@ export class LogAxController extends ExerciseController {
     this.axiomCPopover2 = new FormulaPopover(document.getElementById('axiom-c-formula-psi'), document.getElementById('axiom-c-psi-input'), axiomCOptions2)
     this.deductionFPopover = new FormulaPopover(document.getElementById('deduction-forward-formula-phi'), document.getElementById('deduction-forward-phi-input'), deductionFOptions)
     this.deductionBPopover = new FormulaPopover(document.getElementById('deduction-backward-formula-phi'), document.getElementById('deduction-backward-phi-input'), deductionBOptions)
+    this.goalPhiPopover = new FormulaPopover(document.getElementById('goal-formula-phi'), document.getElementById('goal-phi-input'), goalPhiOptions)
+    this.goalPsiPopover = new FormulaPopover(document.getElementById('goal-formula-psi'), document.getElementById('goal-psi-input'), goalPsiOptions)
 
     this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
   }
@@ -414,6 +426,28 @@ export class LogAxController extends ExerciseController {
             n2: stepnr2.value
           },
           rule: rule
+        }
+      }
+      case 'logic.propositional.axiomatic.goal': {
+        const phi = document.getElementById('goal-formula-phi')
+        const psi = document.getElementById('goal-formula-psi')
+        const stepnr = document.getElementById('goal-stepnr')
+
+        if (stepnr.value === '') {
+          return {
+            environment: {
+              st: `${LogAxStep.convertToText(phi.value)} |- ${LogAxStep.convertToText(psi.value)}`
+            },
+            rule: `${rule}1`
+          }
+        } else {
+          return {
+            environment: {
+              n: stepnr.value,
+              st: `${LogAxStep.convertToText(phi.value)} |- ${LogAxStep.convertToText(psi.value)}`
+            },
+            rule: rule
+          }
         }
       }
     }
