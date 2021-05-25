@@ -153,6 +153,7 @@
     }
   },
   "main": {
+    "noMobile": "This tool is not optimized for use on screens with a limited width.",
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
