@@ -43,6 +43,7 @@ ready(setUp)
 export class LogAxController extends ExerciseController {
   constructor () {
     super()
+    this.ruleKey = null
     this.characterOptions = [
       {
         char: '¬',
@@ -151,6 +152,16 @@ export class LogAxController extends ExerciseController {
       allowUndo: true,
       characters: this.characterOptions
     }
+    const deductionFOptions = {
+      id: 9,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
+    const deductionBOptions = {
+      id: 10,
+      allowUndo: true,
+      characters: this.characterOptions
+    }
     const newFormulaOptions = {
       id: 0,
       characters: this.characterOptions
@@ -163,24 +174,33 @@ export class LogAxController extends ExerciseController {
     this.axiomBPopover3 = new FormulaPopover(document.getElementById('axiom-b-formula-chi'), document.getElementById('axiom-b-chi-input'), axiomBOptions3)
     this.axiomCPopover1 = new FormulaPopover(document.getElementById('axiom-c-formula-phi'), document.getElementById('axiom-c-phi-input'), axiomCOptions1)
     this.axiomCPopover2 = new FormulaPopover(document.getElementById('axiom-c-formula-psi'), document.getElementById('axiom-c-psi-input'), axiomCOptions2)
+    this.deductionFPopover = new FormulaPopover(document.getElementById('deduction-forward-formula-phi'), document.getElementById('deduction-forward-phi-input'), deductionFOptions)
+    this.deductionBPopover = new FormulaPopover(document.getElementById('deduction-backward-formula-phi'), document.getElementById('deduction-backward-phi-input'), deductionBOptions)
 
     this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
   }
 
   initializeRules (ruleElement) {
-    super.initializeRules(ruleElement, this.config.rules.filter(x => !x.endsWith('.close')))
+    super.initializeRules(ruleElement, this.config.rules.map(rule => rule.split('.')[3])
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .map(baseRule => `logic.propositional.axiomatic.${baseRule}`))
     const subSelect = document.getElementById('subtype-select')
+    const dirSelect = document.getElementById('direction-select')
 
     ruleElement.addEventListener('change', function () {
-      this.updateRuleVisibility(ruleElement, subSelect)
+      this.updateRuleVisibility(ruleElement, subSelect, dirSelect)
     }.bind(this))
 
     subSelect.addEventListener('change', function () {
-      this.updateRuleVisibility(ruleElement, subSelect)
+      this.updateRuleVisibility(ruleElement, subSelect, dirSelect)
+    }.bind(this))
+
+    dirSelect.addEventListener('change', function () {
+      this.updateRuleVisibility(ruleElement, subSelect, dirSelect)
     }.bind(this))
   }
 
-  updateRuleVisibility (ruleElement, subSelect) {
+  updateRuleVisibility (ruleElement, subSelect, dirSelect) {
     const elements = document.querySelectorAll('[rule]')
     for (const element of elements) {
       element.style.display = 'none'
@@ -198,12 +218,31 @@ export class LogAxController extends ExerciseController {
 
     let rule = baseRule
 
-    if (this.config.rules.includes(`${baseRule}.close`)) {
-      document.getElementById('subtype-select-row').style.display = ''
-      rule = baseRule + (subSelect.selectedIndex === 1 ? '.close' : '')
-    } else {
+    if (this.config.rules.includes(`${baseRule}.forward`)) {
+      document.getElementById('direction-select-row').style.display = ''
       document.getElementById('subtype-select-row').style.display = 'none'
+      switch (dirSelect.selectedIndex) {
+        case 0:
+          rule = baseRule + '.forward'
+          break
+        case 1:
+          rule = baseRule + '.backward'
+          break
+        case 2:
+          rule = baseRule + '.close'
+          break
+      }
+    } else {
+      document.getElementById('direction-select-row').style.display = 'none'
+      if (this.config.rules.includes(`${baseRule}.close`)) {
+        document.getElementById('subtype-select-row').style.display = ''
+        rule = baseRule + (subSelect.selectedIndex === 1 ? '.close' : '')
+      } else {
+        document.getElementById('subtype-select-row').style.display = 'none'
+      }
     }
+
+    this.ruleKey = rule
 
     const selectedElements = document.querySelectorAll(`[rule='${rule}']`)
     for (const element of selectedElements) {
@@ -245,8 +284,7 @@ export class LogAxController extends ExerciseController {
   }
 
   getNewStep () {
-    const rule = this.getSelectedRuleKey()
-    console.log(rule)
+    const rule = this.ruleKey
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
@@ -342,13 +380,43 @@ export class LogAxController extends ExerciseController {
           rule: rule
         }
       }
+      case 'logic.propositional.axiomatic.deduction.forward': {
+        const stepnr1 = document.getElementById('deduction-forward-select-stepnr-1')
+        const phi = document.getElementById('deduction-forward-formula-phi')
+
+        return {
+          environment: {
+            n: stepnr1.value,
+            phi: LogAxStep.convertToText(phi.value)
+          },
+          rule: rule
+        }
+      }
+      case 'logic.propositional.axiomatic.deduction.backward': {
+        const stepnr2 = document.getElementById('deduction-backward-select-stepnr-2')
+        const phi = document.getElementById('deduction-backward-formula-phi')
+
+        return {
+          environment: {
+            n: stepnr2.value,
+            phi: LogAxStep.convertToText(phi.value)
+          },
+          rule: rule
+        }
+      }
+      case 'logic.propositional.axiomatic.deduction.close': {
+        const stepnr1 = document.getElementById('deduction-close-select-stepnr-1')
+        const stepnr2 = document.getElementById('deduction-close-select-stepnr-2')
+
+        return {
+          environment: {
+            n1: stepnr1.value,
+            n2: stepnr2.value
+          },
+          rule: rule
+        }
+      }
     }
-  }
-
-  getSelectedRuleKey () {
-    const baseRule = document.getElementById('rule').selectedOptions[0].getAttribute('translate-key').substring(5) // Remove 'rule.'
-
-    return baseRule + (document.getElementById('subtype-select').selectedIndex === 1 ? '.close' : '')
   }
 
   /**
@@ -356,8 +424,7 @@ export class LogAxController extends ExerciseController {
       Runs callback after correct step has been validated
      */
   validateStep () {
-    const ruleKey = this.getSelectedRuleKey()
-    if (ruleKey === null) {
+    if (this.ruleKey === null) {
       this.setErrorLocation('rule')
       this.updateAlert('shared.error.noRule', null, 'error')
       return false

@@ -90,6 +90,13 @@
 									<option translate-key="logax.rule.addMotivation"></option>
 								</select></td>
 							</tr>
+							<tr id="direction-select-row" style="display: none">
+								<td></td><td><select id="direction-select" class="form-control input custom-select">
+									<option translate-key="logax.rule.addForwardStep"></option>
+									<option translate-key="logax.rule.addBackwardStep"></option>
+									<option translate-key="logax.rule.addMotivation"></option>
+								</select></td>
+							</tr>
 							<!-- Assumption -->
 							<tr rule="logic.propositional.axiomatic.assumption" id="assumption-phi" style="display: none">
 								<td><span translate-key="logax.rule.assumption.phi" class="float-right"></span></td>
@@ -194,6 +201,47 @@
 							<tr rule="logic.propositional.axiomatic.modusponens" id="modusponens-stepnr-3" style="display: none">
 								<td><span translate-key="logax.rule.modusponens.n3" class="float-right"></span></td><td>
 									<select id="modusponens-select-stepnr-3" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Deduction Forward-->
+							<tr rule="logic.propositional.axiomatic.deduction.forward" id="deduction-forward-stepnr-1" style="display: none">
+								<td><span translate-key="logax.rule.deduction.n1" class="float-right"></span></td><td>
+									<select id="deduction-forward-select-stepnr-1" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.deduction.forward" id="deduction-forward-phi" style="display: none">
+								<td><span translate-key="logax.rule.deduction.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="deduction-forward-formula-phi">
+									<div id="deduction-forward-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<!-- Deduction Backward-->
+							<tr rule="logic.propositional.axiomatic.deduction.backward" id="deduction-backward-phi" style="display: none">
+								<td><span translate-key="logax.rule.deduction.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="deduction-backward-formula-phi">
+									<div id="deduction-backward-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.deduction.backward" id="deduction-backward-stepnr-2" style="display: none">
+								<td><span translate-key="logax.rule.deduction.n2" class="float-right"></span></td><td>
+									<select id="deduction-backward-select-stepnr-2" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Deduction Close-->
+							<tr rule="logic.propositional.axiomatic.deduction.close" id="deduction-close-stepnr-1" style="display: none">
+								<td><span translate-key="logax.rule.deduction.n1" class="float-right"></span></td><td>
+									<select id="deduction-close-select-stepnr-1" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.deduction.close" id="deduction-close-stepnr-2" style="display: none">
+								<td><span translate-key="logax.rule.deduction.n2" class="float-right"></span></td><td>
+									<select id="deduction-close-select-stepnr-2" class="form-control input custom-select stepnr-select">
 									</select>
 								</td>
 							</tr>

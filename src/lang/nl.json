@@ -144,6 +144,8 @@
     "rule": {
       "addMotivation": "Stap motiveren",
       "addStep": "Stap toevoegen",
+      "addForwardStep": "Stap voorwaarts toevoegen",
+      "addBackwardStep": "Stap achterwaarts toevoegen",
       "assumption": {
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
@@ -172,8 +174,13 @@
         "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
         "n1": "$$\\sum\\vdash_S\\phi$$",
         "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
-        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$",
-        "stepnr": "Stap"
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      },
+      "deduction": {
+        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
+        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "phi": "$$\\phi$$"
       },
       "label": "<b>Regel</b>"
     }
@@ -216,7 +223,8 @@
           "axiom-a": "Axioma A",
           "axiom-b": "Axioma B",
           "axiom-c": "Axioma C",
-          "modusponens": "Modus Ponens"
+          "modusponens": "Modus Ponens",
+          "deduction": "Deductiestelling"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",

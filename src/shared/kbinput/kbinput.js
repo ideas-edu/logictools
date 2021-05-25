@@ -19,6 +19,7 @@ export class FormulaPopover {
     if (options.id) {
       this.wrapper.setAttribute('id', options.id)
     }
+    this.wrapper.style.display = 'none'
     this.inputElement.addEventListener('focus', this.onFocus.bind(this))
     this.inputElement.addEventListener('blur', this.onBlur.bind(this))
     this.inputElement.addEventListener('input', this.tidy.bind(this))
