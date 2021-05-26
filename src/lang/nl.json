@@ -186,7 +186,13 @@
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
         "axiomatic": {
-          "assumption": "Aanname"
+          "assumption": "Aanname",
+          "axiom-a": "Axioma A",
+          "axiom-b": "Axioma B",
+          "axiom-c": "Axioma C",
+          "deduction": "Deductiestelling",
+          "goal": "Doel",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",

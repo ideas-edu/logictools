@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
 import katex from 'katex'
 
-import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
+import { FormulaPopover } from '../kbinput.js'
 
 import { LogExController } from './LogExController.js'
 import { LogEXSession } from '../logEXSession.js'

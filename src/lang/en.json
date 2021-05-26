@@ -186,7 +186,13 @@
         "absorption": "Absorption",
         "assoc": "Associativity",
         "axiomatic": {
-          "assumption": "Assumption"
+          "assumption": "Assumption",
+          "axiom-a": "Axiom A",
+          "axiom-b": "Axiom B",
+          "axiom-c": "Axiom C",
+          "deduction": "Deduction",
+          "goal": "Goal",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",

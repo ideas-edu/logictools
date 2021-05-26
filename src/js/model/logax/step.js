@@ -12,6 +12,7 @@ export class LogAxStep {
   constructor (step, rule) {
     this.number = step.number
     this.label = step.label
+    this.references = step.references
     if (rule === undefined && step.label !== undefined) {
       rule = `logic.propositional.axiomatic.${step.label}`
     }
@@ -37,5 +38,9 @@ export class LogAxStep {
     term = term.replaceAll('⊢', '|-')
     term = term.replaceAll('¬', '~')
     return term
+  }
+
+  getReferences () {
+    return this.references !== undefined ? this.references.join(', ') : null
   }
 }
