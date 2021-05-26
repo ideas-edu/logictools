@@ -1,4 +1,4 @@
-import katex from 'katex'
+import 'katex'
 import jsrender from 'jsrender'
 import 'katex/dist/katex.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
