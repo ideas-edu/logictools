@@ -16,10 +16,16 @@ describe('formulaSyntax', function () {
       assert.equal(formula.error.params.index, 7)
     })
 
-    it('should have error Unexpected character', function () {
+    it('should have error Unexpected character (in expression)', function () {
       const formula = new Formula('p∧s∧(x∧¬r)')
       assert.equal(formula.error.message, 'Unexpected character')
       assert.equal(formula.error.params.index, 6)
+    })
+
+    it('should have error Unexpected character', function () {
+      const formula = new Formula('p∧(y∧¬r)')
+      assert.equal(formula.error.message, 'Unexpected character')
+      assert.equal(formula.error.params.index, 4)
     })
 
     it('should have error Missing operator', function () {
@@ -86,6 +92,30 @@ describe('formulaSyntax', function () {
       const formula = new Formula('¬(p∧q)∨')
       assert.equal(formula.error.message, 'Missing operand')
       assert.equal(formula.error.params.index, 8)
+    })
+
+    it('should have error Missing operand, multiple operators', function () {
+      const formula = new Formula('(p→∧q)')
+      assert.equal(formula.error.message, 'Missing operand')
+      assert.equal(formula.error.params.index, 4)
+    })
+
+    it('should have error Missing operand after parentheses', function () {
+      const formula = new Formula('¬((∨p↔q)→(p∨(p↔q)))')
+      assert.equal(formula.error.message, 'Missing operand')
+      assert.equal(formula.error.params.index, 4)
+    })
+
+    it('should have error Missing operator', function () {
+      const formula = new Formula('(q∨¬rp)∧(q∨p))∨¬q')
+      assert.equal(formula.error.message, 'Missing operator')
+      assert.equal(formula.error.params.index, 6)
+    })
+
+    it('should have error Missing open parenthesis', function () {
+      const formula = new Formula('(q∨¬r)∧(q∨p))∨¬q')
+      assert.equal(formula.error.message, 'Missing open parenthesis')
+      assert.equal(formula.error.params.index, 13)
     })
   })
   describe('success', function () {
