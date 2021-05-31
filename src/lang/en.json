@@ -65,7 +65,7 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
       "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
       "equiv": {
