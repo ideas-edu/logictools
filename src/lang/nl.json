@@ -65,7 +65,7 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
       "description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
       "equiv": {
@@ -274,6 +274,7 @@
       "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
       "emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
       "missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
+      "missingOpen": "Er ontbreekt een openingshaakje bij het sluitingshaakje bij positie {{index}}: {{formula}}",
       "missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
       "missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
       "unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
