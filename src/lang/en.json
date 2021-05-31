@@ -29,7 +29,7 @@
           "distrnot": "You have forgotten a negation when applying distribution.",
           "equivelim1": "You have applied equivalence definition incorrecly. Take care of the negation signs.",
           "equivelim2": "You have applied equivalence definition incorrecly. Take care of the place of the disjunctions and conjunctions.",
-          "equivelim3": "You have applied implication definition instead of equivalence definition.",
+          "equivelim3": "Mind the left range of the implication and place the negation in front of this range.",
           "falseprop": {
             "inv": "You have applied an F-rule incorrectly."
           },
@@ -43,6 +43,7 @@
           "implelim": "You have applied implication definition incorrectly.",
           "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
           "implelim2": "You have applied equivalence definition instead of implication definition.",
+          "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "You forgot the negation in front of the implication.",
           "notoverimpl": "You are not allowed to distribute a negation sign over an implication. First rewrite the implication and then apply De Morgan.",
           "orcompl": {
@@ -271,7 +272,7 @@
       "useRule": "Use <i>[[rule]]</i>."
     },
     "syntaxError": {
-      "ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
+      "ambiguougAssoc": "The range of operators is ambiguous at index {{index}}: {{formula}}",
       "emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
       "missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
       "missingOpen": "The closing parenthesis at index {{index}} is missing a opening parenthesis: {{formula}}",
