@@ -6,7 +6,7 @@ export class ExerciseAlert {
     this.buttonCallback = undefined
     const dismissButton = document.getElementById(`${this.id}-dismiss`)
 
-    dismissButton.addEventListener('click', function () {
+    dismissButton.addEventListener('mousedown', function () {
       document.getElementById(`${this.id}-container`).style.display = 'none'
     }.bind(this))
   }
