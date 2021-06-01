@@ -254,6 +254,7 @@
   },
   "shared": {
     "button": {
+      "apply": "Pas toe",
       "completeExercise": "Volottoi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
@@ -264,6 +265,7 @@
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",
+      "selectStep": "-- Selecteer stap --",
       "solveExercise": "Toon oplossing",
       "step": "Toon stap",
       "validateStep": "<i class='fas fa-check'></i>"

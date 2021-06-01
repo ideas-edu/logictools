@@ -176,20 +176,29 @@ export class LogAxController extends ExerciseController {
       id: 0,
       characters: this.characterOptions
     }
-    this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions)
-    this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1)
-    this.axiomAPopover2 = new FormulaPopover(document.getElementById('axiom-a-formula-psi'), document.getElementById('axiom-a-psi-input'), axiomAOptions2)
-    this.axiomBPopover1 = new FormulaPopover(document.getElementById('axiom-b-formula-phi'), document.getElementById('axiom-b-phi-input'), axiomBOptions1)
-    this.axiomBPopover2 = new FormulaPopover(document.getElementById('axiom-b-formula-psi'), document.getElementById('axiom-b-psi-input'), axiomBOptions2)
-    this.axiomBPopover3 = new FormulaPopover(document.getElementById('axiom-b-formula-chi'), document.getElementById('axiom-b-chi-input'), axiomBOptions3)
-    this.axiomCPopover1 = new FormulaPopover(document.getElementById('axiom-c-formula-phi'), document.getElementById('axiom-c-phi-input'), axiomCOptions1)
-    this.axiomCPopover2 = new FormulaPopover(document.getElementById('axiom-c-formula-psi'), document.getElementById('axiom-c-psi-input'), axiomCOptions2)
-    this.deductionFPopover = new FormulaPopover(document.getElementById('deduction-forward-formula-phi'), document.getElementById('deduction-forward-phi-input'), deductionFOptions)
-    this.deductionBPopover = new FormulaPopover(document.getElementById('deduction-backward-formula-phi'), document.getElementById('deduction-backward-phi-input'), deductionBOptions)
-    this.goalPhiPopover = new FormulaPopover(document.getElementById('goal-formula-phi'), document.getElementById('goal-phi-input'), goalPhiOptions)
-    this.goalPsiPopover = new FormulaPopover(document.getElementById('goal-formula-psi'), document.getElementById('goal-psi-input'), goalPsiOptions)
+    this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions, this.applyReady.bind(this))
+    this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1, this.applyReady.bind(this))
+    this.axiomAPopover2 = new FormulaPopover(document.getElementById('axiom-a-formula-psi'), document.getElementById('axiom-a-psi-input'), axiomAOptions2, this.applyReady.bind(this))
+    this.axiomBPopover1 = new FormulaPopover(document.getElementById('axiom-b-formula-phi'), document.getElementById('axiom-b-phi-input'), axiomBOptions1, this.applyReady.bind(this))
+    this.axiomBPopover2 = new FormulaPopover(document.getElementById('axiom-b-formula-psi'), document.getElementById('axiom-b-psi-input'), axiomBOptions2, this.applyReady.bind(this))
+    this.axiomBPopover3 = new FormulaPopover(document.getElementById('axiom-b-formula-chi'), document.getElementById('axiom-b-chi-input'), axiomBOptions3, this.applyReady.bind(this))
+    this.axiomCPopover1 = new FormulaPopover(document.getElementById('axiom-c-formula-phi'), document.getElementById('axiom-c-phi-input'), axiomCOptions1, this.applyReady.bind(this))
+    this.axiomCPopover2 = new FormulaPopover(document.getElementById('axiom-c-formula-psi'), document.getElementById('axiom-c-psi-input'), axiomCOptions2, this.applyReady.bind(this))
+    this.deductionFPopover = new FormulaPopover(document.getElementById('deduction-forward-formula-phi'), document.getElementById('deduction-forward-phi-input'), deductionFOptions, this.applyReady.bind(this))
+    this.deductionBPopover = new FormulaPopover(document.getElementById('deduction-backward-formula-phi'), document.getElementById('deduction-backward-phi-input'), deductionBOptions, this.applyReady.bind(this))
+    this.goalPhiPopover = new FormulaPopover(document.getElementById('goal-formula-phi'), document.getElementById('goal-phi-input'), goalPhiOptions, this.applyReady.bind(this))
+    this.goalPsiPopover = new FormulaPopover(document.getElementById('goal-formula-psi'), document.getElementById('goal-psi-input'), goalPsiOptions, this.applyReady.bind(this))
 
     this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
+
+    // apply
+    const applyButton = document.getElementById('validate-step')
+    applyButton.disabled = true
+
+    const stepnrSelectors = document.querySelectorAll('.stepnr-select')
+    for (const stepnrSelector of stepnrSelectors) {
+      stepnrSelector.addEventListener('change', this.applyReady.bind(this))
+    }
   }
 
   initializeRules (ruleElement) {
@@ -453,6 +462,121 @@ export class LogAxController extends ExerciseController {
     }
   }
 
+  applyReady () {
+    const rule = this.ruleKey
+    const applyButton = document.getElementById('validate-step')
+    applyButton.disabled = true
+
+    switch (rule) {
+      case 'logic.propositional.axiomatic.assumption': {
+        const newFormula = document.getElementById('assumption-formula-phi')
+        if (newFormula.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.assumption.close': {
+        const stepnr = document.getElementById('assumption-select-stepnr')
+        if (stepnr.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.axiom-a': {
+        const phi = document.getElementById('axiom-a-formula-phi')
+        const psi = document.getElementById('axiom-a-formula-psi')
+        if (phi.value !== '' && psi.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.axiom-a.close': {
+        const stepnr = document.getElementById('axiom-a-select-stepnr')
+        if (stepnr.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.axiom-b': {
+        const phi = document.getElementById('axiom-b-formula-phi')
+        const psi = document.getElementById('axiom-b-formula-psi')
+        const chi = document.getElementById('axiom-b-formula-chi')
+        if (phi.value !== '' && psi.value !== '' && chi.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.axiom-b.close': {
+        const stepnr = document.getElementById('axiom-b-select-stepnr')
+        if (stepnr.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.axiom-c': {
+        const phi = document.getElementById('axiom-c-formula-phi')
+        const psi = document.getElementById('axiom-c-formula-psi')
+        if (phi.value !== '' && psi.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.axiom-c.close': {
+        const stepnr = document.getElementById('axiom-c-select-stepnr')
+        if (stepnr.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.modusponens': {
+        const stepnr1 = document.getElementById('modusponens-select-stepnr-1')
+        const stepnr2 = document.getElementById('modusponens-select-stepnr-2')
+        const stepnr3 = document.getElementById('modusponens-select-stepnr-3')
+
+        if (stepnr1.value !== '' && stepnr2.value !== '' && stepnr3.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.deduction.forward': {
+        const stepnr1 = document.getElementById('deduction-forward-select-stepnr-1')
+        const phi = document.getElementById('deduction-forward-formula-phi')
+
+        if (phi.value !== '' && stepnr1.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.deduction.backward': {
+        const stepnr2 = document.getElementById('deduction-backward-select-stepnr-2')
+        const phi = document.getElementById('deduction-backward-formula-phi')
+
+        if (phi.value !== '' && stepnr2.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.deduction.close': {
+        const stepnr1 = document.getElementById('deduction-close-select-stepnr-1')
+        const stepnr2 = document.getElementById('deduction-close-select-stepnr-2')
+
+        if (stepnr1.value !== '' && stepnr2.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+      case 'logic.propositional.axiomatic.goal': {
+        const phi = document.getElementById('goal-formula-phi')
+        const psi = document.getElementById('goal-formula-psi')
+
+        if (phi.value !== '' && psi.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
+    }
+  }
+
   /**
     Validates a step
       Runs callback after correct step has been validated
@@ -524,6 +648,12 @@ export class LogAxController extends ExerciseController {
     const stepnrSelectors = document.querySelectorAll('.stepnr-select')
     for (const stepnrSelector of stepnrSelectors) {
       stepnrSelector.innerHTML = ''
+
+      const emptyOption = document.createElement('option')
+      translateElement(emptyOption, 'shared.button.selectStep')
+      emptyOption.setAttribute('value', '')
+      stepnrSelector.appendChild(emptyOption)
+
       for (const step of this.exercise.steps.steps) {
         const option = document.createElement('option')
         option.innerHTML = step.number

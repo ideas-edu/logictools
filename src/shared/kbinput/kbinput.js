@@ -10,7 +10,7 @@ function setCursor (inputElement, start, end) {
 }
 
 export class FormulaPopover {
-  constructor (inputElement, wrapperElement, options) {
+  constructor (inputElement, wrapperElement, options, onChangeCallback) {
     this.inputElement = inputElement
     this.options = options
 
@@ -18,6 +18,11 @@ export class FormulaPopover {
     this.wrapper = wrapperElement
     if (options.id) {
       this.wrapper.setAttribute('id', options.id)
+    }
+    if (onChangeCallback !== undefined) {
+      this.onChangeCallback = onChangeCallback
+    } else {
+      this.onChangeCallback = function () { }
     }
     this.wrapper.style.display = 'none'
     this.inputElement.addEventListener('focus', this.onFocus.bind(this))
@@ -85,6 +90,7 @@ export class FormulaPopover {
     */
   undo () {
     this.setText(this.previousValue)
+    this.onChangeCallback()
   }
 
   /**
@@ -93,6 +99,7 @@ export class FormulaPopover {
     */
   addText (e) {
     this.insertText(e.currentTarget.getAttribute('char'))
+    this.onChangeCallback()
     // Keep focus on inputElement after pressing button
     window.setTimeout(() => {
       this.inputElement.focus()
@@ -105,6 +112,7 @@ export class FormulaPopover {
   setText (text) {
     this.inputElement.value = text
     this.tidy()
+    this.onChangeCallback()
   }
 
   /**
@@ -225,6 +233,7 @@ export class FormulaPopover {
       }
     }
     this.tidy()
+    this.onChangeCallback()
   }
 
   /**
