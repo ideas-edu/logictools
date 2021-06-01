@@ -152,13 +152,8 @@ export class LogAxController extends ExerciseController {
       allowUndo: true,
       characters: this.characterOptions
     }
-    const deductionFOptions = {
+    const deductionOptions = {
       id: 9,
-      allowUndo: true,
-      characters: this.characterOptions
-    }
-    const deductionBOptions = {
-      id: 10,
       allowUndo: true,
       characters: this.characterOptions
     }
@@ -184,8 +179,7 @@ export class LogAxController extends ExerciseController {
     this.axiomBPopover3 = new FormulaPopover(document.getElementById('axiom-b-formula-chi'), document.getElementById('axiom-b-chi-input'), axiomBOptions3, this.applyReady.bind(this))
     this.axiomCPopover1 = new FormulaPopover(document.getElementById('axiom-c-formula-phi'), document.getElementById('axiom-c-phi-input'), axiomCOptions1, this.applyReady.bind(this))
     this.axiomCPopover2 = new FormulaPopover(document.getElementById('axiom-c-formula-psi'), document.getElementById('axiom-c-psi-input'), axiomCOptions2, this.applyReady.bind(this))
-    this.deductionFPopover = new FormulaPopover(document.getElementById('deduction-forward-formula-phi'), document.getElementById('deduction-forward-phi-input'), deductionFOptions, this.applyReady.bind(this))
-    this.deductionBPopover = new FormulaPopover(document.getElementById('deduction-backward-formula-phi'), document.getElementById('deduction-backward-phi-input'), deductionBOptions, this.applyReady.bind(this))
+    this.deductionPopover = new FormulaPopover(document.getElementById('deduction-formula-phi'), document.getElementById('deduction-phi-input'), deductionOptions, this.applyReady.bind(this))
     this.goalPhiPopover = new FormulaPopover(document.getElementById('goal-formula-phi'), document.getElementById('goal-phi-input'), goalPhiOptions, this.applyReady.bind(this))
     this.goalPsiPopover = new FormulaPopover(document.getElementById('goal-formula-psi'), document.getElementById('goal-psi-input'), goalPsiOptions, this.applyReady.bind(this))
 
@@ -206,22 +200,19 @@ export class LogAxController extends ExerciseController {
       .filter((value, index, self) => self.indexOf(value) === index)
       .map(baseRule => `logic.propositional.axiomatic.${baseRule}`))
     const subSelect = document.getElementById('subtype-select')
-    const dirSelect = document.getElementById('direction-select')
 
     ruleElement.addEventListener('change', function () {
-      this.updateRuleVisibility(ruleElement, subSelect, dirSelect)
+      this.updateRuleVisibility(ruleElement, subSelect)
+      this.applyReady()
     }.bind(this))
 
     subSelect.addEventListener('change', function () {
-      this.updateRuleVisibility(ruleElement, subSelect, dirSelect)
-    }.bind(this))
-
-    dirSelect.addEventListener('change', function () {
-      this.updateRuleVisibility(ruleElement, subSelect, dirSelect)
+      this.updateRuleVisibility(ruleElement, subSelect)
+      this.applyReady()
     }.bind(this))
   }
 
-  updateRuleVisibility (ruleElement, subSelect, dirSelect) {
+  updateRuleVisibility (ruleElement, subSelect) {
     const elements = document.querySelectorAll('[rule]')
     for (const element of elements) {
       element.style.display = 'none'
@@ -240,21 +231,8 @@ export class LogAxController extends ExerciseController {
     let rule = baseRule
 
     if (this.config.rules.includes(`${baseRule}.forward`)) {
-      document.getElementById('direction-select-row').style.display = ''
       document.getElementById('subtype-select-row').style.display = 'none'
-      switch (dirSelect.selectedIndex) {
-        case 0:
-          rule = baseRule + '.forward'
-          break
-        case 1:
-          rule = baseRule + '.backward'
-          break
-        case 2:
-          rule = baseRule + '.close'
-          break
-      }
     } else {
-      document.getElementById('direction-select-row').style.display = 'none'
       if (this.config.rules.includes(`${baseRule}.close`)) {
         document.getElementById('subtype-select-row').style.display = ''
         rule = baseRule + (subSelect.selectedIndex === 1 ? '.close' : '')
@@ -401,41 +379,41 @@ export class LogAxController extends ExerciseController {
           rule: rule
         }
       }
-      case 'logic.propositional.axiomatic.deduction.forward': {
-        const stepnr1 = document.getElementById('deduction-forward-select-stepnr-1')
-        const phi = document.getElementById('deduction-forward-formula-phi')
+      case 'logic.propositional.axiomatic.deduction': {
+        const stepnr1 = document.getElementById('deduction-select-stepnr-1')
+        const phi = document.getElementById('deduction-formula-phi')
+        const stepnr2 = document.getElementById('deduction-select-stepnr-2')
 
-        return {
-          environment: {
-            n: stepnr1.value,
-            phi: LogAxStep.convertToText(phi.value)
-          },
-          rule: rule
+        if (stepnr1.value !== '' && phi.value !== '') {
+          return {
+            environment: {
+              n: stepnr1.value,
+              phi: LogAxStep.convertToText(phi.value)
+            },
+            rule: `${rule}.forward`
+          }
         }
-      }
-      case 'logic.propositional.axiomatic.deduction.backward': {
-        const stepnr2 = document.getElementById('deduction-backward-select-stepnr-2')
-        const phi = document.getElementById('deduction-backward-formula-phi')
 
-        return {
-          environment: {
-            n: stepnr2.value,
-            phi: LogAxStep.convertToText(phi.value)
-          },
-          rule: rule
+        if (phi.value !== '' && stepnr2.value !== '') {
+          return {
+            environment: {
+              n: stepnr2.value,
+              phi: LogAxStep.convertToText(phi.value)
+            },
+            rule: `${rule}.backward`
+          }
         }
-      }
-      case 'logic.propositional.axiomatic.deduction.close': {
-        const stepnr1 = document.getElementById('deduction-close-select-stepnr-1')
-        const stepnr2 = document.getElementById('deduction-close-select-stepnr-2')
 
-        return {
-          environment: {
-            n1: stepnr1.value,
-            n2: stepnr2.value
-          },
-          rule: rule
+        if (stepnr1.value !== '' && stepnr2.value !== '') {
+          return {
+            environment: {
+              n1: stepnr1.value,
+              n2: stepnr2.value
+            },
+            rule: `${rule}.close`
+          }
         }
+        return
       }
       case 'logic.propositional.axiomatic.goal': {
         const phi = document.getElementById('goal-formula-phi')
@@ -460,6 +438,11 @@ export class LogAxController extends ExerciseController {
         }
       }
     }
+  }
+
+  disableUI (disable) {
+    super.disableUI(disable)
+    this.applyReady()
   }
 
   applyReady () {
@@ -538,31 +521,26 @@ export class LogAxController extends ExerciseController {
         }
         break
       }
-      case 'logic.propositional.axiomatic.deduction.forward': {
-        const stepnr1 = document.getElementById('deduction-forward-select-stepnr-1')
-        const phi = document.getElementById('deduction-forward-formula-phi')
+      case 'logic.propositional.axiomatic.deduction': {
+        const stepnr1 = document.getElementById('deduction-select-stepnr-1')
+        const phi = document.getElementById('deduction-formula-phi')
+        const stepnr2 = document.getElementById('deduction-select-stepnr-2')
 
-        if (phi.value !== '' && stepnr1.value !== '') {
+        if (stepnr1.value !== '' && phi.value !== '') {
           applyButton.disabled = false
         }
-        break
-      }
-      case 'logic.propositional.axiomatic.deduction.backward': {
-        const stepnr2 = document.getElementById('deduction-backward-select-stepnr-2')
-        const phi = document.getElementById('deduction-backward-formula-phi')
 
         if (phi.value !== '' && stepnr2.value !== '') {
           applyButton.disabled = false
         }
-        break
-      }
-      case 'logic.propositional.axiomatic.deduction.close': {
-        const stepnr1 = document.getElementById('deduction-close-select-stepnr-1')
-        const stepnr2 = document.getElementById('deduction-close-select-stepnr-2')
 
         if (stepnr1.value !== '' && stepnr2.value !== '') {
           applyButton.disabled = false
         }
+
+        stepnr2.disabled = (phi.value !== '')
+        phi.disabled = (stepnr2.value !== '')
+
         break
       }
       case 'logic.propositional.axiomatic.goal': {
