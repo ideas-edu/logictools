@@ -181,7 +181,8 @@ class OneWayController extends LogExController {
       }
     })
     document.getElementById('active-step').style.display = ''
-    document.getElementById('bottom').style.display = ''
+    document.getElementById('validate-exercise').style.display = ''
+    document.getElementById('show-solve-exercise').style.display = 'none'
 
     document.getElementById('formula').value = this.exercise.formula
 
@@ -342,7 +343,8 @@ class OneWayController extends LogExController {
     const onSuccess = function (data) {
       if (data.ready) {
         document.getElementById('active-step').style.display = 'none'
-        document.getElementById('bottom').style.display = 'none'
+        document.getElementById('validate-exercise').style.display = 'none'
+        document.getElementById('show-solve-exercise').style.display = ''
 
         const elements = document.getElementsByClassName('remove-step')
         for (const element of elements) {
@@ -492,7 +494,8 @@ class OneWayController extends LogExController {
 
     document.getElementById('active-step').insertAdjacentElement('beforebegin', exerciseStepHtml)
     document.getElementById('active-step').style.display = 'none'
-    document.getElementById('bottom').style.display = 'none'
+    document.getElementById('validate-exercise').style.display = 'none'
+    document.getElementById('show-solve-exercise').style.display = ''
 
     document.getElementById('header-actions').style.display = 'none'
     const elements = document.getElementsByClassName('remove-step')
