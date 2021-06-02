@@ -102,14 +102,17 @@ export class ExerciseController {
   /**
         Initializes drop down box for rules from Rules dictionary
      */
-  initializeRules (comboRule) {
+  initializeRules (comboRule, ruleSet) {
     // Clear ruleset if already set
     comboRule.innerHTML = ''
     const select = document.createElement('option')
     select.setAttribute('translate-key', 'shared.button.selectRule')
     comboRule.appendChild(select)
+    if (ruleSet === undefined) {
+      ruleSet = this.config.rules
+    }
 
-    for (const rule of this.config.rules) {
+    for (const rule of ruleSet) {
       // Rule will only be displayed if it has not already been displayed
       const option = document.createElement('option')
       option.setAttribute('translate-key', `rule.${rule}`)
