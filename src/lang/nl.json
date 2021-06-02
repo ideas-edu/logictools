@@ -43,6 +43,7 @@
           "implelim": "U heeft implicatie eliminatie niet correct toegepast.",
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
           "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
+          "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "U bent de negatie voor de implicatie vergeten.",
           "notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
           "orcompl": {
@@ -65,7 +66,7 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
       "description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
       "equiv": {
@@ -277,9 +278,10 @@
       "useRule": "Gebruik <i>[[rule]]</i>."
     },
     "syntaxError": {
-      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
+      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} is dubbelzinnig: {{formula}}",
       "emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
       "missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
+      "missingOpen": "Er ontbreekt een openingshaakje bij het sluitingshaakje bij positie {{index}}: {{formula}}",
       "missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
       "missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
       "unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"

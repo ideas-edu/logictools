@@ -13,7 +13,7 @@ export class LogExController extends ExerciseController {
       {
         char: '∧',
         latex: '\\land',
-        triggers: ['a', '7', '&', 'A'],
+        triggers: ['a', '7', '&', 'A', '6', '^'],
         spaces: true
       },
       {
@@ -85,6 +85,10 @@ export class LogExController extends ExerciseController {
         this.changeRuleJustification()
       }.bind(this))
     }
+
+    document.getElementById('show-solve-exercise').addEventListener('click', function () {
+      this.showSolution()
+    }.bind(this))
 
     document.getElementById('step-validation-switch').addEventListener('click', function () {
       this.changeStepValidation()
