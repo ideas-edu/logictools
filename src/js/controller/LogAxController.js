@@ -576,10 +576,15 @@ export class LogAxController extends ExerciseController {
   /**
         Handles the error that the step can not be validated
      */
-  onErrorValidatingStep () {
+  onErrorValidatingStep (error) {
     this.disableUI(false)
+    if (error === undefined) {
+      this.setErrorLocation('validate-step')
+      this.updateAlert('shared.error.validatingStep', null, 'error')
+      return
+    }
     this.setErrorLocation('validate-step')
-    this.updateAlert('shared.error.validatingStep', null, 'error')
+    this.updateAlert(error.key, error.params, 'error')
   }
 
   /**
