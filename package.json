@@ -34,8 +34,7 @@
     "nestedVulnerabilities": {
       "hosted-git-info": ">=2.8.9",
       "lodash": ">=4.17.21",
-      "postcss": ">=8.2.10",
-      "ws": ">=7.4.6"
+      "postcss": ">=8.2.10"
     }
   },
   "scripts": {

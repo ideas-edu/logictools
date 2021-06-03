@@ -1,4 +1,3 @@
-import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { ExerciseController } from './ExerciseController.js'
 
 export class LogExController extends ExerciseController {
@@ -138,24 +137,5 @@ export class LogExController extends ExerciseController {
     super.insertStep(step, canDelete)
 
     this.formulaPopover.previousValue = step.formula
-  }
-
-  /**
-        Validates the formula
-
-        @param formula - The DOM element that contains the formula
-        @param onFormulasValidated - The callback function
-     */
-  validateFormula (formulaElement, alert) {
-    const result = this.syntaxValidator.validateSyntax(formulaElement.value)
-    if (result !== null) {
-      this.setErrorLocation(formulaElement.id)
-      alert.updateAlert(result.key, result.params, 'error')
-      this.isFormulaValid = false
-      IdeasServiceProxy.log({ exerciseid: this.exercise.type, formula: formulaElement.value, syntaxError: result.key })
-      return false
-    }
-    this.isFormulaValid = true
-    return true
   }
 }

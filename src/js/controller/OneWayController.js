@@ -394,7 +394,6 @@ class OneWayController extends LogExController {
     if (!currentStep.isValid && this.exercise.usesStepValidation) {
       message = 'shared.error.wrongStep'
       this.exercise.steps.pop()
-      console.log(currentStep)
 
       if (!currentStep.isSyntaxValid) { // Foutieve syntax
         message = 'shared.error.invalidFormula'

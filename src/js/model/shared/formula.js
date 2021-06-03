@@ -176,7 +176,7 @@ class FlattenedSummation extends Expression {
 }
 
 const unaryOperators = ['¬']
-const binaryOperators = ['∧', '∨', '→', '↔']
+const binaryOperators = ['∧', '∨', '→', '↔', ',']
 const implicitAssociativeBinaryOperators = ['∧', '∨']
 const literals = ['p', 'q', 'r', 's', 'T', 'F']
 
