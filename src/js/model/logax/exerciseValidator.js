@@ -21,7 +21,8 @@ export class LogAxExerciseValidator extends ExerciseValidator {
     for (const step of exercise.steps.steps) {
       state.context.term.push({
         number: step.number,
-        term: step.term
+        term: step.term,
+        label: step.label
       })
     }
 
@@ -42,19 +43,16 @@ export class LogAxExerciseValidator extends ExerciseValidator {
     const state = this.getState(exercise)
 
     const validated = function (response) {
-      for (const responseStep of response.apply.state.context.term) {
-        let exists = false
-        for (const existingStep of exercise.steps.steps) {
-          if (responseStep.number === existingStep.number) {
-            exists = true
-          }
-        }
-        if (!exists) {
-          const newStep = new LogAxStep(responseStep)
-          onValidated(newStep)
-          return
-        }
+      if (!response.apply) {
+        onErrorValidating()
+        return
       }
+      exercise.steps.steps = []
+      for (const responseStep of response.apply.state.context.term) {
+        const newStep = new LogAxStep(responseStep)
+        exercise.steps.push(newStep)
+      }
+      onValidated()
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
   }
