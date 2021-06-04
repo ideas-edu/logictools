@@ -49,7 +49,7 @@
           "orcompl": {
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "orcompl2": "U heeft een complement regel niet correct toegepast.",
+          "orcompl2": "U heeft een complement regel niet correct toegepast, let op de plaats van de negaties",
           "oroveror": "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
           "orsame": "U heeft een T regel onterecht toegepast.",
           "parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
