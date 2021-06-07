@@ -137,6 +137,24 @@
     }
   },
   "logax": {
+    "button": {
+      "renumber": "Hernummeren"
+    },
+    "completed": "De uitwerking is compleet",
+    "hint": {
+      "applyRule": {
+        "assumption": "Pas een <i>Aanname</i> toe",
+        "axiom-a": "Pas <i>Axioma A</i> toe",
+        "axiom-b": "Pas <i>Axioma B</i> toe",
+        "axiom-c": "Pas <i>Axioma C</i> toe",
+        "deduction": "Pas de <i>Deductiestelling</i> toe",
+        "modusponens": "Pas <i>Modus Ponens</i> toe"
+      },
+      "motivate": "Motiveer een stap",
+      "performBackward": "Voer een achterwaartse stap uit",
+      "performForward": "Voer een voorwaartse stap uit",
+      "proveSubgoal": "Probeer eerst $${{subgoal}}$$ te bewijzen"
+    },
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!",
       "create": "Schrijf de formule voor je eigen opgave",

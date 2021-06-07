@@ -150,9 +150,9 @@
         "deduction": "Apply the <i>Deduction</i> Theorem",
         "modusponens": "Apply <i>Modus Ponens</i>"
       },
+      "motivate": "Add motivation to a step",
       "performBackward": "Perform a step backward",
       "performForward": "Perform a step forward",
-      "motivate": "Add motivation to a step",
       "proveSubgoal": "First try to prove $${{subgoal}}$$"
     },
     "instruction": {
