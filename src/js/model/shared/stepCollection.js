@@ -1,5 +1,3 @@
-import { Rules } from '../rules.js'
-
 /**
     StepCollection is an bastract class for ordered lists of conversion steps.
     @constructor
@@ -31,19 +29,6 @@ export class StepCollection {
      */
   getSteps () {
     return this.steps
-  }
-
-  /**
-        Adds a one way step to the collection.
-        @param {OneWayStep} onewayStep - The oneway step.
-     */
-  push (step) {
-    // deze stappen filteren we eruit omdat dit geen stappen zijn die een normale gebruiker zou doen
-    if (Rules[step.rule] === null) {
-      return
-    }
-    step.number = this.steps.length + 1
-    this.steps.push(step)
   }
 
   /**

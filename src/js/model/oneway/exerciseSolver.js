@@ -7,8 +7,8 @@ import { OneWayStep } from './step.js'
     @constructor
  */
 export class OneWayExerciseSolver extends ExerciseSolver {
-  constructor () {
-    super()
+  constructor (config) {
+    super(config)
     this.Step = OneWayStep
     this.StepCollection = OneWayStepCollection
   }

@@ -5,6 +5,10 @@ import { assert } from 'chai'
 
 global.XMLHttpRequest = XMLHttpRequest
 
+const config = {
+  source: 'logex'
+}
+
 describe('ideasService', function () {
   describe('#post()', function () {
     it('should return response', function (done) {
@@ -16,7 +20,7 @@ describe('ideasService', function () {
         assert(false)
         done()
       }
-      IdeasServiceProxy.post({}, onSuccess, onFailure)
+      IdeasServiceProxy.post(config, {}, onSuccess, onFailure)
     })
 
     it('should return generated exercise', function (done) {
@@ -33,7 +37,7 @@ describe('ideasService', function () {
         assert(false)
         done()
       }
-      IdeasServiceProxy.post(request, onSuccess, onFailure)
+      IdeasServiceProxy.post(config, request, onSuccess, onFailure)
     })
   })
 })

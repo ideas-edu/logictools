@@ -28,7 +28,7 @@ body {
     margin-left: 120px;
 	padding-top: 60px;
     padding-bottom: 40px;
-	min-height: 430px;
+	min-height: 550px;
 }
 
 .oneWay-body, .twoWay-body
@@ -649,4 +649,9 @@ button {
 .oneWay-body #new-exercise-container .row .col-3,
 .twoWay-body #new-exercise-container .row .col-3{
 	text-align: right;
+}
+
+
+#rule-container {
+    border: 1px solid #e5e5e5;
 }

@@ -36,15 +36,12 @@ function ready (fn) {
 
 function setUp () {
   const controller = new TwoWayController()
-  controller.getExerciseType()
   window.translate = loadLanguage
   loadLanguage(LogEXSession.getLanguage())
   controller.initializeStepValidation()
-  controller.initializeButtons()
   controller.initializeInput()
   controller.initializeRules(document.getElementById('rule'))
   controller.setExampleExercises()
-  controller.bindExampleExercises()
 }
 
 ready(setUp)
@@ -53,11 +50,11 @@ class TwoWayController extends LogExController {
   constructor () {
     super()
 
-    this.exerciseGenerator = new TwoWayExerciseGenerator()
-    this.exerciseSolver = new TwoWayExerciseSolver()
-    this.exerciseValidator = new TwoWayExerciseValidator()
+    this.exerciseGenerator = new TwoWayExerciseGenerator(this.config)
+    this.exerciseSolver = new TwoWayExerciseSolver(this.config)
+    this.exerciseValidator = new TwoWayExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
-    this.exerciseType = 'logeq'
+    this.exerciseType = 'LOGEQ'
     this.proofDirection = null
     this.newFormulaPopover1 = null
     this.newFormulaPopover2 = null
@@ -88,27 +85,17 @@ class TwoWayController extends LogExController {
   /**
         Get an example exercise.
      */
-  useExercise (exnr, displayNumber) {
-    const properties = {
-      stepValidation: true,
-      titleKey: 'shared.exerciseName.example',
-      titleParams: {
-        number: displayNumber
-      }
-    }
+  useExercise (properties) {
+    properties.stepValidation = true
 
-    super.useExercise(exnr, properties)
+    super.useExercise(properties)
   }
 
   /**
         Generates an exercise.
      */
-  generateExercise (difficulty) {
-    const properties = {
-      stepValidation: true,
-      difficulty: difficulty,
-      titleKey: `shared.exerciseName.${difficulty}`
-    }
+  generateExercise (properties) {
+    properties.stepValidation = true
 
     super.generateExercise(properties)
   }
@@ -206,6 +193,7 @@ class TwoWayController extends LogExController {
     })
 
     document.getElementById('active-step').style.display = ''
+    document.getElementById('show-solve-exercise').style.display = 'none'
 
     this.disableUI(false)
 
@@ -227,7 +215,7 @@ class TwoWayController extends LogExController {
   }
 
   showSolution () {
-    window.open('twowaysolution.html?formula=' + this.exercise.equation.getText() + '&exerciseType=' + this.exercise.type, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    window.open('twowaysolution.html?formula=' + this.exercise.equation.getText() + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   showNextStep () {
@@ -347,7 +335,7 @@ class TwoWayController extends LogExController {
     }
 
     if (this.exercise.usesStepValidation) {
-      this.exerciseValidator.validateStep(this.exercise, this.exercise.usesRuleJustification, previousStep, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+      this.exerciseValidator.validateStep(this.exercise, previousStep, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
     } else {
       this.onStepValidated(newStep)
     }
@@ -364,17 +352,13 @@ class TwoWayController extends LogExController {
     }
     document.getElementById('header-actions').style.display = 'none'
 
-    const arrow = katex.renderToString('\\Leftrightarrow', {
-      throwOnError: false
-    })
-
     const alertParams = {
       beginFormula: this.exercise.equation.formula1katex,
-      endFormula: this.exercise.equation.formula2katex,
-      arrow: arrow
+      endFormula: this.exercise.equation.formula2katex
     }
     this.exercise.isReady = true
     this.updateAlert('twoWay.solution', alertParams, 'complete')
+    document.getElementById('show-solve-exercise').style.display = ''
     this.setProofDirection('complete')
   }
 

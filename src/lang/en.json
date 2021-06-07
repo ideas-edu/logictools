@@ -65,7 +65,7 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
       "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
       "equiv": {
@@ -135,11 +135,29 @@
       "notSupported": "Your browser does not support embedded videos"
     }
   },
+  "logax": {
+    "instruction": {
+      "begin": "Select an exercise to get started!",
+      "create": "Write the theorem for your own exercise",
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+    },
+    "rule": {
+      "assumption": {
+        "addMotivation": "Add Motivation",
+        "addStep": "Add Step",
+        "def": "$$\\phi\\vdash\\phi$$",
+        "phi": "$$\\phi$$",
+        "stepnr": "Step"
+      },
+      "label": "<b>Rule</b>"
+    }
+  },
   "main": {
-    "help": "<i class='fas fa-question-circle'></i> Help",
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
+      "help": "<i class='fas fa-question-circle'></i> Help",
+      "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }
   },
@@ -167,6 +185,9 @@
       "propositional": {
         "absorption": "Absorption",
         "assoc": "Associativity",
+        "axiomatic": {
+          "assumption": "Assumption"
+        },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",
         "distribution": "Distribution",
@@ -187,6 +208,7 @@
   },
   "shared": {
     "button": {
+      "completeExercise": "Complete my derivation",
       "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
       "generateExerciseEasy": "Easy",
@@ -238,7 +260,8 @@
       "direction": "",
       "formula": "Formula",
       "rule": "Rule",
-      "step": "Step"
+      "step": "Step",
+      "term": "Term"
     },
     "hint": {
       "autoStep": "Perform Step",
@@ -251,6 +274,7 @@
       "ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
       "emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
       "missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
+      "missingOpen": "The closing parenthesis at index {{index}} is missing a opening parenthesis: {{formula}}",
       "missingOperand": "There is a missing operand at index {{index}}: {{formula}}",
       "missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
       "unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
