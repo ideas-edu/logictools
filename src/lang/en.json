@@ -29,7 +29,7 @@
           "distrnot": "You have forgotten a negation when applying distribution.",
           "equivelim1": "You have applied equivalence definition incorrecly. Take care of the negation signs.",
           "equivelim2": "You have applied equivalence definition incorrecly. Take care of the place of the disjunctions and conjunctions.",
-          "equivelim3": "You have applied implication definition instead of equivalence definition.",
+          "equivelim3": "Mind the left range of the implication and place the negation in front of this range.",
           "falseprop": {
             "inv": "You have applied an F-rule incorrectly."
           },
@@ -43,6 +43,7 @@
           "implelim": "You have applied implication definition incorrectly.",
           "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
           "implelim2": "You have applied equivalence definition instead of implication definition.",
+          "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "You forgot the negation in front of the implication.",
           "notoverimpl": "You are not allowed to distribute a negation sign over an implication. First rewrite the implication and then apply De Morgan.",
           "orcompl": {
@@ -142,14 +143,54 @@
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
     },
     "rule": {
+      "addBackwardStep": "Add Backward Step",
+      "addForwardStep": "Add Forward Step",
+      "addMotivation": "Add Motivation",
+      "addStep": "Add Step",
       "assumption": {
-        "addMotivation": "Add Motivation",
-        "addStep": "Add Step",
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Step"
       },
-      "label": "<b>Rule</b>"
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
+      "axiom-b": {
+        "chi": "$$\\chi$$",
+        "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
+      "axiom-c": {
+        "def": "$$\\vdash(\\neg\\phi\\rightarrow\\neg\\psi)\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
+      "deduction": {
+        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
+        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "phi": "$$\\phi$$"
+      },
+      "goal": {
+        "def": "$$\\phi\\vdash\\psi$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepExp": "Specify the number of the new step, or leave empty to get a default number",
+        "stepnr": "Step"
+      },
+      "label": "<b>Rule</b>",
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      }
     }
   },
   "main": {
@@ -186,7 +227,13 @@
         "absorption": "Absorption",
         "assoc": "Associativity",
         "axiomatic": {
-          "assumption": "Assumption"
+          "assumption": "Assumption",
+          "axiom-a": "Axiom A",
+          "axiom-b": "Axiom B",
+          "axiom-c": "Axiom C",
+          "deduction": "Deduction",
+          "goal": "Goal",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",
@@ -208,6 +255,7 @@
   },
   "shared": {
     "button": {
+      "apply": "Apply",
       "completeExercise": "Complete my derivation",
       "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
@@ -218,6 +266,7 @@
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
       "selectRule": "-- Select rule --",
+      "selectStep": "-- Select step --",
       "solveExercise": "Show complete derivation",
       "step": "Show step",
       "validateStep": "<i class='fas fa-check'></i>"
@@ -271,7 +320,7 @@
       "useRule": "Use <i>[[rule]]</i>."
     },
     "syntaxError": {
-      "ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
+      "ambiguougAssoc": "The range of operators is ambiguous at index {{index}}: {{formula}}",
       "emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
       "missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
       "missingOpen": "The closing parenthesis at index {{index}} is missing a opening parenthesis: {{formula}}",

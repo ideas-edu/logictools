@@ -43,6 +43,7 @@
           "implelim": "U heeft implicatie eliminatie niet correct toegepast.",
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
           "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
+          "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "U bent de negatie voor de implicatie vergeten.",
           "notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
           "orcompl": {
@@ -142,14 +143,54 @@
       "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
     },
     "rule": {
+      "addBackwardStep": "Stap achterwaarts toevoegen",
+      "addForwardStep": "Stap voorwaarts toevoegen",
+      "addMotivation": "Stap motiveren",
+      "addStep": "Stap toevoegen",
       "assumption": {
-        "addMotivation": "Stap motiveren",
-        "addStep": "Stap toevoegen",
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Stap"
       },
-      "label": "<b>Regel</b>"
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "axiom-b": {
+        "chi": "$$\\chi$$",
+        "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "axiom-c": {
+        "def": "$$\\vdash(\\neg\\phi\\rightarrow\\neg\\psi)\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "deduction": {
+        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
+        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "phi": "$$\\phi$$"
+      },
+      "goal": {
+        "def": "$$\\phi\\vdash\\psi$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
+        "stepnr": "Stap"
+      },
+      "label": "<b>Regel</b>",
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      }
     }
   },
   "main": {
@@ -186,7 +227,13 @@
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
         "axiomatic": {
-          "assumption": "Aanname"
+          "assumption": "Aanname",
+          "axiom-a": "Axioma A",
+          "axiom-b": "Axioma B",
+          "axiom-c": "Axioma C",
+          "deduction": "Deductiestelling",
+          "goal": "Doel",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
@@ -208,6 +255,7 @@
   },
   "shared": {
     "button": {
+      "apply": "Pas toe",
       "completeExercise": "Volottoi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
@@ -218,6 +266,7 @@
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",
+      "selectStep": "-- Selecteer stap --",
       "solveExercise": "Toon oplossing",
       "step": "Toon stap",
       "validateStep": "<i class='fas fa-check'></i>"
@@ -271,7 +320,7 @@
       "useRule": "Gebruik <i>[[rule]]</i>."
     },
     "syntaxError": {
-      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
+      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} is dubbelzinnig: {{formula}}",
       "emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
       "missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
       "missingOpen": "Er ontbreekt een openingshaakje bij het sluitingshaakje bij positie {{index}}: {{formula}}",
