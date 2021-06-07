@@ -652,15 +652,21 @@ export class LogAxController extends ExerciseController {
 
   showNextHint (nextStep) {
     const buttonCallback = function () {
-      this.showNextStep(nextStep)
+      this.doNextStep(nextStep)
     }.bind(this)
     this.updateAlert(`logax.hint.applyRule.${nextStep.rule}`, null, 'hint', 'shared.hint.autoStep', buttonCallback)
+  }
+
+  showNextStep () {
+    if (!this.exercise.isReady) {
+      this.exerciseSolver.getHelpForNextStep(this.exercise, this.doNextStep.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    }
   }
 
   /**
         Shows the next step
      */
-  showNextStep (nextStep) {
+  doNextStep (nextStep) {
     this.exercise.steps.steps = []
     for (const responseStep of nextStep.formula) {
       const newStep = new LogAxStep(responseStep)
