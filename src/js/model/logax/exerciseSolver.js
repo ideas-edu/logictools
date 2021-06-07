@@ -12,4 +12,27 @@ export class LogAxExerciseSolver extends ExerciseSolver {
     this.Step = LogAxStep
     this.StepCollection = LogAxStepCollection
   }
+
+  _getState (exercise) {
+    const state = {
+      exerciseid: exercise.type,
+      prefix: '[]',
+      context: {
+        term: [],
+        environment: {},
+        location: []
+      }
+    }
+
+    for (const step of exercise.steps.steps) {
+      state.context.term.push({
+        number: step.number,
+        term: step.term,
+        label: step.label,
+        references: step.references
+      })
+    }
+
+    return state
+  }
 }

@@ -106,6 +106,10 @@ export class LogAxController extends ExerciseController {
 
     this.initializeRules(document.getElementById('rule'))
     this.initializeInput()
+
+    document.getElementById('renumber-step').addEventListener('click', function () {
+      this.renumberSteps()
+    }.bind(this))
   }
 
   /**
@@ -253,6 +257,8 @@ export class LogAxController extends ExerciseController {
     */
   showExercise () {
     document.getElementById('exercise-container').style.display = ''
+    document.getElementById('rule-container').style.display = ''
+    document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('new-exercise-container').style.display = 'none'
     this.clearErrors()
 
@@ -603,6 +609,102 @@ export class LogAxController extends ExerciseController {
     return true
   }
 
+  /**
+        Shows the hint
+     */
+  showHint () {
+    if (!this.exercise.isReady) {
+      this.exerciseSolver.getHelpForNextStep(this.exercise, this.onHelpForNextStepFound.bind(this), this.onErrorGettingHelpForNextStep.bind(this))
+    }
+  }
+
+  /**
+        Handles the event that help for a next step is found
+        @param {OneWayStep} nextOneWayStep - The next one way step
+     */
+  onHelpForNextStepFound (nextStep) {
+    const buttonCallback = function () {
+      this.showNextHint(nextStep)
+    }.bind(this)
+    if (nextStep.stepEnvironment.subgoals !== '') {
+      const subgoal = nextStep.stepEnvironment.subgoals.split(';')[0]
+      this.updateAlert('logax.hint.proveSubgoal', { subgoal: LogAxStep.convertToLatex(subgoal) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+      return
+    }
+
+    if (nextStep.formula.length === this.exercise.steps.steps.length) {
+      this.updateAlert('logax.hint.motivate', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+      return
+    }
+
+    for (let i = 0; i < nextStep.formula.length; i++) {
+      if (nextStep.formula[i].number !== this.exercise.steps.steps[i].number) {
+        if (nextStep.formula[i].number < 500) {
+          this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+          return
+        } else {
+          this.updateAlert('logax.hint.performBackward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+          return
+        }
+      }
+    }
+  }
+
+  showNextHint (nextStep) {
+    const buttonCallback = function () {
+      this.showNextStep(nextStep)
+    }.bind(this)
+    this.updateAlert(`logax.hint.applyRule.${nextStep.rule}`, null, 'hint', 'shared.hint.autoStep', buttonCallback)
+  }
+
+  /**
+        Shows the next step
+     */
+  showNextStep (nextStep) {
+    this.exercise.steps.steps = []
+    for (const responseStep of nextStep.formula) {
+      const newStep = new LogAxStep(responseStep)
+      this.exercise.steps.push(newStep)
+    }
+    this.onStepValidated()
+    // Check if ready
+    for (const step of this.exercise.steps.steps) {
+      if (step.label === undefined) {
+        return
+      }
+    }
+    this.exerciseValidator.isFinished(this.exercise, this.onCompleted.bind(this), this.onErrorValidatingStep.bind(this))
+  }
+
+  onCompleted (isFinished) {
+    if (isFinished) {
+      document.getElementById('rule-container').style.display = 'none'
+      document.getElementById('completed-rule-container').style.display = ''
+
+      this.removeDeleteButtons()
+    }
+  }
+
+  removeDeleteButtons () {
+    const elements = document.getElementsByClassName('remove-step')
+    for (const element of elements) {
+      element.style.display = 'none'
+    }
+    document.getElementById('header-actions').style.display = 'none'
+  }
+
+  renumberSteps () {
+    const renumberStep = {
+      rule: 'logic.propositional.axiomatic.renumber',
+      environment: {}
+    }
+    const callback = function () {
+      this.onStepValidated()
+      this.removeDeleteButtons()
+    }.bind(this)
+    this.exerciseValidator.validateApply(this.exercise, renumberStep, callback, this.onErrorValidatingStep.bind(this))
+  }
+
   insertStep (step, canDelete) {
     this.dismissAlert()
 
@@ -642,15 +744,20 @@ export class LogAxController extends ExerciseController {
 
   renderStep (step, canDelete) {
     let rule = ''
+    let references = ''
     const stepTemplate = $.templates('#exercise-step-template')
 
     if (step.ruleKey !== undefined) {
       rule = translate(step.ruleKey)
     }
+    if (step.references !== undefined) {
+      references = step.references.join(', ')
+    }
 
     const exerciseStepHtml = stepTemplate.render({
       rule: rule,
       ruleKey: step.ruleKey,
+      references: references,
       term: step.termKatex,
       canDelete: canDelete,
       step: step.number

@@ -22,7 +22,8 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       state.context.term.push({
         number: step.number,
         term: step.term,
-        label: step.label
+        label: step.label,
+        references: step.references
       })
     }
 
@@ -55,5 +56,19 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       onValidated()
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
+  }
+
+  isFinished (exercise, onFinished, onError) {
+    const state = this.getState(exercise)
+
+    const validated = function (response) {
+      if (!response.finished) {
+        onError()
+        return
+      }
+
+      onFinished(response.finished)
+    }
+    IdeasServiceProxy.finished(this.config, state, validated, onError)
   }
 }

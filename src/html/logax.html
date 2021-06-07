@@ -78,7 +78,7 @@
 			</div>
 
 			<div class="col-6">
-				<div id="rule-container">
+				<div id="rule-container" style="display: none">
 					<table style="width: 100%">
 						<tbody>
 							<tr>
@@ -275,6 +275,10 @@
 					</div>
 					<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.apply"></button>
 				</div>
+				<div id="completed-rule-container" style="display: none">
+					<span translate-key="logax.completed"></span>
+					<button type="button" id="renumber-step" class="btn btn-outline-secondary" translate-key="logax.button.renumber"></button>
+				</div>
 			</div>
 		</div>
 
@@ -304,7 +308,7 @@
 				<span class="logax-term">{{:term}}</span>
 			</td>
 			<td class="col-rule">
-				<span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span>
+				<span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span> {{:references}}
 			</td>
 			<td class="remove-step col-actions">
 				{{if canDelete}}

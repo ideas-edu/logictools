@@ -620,6 +620,6 @@ video {
 }
 
 
-#rule-container {
+#rule-container, #completed-rule-container {
     border: 1px solid #e5e5e5;
 }
