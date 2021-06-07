@@ -102,7 +102,7 @@ export class ExerciseSolver {
     }
 
     const state = this._getState(exercise)
-    console.log(state)
+
     IdeasServiceProxy.onefirst(this.config, state, 'Hint: useRule', onSuccess, onError)
   }
 

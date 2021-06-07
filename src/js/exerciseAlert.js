@@ -5,6 +5,11 @@ export class ExerciseAlert {
     this.id = id
     this.buttonCallback = undefined
     this.type = null
+    const dismissButton = document.getElementById(`${this.id}-dismiss`)
+
+    dismissButton.addEventListener('mousedown', function () {
+      document.getElementById(`${this.id}-container`).style.display = 'none'
+    }.bind(this))
   }
 
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.

@@ -50,7 +50,11 @@
 			<button type="button" id="create-exercise" translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
 			<div class="row" id="new-exercise-alert-container" style="display: none">
 				<div class="alert col-12" id="new-exercise-alert" role="alert">
-					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span><button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>
+					<button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					</button>
+					<button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
 				</div>
 			</div>
 		</div>
@@ -252,7 +256,11 @@
 						<td colspan="4" class="no-row-divider"> -->
 							<div class="row" id="exercise-alert-container" style="display: none">
 								<div class="alert col-12" id="exercise-alert" role="alert">
-									<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+									<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+									<button id="exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									</button>
+									<button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
 								</div>
 							</div>
 						<!-- </td>
