@@ -603,6 +603,10 @@ button {
 	padding-left:25px!important;
 }
 
+.oneWay-body #new-exercise-container {
+
+}
+
 /* Logische Equivalentie */
 .twoWay-body #empty-bottom-step td{
 	background-color:#FBFBFB;
@@ -630,4 +634,19 @@ button {
 .oneWay-body #header-actions,
 .twoWay-body #header-actions {
 	padding-left:25px!important;
+}
+
+.twoWay-body #new-exercise-container .row .col-1 {
+	text-align: center;
+	padding-top: 5px;
+}
+
+.oneWay-body #new-exercise-container .row,
+.twoWay-body #new-exercise-container .row{
+	margin:0!important;
+}
+
+.oneWay-body #new-exercise-container .row .col-3,
+.twoWay-body #new-exercise-container .row .col-3{
+	text-align: right;
 }
