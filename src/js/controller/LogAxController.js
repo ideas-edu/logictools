@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
 // import katex from 'katex'
 
-import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
+import { FormulaPopover } from '../kbinput.js'
 
 // import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { LogEXSession } from '../logEXSession.js'
@@ -284,6 +284,10 @@ export class LogAxController extends ExerciseController {
 
     // Insert first step
     this.insertStep(this.exercise.steps.steps[0], false)
+  }
+
+  showSolution () {
+    window.open('logaxsolution.html?formula=' + this.exercise.theorem + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   getNewStep () {
@@ -674,10 +678,15 @@ export class LogAxController extends ExerciseController {
   /**
         Handles the error that the step can not be validated
      */
-  onErrorValidatingStep () {
+  onErrorValidatingStep (error) {
     this.disableUI(false)
+    if (error === undefined) {
+      this.setErrorLocation('validate-step')
+      this.updateAlert('shared.error.validatingStep', null, 'error')
+      return
+    }
     this.setErrorLocation('validate-step')
-    this.updateAlert('shared.error.validatingStep', null, 'error')
+    this.updateAlert(error.key, error.params, 'error')
   }
 
   /**
