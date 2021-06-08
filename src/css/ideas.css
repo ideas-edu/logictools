@@ -28,7 +28,7 @@ body {
     margin-left: 120px;
 	padding-top: 60px;
     padding-bottom: 40px;
-	min-height: 550px;
+	min-height: 430px;
 }
 
 .oneWay-body, .twoWay-body
@@ -330,6 +330,11 @@ input.error, select.error {
 	vertical-align: -.125em;
 }
 
+.alert #exercise-alert-dismiss {
+	margin-left: 10px;
+	margin-top:2px;
+}
+
 #toggle-hint2,
 #toggle-hint1 {
 	float:right;
@@ -364,7 +369,9 @@ input.error, select.error {
 	vertical-align: -.125em;
 }
 
-
+.formula-highlight {
+	background-color: red;
+}
 
 
 #header-step {
@@ -446,7 +453,10 @@ table td:first-child .katex {
 	float:right;
 }
 
-
+table td:first-child .alert .katex {
+	margin-top:0;
+	float:inherit;
+}
 
 #bottom {
 	margin-right:0!important;
@@ -649,9 +659,4 @@ button {
 .oneWay-body #new-exercise-container .row .col-3,
 .twoWay-body #new-exercise-container .row .col-3{
 	text-align: right;
-}
-
-
-#rule-container {
-    border: 1px solid #e5e5e5;
 }
