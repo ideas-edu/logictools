@@ -1,4 +1,5 @@
 import config from '../../../config.json'
+import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { KeyBindings } from '../keyBindings.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
 
@@ -323,5 +324,27 @@ export class ExerciseController {
     while (elements.length > 0) {
       elements[0].classList.remove('error')
     }
+    if (this.exerciseAlert.type === 'error') {
+      this.dismissAlert()
+    }
+  }
+
+  /**
+        Validates the formula
+
+        @param formula - The DOM element that contains the formula
+        @param onFormulasValidated - The callback function
+     */
+  validateFormula (formulaElement, alert) {
+    const result = this.syntaxValidator.validateSyntax(formulaElement.value)
+    if (result !== null) {
+      this.setErrorLocation(formulaElement.id)
+      alert.updateAlert(result.key, result.params, 'error')
+      this.isFormulaValid = false
+      IdeasServiceProxy.log(this.config, { exerciseid: this.exercise.type, formula: formulaElement.value, syntaxError: result.key })
+      return false
+    }
+    this.isFormulaValid = true
+    return true
   }
 }
