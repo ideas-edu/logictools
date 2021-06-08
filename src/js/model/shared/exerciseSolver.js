@@ -96,13 +96,13 @@ export class ExerciseSolver {
         // steps.push(new this.Step(result.state.context.term, result.step.rule))
         onHelpForNextStepFound({
           formula: result.state.context.term,
-          rule: result.step.rule
+          rule: result.step.rule,
+          stepEnvironment: result.step.environment
         })
       }
     }
 
     const state = this._getState(exercise)
-
     IdeasServiceProxy.onefirst(this.config, state, 'Hint: useRule', onSuccess, onError)
   }
 

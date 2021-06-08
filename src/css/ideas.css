@@ -660,3 +660,7 @@ button {
 .twoWay-body #new-exercise-container .row .col-3{
 	text-align: right;
 }
+
+#rule-container, #completed-rule-container {
+    border: 1px solid #e5e5e5;
+}

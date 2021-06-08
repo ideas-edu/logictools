@@ -56,7 +56,9 @@ export class LogAxExerciseSolver extends ExerciseSolver {
     for (const step of exercise.steps.steps) {
       state.context.term.push({
         number: step.number,
-        term: step.term
+        term: step.term,
+        label: step.label,
+        references: step.references
       })
     }
 
