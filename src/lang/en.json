@@ -8,7 +8,7 @@
           "andcompl": {
             "inv": "You have applied a complement rule incorrectly."
           },
-          "andcompl2": "You have applied a complement rule incorrectly.",
+          "andcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation.",
           "andoverand": "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction",
           "andsame": "You have applied idempoteny incorrectly.",
           "assimp": "You have incorrectly applied associativity to an implication.",
@@ -49,7 +49,7 @@
           "orcompl": {
             "inv": "You have applied a complement rule incorrectly."
           },
-          "orcompl2": "You have applied a complement rule incorrectly.",
+          "orcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation. ",
           "oroveror": "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
           "orsame": "You have applied a T-rule incorrectly.",
           "parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
