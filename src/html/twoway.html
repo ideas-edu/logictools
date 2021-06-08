@@ -52,34 +52,36 @@
                 <i class="fas fa-info-circle"></i> <span id="instruction" translate-key="twoWay.instruction.begin"></span>
             </div>
         </div>
-
         <div id="new-exercise-container" style="display: none">
             <div class="row">
-                <!-- <div class="col-12">
-                    <div class="exercise-step-even">
-                        <form class="form-inline padded-left"> -->
-                            <div>
-                                <form class="kbinput">
-                                    <input type="text" class="form-control kbinput" id="new-formula-1">
-                                    <div id="new-input-1" class="kbinput-wrapper"></div>
-                                </form>
-                            </div>
-                            <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span>
-                            <div>
-                                <form class="kbinput">
-                                    <input type="text" class="form-control kbinput" id="new-formula-2">
-                                    <div id="new-input-2" class="kbinput-wrapper"></div>
-                                </form>
-                            </div>
-                            <button type="button" id="create-exercise"  translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
-                            <div class="row" id="new-exercise-alert-container" style="display: none">
-                                <div class="alert col-12" id="new-exercise-alert" role="alert">
-                                    <span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span><button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
-                                </div>
-                            </div>
-<!--                         </form>
-                    </div>
-                </div> -->
+                <div class="col-4">
+                    <form class="kbinput">
+                        <input type="text" class="form-control kbinput" id="new-formula-1">
+                        <div id="new-input-1" class="kbinput-wrapper"></div>
+                    </form>
+                </div>
+                <div class="col-1">
+                    <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇔</mo></mrow><annotation encoding="application/x-tex">\Leftrightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">⇔</span></span></span></span>
+                </div>
+                <div class="col-4">
+                    <form class="kbinput">
+                        <input type="text" class="form-control kbinput" id="new-formula-2">
+                        <div id="new-input-2" class="kbinput-wrapper"></div>
+                    </form>
+                </div>
+                <div class="col-3">
+
+                    <button type="button" id="create-exercise"  translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
+                </div>
+            </div>
+            <div class="row" id="new-exercise-alert-container" style="display: none">
+                <div class="alert col-12" id="new-exercise-alert" role="alert">
+                    <span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>
+                    <button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+                </div>
             </div>
         </div>
 
@@ -126,7 +128,11 @@
                         <td colspan="4" class="no-row-divider">
                             <div class="row">
                                 <div class="alert col-12" id="exercise-alert" role="alert">
-                                    <span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+                                    <span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+                                    <button id="exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
                                 </div>
                             </div>
                         </td>

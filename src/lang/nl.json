@@ -47,7 +47,7 @@
           "andcompl": {
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "andcompl2": "U heeft een complement regel niet correct toegepast.",
+          "andcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
           "andoverand": "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie.",
           "andsame": "U heeft idempotentie niet correct toegepast.",
           "assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
@@ -88,7 +88,7 @@
           "orcompl": {
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "orcompl2": "U heeft een complement regel niet correct toegepast.",
+          "orcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
           "oroveror": "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
           "orsame": "U heeft een T regel onterecht toegepast.",
           "parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
