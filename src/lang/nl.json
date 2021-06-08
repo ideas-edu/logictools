@@ -1,5 +1,44 @@
 {
   "buggyRule": {
+    "axiomatic": {
+      "deduction": {
+        "buggy-1": "De formule $${{phi}}$$ in stap {{n}} is geen implicatie, en kan dus niet het resultaat zijn van een toepassing van de deductiestelling.",
+        "buggy-2": "De formule $${{phi}}$$ in stap {{n}} is geen implicatie, en kan dus niet het resultaat zijn van een toepassing van de deductiestelling.",
+        "buggy-3": "De formule $${{phi}}$$ in stap {{n1}} is niet gelijk aan het deel rechts van de implicatie, $${{psi}}$$, in stap {{n2}}, dus stap {{n2}} kan niet het resultaat zijn van een toepassing van de deductiestelling op stap {{n1}}.",
+        "buggy-4": "De aannames in stap {{n2}} zijn niet gelijk aan de aannames in stap {{n1}} $$({{as}})$$ waaruit $${{phi}}$$ is weggelaten, dus stap {{n2}} kan niet het resultaat zijn van een toepassing van de deductiestelling op stap {{n1}}.",
+        "buggy-5": "Deductiestelling op stap {{n1}} en {{n2}} is niet mogelijk, u kunt stap {{n2}} wel afleiden met behulp van een aanname en modus ponens.",
+        "buggybw-1": "Stap {{n}} is al gemotiveerd, het heeft geen zin om een nieuwe bewering te zoeken zodat stap {{n}} het resultaat is van een toepassing van de deductiestelling op deze nieuwe regel.",
+        "buggycl-0": "Stap {{n2}} is al gemotiveerd en niet het resultaat van een toepassing van de deductiestelling op {{n2}}."
+      },
+      "goal": {
+        "buggy-gl1": "Dit doel is niet afleidbaar",
+        "buggy-gl2": "Dit doel is gelijk of verwant aan de te bewijzen formule"
+      },
+      "modusponens": {
+        "buggy-cl1": "De aannames $$({{as}})$$ in stap {{n3}} zijn niet gelijk aan de vereniging van de aannames in stap {{n1}} en stap {{n2}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n1}} en {{n2}}.",
+        "buggy-cl2": "Modus ponens op stap {{n1}} en stap {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n3}} is niet gelijk aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}. U kunt wel de deductiestelling toepassen op stap {{n3}}.",
+        "buggy-cl3": "Modus ponens is alleen mogelijk als de hele formule $${{phi}}$$ in stap {{n3}} gelijk is aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}",
+        "buggy-cl4": "Modus ponens is niet mogelijk, let op de haken in formule {{n2}}.",
+        "buggy-cl5": "Modus ponens op stap {{n3}} en {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n3}} is niet exact gelijk aan $${{psi}}$$ in stap {{n2}}. Deze formules zijn slechts equivalent.",
+        "buggy-cl6": "Modus ponens op stap {{n3}} en {{n2}} is alleen mogelijk als $${{phi}}$$ in stap {{n3}} gelijk is aan de formule $${{psi}}$$ links van de implicatie in stap {{n2}}. In dit geval is $${{phi}}$$ gelijk aan de formule rechts van de implicatie.",
+        "buggy-cl7": "Modus ponens op stap {{n3}} en {{n2}} is niet mogelijk, let op de haken in de formule in stap {{n2}}.",
+        "buggy-cl8": "De formule $${{psi}}$$ in stap {{n2}} is geen implicatie.",
+        "buggy-default": "Deze toepassing van Modus Ponens is niet correct.",
+        "buggy-default2": "Deze toepassing van Modus Ponens is niet correct",
+        "buggy-fw2": "Modus ponens op stap {{n1}} en stap {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n1}} is niet gelijk aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}.",
+        "buggy-fw3": "Modus ponens is alleen mogelijk als de hele formule $${{phi}}$$ in stap {{n1}} gelijk is aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}.",
+        "buggy-fw4": "Modus ponens is niet mogelijk, let op de haken in formule {{n2}}.",
+        "buggy-fw5": "Modus ponens op stap {{n1}} en {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n1}} is niet exact gelijk aan $${{psi}}$$ in stap {{n2}}. Deze formules zijn slechts equivalent.",
+        "buggy-fw6": "Modus ponens op stap {{n1}} en {{n2}} is alleen mogelijk als $${{phi}}$$ in stap {{n1}} gelijk is aan de formule $${{psi}}$$ links van de implicatie in stap {{n2}}. In dit geval is $${{phi}}$$ gelijk aan de formule rechts van de implicatie.",
+        "buggy-fw7": "Modus ponens op stap {{n1}} en {{n2}} is niet mogelijk, let op de haken in de formule in stap {{n2}}.",
+        "buggy-fw8": "De formule $${{psi}}$$ in de stap {{n2}} is geen implicatie.",
+        "buggy-fw9": "U kunt Modus Ponens alleen toepassen op de stappen {{n1}} en {{n2}} als beide regels al bewezen zijn.",
+        "buggy-m1": "De aanname(s) $$({{as}})$$ in stap {{n2}} is geen onderdeel van de aannames in stap {{n3}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n2}} en een nieuwe stap.",
+        "buggy-m2": "De aanname(s) $$({{as}})$$ in stap {{n1}} is geen onderdeel van de aannames in stap {{n3}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n1}} en een nieuwe stap.",
+        "buggy-m3": "De formule $${{phi}}$$ in stap {{n2}} is geen implicatie.",
+        "buggy-m4": "Het rechterdeel van de implicatie ($${{phi}}$$) in stap {{n2}} is niet gelijk aan de formule ($${{psi}}$$) in stap {{n3}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n2}} en een nieuwe stap."
+      }
+    },
     "logic": {
       "propositional": {
         "buggy": {
@@ -272,6 +311,7 @@
       "validateStep": "<i class='fas fa-check'></i>"
     },
     "error": {
+      "cannotApply": "Kan '[[rule]]' niet toepassen",
       "correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
       "creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
       "generatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Probeert u het nog een keer.",
