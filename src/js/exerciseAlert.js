@@ -4,6 +4,7 @@ export class ExerciseAlert {
   constructor (id) {
     this.id = id
     this.buttonCallback = undefined
+    this.type = null
     const dismissButton = document.getElementById(`${this.id}-dismiss`)
 
     dismissButton.addEventListener('mousedown', function () {
@@ -15,6 +16,7 @@ export class ExerciseAlert {
   // We use keys and params here so that they are updated when switching language
   updateAlert (alertKey, alertParams, type, buttonKey, buttonCallback) {
     document.getElementById(`${this.id}-container`).style.display = ''
+    this.type = type
     switch (type) {
       case 'hint':
         document.getElementById(`${this.id}-icon`).innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'

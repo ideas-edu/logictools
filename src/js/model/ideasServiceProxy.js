@@ -166,7 +166,7 @@ export class IdeasServiceProxy {
   }
 
   // log:: ? -> Empty
-  static log (toolConfig, state, requestinfo) {
+  static log (toolConfig, state) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'log',

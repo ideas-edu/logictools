@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
 // import katex from 'katex'
 
-import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
+import { FormulaPopover } from '../kbinput.js'
 
 // import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { LogEXSession } from '../logEXSession.js'
@@ -17,6 +17,7 @@ import { LogAxExerciseGenerator } from '../model/logax/exerciseGenerator.js'
 import { LogAxExerciseSolver } from '../model/logax/exerciseSolver.js'
 import { LogAxExerciseValidator } from '../model/logax/exerciseValidator.js'
 import { LogAxStep } from '../model/logax/step.js'
+import { SyntaxValidator } from '../model/syntaxValidator.js'
 // import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
 // import config from '../../../config.json'
@@ -103,6 +104,7 @@ export class LogAxController extends ExerciseController {
     this.exerciseSolver = new LogAxExerciseSolver(this.config)
     // validation
     this.exerciseValidator = new LogAxExerciseValidator(this.config)
+    this.syntaxValidator = new SyntaxValidator()
 
     this.initializeRules(document.getElementById('rule'))
     this.initializeInput()
@@ -206,11 +208,13 @@ export class LogAxController extends ExerciseController {
     const subSelect = document.getElementById('subtype-select')
 
     ruleElement.addEventListener('change', function () {
+      this.clearErrors()
       this.updateRuleVisibility(ruleElement, subSelect)
       this.applyReady()
     }.bind(this))
 
     subSelect.addEventListener('change', function () {
+      this.clearErrors()
       this.updateRuleVisibility(ruleElement, subSelect)
       this.applyReady()
     }.bind(this))
@@ -286,6 +290,10 @@ export class LogAxController extends ExerciseController {
 
     // Insert first step
     this.insertStep(this.exercise.steps.steps[0], false)
+  }
+
+  showSolution () {
+    window.open('logaxsolution.html?formula=' + this.exercise.theorem + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   getNewStep () {
@@ -561,6 +569,96 @@ export class LogAxController extends ExerciseController {
     }
   }
 
+  validateFormulas () {
+    const rule = this.ruleKey
+
+    switch (rule) {
+      case 'logic.propositional.axiomatic.assumption': {
+        const phi = document.getElementById('assumption-formula-phi')
+        return this.validateFormula(phi, this.exerciseAlert)
+      }
+      case 'logic.propositional.axiomatic.assumption.close': {
+        return true
+      }
+      case 'logic.propositional.axiomatic.axiom-a': {
+        const phi = document.getElementById('axiom-a-formula-phi')
+        const psi = document.getElementById('axiom-a-formula-psi')
+
+        if (this.validateFormula(phi, this.exerciseAlert)) {
+          return this.validateFormula(psi, this.exerciseAlert)
+        } else {
+          return false
+        }
+      }
+      case 'logic.propositional.axiomatic.axiom-a.close': {
+        return true
+      }
+      case 'logic.propositional.axiomatic.axiom-b': {
+        const phi = document.getElementById('axiom-b-formula-phi')
+        const psi = document.getElementById('axiom-b-formula-psi')
+        const chi = document.getElementById('axiom-b-formula-chi')
+
+        if (this.validateFormula(phi, this.exerciseAlert)) {
+          if (this.validateFormula(psi, this.exerciseAlert)) {
+            return this.validateFormula(chi, this.exerciseAlert)
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      }
+      case 'logic.propositional.axiomatic.axiom-b.close': {
+        return true
+      }
+      case 'logic.propositional.axiomatic.axiom-c': {
+        const phi = document.getElementById('axiom-c-formula-phi')
+        const psi = document.getElementById('axiom-c-formula-psi')
+
+        if (this.validateFormula(phi, this.exerciseAlert)) {
+          return this.validateFormula(psi, this.exerciseAlert)
+        } else {
+          return false
+        }
+      }
+      case 'logic.propositional.axiomatic.axiom-c.close': {
+        return true
+      }
+      case 'logic.propositional.axiomatic.modusponens': {
+        return true
+      }
+      case 'logic.propositional.axiomatic.deduction': {
+        const stepnr1 = document.getElementById('deduction-select-stepnr-1')
+        const phi = document.getElementById('deduction-formula-phi')
+        const stepnr2 = document.getElementById('deduction-select-stepnr-2')
+
+        if (stepnr1.value !== '' && phi.value !== '') {
+          return this.validateFormula(phi, this.exerciseAlert)
+        }
+
+        if (phi.value !== '' && stepnr2.value !== '') {
+          return this.validateFormula(phi, this.exerciseAlert)
+        }
+
+        if (stepnr1.value !== '' && stepnr2.value !== '') {
+          return true
+        }
+
+        break
+      }
+      case 'logic.propositional.axiomatic.goal': {
+        const phi = document.getElementById('goal-formula-phi')
+        const psi = document.getElementById('goal-formula-psi')
+
+        if (this.validateFormula(phi, this.exerciseAlert)) {
+          return this.validateFormula(psi, this.exerciseAlert)
+        } else {
+          return false
+        }
+      }
+    }
+  }
+
   /**
     Validates a step
       Runs callback after correct step has been validated
@@ -569,6 +667,10 @@ export class LogAxController extends ExerciseController {
     if (this.ruleKey === null) {
       this.setErrorLocation('rule')
       this.updateAlert('shared.error.noRule', null, 'error')
+      return false
+    }
+
+    if (!this.validateFormulas()) {
       return false
     }
 
@@ -582,10 +684,15 @@ export class LogAxController extends ExerciseController {
   /**
         Handles the error that the step can not be validated
      */
-  onErrorValidatingStep () {
+  onErrorValidatingStep (error) {
     this.disableUI(false)
+    if (error === undefined) {
+      this.setErrorLocation('validate-step')
+      this.updateAlert('shared.error.validatingStep', null, 'error')
+      return
+    }
     this.setErrorLocation('validate-step')
-    this.updateAlert('shared.error.validatingStep', null, 'error')
+    this.updateAlert(error.key, error.params, 'error')
   }
 
   /**

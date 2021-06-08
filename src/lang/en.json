@@ -1,5 +1,44 @@
 {
   "buggyRule": {
+    "axiomatic": {
+      "deduction": {
+        "buggy-1": "The formula $${{phi}}$$ in step {{n}} is not an implication, so it cannot be the result of the deduction theorem.",
+        "buggy-2": "The formula $${{phi}}$$ in step {{n2}} is not an implication, so it cannot be the result of the deduction theorem.",
+        "buggy-3": "The formula $${{phi}}$$ in step {{n1}} is not equal to the part right of the implication, $${{psi}}$$, in step {{n2}}, so step {{n2}} cannot be the result of an application of the deduction theorem in step {{n1}}.",
+        "buggy-4": "The assumptions in step {{n2}} are not equal to the assumptions in step {{n1}} $$({{as}})$$ from which $${{phi}}$$ is ommitted, so step {{n2}} cannot be the result of an application of the deduction theorem on step {{n1}}.",
+        "buggy-5": "Deduction theorem on step {{n1}} and {{n2}} is not possible, however, you can derive step {{n2}} using an assumption and modus ponens.",
+        "buggybw-1": "Step {{n}} is already motivated, it makes no sense to introduce a new statement  such that step {{n}} is the result of an application of deduction on this new statement",
+        "buggycl-0": "Step {{n2}} is already motivated, and not the result of an application of the deduction theorem on step {{n2}}."
+      },
+      "goal": {
+        "buggy-gl1": "This goal cannot be reached",
+        "buggy-gl2": "This goal is equal or related to the goal of this exercise"
+      },
+      "modusponens": {
+        "buggy-cl1": "The assumptions $$({{as}})$$ in step {{n3}} are not equal to the union of the assumptions in step {{n1}} and step {{n2}}, so step {{n3}} is not the result of an application of Modus Ponens on steps {{n1}} and {{n2}}.",
+        "buggy-cl2": "Applying Modus ponens on {{n1}} and step {{n2}} is not possible because $${{phi}}$$ in step {{n3}} is not equal to the formula left of the implication, $${{psi}}$$, in step {{n2}}. But you can apply the deduction theorem on step {{n3}}.",
+        "buggy-cl3": "Modus ponens is only possible when the complete first formula $${{phi}}$$ in step {{n3}} is equal to the formula left of the implication, $${{psi}}$$, in step {{n2}}",
+        "buggy-cl4": "Modus ponens is not possible, pay attention to the parentheses in formula {{n2}}.",
+        "buggy-cl5": "Applying Modus ponens on step {{n3}} and {{n2}} is not possible becaus $${{phi}}$$ in step {{n3}} is not exactly equal to $${{psi}}$$ in step {{n2}}. These formulas are only equivalent.",
+        "buggy-cl6": "Applying Modus ponens on step {{n3}} and {{n2}} is only possible when $${{phi}}$$ in step {{n3}} is equal to the formula $${{psi}}$$ left of the implication in step {{n2}}. In this case $${{phi}}$$ is equal to the formula to the right of the implication.",
+        "buggy-cl7": "Modus ponens on step {{n3}} and {{n2}} is not possible, pay attention to the parentheses in the formula in step {{n2}}.",
+        "buggy-cl8": "The formula $${{psi}}$$ in step {{n2}} is not an implication.",
+        "buggy-default": "This application of Modus Ponens is not correct.",
+        "buggy-default2": "This application of Modus Ponens is not correct.",
+        "buggy-fw2": "Applying Modus ponens on step {{n1}} and step {{n2}} is not possible because $${{phi}}$$ in step {{n1}} is not equal to the formula to the left of the implication, $${{psi}}$$, in step {{n2}}.",
+        "buggy-fw3": "Modus ponens is only possible when the complete first formula $${{phi}}$$ in step {{n1}} is equal to formula left of the implication, $${{psi}}$$, in step {{n2}}.",
+        "buggy-fw4": "Modus ponens is not possible, pay attention to the parentheses in formula {{n2}}.",
+        "buggy-fw5": "Applying Modus ponens on step {{n1}} and {{n2}} is not possible becaus $${{phi}}$$ in step {{n1}} is not exactly equal to $${{psi}}$$ in step {{n2}}. These formulas are only equivalent.",
+        "buggy-fw6": "Applying Modus ponens on step {{n1}} and {{n2}} is only possible when $${{phi}}$$ in step {{n1}} is equal to the formula $${{psi}}$$ left of the implication in step {{n2}}. In this case $${{phi}}$$ is equal to the formula to the right of the implication.",
+        "buggy-fw7": "Modus ponens on step {{n1}} and {{n2}} is not possible, pay attention to the parentheses in the formula in step {{n2}}.",
+        "buggy-fw8": "The formula $${{psi}}$$ in the step {{n2}} is not an implication.",
+        "buggy-fw9": "Modus Ponens is only applicable on step {{n1}} and {{n2}} when both steps are already motivated.",
+        "buggy-m1": "The assumption(s) $$({{as}})$$ in step {{n2}} is not part of the assumptions in step {{n3}}, so step {{n3}} is not the result of an application of Modus Ponens on step {{n2}} and a new step.",
+        "buggy-m2": "The assumption(s) $$({{as}})$$ in step {{n1}} is not part of the assumptions in step {{n3}}, so step {{n3}} is not the result of an application of Modus Ponens on step {{n1}} and a new step.",
+        "buggy-m3": "The formula $${{phi}}$$ in step {{n2}} is not an implication.",
+        "buggy-m4": "The right part of the implication ($${{phi}}$$) in step {{n2}} is not equal to the formula ($${{psi}}$$) in step {{n3}}, so step {{n3}} is not the result of an application of Modus Ponens on step {{n2}} and a new step."
+      }
+    },
     "logic": {
       "propositional": {
         "buggy": {
@@ -8,7 +47,7 @@
           "andcompl": {
             "inv": "You have applied a complement rule incorrectly."
           },
-          "andcompl2": "You have applied a complement rule incorrectly.",
+          "andcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation.",
           "andoverand": "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction",
           "andsame": "You have applied idempoteny incorrectly.",
           "assimp": "You have incorrectly applied associativity to an implication.",
@@ -49,7 +88,7 @@
           "orcompl": {
             "inv": "You have applied a complement rule incorrectly."
           },
-          "orcompl2": "You have applied a complement rule incorrectly.",
+          "orcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation. ",
           "oroveror": "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
           "orsame": "You have applied a T-rule incorrectly.",
           "parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
@@ -290,6 +329,7 @@
       "validateStep": "<i class='fas fa-check'></i>"
     },
     "error": {
+      "cannotApply": "Cannot apply '[[rule]]'",
       "correctNotVal": "This formula is equivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
       "creatingExercise": "An error occured while creating the exercise. Did you create a valid exercise?",
       "generatingExercise": "An error occured while creating the exercise. Please try again.",

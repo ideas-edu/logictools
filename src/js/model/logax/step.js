@@ -39,4 +39,8 @@ export class LogAxStep {
     term = term.replaceAll('¬', '~')
     return term
   }
+
+  getReferences () {
+    return this.references !== undefined ? this.references.join(', ') : null
+  }
 }
