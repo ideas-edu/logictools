@@ -50,7 +50,11 @@
 			<button type="button" id="create-exercise" translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
 			<div class="row" id="new-exercise-alert-container" style="display: none">
 				<div class="alert col-12" id="new-exercise-alert" role="alert">
-					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span><button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>
+					<button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					</button>
+					<button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
 				</div>
 			</div>
 		</div>
@@ -78,31 +82,171 @@
 					<table style="width: 100%">
 						<tbody>
 							<tr>
-								<td style="width: 12%"><span translate-key="logax.rule.label" class="float-right"></span></td>
+								<td style="width: 20%"><span translate-key="logax.rule.label" class="float-right"></span></td>
 								<td><select id="rule" class="form-control input custom-select"></select></td>
 							</tr>
-							<!-- Assumption -->
-							<tr rule="rule.logic.propositional.axiomatic.assumption" style="display: none">
-								<td></td><td><span translate-key="logax.rule.assumption.def"></span></td>
+							<tr id="rule-definition-row" style="display: none">
+								<td></td><td><span id="rule-definition" translate-key="logax.rule.assumption.def"></span></td>
 							</tr>
-							<tr rule="rule.logic.propositional.axiomatic.assumption" style="display: none">
-								<td></td><td><select id="assumption-select" class="form-control input custom-select">
-									<option translate-key="logax.rule.assumption.addStep"></option>
-									<option translate-key="logax.rule.assumption.addMotivation"></option>
+							<tr id="subtype-select-row" style="display: none">
+								<td></td><td><select id="subtype-select" class="form-control input custom-select">
+									<option translate-key="logax.rule.addStep"></option>
+									<option translate-key="logax.rule.addMotivation"></option>
 								</select></td>
 							</tr>
-							<tr rule="rule.logic.propositional.axiomatic.assumption" id="assumption-phi" style="display: none">
+							<tr id="direction-select-row" style="display: none">
+								<td></td><td><select id="direction-select" class="form-control input custom-select">
+									<option translate-key="logax.rule.addForwardStep"></option>
+									<option translate-key="logax.rule.addBackwardStep"></option>
+									<option translate-key="logax.rule.addMotivation"></option>
+								</select></td>
+							</tr>
+							<!-- Assumption -->
+							<tr rule="logic.propositional.axiomatic.assumption" id="assumption-phi" style="display: none">
 								<td><span translate-key="logax.rule.assumption.phi" class="float-right"></span></td>
 								<td><form class="kbinput">
-									<input type="text" class="form-control kbinput" id="assumption-formula">
-									<div id="one-way-input" class="kbinput-wrapper"></div>
+									<input type="text" class="form-control kbinput" id="assumption-formula-phi">
+									<div id="assumption-phi-input" class="kbinput-wrapper"></div>
 								</form></td>
 							</tr>
-							<tr rule="rule.logic.propositional.axiomatic.assumption" id="assumption-stepnr" style="display: none">
+							<!-- Assumption Close -->
+							<tr rule="logic.propositional.axiomatic.assumption.close" id="assumption-stepnr" style="display: none">
 								<td><span translate-key="logax.rule.assumption.stepnr" class="float-right"></span></td><td>
-									<select id="assumption-select-stepnr" class="form-control input custom-select">
-										<option>1000</option>
+									<select id="assumption-select-stepnr" class="form-control input custom-select stepnr-select">
 									</select>
+								</td>
+							</tr>
+							<!-- Axiom A -->
+							<tr rule="logic.propositional.axiomatic.axiom-a" id="axiom-a-phi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-a.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-a-formula-phi">
+									<div id="axiom-a-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.axiom-a" id="axiom-a-psi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-a.psi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-a-formula-psi">
+									<div id="axiom-a-psi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<!-- Axiom A Close -->
+							<tr rule="logic.propositional.axiomatic.axiom-a.close" id="axiom-a-stepnr" style="display: none">
+								<td><span translate-key="logax.rule.axiom-a.stepnr" class="float-right"></span></td><td>
+									<select id="axiom-a-select-stepnr" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Axiom B -->
+							<tr rule="logic.propositional.axiomatic.axiom-b" id="axiom-b-phi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-b.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-b-formula-phi">
+									<div id="axiom-b-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.axiom-b" id="axiom-b-psi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-b.psi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-b-formula-psi">
+									<div id="axiom-b-psi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.axiom-b" id="axiom-b-chi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-b.chi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-b-formula-chi">
+									<div id="axiom-b-chi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<!-- Axiom B Close -->
+							<tr rule="logic.propositional.axiomatic.axiom-b.close" id="axiom-b-stepnr" style="display: none">
+								<td><span translate-key="logax.rule.axiom-b.stepnr" class="float-right"></span></td><td>
+									<select id="axiom-b-select-stepnr" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Axiom C -->
+							<tr rule="logic.propositional.axiomatic.axiom-c" id="axiom-c-phi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-c.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-c-formula-phi">
+									<div id="axiom-c-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.axiom-c" id="axiom-c-psi" style="display: none">
+								<td><span translate-key="logax.rule.axiom-c.psi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="axiom-c-formula-psi">
+									<div id="axiom-c-psi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<!-- Axiom C Close -->
+							<tr rule="logic.propositional.axiomatic.axiom-c.close" id="axiom-c-stepnr" style="display: none">
+								<td><span translate-key="logax.rule.axiom-c.stepnr" class="float-right"></span></td><td>
+									<select id="axiom-c-select-stepnr" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Modus Ponens -->
+							<tr rule="logic.propositional.axiomatic.modusponens" id="modusponens-stepnr-1" style="display: none">
+								<td><span translate-key="logax.rule.modusponens.n1" class="float-right"></span></td><td>
+									<select id="modusponens-select-stepnr-1" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.modusponens" id="modusponens-stepnr-2" style="display: none">
+								<td><span translate-key="logax.rule.modusponens.n2" class="float-right"></span></td><td>
+									<select id="modusponens-select-stepnr-2" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.modusponens" id="modusponens-stepnr-3" style="display: none">
+								<td><span translate-key="logax.rule.modusponens.n3" class="float-right"></span></td><td>
+									<select id="modusponens-select-stepnr-3" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Deduction -->
+							<tr rule="logic.propositional.axiomatic.deduction" id="deduction-stepnr-1" style="display: none">
+								<td><span translate-key="logax.rule.deduction.n1" class="float-right"></span></td><td>
+									<select id="deduction-select-stepnr-1" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.deduction" id="deduction-phi" style="display: none">
+								<td><span translate-key="logax.rule.deduction.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="deduction-formula-phi">
+									<div id="deduction-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.deduction" id="deduction-stepnr-2" style="display: none">
+								<td><span translate-key="logax.rule.deduction.n2" class="float-right"></span></td><td>
+									<select id="deduction-select-stepnr-2" class="form-control input custom-select stepnr-select">
+									</select>
+								</td>
+							</tr>
+							<!-- Goal-->
+							<tr rule="logic.propositional.axiomatic.goal" id="goal-phi" style="display: none">
+								<td><span translate-key="logax.rule.goal.phi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="goal-formula-phi">
+									<div id="goal-phi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.goal" id="goal-psi" style="display: none">
+								<td><span translate-key="logax.rule.goal.psi" class="float-right"></span></td>
+								<td><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="goal-formula-psi">
+									<div id="goal-psi-input" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr rule="logic.propositional.axiomatic.goal" id="deduction-close-stepnr-2" style="display: none">
+								<td><span translate-key="logax.rule.goal.stepnr" class="float-right"></span></td><td>
+									<input type="text" id="goal-stepnr" class="form-control input">
+									<span translate-key="logax.rule.goal.stepExp"></span>
 								</td>
 							</tr>
 							<!--  -->
@@ -112,7 +256,11 @@
 						<td colspan="4" class="no-row-divider"> -->
 							<div class="row" id="exercise-alert-container" style="display: none">
 								<div class="alert col-12" id="exercise-alert" role="alert">
-									<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+									<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+									<button id="exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									</button>
+									<button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
 								</div>
 							</div>
 						<!-- </td>
@@ -125,7 +273,7 @@
 						<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
 						<button type="button" class="dropdown-item" id="validate-exercise" translate-key="shared.button.completeExercise"></button>
 					</div>
-					<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.validateStep"></button>
+					<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.apply"></button>
 				</div>
 			</div>
 		</div>

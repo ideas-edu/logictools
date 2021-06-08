@@ -8,7 +8,7 @@
           "andcompl": {
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "andcompl2": "U heeft een complement regel niet correct toegepast.",
+          "andcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
           "andoverand": "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie.",
           "andsame": "U heeft idempotentie niet correct toegepast.",
           "assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
@@ -49,7 +49,7 @@
           "orcompl": {
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "orcompl2": "U heeft een complement regel niet correct toegepast.",
+          "orcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
           "oroveror": "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
           "orsame": "U heeft een T regel onterecht toegepast.",
           "parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
@@ -143,14 +143,54 @@
       "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
     },
     "rule": {
+      "addBackwardStep": "Stap achterwaarts toevoegen",
+      "addForwardStep": "Stap voorwaarts toevoegen",
+      "addMotivation": "Stap motiveren",
+      "addStep": "Stap toevoegen",
       "assumption": {
-        "addMotivation": "Stap motiveren",
-        "addStep": "Stap toevoegen",
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Stap"
       },
-      "label": "<b>Regel</b>"
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "axiom-b": {
+        "chi": "$$\\chi$$",
+        "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "axiom-c": {
+        "def": "$$\\vdash(\\neg\\phi\\rightarrow\\neg\\psi)\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "deduction": {
+        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
+        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "phi": "$$\\phi$$"
+      },
+      "goal": {
+        "def": "$$\\phi\\vdash\\psi$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
+        "stepnr": "Stap"
+      },
+      "label": "<b>Regel</b>",
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      }
     }
   },
   "main": {
@@ -215,6 +255,7 @@
   },
   "shared": {
     "button": {
+      "apply": "Pas toe",
       "completeExercise": "Volottoi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
@@ -225,6 +266,7 @@
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",
+      "selectStep": "-- Selecteer stap --",
       "solveExercise": "Toon oplossing",
       "step": "Toon stap",
       "validateStep": "<i class='fas fa-check'></i>"

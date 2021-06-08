@@ -20,5 +20,6 @@ export class LogAxStepCollection extends StepCollection {
      */
   push (step) {
     this.steps.push(step)
+    this.steps.sort((a, b) => a.number > b.number)
   }
 }
