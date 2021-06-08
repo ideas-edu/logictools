@@ -9,7 +9,7 @@ export class LogAxStepCollection extends StepCollection {
   constructor (baseStep) {
     super()
     this.steps = []
-    if (baseStep !== null) {
+    if (baseStep !== null && baseStep !== undefined) {
       this.push(baseStep)
     }
   }
