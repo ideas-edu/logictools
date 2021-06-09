@@ -473,6 +473,7 @@ export class LogAxController extends ExerciseController {
     const rule = this.ruleKey
     const applyButton = document.getElementById('validate-step')
     applyButton.disabled = true
+    console.log(rule)
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
