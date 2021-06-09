@@ -112,6 +112,14 @@ export class LogAxController extends ExerciseController {
     document.getElementById('renumber-step').addEventListener('click', function () {
       this.renumberSteps()
     }.bind(this))
+
+    document.getElementById('undo-step').addEventListener('click', function () {
+      this.undoStep()
+    }.bind(this))
+
+    document.getElementById('redo-step').addEventListener('click', function () {
+      this.redoStep()
+    }.bind(this))
   }
 
   /**
@@ -264,6 +272,8 @@ export class LogAxController extends ExerciseController {
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('new-exercise-container').style.display = 'none'
+    document.getElementById('undo-step').disabled = true
+    document.getElementById('redo-step').disabled = true
     this.clearErrors()
 
     // Remove old rows
@@ -701,17 +711,11 @@ export class LogAxController extends ExerciseController {
 
      */
   onStepValidated () {
-    this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
-
-    const exerciseStepTable = document.getElementById('exercise-step-table')
-    exerciseStepTable.innerHTML = ''
-
-    for (const step of this.exercise.steps.steps) {
-      this.insertStep(step, step.number !== 1000)
-    }
-    this.disableUI(false)
+    this.updateSteps()
 
     //    Reset rule value after valid step
+    document.getElementById('undo-step').disabled = false
+    document.getElementById('redo-step').disabled = true
     document.getElementById('rule').selectedIndex = 0
     document.getElementById('rule').dispatchEvent(new Event('change', { bubbles: true }))
     return true
@@ -890,5 +894,31 @@ export class LogAxController extends ExerciseController {
       }
     }
     this.exercise.steps.steps = this.exercise.steps.steps.filter(x => x.number !== index)
+  }
+
+  updateSteps () {
+    this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
+
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+    exerciseStepTable.innerHTML = ''
+
+    for (const step of this.exercise.steps.steps) {
+      this.insertStep(step, step.number !== 1000)
+    }
+    this.disableUI(false)
+  }
+
+  undoStep () {
+    this.exercise.steps.setHistoryIndex(this.exercise.steps.stepsHistoryIndex - 1)
+    this.updateSteps()
+    document.getElementById('undo-step').disabled = this.exercise.steps.stepsHistoryIndex === 0
+    document.getElementById('redo-step').disabled = false
+  }
+
+  redoStep () {
+    this.exercise.steps.setHistoryIndex(this.exercise.steps.stepsHistoryIndex + 1)
+    this.updateSteps()
+    document.getElementById('redo-step').disabled = this.exercise.steps.stepsHistoryIndex === this.exercise.steps.stepsHistory.length - 1
+    document.getElementById('undo-step').disabled = false
   }
 }

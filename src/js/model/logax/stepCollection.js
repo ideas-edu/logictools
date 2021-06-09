@@ -27,6 +27,10 @@ export class LogAxStepCollection extends StepCollection {
 
   newSet (steps) {
     this.steps = []
+
+    // Delete redo history
+    this.stepsHistory = this.stepsHistory.slice(0, this.stepsHistoryIndex + 1)
+
     for (const responseStep of steps) {
       const newStep = new LogAxStep(responseStep)
       this.steps.push(newStep)
@@ -52,5 +56,10 @@ export class LogAxStepCollection extends StepCollection {
     }
     this.stepsHistory.push(JSON.parse(JSON.stringify(this.steps)))
     this.stepsHistoryIndex += 1
+  }
+
+  setHistoryIndex (newIndex) {
+    this.stepsHistoryIndex = newIndex
+    this.steps = JSON.parse(JSON.stringify(this.stepsHistory[newIndex]))
   }
 }
