@@ -48,4 +48,13 @@ export class LogAxStep {
   getReferences () {
     return this.references !== undefined ? this.references.join(', ') : null
   }
+
+  getObject () {
+    return {
+      number: this.number,
+      term: this.term,
+      label: this.label,
+      references: this.references
+    }
+  }
 }

@@ -120,6 +120,10 @@ export class LogAxController extends ExerciseController {
     document.getElementById('redo-step').addEventListener('click', function () {
       this.redoStep()
     }.bind(this))
+
+    document.getElementById('complete-exercise').addEventListener('click', function () {
+      this.completeSolution()
+    }.bind(this))
   }
 
   /**
@@ -303,7 +307,15 @@ export class LogAxController extends ExerciseController {
   }
 
   showSolution () {
-    window.open('logaxsolution.html?formula=' + this.exercise.theorem + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    const steps = [{
+      term: this.exercise.theorem,
+      number: 1000
+    }]
+    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(steps)) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+  }
+
+  completeSolution () {
+    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(this.exercise.steps.getObject())) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   getNewStep () {
@@ -473,7 +485,6 @@ export class LogAxController extends ExerciseController {
     const rule = this.ruleKey
     const applyButton = document.getElementById('validate-step')
     applyButton.disabled = true
-    console.log(rule)
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
