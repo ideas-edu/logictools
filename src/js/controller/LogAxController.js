@@ -13,12 +13,13 @@ import { FormulaPopover } from '../kbinput.js'
 
 // import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { LogEXSession } from '../logEXSession.js'
+import { ExerciseTypes } from '../model/exerciseTypes.js'
 import { LogAxExerciseGenerator } from '../model/logax/exerciseGenerator.js'
 import { LogAxExerciseSolver } from '../model/logax/exerciseSolver.js'
 import { LogAxExerciseValidator } from '../model/logax/exerciseValidator.js'
 import { LogAxStep } from '../model/logax/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
-// import { LogAxExercise } from '../model/logax/exercise.js'
+import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
 // import config from '../../../config.json'
 import { translate, translateElement, loadLanguage } from '../translate.js'
@@ -185,8 +186,12 @@ export class LogAxController extends ExerciseController {
       allowUndo: true,
       characters: this.characterOptions
     }
-    const newFormulaOptions = {
-      id: 0,
+    const newFormula1Options = {
+      id: 13,
+      characters: this.characterOptions
+    }
+    const newFormula2Options = {
+      id: 14,
       characters: this.characterOptions
     }
     this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions, this.applyReady.bind(this))
@@ -201,7 +206,8 @@ export class LogAxController extends ExerciseController {
     this.goalPhiPopover = new FormulaPopover(document.getElementById('goal-formula-phi'), document.getElementById('goal-phi-input'), goalPhiOptions, this.applyReady.bind(this))
     this.goalPsiPopover = new FormulaPopover(document.getElementById('goal-formula-psi'), document.getElementById('goal-psi-input'), goalPsiOptions, this.applyReady.bind(this))
 
-    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula'), document.getElementById('new-input'), newFormulaOptions)
+    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula-1'), document.getElementById('new-input-1'), newFormula1Options)
+    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula-2'), document.getElementById('new-input-2'), newFormula2Options)
 
     // apply
     const applyButton = document.getElementById('validate-step')
@@ -267,6 +273,47 @@ export class LogAxController extends ExerciseController {
     for (const element of selectedElements) {
       element.style.display = ''
     }
+  }
+
+  /**
+        Creates a new exercise
+     */
+
+  createExercise () {
+    const exerciseMethod = ExerciseTypes[this.exerciseType]
+    const properties = {
+      titleKey: 'shared.exerciseName.user'
+    }
+
+    const formula1 = LogAxStep.convertToText(document.getElementById('new-formula-1').value)
+    const formula2 = LogAxStep.convertToText(document.getElementById('new-formula-2').value)
+    const term = [{
+      term: `${formula1} |- ${formula2}`,
+      number: 1000
+    }]
+
+    if (!this.validateFormula(document.getElementById('new-formula-1'), this.newExerciseAlert)) {
+      return
+    }
+
+    if (!this.validateFormula(document.getElementById('new-formula-2'), this.newExerciseAlert)) {
+      return
+    }
+
+    this.disableUI(true)
+    this.dismissAlert()
+    this.exercise = new LogAxExercise(term, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, term[0].term, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+  }
+
+  /**
+        Handles the error that an exercise can not be created
+     */
+  onErrorCreatingExercise () {
+    this.exercise = null
+    this.disableUI(false)
+    this.setErrorLocation('new-formula-1')
+    this.newExerciseAlert.updateAlert('shared.error.creatingExercise', null, 'error')
   }
 
   /**
