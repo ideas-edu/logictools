@@ -24,6 +24,11 @@ export class LogAxStep {
     this.termKatex = katex.renderToString(LogAxStep.convertToLatex(this.term), {
       throwOnError: false
     })
+
+    // Highlights
+    this.highlightStep = false
+    this.highlightTerm = false
+    this.highlightRule = false
   }
 
   static convertToLatex (term) {

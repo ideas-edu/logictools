@@ -169,6 +169,7 @@ export class FormulaPopover {
       }
     }
     e.preventDefault()
+    this.onChangeCallback()
   }
 
   onFocus (e) {

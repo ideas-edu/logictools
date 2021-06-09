@@ -463,6 +463,7 @@ export class LogAxController extends ExerciseController {
     const rule = this.ruleKey
     const applyButton = document.getElementById('validate-step')
     applyButton.disabled = true
+    console.log(rule)
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
@@ -775,10 +776,8 @@ export class LogAxController extends ExerciseController {
      */
   doNextStep (nextStep) {
     this.exercise.steps.steps = []
-    for (const responseStep of nextStep.formula) {
-      const newStep = new LogAxStep(responseStep)
-      this.exercise.steps.push(newStep)
-    }
+    this.exercise.steps.newSet(nextStep.formula)
+
     this.onStepValidated()
     // Check if ready
     for (const step of this.exercise.steps.steps) {
@@ -873,7 +872,10 @@ export class LogAxController extends ExerciseController {
       references: references,
       term: step.termKatex,
       canDelete: canDelete,
-      step: step.number
+      step: step.number,
+      highlightStep: step.highlightStep,
+      highlightTerm: step.highlightTerm,
+      highlightRule: step.highlightRule
     })
 
     return exerciseStepHtml
