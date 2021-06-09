@@ -272,6 +272,8 @@ export class LogAxController extends ExerciseController {
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('new-exercise-container').style.display = 'none'
+    document.getElementById('undo-step').disabled = true
+    document.getElementById('redo-step').disabled = true
     this.clearErrors()
 
     // Remove old rows
