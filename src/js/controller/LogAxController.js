@@ -83,6 +83,12 @@ export class LogAxController extends ExerciseController {
         charStyled: '<i>s</i>'
       },
       {
+        char: 't',
+        latex: 't',
+        triggers: ['T'],
+        charStyled: '<i>t</i>'
+      },
+      {
         char: '(',
         latex: '(',
         triggers: ['9']
@@ -125,6 +131,16 @@ export class LogAxController extends ExerciseController {
     document.getElementById('complete-exercise').addEventListener('click', function () {
       this.completeSolution()
     }.bind(this))
+
+    // Create exercise buttons
+    document.getElementById('add-lemma').addEventListener('click', function () {
+      document.getElementById('add-lemma-row').style.display = 'none'
+      document.getElementById('lemma-row').style.display = ''
+    })
+    document.getElementById('remove-lemma').addEventListener('click', function () {
+      document.getElementById('add-lemma-row').style.display = ''
+      document.getElementById('lemma-row').style.display = 'none'
+    })
   }
 
   /**
@@ -194,6 +210,14 @@ export class LogAxController extends ExerciseController {
       id: 14,
       characters: this.characterOptions
     }
+    const newLemma1Options = {
+      id: 13,
+      characters: this.characterOptions
+    }
+    const newLemma2Options = {
+      id: 14,
+      characters: this.characterOptions
+    }
     this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions, this.applyReady.bind(this))
     this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1, this.applyReady.bind(this))
     this.axiomAPopover2 = new FormulaPopover(document.getElementById('axiom-a-formula-psi'), document.getElementById('axiom-a-psi-input'), axiomAOptions2, this.applyReady.bind(this))
@@ -206,8 +230,10 @@ export class LogAxController extends ExerciseController {
     this.goalPhiPopover = new FormulaPopover(document.getElementById('goal-formula-phi'), document.getElementById('goal-phi-input'), goalPhiOptions, this.applyReady.bind(this))
     this.goalPsiPopover = new FormulaPopover(document.getElementById('goal-formula-psi'), document.getElementById('goal-psi-input'), goalPsiOptions, this.applyReady.bind(this))
 
-    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula-1'), document.getElementById('new-input-1'), newFormula1Options)
-    this.newFormulaPopover = new FormulaPopover(document.getElementById('new-formula-2'), document.getElementById('new-input-2'), newFormula2Options)
+    this.newFormula1Popover = new FormulaPopover(document.getElementById('new-formula-1'), document.getElementById('new-input-1'), newFormula1Options)
+    this.newFormula2Popover = new FormulaPopover(document.getElementById('new-formula-2'), document.getElementById('new-input-2'), newFormula2Options)
+    this.newLemma1Popover = new FormulaPopover(document.getElementById('new-lemma-1'), document.getElementById('new-lemma-input-1'), newLemma1Options)
+    this.newLemma2Popover = new FormulaPopover(document.getElementById('new-lemma-2'), document.getElementById('new-lemma-input-2'), newLemma2Options)
 
     // apply
     const applyButton = document.getElementById('validate-step')
@@ -276,6 +302,14 @@ export class LogAxController extends ExerciseController {
   }
 
   /**
+        Shows the form for creating a new exercise
+     */
+  newExercise () {
+    super.newExercise()
+    translateElement(document.getElementById('instruction'), 'logax.instruction.create')
+  }
+
+  /**
         Creates a new exercise
      */
 
@@ -287,6 +321,7 @@ export class LogAxController extends ExerciseController {
 
     const formula1 = LogAxStep.convertToText(document.getElementById('new-formula-1').value)
     const formula2 = LogAxStep.convertToText(document.getElementById('new-formula-2').value)
+    let createTerm = `${formula1} |- ${formula2}`
     const term = [{
       term: `${formula1} |- ${formula2}`,
       number: 1000
@@ -300,10 +335,29 @@ export class LogAxController extends ExerciseController {
       return
     }
 
+    if (document.getElementById('lemma-row').style.display === '') {
+      const lemma1 = LogAxStep.convertToText(document.getElementById('new-lemma-1').value)
+      const lemma2 = LogAxStep.convertToText(document.getElementById('new-lemma-2').value)
+      term.unshift({
+        term: `${lemma1} |- ${lemma2}`,
+        number: 0,
+        label: 'lemma'
+      })
+      createTerm = `0. ${lemma1} |- ${lemma2} [lemma]\n1000. ${formula1} |- ${formula2}`
+
+      if (!this.validateFormula(document.getElementById('new-lemma-1'), this.newExerciseAlert)) {
+        return
+      }
+
+      if (!this.validateFormula(document.getElementById('new-lemma-2'), this.newExerciseAlert)) {
+        return
+      }
+    }
+
     this.disableUI(true)
     this.dismissAlert()
     this.exercise = new LogAxExercise(term, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, term[0].term, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exerciseGenerator.create(exerciseMethod, createTerm, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
@@ -340,17 +394,32 @@ export class LogAxController extends ExerciseController {
     }
     document.getElementById('header-actions').style.display = ''
 
-    translateElement(document.getElementById('instruction'), 'logax.instruction.exercise', {
-      theorem: this.exercise.theoremKatex,
-      title: {
-        key: this.exercise.titleKey,
-        params: this.exercise.titleParams
+    let lemma = null
+    for (const step of this.exercise.steps.steps) {
+      if (step.label === 'lemma') {
+        lemma = step
       }
-    })
-    this.disableUI(false)
+    }
 
-    // Insert first step
-    this.insertStep(this.exercise.steps.steps[0], false)
+    if (lemma === null) {
+      translateElement(document.getElementById('instruction'), 'logax.instruction.exercise', {
+        theorem: this.exercise.theoremKatex,
+        title: {
+          key: this.exercise.titleKey,
+          params: this.exercise.titleParams
+        }
+      })
+    } else {
+      translateElement(document.getElementById('instruction'), 'logax.instruction.exerciseWithLemma', {
+        theorem: this.exercise.theoremKatex,
+        lemma: lemma.termKatex,
+        title: {
+          key: this.exercise.titleKey,
+          params: this.exercise.titleParams
+        }
+      })
+    }
+    this.updateSteps()
   }
 
   showSolution () {
@@ -961,7 +1030,9 @@ export class LogAxController extends ExerciseController {
     exerciseStepTable.innerHTML = ''
 
     for (const step of this.exercise.steps.steps) {
-      this.insertStep(step, step.number !== 1000)
+      if (step.label !== 'lemma') {
+        this.insertStep(step, step.number !== 1000)
+      }
     }
     this.disableUI(false)
   }

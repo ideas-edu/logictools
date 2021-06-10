@@ -60,6 +60,32 @@
 			    <button type="button" id="create-exercise"  translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
 			</div>
 		</div>
+		<div class="row">
+			<h4 translate-key="logax.instruction.lemma"></h4>
+		</div>
+		<div class="row" id="add-lemma-row">
+			<button type="button" id="add-lemma" translate-key="logax.button.addLemma" class="btn btn-outline-secondary"></button>
+		</div>
+		<div class="row" id="lemma-row" style="display: none">
+			<div class="col-4">
+			    <form class="kbinput">
+			        <input type="text" class="form-control kbinput" id="new-lemma-1">
+			        <div id="new-lemma-input-1" class="kbinput-wrapper"></div>
+			    </form>
+			</div>
+			<div class="col-1">
+			    <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊢</mo></mrow><annotation encoding="application/x-tex">\vdash</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mrel">⊢</span></span></span></span>
+			</div>
+			<div class="col-4">
+			    <form class="kbinput">
+			        <input type="text" class="form-control kbinput" id="new-lemma-2">
+			        <div id="new-lemma-input-2" class="kbinput-wrapper"></div>
+			    </form>
+			</div>
+			<div class="col-3">
+			    <button type="button" id="remove-lemma" translate-key="logax.button.removeLemma" class="btn btn-outline-secondary"></button>
+			</div>
+		</div>
 		<div class="row" id="new-exercise-alert-container" style="display: none">
 			<div class="alert col-12" id="new-exercise-alert" role="alert">
 				<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>

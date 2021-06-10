@@ -177,7 +177,9 @@
   },
   "logax": {
     "button": {
-      "renumber": "Renumber"
+      "addLemma": "Add Lemma",
+      "renumber": "Renumber",
+      "removeLemma": "Remove Lemma"
     },
     "completed": "The exercise is finished",
     "hint": {
@@ -197,7 +199,9 @@
     "instruction": {
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
-      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: <ul><li>{{lemma}}</li></ul>",
+      "lemma": "Lemma"
     },
     "rule": {
       "addBackwardStep": "Add Backward Step",

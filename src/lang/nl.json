@@ -177,7 +177,9 @@
   },
   "logax": {
     "button": {
-      "renumber": "Hernummeren"
+      "addLemma": "Voeg Hulpstelling Toe",
+      "renumber": "Hernummeren",
+      "removeLemma": "Verwijder Hulpstelling"
     },
     "completed": "De uitwerking is compleet",
     "hint": {
@@ -196,8 +198,10 @@
     },
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!",
-      "create": "Schrijf de formule voor je eigen opgave",
-      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
+      "create": "Schrijf de stelling voor je eigen opgave",
+      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: <ul><li>{{lemma}}</li></ul>",
+      "lemma": "Hulpstelling"
     },
     "rule": {
       "addBackwardStep": "Stap achterwaarts toevoegen",
