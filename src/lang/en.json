@@ -178,8 +178,8 @@
   "logax": {
     "button": {
       "addLemma": "Add Lemma",
-      "renumber": "Renumber",
-      "removeLemma": "Remove Lemma"
+      "removeLemma": "Remove Lemma",
+      "renumber": "Renumber"
     },
     "completed": "The exercise is finished",
     "hint": {

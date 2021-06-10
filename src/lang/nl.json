@@ -178,8 +178,8 @@
   "logax": {
     "button": {
       "addLemma": "Voeg Hulpstelling Toe",
-      "renumber": "Hernummeren",
-      "removeLemma": "Verwijder Hulpstelling"
+      "removeLemma": "Verwijder Hulpstelling",
+      "renumber": "Hernummeren"
     },
     "completed": "De uitwerking is compleet",
     "hint": {
