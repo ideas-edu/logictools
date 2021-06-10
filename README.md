@@ -28,7 +28,7 @@ To run the server locally with php first compile the source and then change your
 ```ssh
 $:./dist php -S 127.0.0.1:8080
 ```
-while running php the tool should be available at [127.0.0.1:8080](127.0.0.1:8080)
+while running php the tool should be available at [127.0.0.1:8080](http://127.0.0.1:8080)
 
 ### Running production server
 For information about running Logic Tools on a production server refer to [install.md](scripts/install.md).
