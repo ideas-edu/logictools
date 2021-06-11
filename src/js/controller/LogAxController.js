@@ -21,7 +21,7 @@ import { SyntaxValidator } from '../model/syntaxValidator.js'
 // import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
 // import config from '../../../config.json'
-import { translate, translateElement, loadLanguage } from '../translate.js'
+import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -702,8 +702,12 @@ export class LogAxController extends ExerciseController {
       this.updateAlert('shared.error.validatingStep', null, 'error')
       return
     }
+    let message = error.key
+    if (!hasTranslation(message)) {
+      message = 'shared.error.wrongStep'
+    }
     this.setErrorLocation('validate-step')
-    this.updateAlert(error.key, error.params, 'error')
+    this.updateAlert(message, error.params, 'error')
   }
 
   /**

@@ -45,6 +45,7 @@
           "absor": "U heeft absorptie niet correct toegepast.",
           "absor2": "U heeft absorptie niet correct toegepast: let op welke subformule u overhoudt.",
           "andcompl": {
+            "#": "U heeft een complement regel niet correct toegepast.",
             "inv": "U heeft een complement regel niet correct toegepast."
           },
           "andcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
@@ -56,13 +57,16 @@
           "demorgan1": "U heeft De Morgan niet correct toegepast, denk aan de negatietekens.",
           "demorgan2": "Denk bij het toepassen van De Morgan aan het weghalen van de negatie buiten de haken.",
           "demorgan3": {
-            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie."
+            "#": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
+            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie."
           },
           "demorgan4": {
-            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie."
+            "#": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
+            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie."
           },
           "demorgan5": "Let bij het toepassen van De Morgan op het plaatsen van de haken, u hebt het bereik van een negatie onbedoeld gewijzigd.",
           "distr": {
+            "#": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan.",
             "inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan."
           },
           "distrnot": "U bent bij de distributie een negatie vergeten.",
@@ -70,13 +74,16 @@
           "equivelim2": "U heeft equivalentie eliminatie niet correct toegepast, let op de plaats van de disjuncties en de conjuncties.",
           "equivelim3": "U heeft de regel voor implicatie eliminatie in plaats van equivalentie eliminatie toegepast.",
           "falseprop": {
+            "#": "U heeft een F regel niet correct toegepast.",
             "inv": "U heeft een F regel niet correct toegepast."
           },
           "idemequi": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
           "idemequiv": {
+            "#": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
             "inv": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties."
           },
           "idemimp": {
+            "#": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
             "inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties."
           },
           "implelim": "U heeft implicatie eliminatie niet correct toegepast.",
@@ -86,6 +93,7 @@
           "implnotelim": "U bent de negatie voor de implicatie vergeten.",
           "notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
           "orcompl": {
+            "#": "U heeft een complement regel niet correct toegepast.",
             "inv": "U heeft een complement regel niet correct toegepast."
           },
           "orcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
@@ -95,6 +103,7 @@
           "parenth2": "Let op de haakjes. Denk eraan dat bij equivalentie-eliminatie de negatie buiten haken blijft staan.",
           "parenth3": "Dubbele negatie is pas toepasbaar als beide negaties betrekking hebben op dezelfde subformule.",
           "trueprop": {
+            "#": "U heeft een T regel niet correct toegepast.",
             "inv": "U heeft een T regel niet correct toegepast."
           }
         }

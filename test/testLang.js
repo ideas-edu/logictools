@@ -88,7 +88,7 @@ describe('language', function () {
         const langFile = readFileSync(`${langDir}${lang}.json`, 'utf8')
         const parsed = JSON.parse(langFile)
         const parsedKeys = getTranslateKeys(parsed)
-        const fileKeys = langFile.match(/"([\w,-]*)":/g)
+        const fileKeys = langFile.match(/"([\w,-]*|#)":/g)
         for (let i = 0; i < fileKeys.length; i++) {
           assert(parsedKeys[i].key === fileKeys[i].slice(1, -2), `Key ${fileKeys[i].slice(1, -2)} (by ${parsedKeys[i].prefixedKey}) is duplicate`)
         }
