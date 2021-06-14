@@ -13,9 +13,9 @@ export class SyntaxValidator {
         @param onValidated - The callback function that is called after the syntax validation.
         The callback function should provide 2 parameters, a boolean (isValid) and a string (formulaText)
      */
-  validateSyntax (formulaText) {
+  validateSyntax (formulaText, formulaOptions) {
     const formulaTrimmed = formulaText.replaceAll(' ', '')
-    const formula = new Formula(formulaTrimmed)
+    const formula = new Formula(formulaTrimmed, formulaOptions)
     if (formula.error !== null) {
       const formulaWithNotation = this._underlineText(formulaTrimmed, formula.error.params.index - 1, formula.error.params.index + formula.error.params.length - 1)
       formula.error.params.formula = katex.renderToString(formulaWithNotation, {

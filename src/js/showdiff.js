@@ -74,9 +74,9 @@ function checkDifferences (oldSub, newSub) {
   return [oldSub, newSub]
 }
 
-export function showdiff (oldString, newString) {
-  const oldFormula = new Formula(oldString).result
-  const newFormula = new Formula(newString).result
+export function showdiff (oldString, newString, options) {
+  const oldFormula = new Formula(oldString, options).result
+  const newFormula = new Formula(newString, options).result
 
   const result = checkDifferences(oldFormula, newFormula)
 

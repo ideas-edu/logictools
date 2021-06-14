@@ -7,6 +7,10 @@ function kt (string) {
 }
 
 class Expression {
+  constructor () {
+    this.depth = 1
+  }
+
   printStyled () {
     if (this.style !== undefined) {
       return `<span class='${this.style}'>${this.printUnicode()}</span>`
@@ -31,6 +35,7 @@ export class ParenthesisGroup extends Expression {
   constructor (expression) {
     super()
     this.expression = expression
+    this.setDepth(this.depth)
   }
 
   printUnicode () {
@@ -46,6 +51,13 @@ export class ParenthesisGroup extends Expression {
       return 2
     }
     return 2 + this.expression.length()
+  }
+
+  setDepth (depth) {
+    this.depth = depth
+    if (this.expression !== undefined) {
+      this.expression.setDepth(this.depth + 1)
+    }
   }
 }
 
@@ -66,6 +78,10 @@ export class Literal extends Expression {
   length () {
     return 1
   }
+
+  setDepth (depth) {
+    this.depth = depth
+  }
 }
 
 export class UnaryOperator extends Expression {
@@ -73,6 +89,7 @@ export class UnaryOperator extends Expression {
     super()
     this.operator = operator
     this.expression = expression
+    this.setDepth(this.depth)
   }
 
   printUnicode () {
@@ -86,6 +103,13 @@ export class UnaryOperator extends Expression {
   length () {
     return 1 + this.expression.length()
   }
+
+  setDepth (depth) {
+    this.depth = depth
+    if (this.expression !== null) {
+      this.expression.setDepth(this.depth + 1)
+    }
+  }
 }
 
 export class BinaryOperator extends Expression {
@@ -94,6 +118,7 @@ export class BinaryOperator extends Expression {
     this.operator = operator
     this.lhe = lhe
     this.rhe = rhe
+    this.setDepth(this.depth)
   }
 
   flatten () {
@@ -111,6 +136,16 @@ export class BinaryOperator extends Expression {
     expressions.unshift(leftExp)
 
     return new FlattenedSummation(this.operator, expressions)
+  }
+
+  setDepth (depth) {
+    this.depth = depth
+    if (this.lhe !== null) {
+      this.lhe.setDepth(this.depth + 1)
+    }
+    if (this.rhe !== null) {
+      this.rhe.setDepth(this.depth + 1)
+    }
   }
 
   printUnicode () {
@@ -134,6 +169,7 @@ class FlattenedSummation extends Expression {
     super()
     this.operator = operator
     this.expressions = expressions
+    this.setDepth(this.depth)
   }
 
   printUnicode () {
@@ -173,15 +209,26 @@ class FlattenedSummation extends Expression {
     }
     return this.printSubStyled()
   }
+
+  setDepth (depth) {
+    this.depth = depth
+    for (const expression of this.expressions) {
+      expression.setDepth(this.depth + 1)
+    }
+  }
+}
+const baseOptions = {
+  unaryOperators: [],
+  binaryOperators: [],
+  implicitAssociativeBinaryOperators: [],
+  firstOrderOperators: [],
+  implicitPrecendence: [],
+  literals: []
 }
 
-const unaryOperators = ['¬']
-const binaryOperators = ['∧', '∨', '→', '↔', ',']
-const implicitAssociativeBinaryOperators = ['∧', '∨']
-const literals = ['p', 'q', 'r', 's', 'T', 'F']
-
 export class Formula {
-  constructor (formula) {
+  constructor (formula, options) {
+    this.options = Object.assign({}, baseOptions, options)
     this.error = null
     this.result = this.parse(formula, 0)
   }
@@ -198,7 +245,7 @@ export class Formula {
       }
 
       // Unary
-      if (unaryOperators.includes(expressionString[0])) {
+      if (this.options.unaryOperators.includes(expressionString[0])) {
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
@@ -216,7 +263,7 @@ export class Formula {
         continue
       }
       // Binary
-      if (binaryOperators.includes(expressionString[0])) {
+      if (this.options.binaryOperators.includes(expressionString[0])) {
         if (leftExpression === null) {
           this.error = {
             message: 'Missing operand',
@@ -229,10 +276,35 @@ export class Formula {
           return
         }
         if (leftExpression instanceof BinaryOperator) {
-          if (leftExpression.operator !== expressionString[0] || !implicitAssociativeBinaryOperators.includes(expressionString[0])) {
+          const lho = leftExpression.operator
+          const rho = expressionString[0]
+          if (this.options.implicitPrecendence.some(e => e.weak === rho && e.strong === lho)) {
+            const rightExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
+            leftExpression.rhe = new BinaryOperator(expressionString[0], leftExpression.rhe, rightExpression.exp)
+            expressionString = rightExpression.tailString
+            continue
+          }
+          if (this.options.implicitPrecendence.some(e => e.strong === rho && e.weak === lho)) {
+            const rightExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
+            leftExpression = new BinaryOperator(expressionString[0], leftExpression, rightExpression.exp)
+            expressionString = rightExpression.tailString
+            continue
+          }
+          if (lho !== rho || !this.options.implicitAssociativeBinaryOperators.includes(rho)) {
             this.error = {
               message: 'Ambiguous associativity',
               key: 'shared.syntaxError.ambiguougAssoc',
+              params: {
+                index: contextIndex,
+                length: 1
+              }
+            }
+            return
+          }
+          if (lho !== rho && this.options.firstOrderOperators.includes(expressionString[0])) {
+            this.error = {
+              message: 'Operator out of order',
+              key: 'shared.syntaxError.nestedFirstOrderOperator',
               params: {
                 index: contextIndex,
                 length: 1
@@ -247,7 +319,7 @@ export class Formula {
         continue
       }
       // Literal
-      if (literals.includes(expressionString[0])) {
+      if (this.options.literals.includes(expressionString[0])) {
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
@@ -311,6 +383,17 @@ export class Formula {
           return
         }
         leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex))
+        if (leftExpression.expression instanceof BinaryOperator && this.options.firstOrderOperators.includes(leftExpression.expression.operator)) {
+          this.error = {
+            message: 'Operator out of order',
+            key: 'shared.syntaxError.nestedFirstOrderOperator',
+            params: {
+              index: contextIndex + leftExpression.expression.lhe.length() + 1,
+              length: 1
+            }
+          }
+          return
+        }
         expressionString = expressionString.substring(i)
         continue
       }
@@ -342,7 +425,7 @@ export class Formula {
 
   findFirstExpression (expressionString, contextIndex) {
     // Literals
-    if (literals.includes(expressionString[0])) {
+    if (this.options.literals.includes(expressionString[0])) {
       return {
         exp: new Literal(expressionString[0]),
         tailString: expressionString.substring(1)
@@ -350,7 +433,7 @@ export class Formula {
     }
 
     // Unary
-    if (unaryOperators.includes(expressionString[0])) {
+    if (this.options.unaryOperators.includes(expressionString[0])) {
       const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
       const leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
       return {
@@ -400,9 +483,24 @@ export class Formula {
           tailString: ''
         }
       }
+      const parenthesisContents = this.parse(expressionString.substring(1, i - 1), contextIndex)
+      if (parenthesisContents instanceof BinaryOperator && this.options.firstOrderOperators.includes(parenthesisContents.operator)) {
+        this.error = {
+          message: 'Operator out of order',
+          key: 'shared.syntaxError.nestedFirstOrderOperator',
+          params: {
+            index: contextIndex + parenthesisContents.lhe.length() + 1,
+            length: 1
+          }
+        }
+        return {
+          exp: null,
+          tailString: ''
+        }
+      }
 
       return {
-        exp: new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex)),
+        exp: new ParenthesisGroup(parenthesisContents),
         tailString: expressionString.substring(i)
       }
     }

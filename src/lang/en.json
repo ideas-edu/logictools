@@ -384,6 +384,7 @@
       "missingOpen": "The closing parenthesis at index {{index}} is missing a opening parenthesis: {{formula}}",
       "missingOperand": "There is a missing operand at index {{index}}: {{formula}}",
       "missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
+      "nestedFirstOrderOperator": "The operator at index {{index}} is nested too deeply: {{formula}}",
       "unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
     }
   },

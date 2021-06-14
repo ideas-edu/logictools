@@ -45,6 +45,14 @@ export class LogAxController extends ExerciseController {
   constructor () {
     super()
     this.ruleKey = null
+    this.formulaOptions = {
+      unaryOperators: ['¬'],
+      binaryOperators: ['→', ','],
+      implicitAssociativeBinaryOperators: [','],
+      firstOrderOperators: [','],
+      implicitPrecendence: [{ strong: ',', weak: '→' }],
+      literals: ['p', 'q', 'r', 's', 't']
+    }
     this.characterOptions = [
       {
         char: '¬',
@@ -55,7 +63,7 @@ export class LogAxController extends ExerciseController {
         char: '→',
         latex: '\\rightarrow',
         triggers: ['i', '.', 'I'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: 'p',
@@ -94,7 +102,8 @@ export class LogAxController extends ExerciseController {
       {
         char: ',',
         latex: ',',
-        triggers: [',']
+        triggers: [','],
+        spaces: 'r'
       }
     ]
     this.setExampleExercises()
@@ -473,7 +482,6 @@ export class LogAxController extends ExerciseController {
     const rule = this.ruleKey
     const applyButton = document.getElementById('validate-step')
     applyButton.disabled = true
-    console.log(rule)
 
     switch (rule) {
       case 'logic.propositional.axiomatic.assumption': {
