@@ -12,19 +12,10 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       exerciseid: exercise.type,
       prefix: '[]',
       context: {
-        term: [],
+        term: exercise.steps.getObject(),
         environment: {},
         location: []
       }
-    }
-
-    for (const step of exercise.steps.steps) {
-      state.context.term.push({
-        number: step.number,
-        term: step.term,
-        label: step.label,
-        references: step.references
-      })
     }
 
     return state
