@@ -28,6 +28,22 @@ class Translate {
     return properties.reduce((prev, curr) => prev && prev[curr], dict)
   }
 
+  hasTranslation (key) {
+    const language = LogEXSession.getLanguage()
+    const dict = this.langDicts[language]
+
+    const string = this.resolveString(key, dict)
+    if (string === undefined) {
+      return false
+    }
+
+    // key.nested resolves to key.nested.#
+    if (string.constructor === Object && string['#'] === undefined) {
+      return false
+    }
+    return true
+  }
+
   string (key, params) {
     const language = LogEXSession.getLanguage()
 
@@ -40,6 +56,15 @@ class Translate {
     let string = this.resolveString(key, dict)
     if (string === undefined) {
       return key
+    }
+
+    // key.nested resolves to key.nested.#
+    if (string.constructor === Object) {
+      if (string['#'] !== undefined) {
+        return string['#']
+      } else {
+        return key
+      }
     }
 
     // Find all cases of {{param}}.
@@ -75,6 +100,7 @@ class Translate {
 const translateInstance = new Translate()
 
 export function translate (key, params) { return translateInstance.string(key, params) }
+export function hasTranslation (key) { return translateInstance.hasTranslation(key) }
 export function translateElement (element, key, params) {
   if (key !== undefined) {
     element.setAttribute('translate-key', key)

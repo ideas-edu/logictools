@@ -45,6 +45,7 @@
           "absor": "You have applied absorption incorrectly.",
           "absor2": "You have applied absorption incorrectly: pay attention to which subformula you keep.",
           "andcompl": {
+            "#": "You have applied a complement rule incorrectly.",
             "inv": "You have applied a complement rule incorrectly."
           },
           "andcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation.",
@@ -56,27 +57,33 @@
           "demorgan1": "You have applied De Morgan incorrectly, don't forget the negation signs.",
           "demorgan2": "When applying De Morgan, don't forget to remove the negation sign outside of the brackets.",
           "demorgan3": {
+            "#": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
             "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
           },
           "demorgan4": {
+            "#": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
             "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
           },
           "demorgan5": "When applying De Morgan, take care where you place the brackets. You have inadvertently changed the application range of the negation.",
           "distr": {
-            "inv": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions."
+            "#": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions.",
+            "inv": "You have applied distribution incorrectly. Take care where you put the disjunctions and where you put the conjunctions."
           },
           "distrnot": "You have forgotten a negation when applying distribution.",
           "equivelim1": "You have applied equivalence definition incorrecly. Take care of the negation signs.",
           "equivelim2": "You have applied equivalence definition incorrecly. Take care of the place of the disjunctions and conjunctions.",
           "equivelim3": "Mind the left range of the implication and place the negation in front of this range.",
           "falseprop": {
+            "#": "You have applied an F-rule incorrectly.",
             "inv": "You have applied an F-rule incorrectly."
           },
           "idemequi": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
           "idemequiv": {
+            "#": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
             "inv": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions."
           },
           "idemimp": {
+            "#": "Idempotency does not apply to implications, only to conjunctions and disjunctions.",
             "inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions."
           },
           "implelim": "You have applied implication definition incorrectly.",
@@ -86,6 +93,7 @@
           "implnotelim": "You forgot the negation in front of the implication.",
           "notoverimpl": "You are not allowed to distribute a negation sign over an implication. First rewrite the implication and then apply De Morgan.",
           "orcompl": {
+            "#": "You have applied a complement rule incorrectly.",
             "inv": "You have applied a complement rule incorrectly."
           },
           "orcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation. ",
@@ -95,6 +103,7 @@
           "parenth2": "Take care of the brackets. Remember to keep the negation out of the brackets when applying equivalence definition.",
           "parenth3": "Double negation can only be applied if both negations apply to the same subformula.",
           "trueprop": {
+            "#": "You have applied a T-rule incorrectly.",
             "inv": "You have applied a T-rule incorrectly."
           }
         }

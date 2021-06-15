@@ -22,7 +22,7 @@ import { TwoWayStep } from '../model/twoway/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { showdiff } from '../showdiff.js'
-import { translate, loadLanguage, translateElement } from '../translate.js'
+import { translate, loadLanguage, translateElement, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -413,6 +413,9 @@ class TwoWayController extends LogExController {
         errorLocation = 'formula'
       } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
         message = `buggyRule.${currentStep.buggyRule}`
+        if (!hasTranslation(message)) {
+          message = 'shared.error.wrongStep'
+        }
         errorLocation = 'formula'
       } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
         message = 'shared.error.wrongRule'
