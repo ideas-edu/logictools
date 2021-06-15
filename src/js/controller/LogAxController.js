@@ -51,9 +51,56 @@ export class LogAxController extends ExerciseController {
       implicitAssociativeBinaryOperators: [','],
       firstOrderOperators: [','],
       implicitPrecendence: [{ strong: ',', weak: '→' }],
-      literals: ['p', 'q', 'r', 's', 't']
+      literals: ['p', 'q', 'r', 's']
     }
     this.characterOptions = [
+      {
+        char: '¬',
+        latex: '\\neg',
+        triggers: ['-', 'n', '1', '`', '!', 'N']
+      },
+      {
+        char: '→',
+        latex: '\\rightarrow',
+        triggers: ['i', '.', 'I'],
+        spaces: 'lr'
+      },
+      {
+        char: 'p',
+        latex: 'p',
+        triggers: ['P'],
+        charStyled: '<i>p</i>'
+      },
+      {
+        char: 'q',
+        latex: 'q',
+        triggers: ['Q'],
+        charStyled: '<i>q</i>'
+      },
+      {
+        char: 'r',
+        latex: 'r',
+        triggers: ['R'],
+        charStyled: '<i>r</i>'
+      },
+      {
+        char: 's',
+        latex: 's',
+        triggers: ['S'],
+        charStyled: '<i>s</i>'
+      },
+      {
+        char: '(',
+        latex: '(',
+        triggers: ['9']
+      },
+      {
+        char: ')',
+        latex: ')',
+        triggers: ['0']
+      }
+    ]
+    this.newExerciseCharacterOptions = [
       {
         char: '¬',
         latex: '\\neg',
@@ -188,11 +235,11 @@ export class LogAxController extends ExerciseController {
     const goalPsiOptions = {
       id: 12,
       allowUndo: true,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newFormulaOptions = {
       id: 0,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions, this.applyReady.bind(this))
     this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1, this.applyReady.bind(this))
