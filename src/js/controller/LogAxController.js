@@ -275,7 +275,12 @@ export class LogAxController extends ExerciseController {
 
     if (simpleRule !== 'selectRule') {
       document.getElementById('rule-definition-row').style.display = ''
-      translateElement(document.getElementById('rule-definition'), `logax.rule.${simpleRule}.def`)
+      if (simpleRule === 'lemma') {
+        document.getElementById('rule-definition').setAttribute('translate-key', '')
+        document.getElementById('rule-definition').innerHTML = this.exercise.steps.steps[0].termKatex
+      } else {
+        translateElement(document.getElementById('rule-definition'), `logax.rule.${simpleRule}.def`)
+      }
     } else {
       document.getElementById('rule-definition-row').style.display = 'none'
     }
@@ -570,7 +575,7 @@ export class LogAxController extends ExerciseController {
       case 'logic.propositional.axiomatic.goal': {
         const phi = document.getElementById('goal-formula-phi')
         const psi = document.getElementById('goal-formula-psi')
-        const stepnr = document.getElementById('goal-stepnr')
+        const stepnr = document.getElementById('goal-select-stepnr')
 
         if (stepnr.value === '') {
           return {
@@ -584,6 +589,26 @@ export class LogAxController extends ExerciseController {
             environment: {
               n: stepnr.value,
               st: `${LogAxStep.convertToText(phi.value)} |- ${LogAxStep.convertToText(psi.value)}`
+            },
+            rule: rule
+          }
+        }
+      }
+      case 'logic.propositional.axiomatic.lemma': {
+        const stepnr = document.getElementById('lemma-select-stepnr')
+
+        if (stepnr.value === '') {
+          return {
+            environment: {
+              st: this.exercise.steps.steps[0].term
+            },
+            rule: rule
+          }
+        } else {
+          return {
+            environment: {
+              n: stepnr.value,
+              st: this.exercise.steps.steps[0].term
             },
             rule: rule
           }
@@ -704,6 +729,10 @@ export class LogAxController extends ExerciseController {
         }
         break
       }
+      case 'logic.propositional.axiomatic.lemma': {
+        applyButton.disabled = false
+        break
+      }
     }
   }
 
@@ -793,6 +822,9 @@ export class LogAxController extends ExerciseController {
         } else {
           return false
         }
+      }
+      case 'logic.propositional.axiomatic.lemma': {
+        return true
       }
     }
   }

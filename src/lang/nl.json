@@ -255,6 +255,10 @@
         "stepnr": "Stap"
       },
       "label": "<b>Regel</b>",
+      "lemma": {
+        "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
+        "stepnr": "Stap"
+      },
       "modusponens": {
         "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
         "n1": "$$\\sum\\vdash_S\\phi$$",
@@ -303,6 +307,7 @@
           "axiom-c": "Axioma C",
           "deduction": "Deductiestelling",
           "goal": "Doel",
+          "lemma": "Hulpstelling",
           "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativiteit",
