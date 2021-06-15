@@ -22,7 +22,7 @@ import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { showdiff } from '../showdiff.js'
-import { translate, translateElement, loadLanguage } from '../translate.js'
+import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -406,6 +406,9 @@ class OneWayController extends LogExController {
         errorLocation = 'formula'
       } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
         message = `buggyRule.${currentStep.buggyRule}`
+        if (!hasTranslation(message)) {
+          message = 'shared.error.wrongStep'
+        }
         errorLocation = 'formula'
       } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
         message = 'shared.error.wrongRule'

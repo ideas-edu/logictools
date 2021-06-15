@@ -21,7 +21,7 @@ import { SyntaxValidator } from '../model/syntaxValidator.js'
 // import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
 // import config from '../../../config.json'
-import { translate, translateElement, loadLanguage } from '../translate.js'
+import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -175,6 +175,10 @@ export class LogAxController extends ExerciseController {
 
     document.getElementById('redo-step').addEventListener('click', function () {
       this.redoStep()
+    }.bind(this))
+
+    document.getElementById('complete-exercise').addEventListener('click', function () {
+      this.completeSolution()
     }.bind(this))
   }
 
@@ -359,7 +363,15 @@ export class LogAxController extends ExerciseController {
   }
 
   showSolution () {
-    window.open('logaxsolution.html?formula=' + this.exercise.theorem + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    const steps = [{
+      term: this.exercise.theorem,
+      number: 1000
+    }]
+    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(steps)) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+  }
+
+  completeSolution () {
+    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(this.exercise.steps.getObject())) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   getNewStep () {
@@ -757,8 +769,12 @@ export class LogAxController extends ExerciseController {
       this.updateAlert('shared.error.validatingStep', null, 'error')
       return
     }
+    let message = error.key
+    if (!hasTranslation(message)) {
+      message = 'shared.error.wrongStep'
+    }
     this.setErrorLocation('validate-step')
-    this.updateAlert(error.key, error.params, 'error')
+    this.updateAlert(message, error.params, 'error')
   }
 
   /**

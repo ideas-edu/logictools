@@ -6,11 +6,13 @@ import { LogAxStep } from './step.js'
     @param {ProofStep} baseStep - The first proof step.
  */
 export class LogAxStepCollection extends StepCollection {
-  constructor (baseStep) {
+  constructor (steps) {
     super()
     this.steps = []
-    if (baseStep !== null && baseStep !== undefined) {
-      this.push(baseStep)
+    if (steps !== null && steps !== undefined) {
+      for (const step of steps) {
+        this.steps.push(new LogAxStep(step))
+      }
     }
     this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
     this.stepsHistoryIndex = 0
@@ -23,6 +25,14 @@ export class LogAxStepCollection extends StepCollection {
   push (step) {
     this.steps.push(step)
     this.steps.sort((a, b) => a.number > b.number)
+  }
+
+  getObject () {
+    const stepsObject = []
+    for (const step of this.steps) {
+      stepsObject.push(step.getObject())
+    }
+    return stepsObject
   }
 
   newSet (steps) {
@@ -60,6 +70,9 @@ export class LogAxStepCollection extends StepCollection {
 
   setHistoryIndex (newIndex) {
     this.stepsHistoryIndex = newIndex
-    this.steps = JSON.parse(JSON.stringify(this.stepsHistory[newIndex]))
+    this.steps = []
+    for (const responseStep of this.stepsHistory[newIndex]) {
+      this.steps.push(new LogAxStep(responseStep))
+    }
   }
 }
