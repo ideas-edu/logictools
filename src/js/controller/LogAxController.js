@@ -433,7 +433,7 @@ export class LogAxController extends ExerciseController {
         if (stepnr1.value === '' && stepnr2.value !== '') {
           return {
             environment: {
-              n: stepnr2.value,
+              n: stepnr2.value
             },
             rule: `${rule}.backward`
           }
