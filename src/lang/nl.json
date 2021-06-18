@@ -180,6 +180,82 @@
         "keys": "enter"
       }
     },
+    "rules": {
+      "absorption": {
+        "title": "Absorptie",
+        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$"
+      },
+      "assoc": {
+        "title": "Associativiteit",
+        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$"
+      },
+      "commutativity": {
+        "title": "Commutativiteit",
+        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$"
+      },
+      "demorgan": {
+        "title": "De Morgan",
+        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$"
+      },
+      "distribution": {
+        "title": "Distributiviteit",
+        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$"
+      },
+      "doublenegation": {
+        "title": "Dubbele negatie ",
+        "action": "$$\\neg \\neg q \\Leftrightarrow q$$"
+      },
+      "equivalence": {
+        "title": "Equivalentie eliminatie",
+        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$"
+      },
+      "falsecomplement": {
+        "title": "F-regel conjunctie",
+        "action": "$$p \\land F \\Leftrightarrow F$$"
+      },
+      "falseconjunction": {
+        "title": "F-regel complement",
+        "action": "$$p \\land \\neg p \\Leftrightarrow F$$"
+      },
+      "falsedisjunction": {
+        "title": "F-regel niet T",
+        "action": "$$\\neg T \\Leftrightarrow F$$"
+      },
+      "header": {
+        "action": "Voorbeeld",
+        "title": "Regel"
+      },
+      "idempotency": {
+        "title": "F-regel disjunctie",
+        "action": "$$p \\lor F \\Leftrightarrow p$$"
+      },
+      "implication": {
+        "title": "Idempotentie ",
+        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$"
+      },
+      "note": "NB: Commutatieve varianten van de regels absorptie, distributivititeit en de $$T$$ en $$F$$ regels zijn ook toegestaan, bijv. $$p \\lor (p \\land q) \\Leftrightarrow p$$ of $$(p \\lor q) \\land r \\Leftrightarrow (p \\land r) \\lor (q \\land r)$$. Associativiteit van disjunctie en conjunctie is altijd impliciet toegestaan. Generalisaties van distributie [bijv. $$r \\land (p \\lor q \\lor s) \\Leftrightarrow (r \\land p) \\lor (r \\land q) \\lor (r \\land s )$$] en DeMorgan [bijv.$$\\neg (p \\land q \\land s) \\Leftrightarrow \\neg p \\lor \\neg q \\lor \\neg s$$] kunt u ook gebruiken.",
+      "notfalse": {
+        "title": "Implicatie-eliminatie",
+        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$"
+      },
+      "nottrue": {
+        "title": "T-regel conjunctie",
+        "action": "$$q \\land T \\Leftrightarrow q$$"
+      },
+      "title": "Regels",
+      "truecomplement": {
+        "title": "T-regel complement",
+        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$"
+      },
+      "trueconjunction": {
+        "title": "T-regel niet F",
+        "action": "$$\\neg F \\Leftrightarrow T$$"
+      },
+      "truedisjunction": {
+        "title": "T-regel disjunctie",
+        "action": "$$p \\lor T \\Leftrightarrow T$$"
+      }
+    },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
     }
