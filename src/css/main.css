@@ -70,16 +70,12 @@ ul.nav .nav-item:last-child {
 	box-shadow: 0px 1px 3px 0 rgb(0 0 0 / 9%);
 }
 
-/* iframe {
-	overflow:hidden;
-} */
-
 #container-dnf iframe#fra-dnf,
 #container-cnf iframe#fra-cnf,
 #container-logeq iframe#fra-logeq {
-	height: 390px!important;
+	min-height: 390px!important;
 }
 
 #container-logax iframe#fra-logax {
-	height: 570px!important;
+	min-height: 570px!important;
 }

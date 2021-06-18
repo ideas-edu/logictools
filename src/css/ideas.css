@@ -340,6 +340,11 @@ input.error, select.error {
 	border-color:#1665d8;
 }
 
+.hint-alert #exercise-alert-icon,
+.hint-alert #exercise-alert-span {
+	margin-top:4px;
+	display: inline-block;
+}
 
 .hint-alert svg {
 	margin-right: 10px;
@@ -347,9 +352,9 @@ input.error, select.error {
 	vertical-align: -.125em;
 }
 
-.alert #exercise-alert-dismiss {
+.alert .close {
 	margin-left: 10px;
-	margin-top:2px;
+	line-height: 1!important;
 }
 
 #toggle-hint2,
@@ -360,13 +365,18 @@ input.error, select.error {
 
 .error-alert {
 	font-weight: 600;
-	color: #e2001a;
+	color: #000;
 	background-color:#ffd7dc;
 	border:0;
-	/* 	color: #fff;
-	background-color: #e2001a;
-	border-color: #e2001a; */
 }
+
+
+.error-alert #exercise-alert-icon,
+.error-alert #exercise-alert-span {
+	margin-top:4px;
+	display: inline-block;
+}
+
 .error-alert svg {
 	margin-right: 10px;
 	font-size: 12px;
@@ -461,6 +471,10 @@ table td {
 	padding: 12px 15px!important;
 }
 
+table td .row{
+	margin-left: 0px!important;
+}
+
 table td:first-child {
 	padding-right: 0!important;
 }
@@ -477,6 +491,7 @@ table td:first-child .alert .katex {
 
 #bottom {
 	margin-right:0!important;
+	padding-bottom: 15px;
 }
 
 
@@ -679,4 +694,8 @@ button {
 
 .highlight-text {
 	color: #2B68D1;
+}
+
+#container-logax .oneWay-body .row {
+	margin-left:0!important;
 }
