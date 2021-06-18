@@ -20,42 +20,25 @@ legend {
 }
 
 body {
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
+  	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;
 	line-height: 16px;
-}
 
-/* body {
-
-	margin: 0 auto;
+	margin: auto;
     margin-left: 120px;
 	padding-top: 60px;
     padding-bottom: 40px;
 	min-height: 430px;
 }
 
-.oneWay-body,
-.twoWay-body {
-	padding:0;
-	margin:0 auto;
-
+.oneWay-body, .twoWay-body
+{
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;
 	line-height: 16px;
-} */
-
-/* body.oneWay-body,
-body.twoWay-body {
-	padding:0;
-	border-radius: 4px;
-	border-color:#e8e8e8;
-	box-shadow: 0px 1px 3px 0 rgb(0 0 0 / 9%);
-	border: 1px solid #e5e5e5;
-} */
-
-
-
-
+	margin: auto;
+    border: 1px solid #e5e5e5;
+}
 
 input,
 button,
@@ -340,11 +323,6 @@ input.error, select.error {
 	border-color:#1665d8;
 }
 
-.hint-alert #exercise-alert-icon,
-.hint-alert #exercise-alert-span {
-	margin-top:4px;
-	display: inline-block;
-}
 
 .hint-alert svg {
 	margin-right: 10px;
@@ -352,9 +330,9 @@ input.error, select.error {
 	vertical-align: -.125em;
 }
 
-.alert .close {
+.alert #exercise-alert-dismiss {
 	margin-left: 10px;
-	line-height: 1!important;
+	margin-top:2px;
 }
 
 #toggle-hint2,
@@ -365,19 +343,13 @@ input.error, select.error {
 
 .error-alert {
 	font-weight: 600;
-	color: #000;
+	color: #e2001a;
 	background-color:#ffd7dc;
 	border:0;
+	/* 	color: #fff;
+	background-color: #e2001a;
+	border-color: #e2001a; */
 }
-
-.error-alert #new-exercise-alert-icon,
-.error-alert #new-exercise-alert-span,
-.error-alert #exercise-alert-icon,
-.error-alert #exercise-alert-span {
-	margin-top:4px;
-	display: inline-block;
-}
-
 .error-alert svg {
 	margin-right: 10px;
 	font-size: 12px;
@@ -472,10 +444,6 @@ table td {
 	padding: 12px 15px!important;
 }
 
-table td .row{
-	margin-left: 0px!important;
-}
-
 table td:first-child {
 	padding-right: 0!important;
 }
@@ -492,7 +460,6 @@ table td:first-child .alert .katex {
 
 #bottom {
 	margin-right:0!important;
-	padding-bottom: 15px;
 }
 
 
@@ -508,7 +475,12 @@ table td:first-child .alert .katex {
 
 
 
-
+body.oneWay-body, body.twoWay-body {
+	padding:0;
+	border-radius: 4px;
+	border-color:#e8e8e8;
+	box-shadow: 0px 1px 3px 0 rgb(0 0 0 / 9%);
+}
 
 
 .title {
@@ -679,31 +651,14 @@ button {
 	padding-top: 5px;
 }
 
-
 .oneWay-body #new-exercise-container .row,
 .twoWay-body #new-exercise-container .row{
 	margin:0!important;
 }
 
-.oneWay-body #new-exercise-container #new-exercise-alert-container,
-.twoWay-body #new-exercise-container #new-exercise-alert-container{
-	margin-top:10px!important;
-	margin-left:15px!important;
-	margin-right:15px!important;
-}
-
 .oneWay-body #new-exercise-container .row .col-3,
 .twoWay-body #new-exercise-container .row .col-3{
 	text-align: right;
-}
-
-.logax-body #exercise-container .row {
-	margin:0!important;
-}
-
-.help-body #help-dnv video,
-.help-body #help-cnv video{
-	width: 100%;
 }
 
 #rule-container, #completed-rule-container {
