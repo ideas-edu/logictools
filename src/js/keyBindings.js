@@ -107,14 +107,41 @@ export class KeyBindings {
   switchFocus () {
     if (document.getElementById('new-exercise-container').style.display === '') {
       // new exercise menu
-      if (['CNV', 'DNV'].includes(this.logEQController.exerciseType)) {
-        document.getElementById('new-formula').focus()
-      } else {
-        if (document.getElementById('new-formula-1') === document.activeElement) {
-          document.getElementById('new-formula-2').focus()
-        } else {
-          document.getElementById('new-formula-1').focus()
-        }
+      switch (this.logEQController.exerciseType) {
+        case 'CNV':
+        case 'DNV':
+          document.getElementById('new-formula').focus()
+          break
+        case 'LOGEQ':
+          if (document.getElementById('new-formula-1') === document.activeElement) {
+            document.getElementById('new-formula-2').focus()
+          } else {
+            document.getElementById('new-formula-1').focus()
+          }
+          break
+        case 'LOGAX':
+          switch (document.activeElement) {
+            case document.getElementById('new-formula-1'):
+              document.getElementById('new-formula-2').focus()
+              break
+            case document.getElementById('new-formula-2'):
+              if (document.getElementById('lemma-row').style.display === '') {
+                document.getElementById('new-lemma-1').focus()
+              } else {
+                document.getElementById('new-formula-1').focus()
+              }
+              break
+            case document.getElementById('new-lemma-1'):
+              document.getElementById('new-lemma-2').focus()
+              break
+            case document.getElementById('new-lemma-2'):
+              document.getElementById('new-formula-1').focus()
+              break
+            default:
+              document.getElementById('new-formula-1').focus()
+              break
+          }
+          break
       }
     } else if (document.getElementById('formula') === document.activeElement) { // in exercise
       document.getElementById('rule').focus()

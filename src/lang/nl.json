@@ -186,6 +186,8 @@
   },
   "logax": {
     "button": {
+      "addLemma": "Voeg Hulpstelling Toe",
+      "removeLemma": "Verwijder Hulpstelling",
       "renumber": "Hernummeren"
     },
     "completed": "De uitwerking is compleet",
@@ -205,8 +207,10 @@
     },
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!",
-      "create": "Schrijf de formule voor je eigen opgave",
-      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
+      "create": "Schrijf de stelling voor je eigen opgave",
+      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: <ul><li>{{lemma}}</li></ul>",
+      "lemma": "Hulpstelling"
     },
     "rule": {
       "addBackwardStep": "Stap achterwaarts toevoegen",
@@ -251,6 +255,10 @@
         "stepnr": "Stap"
       },
       "label": "<b>Regel</b>",
+      "lemma": {
+        "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
+        "stepnr": "Stap"
+      },
       "modusponens": {
         "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
         "n1": "$$\\sum\\vdash_S\\phi$$",
@@ -299,6 +307,7 @@
           "axiom-c": "Axioma C",
           "deduction": "Deductiestelling",
           "goal": "Doel",
+          "lemma": "Hulpstelling",
           "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativiteit",

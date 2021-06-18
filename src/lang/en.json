@@ -186,6 +186,8 @@
   },
   "logax": {
     "button": {
+      "addLemma": "Add Lemma",
+      "removeLemma": "Remove Lemma",
       "renumber": "Renumber"
     },
     "completed": "The exercise is finished",
@@ -206,7 +208,9 @@
     "instruction": {
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
-      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: <ul><li>{{lemma}}</li></ul>",
+      "lemma": "Lemma"
     },
     "rule": {
       "addBackwardStep": "Add Backward Step",
@@ -251,6 +255,10 @@
         "stepnr": "Step"
       },
       "label": "<b>Rule</b>",
+      "lemma": {
+        "stepExp": "Specify the number of the new step, or leave empty to get a default number",
+        "stepnr": "Step"
+      },
       "modusponens": {
         "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
         "n1": "$$\\sum\\vdash_S\\phi$$",
@@ -299,6 +307,7 @@
           "axiom-c": "Axiom C",
           "deduction": "Deduction",
           "goal": "Goal",
+          "lemma": "Lemma",
           "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativity",
