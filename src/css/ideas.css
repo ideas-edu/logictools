@@ -370,7 +370,8 @@ input.error, select.error {
 	border:0;
 }
 
-
+.error-alert #new-exercise-alert-icon,
+.error-alert #new-exercise-alert-span,
 .error-alert #exercise-alert-icon,
 .error-alert #exercise-alert-span {
 	margin-top:4px;
@@ -396,9 +397,7 @@ input.error, select.error {
 	vertical-align: -.125em;
 }
 
-.formula-highlight {
-	background-color: red;
-}
+
 
 
 #header-step {
@@ -678,14 +677,35 @@ button {
 	padding-top: 5px;
 }
 
+
 .oneWay-body #new-exercise-container .row,
 .twoWay-body #new-exercise-container .row{
 	margin:0!important;
 }
 
+.oneWay-body #new-exercise-container #new-exercise-alert-container,
+.twoWay-body #new-exercise-container #new-exercise-alert-container{
+	margin-top:10px!important;
+	margin-left:15px!important;
+	margin-right:15px!important;
+}
+
 .oneWay-body #new-exercise-container .row .col-3,
 .twoWay-body #new-exercise-container .row .col-3{
 	text-align: right;
+}
+
+.logax-body #exercise-container .row {
+	margin:0!important;
+}
+
+.help-body #help-dnv video,
+.help-body #help-cnv video{
+	width: 100%;
+}
+
+.formula-highlight {
+	background-color: red;
 }
 
 #rule-container, #completed-rule-container {
@@ -694,8 +714,4 @@ button {
 
 .highlight-text {
 	color: #2B68D1;
-}
-
-#container-logax .oneWay-body .row {
-	margin-left:0!important;
 }
