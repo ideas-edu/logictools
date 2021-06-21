@@ -285,6 +285,7 @@
         "axiom-b": "Apply <i>Axiom B</i>",
         "axiom-c": "Apply <i>Axiom C</i>",
         "deduction": "Apply the <i>Deduction</i> Theorem",
+        "lemma": "Apply the <i>Lemma</i>",
         "modusponens": "Apply <i>Modus Ponens</i>"
       },
       "motivate": "Add motivation to a step",
