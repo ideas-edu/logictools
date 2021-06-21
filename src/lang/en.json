@@ -185,6 +185,88 @@
         "keys": "enter"
       }
     },
+    "rules": {
+      "absorption": {
+        "title": "Absorption",
+        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$"
+      },
+      "assoc": {
+        "title": "Associativity",
+        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$"
+      },
+      "commutativity": {
+        "title": "Commutativity",
+        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$"
+      },
+      "demorgan": {
+        "title": "De Morgan",
+        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$"
+      },
+      "distribution": {
+        "title": "Distributivity",
+        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$"
+      },
+      "doublenegation": {
+        "title": "Double negation ",
+        "action": "$$\\neg \\neg q \\Leftrightarrow q$$"
+      },
+      "equivalence": {
+        "title": "Equivalence elimination",
+        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$"
+      },
+      "falsecomplement": {
+        "title": "F-rule conjunction",
+        "action": "$$p \\land F \\Leftrightarrow F$$"
+      },
+      "falseconjunction": {
+        "title": "F-rule complement",
+        "action": "$$p \\land \\neg p \\Leftrightarrow F$$"
+      },
+      "falsedisjunction": {
+        "title": "F-rule not T",
+        "action": "$$\\neg T \\Leftrightarrow F$$"
+      },
+      "header": {
+        "action": "Example",
+        "title": "Rule"
+      },
+      "idempotency": {
+        "title": "F-rule disjunction",
+        "action": "$$p \\lor F \\Leftrightarrow p$$"
+      },
+      "implication": {
+        "title": "Idempotency",
+        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$"
+      },
+      "note": "NB: Commutative variants from the rules absorption, distributivitity and the $$T$$ and $$F$$ rules are also allowed, e.g. $$p \\lor (p \\land q) \\Leftrightarrow p$$ or $$(p \\lor q) \\land r \\Leftrightarrow (p \\land r) \\lor (q \\land r)$$. Associativity from disjunction and conjunction is always implicitly allowed. Generalisations of distribution [e.g. $$r \\land (p \\lor q \\lor s) \\Leftrightarrow (r \\land p) \\lor (r \\land q) \\lor (r \\land s )$$] and De Morgan [e.g. $$\\neg (p \\land q \\land s) \\Leftrightarrow \\neg p \\lor \\neg q \\lor \\neg s$$] can also be used.",
+      "notfalse": {
+        "title": "Implicatiin-elimination",
+        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$"
+      },
+      "nottrue": {
+        "title": "T-rule conjunction",
+        "action": "$$q \\land T \\Leftrightarrow q$$"
+      },
+      "title": "Rules",
+      "truecomplement": {
+        "title": "T-rule complement",
+        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$"
+      },
+      "trueconjunction": {
+        "title": "T-rule not F",
+        "action": "$$\\neg F \\Leftrightarrow T$$"
+      },
+      "truedisjunction": {
+        "title": "T-rule disjunction",
+        "action": "$$p \\lor T \\Leftrightarrow T$$"
+      }
+    },
+    "tabTitle": {
+      "dnf": "Disjunctive Normal Form",
+      "hotKeys": "Hot Keys",
+      "logeq": "Logical Equivalence",
+      "rules": "Rules"
+    },
     "video": {
       "notSupported": "Your browser does not support embedded videos"
     }
@@ -270,7 +352,8 @@
         "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
         "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
       }
-    }
+    },
+    "title": "Prove Axiomatic"
   },
   "main": {
     "tabTitle": {
