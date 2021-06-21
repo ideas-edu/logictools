@@ -261,6 +261,12 @@
         "action": "$$p \\lor T \\Leftrightarrow T$$"
       }
     },
+    "tabTitle": {
+      "dnf": "Disjunctieve Normaalvorm",
+      "hotKeys": "Sneltoetsen",
+      "logeq": "Logische Equivalentie",
+      "rules": "Regels"
+    },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
     }

@@ -261,6 +261,12 @@
         "action": "$$p \\lor T \\Leftrightarrow T$$"
       }
     },
+    "tabTitle": {
+      "dnf": "Disjunctive Normal Form",
+      "hotKeys": "Hot Keys",
+      "logeq": "Logical Equivalence",
+      "rules": "Rules"
+    },
     "video": {
       "notSupported": "Your browser does not support embedded videos"
     }
