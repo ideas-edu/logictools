@@ -79,10 +79,11 @@ export class KeyBindings {
       } else if (e.keyCode === 13) { // enter
         if (document.getElementById('exercise-container').style.display === '') {
           document.getElementById('validate-step').click()
+          e.preventDefault()
         } else if (document.getElementById('new-exercise-alert-container').style.display === '') {
           document.getElementById('create-exercise').click()
+          e.preventDefault()
         }
-        e.preventDefault()
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'u') { // u
         this.controller.formulaPopover.undo()
         e.preventDefault()
