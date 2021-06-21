@@ -49,6 +49,7 @@
             "inv": "You have applied a complement rule incorrectly."
           },
           "andcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation.",
+          "andcompl3": " This is not correct, rewrite the conjunction of complements into F.",
           "andoverand": "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction",
           "andsame": "You have applied idempoteny incorrectly.",
           "assimp": "You have incorrectly applied associativity to an implication.",
@@ -58,11 +59,11 @@
           "demorgan2": "When applying De Morgan, don't forget to remove the negation sign outside of the brackets.",
           "demorgan3": {
             "#": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
-            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
+            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
           },
           "demorgan4": {
             "#": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
-            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
+            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
           },
           "demorgan5": "When applying De Morgan, take care where you place the brackets. You have inadvertently changed the application range of the negation.",
           "distr": {
@@ -86,7 +87,10 @@
             "#": "Idempotency does not apply to implications, only to conjunctions and disjunctions.",
             "inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions."
           },
-          "implelim": "You have applied implication definition incorrectly.",
+          "implelim": {
+           "#":"You have applied implication definition incorrectly.",
+           "inv": "This is not correct, mind the place of the negation or the disjunction."
+          },  
           "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
           "implelim2": "You have applied equivalence definition instead of implication definition.",
           "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
@@ -97,6 +101,7 @@
             "inv": "You have applied a complement rule incorrectly."
           },
           "orcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation. ",
+          "orcompl3": " This is not correct, rewrite the disjunction of complements into T.",
           "oroveror": "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
           "orsame": "You have applied a T-rule incorrectly.",
           "parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
@@ -265,7 +270,8 @@
         "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
         "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
       }
-    }
+    },
+    "title": "Prove Axiomatic"
   },
   "main": {
     "tabTitle": {

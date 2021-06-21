@@ -49,6 +49,7 @@
             "inv": "U heeft een complement regel niet correct toegepast."
           },
           "andcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
+          "andcompl3": "Dit is niet correct, herschrijf de conjunctie van twee complementen naar F",
           "andoverand": "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie.",
           "andsame": "U heeft idempotentie niet correct toegepast.",
           "assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
@@ -58,11 +59,11 @@
           "demorgan2": "Denk bij het toepassen van De Morgan aan het weghalen van de negatie buiten de haken.",
           "demorgan3": {
             "#": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
-            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie."
+            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie."
           },
           "demorgan4": {
             "#": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
-            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie."
+            "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie."
           },
           "demorgan5": "Let bij het toepassen van De Morgan op het plaatsen van de haken, u hebt het bereik van een negatie onbedoeld gewijzigd.",
           "distr": {
@@ -86,17 +87,21 @@
             "#": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
             "inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties."
           },
-          "implelim": "U heeft implicatie eliminatie niet correct toegepast.",
+          "implelim": {
+           "#": "U heeft implicatie eliminatie niet correct toegepast.",
+           "inv": "Deze herschrijving naar een implicatie is niet correct, let op de plaats van de negatie of de disjunctie."
+          }, 
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
           "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
           "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "U bent de negatie voor de implicatie vergeten.",
-          "notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
+          "notoverimpl": "U kunt niet het negatieteken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
           "orcompl": {
             "#": "U heeft een complement regel niet correct toegepast.",
             "inv": "U heeft een complement regel niet correct toegepast."
           },
           "orcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
+          "orcompl3": "Dit is niet correct, herschrijf de disjunctie van twee complementen naar T",
           "oroveror": "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
           "orsame": "U heeft een T regel onterecht toegepast.",
           "parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
@@ -265,7 +270,8 @@
         "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
         "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
       }
-    }
+    },
+    "title": "Bewijs Axiomatisch"
   },
   "main": {
     "tabTitle": {
