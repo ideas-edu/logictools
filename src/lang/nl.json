@@ -265,7 +265,8 @@
       "dnf": "Disjunctieve Normaalvorm",
       "hotKeys": "Sneltoetsen",
       "logeq": "Logische Equivalentie",
-      "rules": "Regels"
+      "rules": "Regels",
+      "video": "Video"
     },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
