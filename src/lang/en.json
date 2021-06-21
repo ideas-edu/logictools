@@ -346,7 +346,8 @@
         "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
         "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
       }
-    }
+    },
+    "title": "Prove Axiomatic"
   },
   "main": {
     "tabTitle": {
