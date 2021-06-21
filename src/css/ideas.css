@@ -699,19 +699,46 @@ button {
 	margin:0!important;
 }
 
-.help-body #help-dnv video,
-.help-body #help-cnv video{
-	width: 100%;
+.logax-body #exercise-container .col-8 table {
+	border: 1px solid #e8e8e8;
+}
+
+.logax-body #rule-container {
+	border: 1px solid #e8e8e8;
+}
+
+.logax-body #rule-container table tr:first-child td{
+	border:0!important;
+}
+.logax-body #rule-container #exercise-alert-container {
+	padding:10px;
+}
+
+.logax-body #rule-container #exercise-alert-container #exercise-alert-button {
+	clear:both;
+	float: left!important;
+	margin-left: 0;
+ 	margin-top: 15px;
 }
 
 .formula-highlight {
-	background-color: red;
-}
-
-#rule-container, #completed-rule-container {
-    border: 1px solid #e5e5e5;
+background-color: red;
 }
 
 .highlight-text {
 	color: #2B68D1;
+}
+
+/* #rule-container,
+#completed-rule-container {
+    border: 1px solid #e5e5e5;
+} */
+
+
+
+
+
+.help-body #help-dnv video,
+.help-body #help-cnv video{
+	width: 100%;
 }
