@@ -13,6 +13,7 @@ export class LogAxStep {
     this.number = step.number
     this.label = step.label
     this.references = step.references
+
     if (rule === undefined && step.label !== undefined) {
       rule = `logic.propositional.axiomatic.${step.label}`
     }
