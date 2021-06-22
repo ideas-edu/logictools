@@ -551,11 +551,10 @@ export class LogAxController extends ExerciseController {
           }
         }
 
-        if (phi.value !== '' && stepnr2.value !== '') {
+        if (stepnr1.value === '' && stepnr2.value !== '') {
           return {
             environment: {
-              n: stepnr2.value,
-              phi: LogAxStep.convertToText(phi.value)
+              n: stepnr2.value
             },
             rule: `${rule}.backward`
           }
@@ -716,11 +715,7 @@ export class LogAxController extends ExerciseController {
           applyButton.disabled = false
         }
 
-        if (phi.value !== '' && stepnr2.value !== '') {
-          applyButton.disabled = false
-        }
-
-        if (stepnr1.value !== '' && stepnr2.value !== '') {
+        if (stepnr2.value !== '') {
           applyButton.disabled = false
         }
 
@@ -816,7 +811,7 @@ export class LogAxController extends ExerciseController {
           return this.validateFormula(phi, this.exerciseAlert)
         }
 
-        if (stepnr1.value !== '' && stepnr2.value !== '') {
+        if (stepnr2.value !== '') {
           return true
         }
 
