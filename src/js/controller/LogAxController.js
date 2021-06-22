@@ -692,6 +692,15 @@ export class LogAxController extends ExerciseController {
         const stepnr2 = document.getElementById('modusponens-select-stepnr-2')
         const stepnr3 = document.getElementById('modusponens-select-stepnr-3')
 
+        if (stepnr1.value !== '' && stepnr2.value !== '') {
+          applyButton.disabled = false
+        }
+        if (stepnr1.value !== '' && stepnr3.value !== '') {
+          applyButton.disabled = false
+        }
+        if (stepnr2.value !== '' && stepnr3.value !== '') {
+          applyButton.disabled = false
+        }
         if (stepnr1.value !== '' && stepnr2.value !== '' && stepnr3.value !== '') {
           applyButton.disabled = false
         }

@@ -187,78 +187,78 @@
     },
     "rules": {
       "absorption": {
-        "title": "Absorption",
-        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$"
+        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$",
+        "title": "Absorption"
       },
       "assoc": {
-        "title": "Associativity",
-        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$"
+        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$",
+        "title": "Associativity"
       },
       "commutativity": {
-        "title": "Commutativity",
-        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$"
+        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$",
+        "title": "Commutativity"
       },
       "demorgan": {
-        "title": "De Morgan",
-        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$"
+        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$",
+        "title": "De Morgan"
       },
       "distribution": {
-        "title": "Distributivity",
-        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$"
+        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$",
+        "title": "Distributivity"
       },
       "doublenegation": {
-        "title": "Double negation ",
-        "action": "$$\\neg \\neg q \\Leftrightarrow q$$"
+        "action": "$$\\neg \\neg q \\Leftrightarrow q$$",
+        "title": "Double negation "
       },
       "equivalence": {
-        "title": "Equivalence elimination",
-        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$"
+        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$",
+        "title": "Equivalence elimination"
       },
       "falsecomplement": {
-        "title": "F-rule conjunction",
-        "action": "$$p \\land F \\Leftrightarrow F$$"
+        "action": "$$p \\land F \\Leftrightarrow F$$",
+        "title": "F-rule conjunction"
       },
       "falseconjunction": {
-        "title": "F-rule complement",
-        "action": "$$p \\land \\neg p \\Leftrightarrow F$$"
+        "action": "$$p \\land \\neg p \\Leftrightarrow F$$",
+        "title": "F-rule complement"
       },
       "falsedisjunction": {
-        "title": "F-rule not T",
-        "action": "$$\\neg T \\Leftrightarrow F$$"
+        "action": "$$\\neg T \\Leftrightarrow F$$",
+        "title": "F-rule not T"
       },
       "header": {
         "action": "Example",
         "title": "Rule"
       },
       "idempotency": {
-        "title": "F-rule disjunction",
-        "action": "$$p \\lor F \\Leftrightarrow p$$"
+        "action": "$$p \\lor F \\Leftrightarrow p$$",
+        "title": "F-rule disjunction"
       },
       "implication": {
-        "title": "Idempotency",
-        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$"
+        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$",
+        "title": "Idempotency"
       },
       "note": "NB: Commutative variants from the rules absorption, distributivitity and the $$T$$ and $$F$$ rules are also allowed, e.g. $$p \\lor (p \\land q) \\Leftrightarrow p$$ or $$(p \\lor q) \\land r \\Leftrightarrow (p \\land r) \\lor (q \\land r)$$. Associativity from disjunction and conjunction is always implicitly allowed. Generalisations of distribution [e.g. $$r \\land (p \\lor q \\lor s) \\Leftrightarrow (r \\land p) \\lor (r \\land q) \\lor (r \\land s )$$] and De Morgan [e.g. $$\\neg (p \\land q \\land s) \\Leftrightarrow \\neg p \\lor \\neg q \\lor \\neg s$$] can also be used.",
       "notfalse": {
-        "title": "Implicatiin-elimination",
-        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$"
+        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$",
+        "title": "Implicatiin-elimination"
       },
       "nottrue": {
-        "title": "T-rule conjunction",
-        "action": "$$q \\land T \\Leftrightarrow q$$"
+        "action": "$$q \\land T \\Leftrightarrow q$$",
+        "title": "T-rule conjunction"
       },
       "title": "Rules",
       "truecomplement": {
-        "title": "T-rule complement",
-        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$"
+        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$",
+        "title": "T-rule complement"
       },
       "trueconjunction": {
-        "title": "T-rule not F",
-        "action": "$$\\neg F \\Leftrightarrow T$$"
+        "action": "$$\\neg F \\Leftrightarrow T$$",
+        "title": "T-rule not F"
       },
       "truedisjunction": {
-        "title": "T-rule disjunction",
-        "action": "$$p \\lor T \\Leftrightarrow T$$"
+        "action": "$$p \\lor T \\Leftrightarrow T$$",
+        "title": "T-rule disjunction"
       }
     },
     "tabTitle": {
