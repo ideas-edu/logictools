@@ -110,13 +110,11 @@ export class KeyBindings {
         if (document.activeElement.parentNode.id === 'new-exercise-menu') {
           document.activeElement.click()
           e.preventDefault()
-          return
-        }
-        if (document.getElementById('exercise-container').style.display === '') {
+        } else if (document.getElementById('exercise-container').style.display === '') {
           document.getElementById('validate-step').click()
           e.preventDefault()
-        } else if (document.getElementById('new-exercise-alert-container').style.display === '') {
-          document.getElementById('create-exercise').click()
+        } else if (document.getElementById('new-exercise-container').style.display === '') {
+          this.controller.createExercise()
           e.preventDefault()
         }
       } else if (String.fromCharCode(e.keyCode).toLowerCase() === 'u') { // u
@@ -147,7 +145,7 @@ export class KeyBindings {
   switchFocus (forward) {
     if (document.getElementById('new-exercise-container').style.display === '') {
       // new exercise menu
-      switch (this.logEQController.exerciseType) {
+      switch (this.controller.exerciseType) {
         case 'CNV':
         case 'DNV':
           document.getElementById('new-formula').focus()
