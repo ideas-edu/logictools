@@ -496,6 +496,7 @@
       "missingOpen": "Er ontbreekt een openingshaakje bij het sluitingshaakje bij positie {{index}}: {{formula}}",
       "missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
       "missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
+      "nestedFirstOrderOperator": "De connectief bij positie {{index}} is te diep genest: {{formula}}",
       "unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
     }
   },

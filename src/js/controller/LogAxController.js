@@ -46,6 +46,14 @@ export class LogAxController extends ExerciseController {
   constructor () {
     super()
     this.ruleKey = null
+    this.formulaOptions = {
+      unaryOperators: ['¬'],
+      binaryOperators: ['→', ','],
+      implicitAssociativeBinaryOperators: [','],
+      firstOrderOperators: [','],
+      implicitPrecendence: [{ strong: ',', weak: '→' }],
+      literals: ['p', 'q', 'r', 's']
+    }
     this.characterOptions = [
       {
         char: '¬',
@@ -56,7 +64,54 @@ export class LogAxController extends ExerciseController {
         char: '→',
         latex: '\\rightarrow',
         triggers: ['i', '.', 'I'],
-        spaces: true
+        spaces: 'lr'
+      },
+      {
+        char: 'p',
+        latex: 'p',
+        triggers: ['P'],
+        charStyled: '<i>p</i>'
+      },
+      {
+        char: 'q',
+        latex: 'q',
+        triggers: ['Q'],
+        charStyled: '<i>q</i>'
+      },
+      {
+        char: 'r',
+        latex: 'r',
+        triggers: ['R'],
+        charStyled: '<i>r</i>'
+      },
+      {
+        char: 's',
+        latex: 's',
+        triggers: ['S'],
+        charStyled: '<i>s</i>'
+      },
+      {
+        char: '(',
+        latex: '(',
+        triggers: ['9']
+      },
+      {
+        char: ')',
+        latex: ')',
+        triggers: ['0']
+      }
+    ]
+    this.newExerciseCharacterOptions = [
+      {
+        char: '¬',
+        latex: '\\neg',
+        triggers: ['-', 'n', '1', '`', '!', 'N']
+      },
+      {
+        char: '→',
+        latex: '\\rightarrow',
+        triggers: ['i', '.', 'I'],
+        spaces: 'lr'
       },
       {
         char: 'p',
@@ -101,7 +156,8 @@ export class LogAxController extends ExerciseController {
       {
         char: ',',
         latex: ',',
-        triggers: [',']
+        triggers: [','],
+        spaces: 'r'
       }
     ]
     this.setExampleExercises()
@@ -200,23 +256,23 @@ export class LogAxController extends ExerciseController {
     const goalPsiOptions = {
       id: 12,
       allowUndo: true,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newFormula1Options = {
       id: 13,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newFormula2Options = {
       id: 14,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newLemma1Options = {
       id: 13,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newLemma2Options = {
       id: 14,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions, this.applyReady.bind(this))
     this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1, this.applyReady.bind(this))
