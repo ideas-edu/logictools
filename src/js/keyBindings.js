@@ -27,8 +27,22 @@ export class KeyBindings {
           this.showHint()
           e.preventDefault()
         } else if (e.keyCode === 9) { // shift-tab
-          this.switchFocus(false)
-          e.preventDefault()
+          if (!document.getElementById('new-exercise-menu').classList.contains('show')) {
+            this.switchFocus(false)
+            e.preventDefault()
+          } else {
+            if (document.activeElement.parentNode.id === 'new-exercise-menu') {
+              let newActive = document.activeElement.previousElementSibling
+              while (newActive !== undefined && !newActive.classList.contains('dropdown-item')) {
+                newActive = newActive.previousElementSibling
+              }
+              newActive.focus()
+              e.preventDefault()
+            } else {
+              document.getElementById('new-exercise-menu').lastElementChild.focus()
+              e.preventDefault()
+            }
+          }
         }
       }
     } else if (e.ctrlKey) {
@@ -64,6 +78,7 @@ export class KeyBindings {
           const rule = document.getElementById('rule')
           if (rule.selectedIndex > 0) {
             rule.selectedIndex -= 1
+            e.preventDefault()
           }
         }
       } else if (e.keyCode === 40) { // arrow down
@@ -71,12 +86,32 @@ export class KeyBindings {
           const rule = document.getElementById('rule')
           if (rule.selectedIndex < rule.length - 1) {
             rule.selectedIndex += 1
+            e.preventDefault()
           }
         }
       } else if (e.keyCode === 9) { // tab
-        this.switchFocus(true)
-        e.preventDefault()
+        if (!document.getElementById('new-exercise-menu').classList.contains('show')) {
+          this.switchFocus(true)
+          e.preventDefault()
+        } else {
+          if (document.activeElement.parentNode.id === 'new-exercise-menu') {
+            let newActive = document.activeElement.nextElementSibling
+            while (newActive !== undefined && !newActive.classList.contains('dropdown-item')) {
+              newActive = newActive.nextElementSibling
+            }
+            newActive.focus()
+            e.preventDefault()
+          } else {
+            document.getElementById('new-exercise-menu').firstElementChild.focus()
+            e.preventDefault()
+          }
+        }
       } else if (e.keyCode === 13) { // enter
+        if (document.activeElement.parentNode.id === 'new-exercise-menu') {
+          document.activeElement.click()
+          e.preventDefault()
+          return
+        }
         if (document.getElementById('exercise-container').style.display === '') {
           document.getElementById('validate-step').click()
           e.preventDefault()
