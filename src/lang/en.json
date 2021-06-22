@@ -121,7 +121,10 @@
         "input": "$$\\land$$",
         "keys": "a, &, ^"
       },
-      "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+      "description": {
+        "logax": "The input of p, q, r, and s can be done with or without using the shift key.",
+        "logex": "The input of T, F, p, q, r, and s can be done with or without using the shift key."
+      },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
         "keys": "e, ="
