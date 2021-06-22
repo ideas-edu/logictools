@@ -3,6 +3,13 @@ import { ExerciseController } from './ExerciseController.js'
 export class LogExController extends ExerciseController {
   constructor () {
     super()
+    this.formulaOptions = {
+      unaryOperators: ['¬'],
+      binaryOperators: ['∧', '∨', '→', '↔'],
+      implicitAssociativeBinaryOperators: ['∧', '∨'],
+      literals: ['p', 'q', 'r', 's', 'T', 'F']
+    }
+
     this.characterOptions = [
       {
         char: '¬',
@@ -13,25 +20,25 @@ export class LogExController extends ExerciseController {
         char: '∧',
         latex: '\\land',
         triggers: ['a', '7', '&', 'A', '6', '^'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: '∨',
         latex: '\\lor',
         triggers: ['o', 'v', '|', '\\', 'O', 'V'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: '→',
         latex: '\\rightarrow',
         triggers: ['i', '.', 'I'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: '↔',
         latex: '\\leftrightarrow',
         triggers: ['=', 'e', 'E'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: 'p',

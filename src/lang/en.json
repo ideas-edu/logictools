@@ -49,6 +49,7 @@
             "inv": "You have applied a complement rule incorrectly."
           },
           "andcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation.",
+          "andcompl3": " This is not correct, rewrite the conjunction of complements into F.",
           "andoverand": "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction",
           "andsame": "You have applied idempoteny incorrectly.",
           "assimp": "You have incorrectly applied associativity to an implication.",
@@ -58,11 +59,11 @@
           "demorgan2": "When applying De Morgan, don't forget to remove the negation sign outside of the brackets.",
           "demorgan3": {
             "#": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
-            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
+            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
           },
           "demorgan4": {
             "#": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
-            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
+            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
           },
           "demorgan5": "When applying De Morgan, take care where you place the brackets. You have inadvertently changed the application range of the negation.",
           "distr": {
@@ -86,7 +87,10 @@
             "#": "Idempotency does not apply to implications, only to conjunctions and disjunctions.",
             "inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions."
           },
-          "implelim": "You have applied implication definition incorrectly.",
+          "implelim": {
+           "#":"You have applied implication definition incorrectly.",
+           "inv": "This is not correct, mind the place of the negation or the disjunction."
+          },  
           "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
           "implelim2": "You have applied equivalence definition instead of implication definition.",
           "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
@@ -97,6 +101,7 @@
             "inv": "You have applied a complement rule incorrectly."
           },
           "orcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation. ",
+          "orcompl3": " This is not correct, rewrite the disjunction of complements into T.",
           "oroveror": "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
           "orsame": "You have applied a T-rule incorrectly.",
           "parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
@@ -116,7 +121,10 @@
         "input": "$$\\land$$",
         "keys": "a, &, ^"
       },
-      "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+      "description": {
+        "logax": "The input of p, q, r, and s can be done with or without using the shift key.",
+        "logex": "The input of T, F, p, q, r, and s can be done with or without using the shift key."
+      },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
         "keys": "e, ="
@@ -180,12 +188,97 @@
         "keys": "enter"
       }
     },
+    "rules": {
+      "absorption": {
+        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$",
+        "title": "Absorption"
+      },
+      "assoc": {
+        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$",
+        "title": "Associativity"
+      },
+      "commutativity": {
+        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$",
+        "title": "Commutativity"
+      },
+      "demorgan": {
+        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$",
+        "title": "De Morgan"
+      },
+      "distribution": {
+        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$",
+        "title": "Distributivity"
+      },
+      "doublenegation": {
+        "action": "$$\\neg \\neg q \\Leftrightarrow q$$",
+        "title": "Double negation "
+      },
+      "equivalence": {
+        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$",
+        "title": "Equivalence elimination"
+      },
+      "falsecomplement": {
+        "action": "$$p \\land F \\Leftrightarrow F$$",
+        "title": "F-rule conjunction"
+      },
+      "falseconjunction": {
+        "action": "$$p \\land \\neg p \\Leftrightarrow F$$",
+        "title": "F-rule complement"
+      },
+      "falsedisjunction": {
+        "action": "$$\\neg T \\Leftrightarrow F$$",
+        "title": "F-rule not T"
+      },
+      "header": {
+        "action": "Example",
+        "title": "Rule"
+      },
+      "idempotency": {
+        "action": "$$p \\lor F \\Leftrightarrow p$$",
+        "title": "F-rule disjunction"
+      },
+      "implication": {
+        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$",
+        "title": "Idempotency"
+      },
+      "note": "NB: Commutative variants from the rules absorption, distributivitity and the $$T$$ and $$F$$ rules are also allowed, e.g. $$p \\lor (p \\land q) \\Leftrightarrow p$$ or $$(p \\lor q) \\land r \\Leftrightarrow (p \\land r) \\lor (q \\land r)$$. Associativity from disjunction and conjunction is always implicitly allowed. Generalisations of distribution [e.g. $$r \\land (p \\lor q \\lor s) \\Leftrightarrow (r \\land p) \\lor (r \\land q) \\lor (r \\land s )$$] and De Morgan [e.g. $$\\neg (p \\land q \\land s) \\Leftrightarrow \\neg p \\lor \\neg q \\lor \\neg s$$] can also be used.",
+      "notfalse": {
+        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$",
+        "title": "Implicatiin-elimination"
+      },
+      "nottrue": {
+        "action": "$$q \\land T \\Leftrightarrow q$$",
+        "title": "T-rule conjunction"
+      },
+      "title": "Rules",
+      "truecomplement": {
+        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$",
+        "title": "T-rule complement"
+      },
+      "trueconjunction": {
+        "action": "$$\\neg F \\Leftrightarrow T$$",
+        "title": "T-rule not F"
+      },
+      "truedisjunction": {
+        "action": "$$p \\lor T \\Leftrightarrow T$$",
+        "title": "T-rule disjunction"
+      }
+    },
+    "tabTitle": {
+      "dnf": "Disjunctive Normal Form",
+      "hotKeys": "Hot Keys",
+      "logeq": "Logical Equivalence",
+      "rules": "Rules",
+      "video": "Video"
+    },
     "video": {
       "notSupported": "Your browser does not support embedded videos"
     }
   },
   "logax": {
     "button": {
+      "addLemma": "Add Lemma",
+      "removeLemma": "Remove Lemma",
       "renumber": "Renumber"
     },
     "completed": "The exercise is finished",
@@ -196,6 +289,7 @@
         "axiom-b": "Apply <i>Axiom B</i>",
         "axiom-c": "Apply <i>Axiom C</i>",
         "deduction": "Apply the <i>Deduction</i> Theorem",
+        "lemma": "Apply the <i>Lemma</i>",
         "modusponens": "Apply <i>Modus Ponens</i>"
       },
       "motivate": "Add motivation to a step",
@@ -206,7 +300,9 @@
     "instruction": {
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
-      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: <ul><li>{{lemma}}</li></ul>",
+      "lemma": "Lemma"
     },
     "rule": {
       "addBackwardStep": "Add Backward Step",
@@ -251,19 +347,25 @@
         "stepnr": "Step"
       },
       "label": "<b>Rule</b>",
+      "lemma": {
+        "stepExp": "Specify the number of the new step, or leave empty to get a default number",
+        "stepnr": "Step"
+      },
       "modusponens": {
         "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
         "n1": "$$\\sum\\vdash_S\\phi$$",
         "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
         "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
       }
-    }
+    },
+    "title": "Prove Axiomatic"
   },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
-      "help": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogax": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Help",
       "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }
@@ -299,6 +401,7 @@
           "axiom-c": "Axiom C",
           "deduction": "Deduction",
           "goal": "Goal",
+          "lemma": "Lemma",
           "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativity",
@@ -393,6 +496,7 @@
       "missingOpen": "The closing parenthesis at index {{index}} is missing a opening parenthesis: {{formula}}",
       "missingOperand": "There is a missing operand at index {{index}}: {{formula}}",
       "missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
+      "nestedFirstOrderOperator": "The operator at index {{index}} is nested too deeply: {{formula}}",
       "unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
     }
   },
