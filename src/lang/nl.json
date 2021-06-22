@@ -363,7 +363,8 @@
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",
-      "help": "<i class='fas fa-question-circle'></i> Hulp",
+      "helpLogax": "<i class='fas fa-question-circle'></i> Hulp",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Hulp",
       "logax": "Axiomatisch",
       "logeq": "Logische Equivalentie"
     }

@@ -363,8 +363,8 @@
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
-      "helpLogex": "<i class='fas fa-question-circle'></i> Help",
       "helpLogax": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Help",
       "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }
