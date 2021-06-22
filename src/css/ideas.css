@@ -458,6 +458,10 @@ table td:first-child .alert .katex {
 	float:inherit;
 }
 
+.help-body td .katex {
+	float: inherit!important;
+}
+
 #bottom {
 	margin-right:0!important;
 }
