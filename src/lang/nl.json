@@ -289,6 +289,7 @@
         "axiom-b": "Pas <i>Axioma B</i> toe",
         "axiom-c": "Pas <i>Axioma C</i> toe",
         "deduction": "Pas de <i>Deductiestelling</i> toe",
+        "lemma": "Pas de <i>Hulpstelling</i> toe",
         "modusponens": "Pas <i>Modus Ponens</i> toe"
       },
       "motivate": "Motiveer een stap",
