@@ -121,7 +121,10 @@
         "input": "$$\\land$$",
         "keys": "a, &, ^"
       },
-      "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+      "description": {
+        "logax": "The input of p, q, r, and s can be done with or without using the shift key.",
+        "logex": "The input of T, F, p, q, r, and s can be done with or without using the shift key."
+      },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
         "keys": "e, ="
@@ -265,7 +268,8 @@
       "dnf": "Disjunctive Normal Form",
       "hotKeys": "Hot Keys",
       "logeq": "Logical Equivalence",
-      "rules": "Rules"
+      "rules": "Rules",
+      "video": "Video"
     },
     "video": {
       "notSupported": "Your browser does not support embedded videos"
@@ -359,7 +363,8 @@
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
-      "help": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogax": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Help",
       "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }

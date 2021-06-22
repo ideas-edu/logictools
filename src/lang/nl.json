@@ -121,7 +121,10 @@
         "input": "$$\\land$$",
         "keys": "a, &, ^"
       },
-      "description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+      "description": {
+        "logax": "De invoer van p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+        "logex": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan."
+      },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
         "keys": "e, ="
@@ -265,7 +268,8 @@
       "dnf": "Disjunctieve Normaalvorm",
       "hotKeys": "Sneltoetsen",
       "logeq": "Logische Equivalentie",
-      "rules": "Regels"
+      "rules": "Regels",
+      "video": "Video"
     },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
@@ -359,7 +363,8 @@
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",
-      "help": "<i class='fas fa-question-circle'></i> Hulp",
+      "helpLogax": "<i class='fas fa-question-circle'></i> Hulp",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Hulp",
       "logax": "Axiomatisch",
       "logeq": "Logische Equivalentie"
     }
