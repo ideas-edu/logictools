@@ -1109,14 +1109,21 @@ export class LogAxController extends ExerciseController {
   }
 
   removeStep (index) {
-    const exerciseStepTable = document.getElementById('exercise-step-table')
-
-    for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {
-      if (Number(exerciseStepTable.children[i].getAttribute('number')) === index) {
-        exerciseStepTable.removeChild(exerciseStepTable.children[i])
+    let newSteps = null
+    if (index < 500) {
+      newSteps = this.exercise.steps.steps.filter(x => x.number < index || x.number > 500)
+    } else {
+      newSteps = this.exercise.steps.steps.filter(x => x.number > index || x.number < 500)
+    }
+    for (const step of newSteps) {
+      if (step.references && step.references.includes(index)) {
+        step.references = undefined
+        step.label = undefined
       }
     }
-    this.exercise.steps.steps = this.exercise.steps.steps.filter(x => x.number !== index)
+    this.exercise.steps.newSet(newSteps)
+    this.updateSteps()
+    this.updateStepnrSelectors()
   }
 
   updateSteps () {
@@ -1138,6 +1145,7 @@ export class LogAxController extends ExerciseController {
     this.updateSteps()
     document.getElementById('undo-step').disabled = this.exercise.steps.stepsHistoryIndex === 0
     document.getElementById('redo-step').disabled = false
+    this.updateStepnrSelectors()
   }
 
   redoStep () {
@@ -1145,5 +1153,6 @@ export class LogAxController extends ExerciseController {
     this.updateSteps()
     document.getElementById('redo-step').disabled = this.exercise.steps.stepsHistoryIndex === this.exercise.steps.stepsHistory.length - 1
     document.getElementById('undo-step').disabled = false
+    this.updateStepnrSelectors()
   }
 }
