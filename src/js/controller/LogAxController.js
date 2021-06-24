@@ -176,11 +176,11 @@ export class LogAxController extends ExerciseController {
       this.renumberSteps()
     }.bind(this))
 
-    document.getElementById('undo-step').addEventListener('click', function () {
+    document.getElementById('undo-step').addEventListener('mousedown', function () {
       this.undoStep()
     }.bind(this))
 
-    document.getElementById('redo-step').addEventListener('click', function () {
+    document.getElementById('redo-step').addEventListener('mousedown', function () {
       this.redoStep()
     }.bind(this))
 

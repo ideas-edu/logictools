@@ -39,7 +39,7 @@ export class ExerciseController {
       this.createExercise()
     }.bind(this))
 
-    document.getElementById('validate-step').addEventListener('click', function () {
+    document.getElementById('validate-step').addEventListener('mousedown', function () {
       this.validateStep()
     }.bind(this))
 
