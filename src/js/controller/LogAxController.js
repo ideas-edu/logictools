@@ -205,57 +205,46 @@ export class LogAxController extends ExerciseController {
   initializeInput () {
     const assumptionOptions = {
       id: 1,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomAOptions1 = {
       id: 2,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomAOptions2 = {
       id: 3,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomBOptions1 = {
       id: 4,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomBOptions2 = {
       id: 5,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomBOptions3 = {
       id: 6,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomCOptions1 = {
       id: 7,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomCOptions2 = {
       id: 8,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const deductionOptions = {
       id: 9,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const goalPhiOptions = {
       id: 11,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const goalPsiOptions = {
       id: 12,
-      allowUndo: true,
       characters: this.newExerciseCharacterOptions
     }
     const newFormula1Options = {
