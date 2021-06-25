@@ -941,6 +941,13 @@ export class LogAxController extends ExerciseController {
     document.getElementById('redo-step').disabled = true
     document.getElementById('rule').selectedIndex = 0
     document.getElementById('rule').dispatchEvent(new Event('change', { bubbles: true }))
+    // Check if ready
+    for (const step of this.exercise.steps.steps) {
+      if (step.label === undefined) {
+        return true
+      }
+    }
+    this.exerciseValidator.isFinished(this.exercise, this.onCompleted.bind(this), this.onErrorValidatingStep.bind(this))
     return true
   }
 
@@ -1002,17 +1009,9 @@ export class LogAxController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.steps.steps = []
     this.exercise.steps.newSet(nextStep.formula)
 
     this.onStepValidated()
-    // Check if ready
-    for (const step of this.exercise.steps.steps) {
-      if (step.label === undefined) {
-        return
-      }
-    }
-    this.exerciseValidator.isFinished(this.exercise, this.onCompleted.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   onCompleted (isFinished) {
