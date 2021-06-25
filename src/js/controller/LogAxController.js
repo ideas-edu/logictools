@@ -1026,6 +1026,12 @@ export class LogAxController extends ExerciseController {
       environment: {}
     }
     const callback = function () {
+      // Don't highlight steps after renumbering
+      for (const step of this.exercise.steps.steps) {
+        step.highlightStep = false
+        step.highlightTerm = false
+        step.highlightRule = false
+      }
       this.onStepValidated()
       this.removeDeleteButtons()
     }.bind(this)
