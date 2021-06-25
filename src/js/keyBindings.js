@@ -111,7 +111,7 @@ export class KeyBindings {
           document.activeElement.click()
           e.preventDefault()
         } else if (document.getElementById('exercise-container').style.display === '') {
-          document.getElementById('validate-step').click()
+          this.controller.validateStep()
           e.preventDefault()
         } else if (document.getElementById('new-exercise-container').style.display === '') {
           this.controller.createExercise()
