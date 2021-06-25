@@ -25,6 +25,7 @@
         "buggy-cl8": "De formule $${{psi}}$$ in stap {{n2}} is geen implicatie.",
         "buggy-default": "Deze toepassing van Modus Ponens is niet correct.",
         "buggy-default2": "Deze toepassing van Modus Ponens is niet correct",
+        "buggy-fw0": "In principe is Modus Ponens op deze twee regels mogelijk, maar let op dat het regelnummer van de implicatie in het tweede invoerveld komt te staan.",
         "buggy-fw2": "Modus ponens op stap {{n1}} en stap {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n1}} is niet gelijk aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}.",
         "buggy-fw3": "Modus ponens is alleen mogelijk als de hele formule $${{phi}}$$ in stap {{n1}} gelijk is aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}.",
         "buggy-fw4": "Modus ponens is niet mogelijk, let op de haken in formule {{n2}}.",
