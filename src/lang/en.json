@@ -25,6 +25,7 @@
         "buggy-cl8": "The formula $${{psi}}$$ in step {{n2}} is not an implication.",
         "buggy-default": "This application of Modus Ponens is not correct.",
         "buggy-default2": "This application of Modus Ponens is not correct.",
+        "buggy-fw0": "Modus Ponens is applicable, but take care that you enter the implication in the second entry field.",
         "buggy-fw2": "Applying Modus ponens on step {{n1}} and step {{n2}} is not possible because $${{phi}}$$ in step {{n1}} is not equal to the formula to the left of the implication, $${{psi}}$$, in step {{n2}}.",
         "buggy-fw3": "Modus ponens is only possible when the complete first formula $${{phi}}$$ in step {{n1}} is equal to formula left of the implication, $${{psi}}$$, in step {{n2}}.",
         "buggy-fw4": "Modus ponens is not possible, pay attention to the parentheses in formula {{n2}}.",
