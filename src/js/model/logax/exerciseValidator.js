@@ -51,12 +51,14 @@ export class LogAxExerciseValidator extends ExerciseValidator {
           if (match[3]) {
             const ps = match[3].split(',')
             params = {}
+            let currentKey = null
             for (let i = 0; i < ps.length; i++) {
               const p = ps[i].trim()
               if (p.indexOf('=') === -1) { // belongs to previous param
-                params[params.length - 1][1] += ', ' + p
+                params[currentKey] += ', ' + LogAxStep.convertToLatex(p)
               } else {
                 const ss = p.split('=')
+                currentKey = ss[0]
                 params[ss[0]] = LogAxStep.convertToLatex(ss[1])
               }
             }
