@@ -302,7 +302,7 @@
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
-      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: {{lemma}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: $${{lemma}}$$",
       "lemma": "Lemma"
     },
     "rule": {

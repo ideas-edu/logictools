@@ -7,16 +7,26 @@ import { LogAxStepCollection } from './stepCollection.js'
     @property {LogAxStepCollection} steps The collection of LogAx steps.
  */
 export class LogAxExercise {
-  constructor (steps, exerciseType, properties) {
+  constructor (term, exerciseType, properties) {
     this.type = exerciseType
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
-    this.steps = new LogAxStepCollection(steps)
+    this.steps = new LogAxStepCollection(term.proof)
+    this.lemmas = term.lemmas === undefined ? [] : term.lemmas
 
     const lastStep = this.steps.steps[this.steps.steps.length - 1]
     this.theorem = lastStep.term
     this.theoremKatex = lastStep.termKatex
   }
+
+ getObject () {
+    const object = {
+      proof: this.steps.getObject(),
+      lemmas: this.lemmas
+    }
+    return object
+  }
+
 
   /**
         Gets the current/Last step of the exercise
