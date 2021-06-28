@@ -46,6 +46,14 @@ export class LogAxController extends ExerciseController {
   constructor () {
     super()
     this.ruleKey = null
+    this.formulaOptions = {
+      unaryOperators: ['¬'],
+      binaryOperators: ['→', ','],
+      implicitAssociativeBinaryOperators: [','],
+      firstOrderOperators: [','],
+      implicitPrecendence: [{ strong: ',', weak: '→' }],
+      literals: ['p', 'q', 'r', 's']
+    }
     this.characterOptions = [
       {
         char: '¬',
@@ -56,7 +64,54 @@ export class LogAxController extends ExerciseController {
         char: '→',
         latex: '\\rightarrow',
         triggers: ['i', '.', 'I'],
-        spaces: true
+        spaces: 'lr'
+      },
+      {
+        char: 'p',
+        latex: 'p',
+        triggers: ['P'],
+        charStyled: '<i>p</i>'
+      },
+      {
+        char: 'q',
+        latex: 'q',
+        triggers: ['Q'],
+        charStyled: '<i>q</i>'
+      },
+      {
+        char: 'r',
+        latex: 'r',
+        triggers: ['R'],
+        charStyled: '<i>r</i>'
+      },
+      {
+        char: 's',
+        latex: 's',
+        triggers: ['S'],
+        charStyled: '<i>s</i>'
+      },
+      {
+        char: '(',
+        latex: '(',
+        triggers: ['9']
+      },
+      {
+        char: ')',
+        latex: ')',
+        triggers: ['0']
+      }
+    ]
+    this.newExerciseCharacterOptions = [
+      {
+        char: '¬',
+        latex: '\\neg',
+        triggers: ['-', 'n', '1', '`', '!', 'N']
+      },
+      {
+        char: '→',
+        latex: '\\rightarrow',
+        triggers: ['i', '.', 'I'],
+        spaces: 'lr'
       },
       {
         char: 'p',
@@ -101,7 +156,8 @@ export class LogAxController extends ExerciseController {
       {
         char: ',',
         latex: ',',
-        triggers: [',']
+        triggers: [','],
+        spaces: 'r'
       }
     ]
     this.setExampleExercises()
@@ -120,11 +176,11 @@ export class LogAxController extends ExerciseController {
       this.renumberSteps()
     }.bind(this))
 
-    document.getElementById('undo-step').addEventListener('click', function () {
+    document.getElementById('undo-step').addEventListener('mousedown', function () {
       this.undoStep()
     }.bind(this))
 
-    document.getElementById('redo-step').addEventListener('click', function () {
+    document.getElementById('redo-step').addEventListener('mousedown', function () {
       this.redoStep()
     }.bind(this))
 
@@ -149,74 +205,63 @@ export class LogAxController extends ExerciseController {
   initializeInput () {
     const assumptionOptions = {
       id: 1,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomAOptions1 = {
       id: 2,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomAOptions2 = {
       id: 3,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomBOptions1 = {
       id: 4,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomBOptions2 = {
       id: 5,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomBOptions3 = {
       id: 6,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomCOptions1 = {
       id: 7,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const axiomCOptions2 = {
       id: 8,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const deductionOptions = {
       id: 9,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const goalPhiOptions = {
       id: 11,
-      allowUndo: true,
       characters: this.characterOptions
     }
     const goalPsiOptions = {
       id: 12,
-      allowUndo: true,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newFormula1Options = {
       id: 13,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newFormula2Options = {
       id: 14,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newLemma1Options = {
       id: 13,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const newLemma2Options = {
       id: 14,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     this.assumptionPopover = new FormulaPopover(document.getElementById('assumption-formula-phi'), document.getElementById('assumption-phi-input'), assumptionOptions, this.applyReady.bind(this))
     this.axiomAPopover1 = new FormulaPopover(document.getElementById('axiom-a-formula-phi'), document.getElementById('axiom-a-phi-input'), axiomAOptions1, this.applyReady.bind(this))
@@ -692,6 +737,15 @@ export class LogAxController extends ExerciseController {
         const stepnr2 = document.getElementById('modusponens-select-stepnr-2')
         const stepnr3 = document.getElementById('modusponens-select-stepnr-3')
 
+        if (stepnr1.value !== '' && stepnr2.value !== '') {
+          applyButton.disabled = false
+        }
+        if (stepnr1.value !== '' && stepnr3.value !== '') {
+          applyButton.disabled = false
+        }
+        if (stepnr2.value !== '' && stepnr3.value !== '') {
+          applyButton.disabled = false
+        }
         if (stepnr1.value !== '' && stepnr2.value !== '' && stepnr3.value !== '') {
           applyButton.disabled = false
         }
@@ -876,6 +930,13 @@ export class LogAxController extends ExerciseController {
     document.getElementById('redo-step').disabled = true
     document.getElementById('rule').selectedIndex = 0
     document.getElementById('rule').dispatchEvent(new Event('change', { bubbles: true }))
+    // Check if ready
+    for (const step of this.exercise.steps.steps) {
+      if (step.label === undefined) {
+        return true
+      }
+    }
+    this.exerciseValidator.isFinished(this.exercise, this.onCompleted.bind(this), this.onErrorValidatingStep.bind(this))
     return true
   }
 
@@ -937,17 +998,9 @@ export class LogAxController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.steps.steps = []
     this.exercise.steps.newSet(nextStep.formula)
 
     this.onStepValidated()
-    // Check if ready
-    for (const step of this.exercise.steps.steps) {
-      if (step.label === undefined) {
-        return
-      }
-    }
-    this.exerciseValidator.isFinished(this.exercise, this.onCompleted.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   onCompleted (isFinished) {
@@ -973,6 +1026,12 @@ export class LogAxController extends ExerciseController {
       environment: {}
     }
     const callback = function () {
+      // Don't highlight steps after renumbering
+      for (const step of this.exercise.steps.steps) {
+        step.highlightStep = false
+        step.highlightTerm = false
+        step.highlightRule = false
+      }
       this.onStepValidated()
       this.removeDeleteButtons()
     }.bind(this)
@@ -1044,14 +1103,21 @@ export class LogAxController extends ExerciseController {
   }
 
   removeStep (index) {
-    const exerciseStepTable = document.getElementById('exercise-step-table')
-
-    for (let i = exerciseStepTable.children.length - 1; i >= 0; i--) {
-      if (Number(exerciseStepTable.children[i].getAttribute('number')) === index) {
-        exerciseStepTable.removeChild(exerciseStepTable.children[i])
+    let newSteps = null
+    if (index < 500) {
+      newSteps = this.exercise.steps.steps.filter(x => x.number < index || x.number > 500)
+    } else {
+      newSteps = this.exercise.steps.steps.filter(x => x.number > index || x.number < 500)
+    }
+    for (const step of newSteps) {
+      if (step.references && step.references.includes(index)) {
+        step.references = undefined
+        step.label = undefined
       }
     }
-    this.exercise.steps.steps = this.exercise.steps.steps.filter(x => x.number !== index)
+    this.exercise.steps.newSet(newSteps)
+    this.updateSteps()
+    this.updateStepnrSelectors()
   }
 
   updateSteps () {
@@ -1073,6 +1139,7 @@ export class LogAxController extends ExerciseController {
     this.updateSteps()
     document.getElementById('undo-step').disabled = this.exercise.steps.stepsHistoryIndex === 0
     document.getElementById('redo-step').disabled = false
+    this.updateStepnrSelectors()
   }
 
   redoStep () {
@@ -1080,5 +1147,6 @@ export class LogAxController extends ExerciseController {
     this.updateSteps()
     document.getElementById('redo-step').disabled = this.exercise.steps.stepsHistoryIndex === this.exercise.steps.stepsHistory.length - 1
     document.getElementById('undo-step').disabled = false
+    this.updateStepnrSelectors()
   }
 }

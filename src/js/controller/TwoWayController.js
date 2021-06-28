@@ -285,7 +285,7 @@ class TwoWayController extends LogExController {
       oldFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
       newFormula = nextOneWayStep.formula.split('==')[0].replaceAll(' ', '')
     }
-    const formulaDiff = showdiff(oldFormula, newFormula).printKatexStyled()
+    const formulaDiff = showdiff(oldFormula, newFormula, this.formulaOptions).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }
 
