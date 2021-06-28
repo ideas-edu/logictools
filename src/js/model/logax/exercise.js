@@ -19,14 +19,13 @@ export class LogAxExercise {
     this.theoremKatex = lastStep.termKatex
   }
 
- getObject () {
+  getObject () {
     const object = {
       proof: this.steps.getObject(),
       lemmas: this.lemmas
     }
     return object
   }
-
 
   /**
         Gets the current/Last step of the exercise
