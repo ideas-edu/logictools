@@ -20,42 +20,10 @@ legend {
 }
 
 body {
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
-	font-size: 13px;
-	line-height: 16px;
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif!important;
+	font-size: 13px!important;
+	line-height: 16px!important;
 }
-
-/* body {
-
-	margin: 0 auto;
-    margin-left: 120px;
-	padding-top: 60px;
-    padding-bottom: 40px;
-	min-height: 430px;
-}
-
-.oneWay-body,
-.twoWay-body {
-	padding:0;
-	margin:0 auto;
-
-	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
-	font-size: 13px;
-	line-height: 16px;
-} */
-
-/* body.oneWay-body,
-body.twoWay-body {
-	padding:0;
-	border-radius: 4px;
-	border-color:#e8e8e8;
-	box-shadow: 0px 1px 3px 0 rgb(0 0 0 / 9%);
-	border: 1px solid #e5e5e5;
-} */
-
-
-
-
 
 input,
 button,
@@ -73,15 +41,6 @@ textarea {
 	width: 1020px;
 }
 
-/*label, input, button, select, textarea {
-	font-size: small;
-	line-height: 16px;
-}*/
-
-/*input[type="text"] {
-	font-size: small;
-}*/
-
 .pagination {
 	height: 34px;
 	margin: 14px;
@@ -97,11 +56,6 @@ textarea {
 }
 
 
-
-/*.navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
-	width: 1020px;
-}
-*/
 .cell{
     display:table;
     //border:1px solid gray;
@@ -272,17 +226,6 @@ div.success {
 	width: 541px;
 }
 
-/* .remove-top-step, .remove-bottom-step{
-	color:red;
-	opacity: .8;
-}
-
-.remove-top-step:hover, .remove-bottom-step:hover{
-	color:red;
-	opacity: 1;
-} */
-
-/* doh: z-index opgehoogd, zodat tooltip ook in modal verschijnt */
 .error{
   z-index:8000;
 }
@@ -299,10 +242,7 @@ input.error, select.error {
 
 
 .tab-content {
-    border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 0px;
+    padding: 15px;
 }
 
 .nav-tabs {
@@ -486,10 +426,6 @@ table td:first-child .katex {
 table td:first-child .alert .katex {
 	margin-top:0;
 	float:inherit;
-}
-
-.help-body td .katex {
-	float: inherit!important;
 }
 
 #bottom {
@@ -703,7 +639,7 @@ button {
 	margin:0!important;
 }
 
-.logax-body #exercise-container .col-8 table {
+.logax-body #exercise-container .col-7 table {
 	border: 1px solid #e8e8e8;
 }
 
@@ -718,12 +654,26 @@ button {
 	padding:10px;
 }
 
+.logax-body #rule-container #exercise-alert-container {
+	border-bottom: 1px solid #e8e8e8;
+}
+
+.logax-body #rule-container #exercise-alert-container #exercise-alert {
+	margin-bottom:0;
+}
+
 .logax-body #rule-container #exercise-alert-container #exercise-alert-button {
 	clear:both;
 	float: left!important;
 	margin-left: 0;
  	margin-top: 15px;
 }
+
+.logax-body #rule-container #logax-actions {
+	padding:8px 0;
+}
+
+
 
 .formula-highlight {
 background-color: red;
@@ -738,11 +688,43 @@ background-color: red;
     border: 1px solid #e5e5e5;
 } */
 
+.help-body {
+	border-radius: 4px;
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	box-shadow: 0px 1px 3px 0 rgb(0 0 0 / 9%);
+}
 
+.help-body .nav .nav-item .nav-link {
+	padding:15px;
+	font-size:13px;
+	color:#999;
+}
 
-
+.help-body .nav .nav-item .nav-link.active,
+.help-body .nav .nav-item .nav-link:hover {
+	color:#000;
+}
 
 .help-body #help-dnv video,
 .help-body #help-cnv video{
 	width: 100%;
+	border:1px solid #e5e5e5;
+}
+
+.help-body td .katex {
+	float: inherit!important;
+}
+
+.help-body #help-hotKeys.active h3,
+.help-body #help-hotKeys.active p,
+.help-body #help-rules.active h3,
+.help-body #help-rules.active p {
+	color:#000;
+}
+
+.help-body #help-hotKeys table,
+.help-body #help-rules table {
+	border-left:1px solid #e5e5e5;
+	border-right:1px solid #e5e5e5;
 }
