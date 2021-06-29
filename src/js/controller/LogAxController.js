@@ -21,7 +21,6 @@ import { LogAxStep } from '../model/logax/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
-// import config from '../../../config.json'
 import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
