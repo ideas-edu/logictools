@@ -79,3 +79,14 @@ ul.nav .nav-item:last-child {
 #container-logax iframe#fra-logax {
 	min-height: 570px!important;
 }
+
+footer {
+	text-align: center;
+	font-size: 8pt;
+	position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    opacity: 40%;
+}
