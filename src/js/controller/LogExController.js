@@ -1,9 +1,15 @@
-import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { ExerciseController } from './ExerciseController.js'
 
 export class LogExController extends ExerciseController {
   constructor () {
     super()
+    this.formulaOptions = {
+      unaryOperators: ['¬'],
+      binaryOperators: ['∧', '∨', '→', '↔'],
+      implicitAssociativeBinaryOperators: ['∧', '∨'],
+      literals: ['p', 'q', 'r', 's', 'T', 'F']
+    }
+
     this.characterOptions = [
       {
         char: '¬',
@@ -13,26 +19,26 @@ export class LogExController extends ExerciseController {
       {
         char: '∧',
         latex: '\\land',
-        triggers: ['a', '7', '&', 'A'],
-        spaces: true
+        triggers: ['a', '7', '&', 'A', '6', '^'],
+        spaces: 'lr'
       },
       {
         char: '∨',
         latex: '\\lor',
         triggers: ['o', 'v', '|', '\\', 'O', 'V'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: '→',
         latex: '\\rightarrow',
         triggers: ['i', '.', 'I'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: '↔',
         latex: '\\leftrightarrow',
         triggers: ['=', 'e', 'E'],
-        spaces: true
+        spaces: 'lr'
       },
       {
         char: 'p',
@@ -86,6 +92,10 @@ export class LogExController extends ExerciseController {
       }.bind(this))
     }
 
+    document.getElementById('show-solve-exercise').addEventListener('click', function () {
+      this.showSolution()
+    }.bind(this))
+
     document.getElementById('step-validation-switch').addEventListener('click', function () {
       this.changeStepValidation()
     }.bind(this))
@@ -134,24 +144,5 @@ export class LogExController extends ExerciseController {
     super.insertStep(step, canDelete)
 
     this.formulaPopover.previousValue = step.formula
-  }
-
-  /**
-        Validates the formula
-
-        @param formula - The DOM element that contains the formula
-        @param onFormulasValidated - The callback function
-     */
-  validateFormula (formulaElement, alert) {
-    const result = this.syntaxValidator.validateSyntax(formulaElement.value)
-    if (result !== null) {
-      this.setErrorLocation(formulaElement.id)
-      alert.updateAlert(result.key, result.params, 'error')
-      this.isFormulaValid = false
-      IdeasServiceProxy.log({ exerciseid: this.exercise.type, formula: formulaElement.value, syntaxError: result.key })
-      return false
-    }
-    this.isFormulaValid = true
-    return true
   }
 }

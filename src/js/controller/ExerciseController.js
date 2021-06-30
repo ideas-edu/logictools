@@ -1,4 +1,5 @@
 import config from '../../../config.json'
+import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { KeyBindings } from '../keyBindings.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
 
@@ -38,7 +39,7 @@ export class ExerciseController {
       this.createExercise()
     }.bind(this))
 
-    document.getElementById('validate-step').addEventListener('click', function () {
+    document.getElementById('validate-step').addEventListener('mousedown', function () {
       this.validateStep()
     }.bind(this))
 
@@ -102,14 +103,17 @@ export class ExerciseController {
   /**
         Initializes drop down box for rules from Rules dictionary
      */
-  initializeRules (comboRule) {
+  initializeRules (comboRule, ruleSet) {
     // Clear ruleset if already set
     comboRule.innerHTML = ''
     const select = document.createElement('option')
     select.setAttribute('translate-key', 'shared.button.selectRule')
     comboRule.appendChild(select)
+    if (ruleSet === undefined) {
+      ruleSet = this.config.rules
+    }
 
-    for (const rule of this.config.rules) {
+    for (const rule of ruleSet) {
       // Rule will only be displayed if it has not already been displayed
       const option = document.createElement('option')
       option.setAttribute('translate-key', `rule.${rule}`)
@@ -320,5 +324,27 @@ export class ExerciseController {
     while (elements.length > 0) {
       elements[0].classList.remove('error')
     }
+    if (this.exerciseAlert.type === 'error') {
+      this.dismissAlert()
+    }
+  }
+
+  /**
+        Validates the formula
+
+        @param formula - The DOM element that contains the formula
+        @param onFormulasValidated - The callback function
+     */
+  validateFormula (formulaElement, alert) {
+    const result = this.syntaxValidator.validateSyntax(formulaElement.value, this.formulaOptions)
+    if (result !== null) {
+      this.setErrorLocation(formulaElement.id)
+      alert.updateAlert(result.key, result.params, 'error')
+      this.isFormulaValid = false
+      IdeasServiceProxy.log(this.config, { exerciseid: this.exercise.type, formula: formulaElement.value, syntaxError: result.key })
+      return false
+    }
+    this.isFormulaValid = true
+    return true
   }
 }

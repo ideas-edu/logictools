@@ -28,14 +28,10 @@ body {
     margin-left: 120px;
 	padding-top: 60px;
     padding-bottom: 40px;
-	min-height: 550px;
+	min-height: 430px;
 }
 
-.help-body {
-	padding: 15px;
-}
-
-.oneWay-body, .twoWay-body, .help-body
+.oneWay-body, .twoWay-body
 {
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, "Lucida Sans Unicode", Arial, sans-serif;
 	font-size: 13px;
@@ -316,7 +312,7 @@ input.error, select.error {
 .alert-primary {
     border-color: #b8b8b8;
     background: #fcfcfc;
-	color:#999;
+	color:#000;
 }
 
 
@@ -327,10 +323,16 @@ input.error, select.error {
 	border-color:#1665d8;
 }
 
+
 .hint-alert svg {
 	margin-right: 10px;
 	font-size: 12px;
 	vertical-align: -.125em;
+}
+
+.alert #exercise-alert-dismiss {
+	margin-left: 10px;
+	margin-top:2px;
 }
 
 #toggle-hint2,
@@ -341,9 +343,12 @@ input.error, select.error {
 
 .error-alert {
 	font-weight: 600;
-	color: #fff;
+	color: #e2001a;
+	background-color:#ffd7dc;
+	border:0;
+	/* 	color: #fff;
 	background-color: #e2001a;
-	border-color: #e2001a;
+	border-color: #e2001a; */
 }
 .error-alert svg {
 	margin-right: 10px;
@@ -367,8 +372,6 @@ input.error, select.error {
 .formula-highlight {
 	background-color: red;
 }
-
-
 
 
 #header-step {
@@ -437,10 +440,6 @@ table td {
 	border-top: 1px solid #e8e8e8!important;
 }
 
-td.no-row-divider {
-	border-top: 0px !important;
-}
-
 table td {
 	padding: 12px 15px!important;
 }
@@ -449,12 +448,19 @@ table td:first-child {
 	padding-right: 0!important;
 }
 
-table .col-step .katex {
+table td:first-child .katex {
 	margin-top:2px;
 	float:right;
 }
 
+table td:first-child .alert .katex {
+	margin-top:0;
+	float:inherit;
+}
 
+.help-body td .katex {
+	float: inherit!important;
+}
 
 #bottom {
 	margin-right:0!important;
@@ -481,6 +487,9 @@ body.oneWay-body, body.twoWay-body {
 }
 
 
+.title {
+	margin-right: 0!important;
+}
 
 h4 {
 	margin:0;
@@ -572,6 +581,15 @@ button {
 	background-image: linear-gradient(to bottom, #d32118, #af1e16);
 }
 
+.btn-dark {
+	background-image: linear-gradient(to top,#000,#333);
+	border-color: #000;
+	box-shadow: none;
+}
+
+
+
+
 .form-control,
 .custom-select {
 	font-size: 13px;
@@ -595,6 +613,13 @@ button {
 	vertical-align: middle;
 }
 
+.oneWay-body #header-actions {
+	padding-left:25px!important;
+}
+
+.oneWay-body #new-exercise-container {
+
+}
 
 /* Logische Equivalentie */
 .twoWay-body #empty-bottom-step td{
@@ -613,13 +638,37 @@ button {
 }
 
 
-
-
-video {
-	width: 100%;
+.oneWay-body #header-actions,
+.oneWay-body #col-actions,
+.twoWay-body #header-actions,
+.twoWay-body #col-actions {
+	width: 165px;
 }
 
+.oneWay-body #header-actions,
+.twoWay-body #header-actions {
+	padding-left:25px!important;
+}
 
-#rule-container {
+.twoWay-body #new-exercise-container .row .col-1 {
+	text-align: center;
+	padding-top: 5px;
+}
+
+.oneWay-body #new-exercise-container .row,
+.twoWay-body #new-exercise-container .row{
+	margin:0!important;
+}
+
+.oneWay-body #new-exercise-container .row .col-3,
+.twoWay-body #new-exercise-container .row .col-3{
+	text-align: right;
+}
+
+#rule-container, #completed-rule-container {
     border: 1px solid #e5e5e5;
+}
+
+.highlight-text {
+	color: #2B68D1;
 }

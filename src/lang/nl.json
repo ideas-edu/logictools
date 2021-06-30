@@ -1,14 +1,56 @@
 {
   "buggyRule": {
+    "axiomatic": {
+      "deduction": {
+        "buggy-1": "De formule $${{phi}}$$ in stap {{n}} is geen implicatie, en kan dus niet het resultaat zijn van een toepassing van de deductiestelling.",
+        "buggy-2": "De formule $${{phi}}$$ in stap {{n}} is geen implicatie, en kan dus niet het resultaat zijn van een toepassing van de deductiestelling.",
+        "buggy-3": "De formule $${{phi}}$$ in stap {{n1}} is niet gelijk aan het deel rechts van de implicatie, $${{psi}}$$, in stap {{n2}}, dus stap {{n2}} kan niet het resultaat zijn van een toepassing van de deductiestelling op stap {{n1}}.",
+        "buggy-4": "De aannames in stap {{n2}} zijn niet gelijk aan de aannames in stap {{n1}} $$({{as}})$$ waaruit $${{phi}}$$ is weggelaten, dus stap {{n2}} kan niet het resultaat zijn van een toepassing van de deductiestelling op stap {{n1}}.",
+        "buggy-5": "Deductiestelling op stap {{n1}} en {{n2}} is niet mogelijk, u kunt stap {{n2}} wel afleiden met behulp van een aanname en modus ponens.",
+        "buggybw-1": "Stap {{n}} is al gemotiveerd, het heeft geen zin om een nieuwe bewering te zoeken zodat stap {{n}} het resultaat is van een toepassing van de deductiestelling op deze nieuwe regel.",
+        "buggycl-0": "Stap {{n2}} is al gemotiveerd en niet het resultaat van een toepassing van de deductiestelling op {{n2}}."
+      },
+      "goal": {
+        "buggy-gl1": "Dit doel is niet afleidbaar",
+        "buggy-gl2": "Dit doel is gelijk of verwant aan de te bewijzen formule"
+      },
+      "modusponens": {
+        "buggy-cl1": "De aannames $$({{as}})$$ in stap {{n3}} zijn niet gelijk aan de vereniging van de aannames in stap {{n1}} en stap {{n2}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n1}} en {{n2}}.",
+        "buggy-cl2": "Modus ponens op stap {{n1}} en stap {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n3}} is niet gelijk aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}. U kunt wel de deductiestelling toepassen op stap {{n3}}.",
+        "buggy-cl3": "Modus ponens is alleen mogelijk als de hele formule $${{phi}}$$ in stap {{n3}} gelijk is aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}",
+        "buggy-cl4": "Modus ponens is niet mogelijk, let op de haken in formule {{n2}}.",
+        "buggy-cl5": "Modus ponens op stap {{n3}} en {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n3}} is niet exact gelijk aan $${{psi}}$$ in stap {{n2}}. Deze formules zijn slechts equivalent.",
+        "buggy-cl6": "Modus ponens op stap {{n3}} en {{n2}} is alleen mogelijk als $${{phi}}$$ in stap {{n3}} gelijk is aan de formule $${{psi}}$$ links van de implicatie in stap {{n2}}. In dit geval is $${{phi}}$$ gelijk aan de formule rechts van de implicatie.",
+        "buggy-cl7": "Modus ponens op stap {{n3}} en {{n2}} is niet mogelijk, let op de haken in de formule in stap {{n2}}.",
+        "buggy-cl8": "De formule $${{psi}}$$ in stap {{n2}} is geen implicatie.",
+        "buggy-default": "Deze toepassing van Modus Ponens is niet correct.",
+        "buggy-default2": "Deze toepassing van Modus Ponens is niet correct",
+        "buggy-fw0": "In principe is Modus Ponens op deze twee regels mogelijk, maar let op dat het regelnummer van de implicatie in het tweede invoerveld komt te staan.",
+        "buggy-fw2": "Modus ponens op stap {{n1}} en stap {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n1}} is niet gelijk aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}.",
+        "buggy-fw3": "Modus ponens is alleen mogelijk als de hele formule $${{phi}}$$ in stap {{n1}} gelijk is aan de formule links van de implicatie, $${{psi}}$$, in stap {{n2}}.",
+        "buggy-fw4": "Modus ponens is niet mogelijk, let op de haken in formule {{n2}}.",
+        "buggy-fw5": "Modus ponens op stap {{n1}} en {{n2}} is niet mogelijk want $${{phi}}$$ in stap {{n1}} is niet exact gelijk aan $${{psi}}$$ in stap {{n2}}. Deze formules zijn slechts equivalent.",
+        "buggy-fw6": "Modus ponens op stap {{n1}} en {{n2}} is alleen mogelijk als $${{phi}}$$ in stap {{n1}} gelijk is aan de formule $${{psi}}$$ links van de implicatie in stap {{n2}}. In dit geval is $${{phi}}$$ gelijk aan de formule rechts van de implicatie.",
+        "buggy-fw7": "Modus ponens op stap {{n1}} en {{n2}} is niet mogelijk, let op de haken in de formule in stap {{n2}}.",
+        "buggy-fw8": "De formule $${{psi}}$$ in de stap {{n2}} is geen implicatie.",
+        "buggy-fw9": "U kunt Modus Ponens alleen toepassen op de stappen {{n1}} en {{n2}} als beide regels al bewezen zijn.",
+        "buggy-m1": "De aanname(s) $$({{as}})$$ in stap {{n2}} is geen onderdeel van de aannames in stap {{n3}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n2}} en een nieuwe stap.",
+        "buggy-m2": "De aanname(s) $$({{as}})$$ in stap {{n1}} is geen onderdeel van de aannames in stap {{n3}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n1}} en een nieuwe stap.",
+        "buggy-m3": "De formule $${{phi}}$$ in stap {{n2}} is geen implicatie.",
+        "buggy-m4": "Het rechterdeel van de implicatie ($${{phi}}$$) in stap {{n2}} is niet gelijk aan de formule ($${{psi}}$$) in stap {{n3}}, dus stap {{n3}} is niet het resultaat van een toepassing van Modus Ponens op stap {{n2}} en een nieuwe stap."
+      }
+    },
     "logic": {
       "propositional": {
         "buggy": {
           "absor": "U heeft absorptie niet correct toegepast.",
           "absor2": "U heeft absorptie niet correct toegepast: let op welke subformule u overhoudt.",
           "andcompl": {
+            "#": "U heeft een complement regel niet correct toegepast.",
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "andcompl2": "U heeft een complement regel niet correct toegepast.",
+          "andcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
+          "andcompl3": "Dit is niet correct, herschrijf de conjunctie van twee complementen naar F",
           "andoverand": "U hebt een conjunctie over een conjunctie gedistribueerd, dit mag enkel over een disjunctie.",
           "andsame": "U heeft idempotentie niet correct toegepast.",
           "assimp": "U heeft onterecht associativiteit bij implicatie toegepast.",
@@ -17,13 +59,16 @@
           "demorgan1": "U heeft De Morgan niet correct toegepast, denk aan de negatietekens.",
           "demorgan2": "Denk bij het toepassen van De Morgan aan het weghalen van de negatie buiten de haken.",
           "demorgan3": {
+            "#": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie.",
             "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een conjunctie in een disjunctie."
           },
           "demorgan4": {
+            "#": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie.",
             "inv": "Denk bij het toepassen van De Morgan aan het omzetten van een disjunctie in een conjunctie."
           },
           "demorgan5": "Let bij het toepassen van De Morgan op het plaatsen van de haken, u hebt het bereik van een negatie onbedoeld gewijzigd.",
           "distr": {
+            "#": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan.",
             "inv": "U heeft distributie niet correct toegepast, let op waar conjuncties en waar disjuncties komen te staan."
           },
           "distrnot": "U bent bij de distributie een negatie vergeten.",
@@ -31,30 +76,40 @@
           "equivelim2": "U heeft equivalentie eliminatie niet correct toegepast, let op de plaats van de disjuncties en de conjuncties.",
           "equivelim3": "U heeft de regel voor implicatie eliminatie in plaats van equivalentie eliminatie toegepast.",
           "falseprop": {
+            "#": "U heeft een F regel niet correct toegepast.",
             "inv": "U heeft een F regel niet correct toegepast."
           },
           "idemequi": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
           "idemequiv": {
+            "#": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties.",
             "inv": "Idempotentie geldt niet voor equivalenties, alleen voor conjuncties en disjuncties."
           },
           "idemimp": {
+            "#": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties.",
             "inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties."
           },
-          "implelim": "U heeft implicatie eliminatie niet correct toegepast.",
+          "implelim": {
+           "#": "U heeft implicatie eliminatie niet correct toegepast.",
+           "inv": "Deze herschrijving naar een implicatie is niet correct, let op de plaats van de negatie of de disjunctie."
+          }, 
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
           "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
+          "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "U bent de negatie voor de implicatie vergeten.",
-          "notoverimpl": "U kunt niet het negatie teken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
+          "notoverimpl": "U kunt niet het negatieteken over een implicatie distribueren. Herschrijf eerst de implicatie en pas dan De Morgan toe.",
           "orcompl": {
+            "#": "U heeft een complement regel niet correct toegepast.",
             "inv": "U heeft een complement regel niet correct toegepast."
           },
-          "orcompl2": "U heeft een complement regel niet correct toegepast.",
+          "orcompl2": "De complementregel is niet toepasbaar, want het 'complement' staat niet in het bereik van één negatie.",
+          "orcompl3": "Dit is niet correct, herschrijf de disjunctie van twee complementen naar T",
           "oroveror": "U hebt een disjunctie over een disjunctie gedistribueerd, dit mag enkel over een conjunctie.",
           "orsame": "U heeft een T regel onterecht toegepast.",
           "parenth1": "U kunt niet zonder meer een negatie verplaatsen.Toepassen van De Morgan kan wel, denk daarbij aan beide negaties en het omwisselen van een conjunctie in een disjunctie of vice versa.",
           "parenth2": "Let op de haakjes. Denk eraan dat bij equivalentie-eliminatie de negatie buiten haken blijft staan.",
           "parenth3": "Dubbele negatie is pas toepasbaar als beide negaties betrekking hebben op dezelfde subformule.",
           "trueprop": {
+            "#": "U heeft een T regel niet correct toegepast.",
             "inv": "U heeft een T regel niet correct toegepast."
           }
         }
@@ -65,9 +120,12 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
-      "description": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+      "description": {
+        "logax": "De invoer van p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan.",
+        "logex": "De invoer van T, F, p, q, r, en s kunnen zowel met als zonder shift-toets worden gedaan."
+      },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
         "keys": "e, ="
@@ -131,33 +189,185 @@
         "keys": "enter"
       }
     },
+    "rules": {
+      "absorption": {
+        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$",
+        "title": "Absorptie"
+      },
+      "assoc": {
+        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$",
+        "title": "Associativiteit"
+      },
+      "commutativity": {
+        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$",
+        "title": "Commutativiteit"
+      },
+      "demorgan": {
+        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$",
+        "title": "De Morgan"
+      },
+      "distribution": {
+        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$",
+        "title": "Distributiviteit"
+      },
+      "doublenegation": {
+        "action": "$$\\neg \\neg q \\Leftrightarrow q$$",
+        "title": "Dubbele negatie "
+      },
+      "equivalence": {
+        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$",
+        "title": "Equivalentie eliminatie"
+      },
+      "falsecomplement": {
+        "action": "$$p \\land F \\Leftrightarrow F$$",
+        "title": "F-regel conjunctie"
+      },
+      "falseconjunction": {
+        "action": "$$p \\land \\neg p \\Leftrightarrow F$$",
+        "title": "F-regel complement"
+      },
+      "falsedisjunction": {
+        "action": "$$\\neg T \\Leftrightarrow F$$",
+        "title": "F-regel niet T"
+      },
+      "header": {
+        "action": "Voorbeeld",
+        "title": "Regel"
+      },
+      "idempotency": {
+        "action": "$$p \\lor F \\Leftrightarrow p$$",
+        "title": "F-regel disjunctie"
+      },
+      "implication": {
+        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>of</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$",
+        "title": "Idempotentie "
+      },
+      "note": "NB: Commutatieve varianten van de regels absorptie, distributivititeit en de $$T$$ en $$F$$ regels zijn ook toegestaan, bijv. $$p \\lor (p \\land q) \\Leftrightarrow p$$ of $$(p \\lor q) \\land r \\Leftrightarrow (p \\land r) \\lor (q \\land r)$$. Associativiteit van disjunctie en conjunctie is altijd impliciet toegestaan. Generalisaties van distributie [bijv. $$r \\land (p \\lor q \\lor s) \\Leftrightarrow (r \\land p) \\lor (r \\land q) \\lor (r \\land s )$$] en DeMorgan [bijv.$$\\neg (p \\land q \\land s) \\Leftrightarrow \\neg p \\lor \\neg q \\lor \\neg s$$] kunt u ook gebruiken.",
+      "notfalse": {
+        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$",
+        "title": "Implicatie-eliminatie"
+      },
+      "nottrue": {
+        "action": "$$q \\land T \\Leftrightarrow q$$",
+        "title": "T-regel conjunctie"
+      },
+      "title": "Regels",
+      "truecomplement": {
+        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$",
+        "title": "T-regel complement"
+      },
+      "trueconjunction": {
+        "action": "$$\\neg F \\Leftrightarrow T$$",
+        "title": "T-regel niet F"
+      },
+      "truedisjunction": {
+        "action": "$$p \\lor T \\Leftrightarrow T$$",
+        "title": "T-regel disjunctie"
+      }
+    },
+    "tabTitle": {
+      "dnf": "Disjunctieve Normaalvorm",
+      "hotKeys": "Sneltoetsen",
+      "logeq": "Logische Equivalentie",
+      "rules": "Regels",
+      "video": "Video"
+    },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
     }
   },
   "logax": {
+    "button": {
+      "addLemma": "Voeg Hulpstelling Toe",
+      "removeLemma": "Verwijder Hulpstelling",
+      "renumber": "Hernummeren"
+    },
+    "completed": "De uitwerking is compleet",
+    "hint": {
+      "applyRule": {
+        "assumption": "Pas een <i>Aanname</i> toe",
+        "axiom-a": "Pas <i>Axioma A</i> toe",
+        "axiom-b": "Pas <i>Axioma B</i> toe",
+        "axiom-c": "Pas <i>Axioma C</i> toe",
+        "deduction": "Pas de <i>Deductiestelling</i> toe",
+        "lemma": "Pas de <i>Hulpstelling</i> toe",
+        "modusponens": "Pas <i>Modus Ponens</i> toe"
+      },
+      "motivate": "Motiveer een stap",
+      "performBackward": "Voer een achterwaartse stap uit",
+      "performForward": "Voer een voorwaartse stap uit",
+      "proveSubgoal": "Probeer eerst $${{subgoal}}$$ te bewijzen"
+    },
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!",
-      "create": "Schrijf de formule voor je eigen opgave",
-      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}"
+      "create": "Schrijf de stelling voor je eigen opgave",
+      "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: {{lemma}}",
+      "lemma": "Hulpstelling"
     },
     "rule": {
+      "addBackwardStep": "Stap achterwaarts toevoegen",
+      "addForwardStep": "Stap voorwaarts toevoegen",
+      "addMotivation": "Stap motiveren",
+      "addStep": "Stap toevoegen",
       "assumption": {
-        "addMotivation": "Stap motiveren",
-        "addStep": "Stap toevoegen",
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Stap"
       },
-      "label": "<b>Regel</b>"
-    }
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "axiom-b": {
+        "chi": "$$\\chi$$",
+        "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "axiom-c": {
+        "def": "$$\\vdash(\\neg\\phi\\rightarrow\\neg\\psi)\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Stap"
+      },
+      "deduction": {
+        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
+        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "phi": "$$\\phi$$"
+      },
+      "goal": {
+        "def": "$$\\phi\\vdash\\psi$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
+        "stepnr": "Stap"
+      },
+      "label": "<b>Regel</b>",
+      "lemma": {
+        "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
+        "stepnr": "Stap"
+      },
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      }
+    },
+    "title": "Bewijs Axiomatisch"
   },
   "main": {
     "noMobile": "Dit programma is niet geoptimaliseerd voor beeldschermen met een beperkte breedte.",
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",
-      "help": "<i class='fas fa-question-circle'></i> Hulp",
+      "helpLogax": "<i class='fas fa-question-circle'></i> Hulp",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Hulp",
       "logax": "Axiomatisch",
       "logeq": "Logische Equivalentie"
     }
@@ -187,7 +397,14 @@
         "absorption": "Absorptie",
         "assoc": "Associativiteit",
         "axiomatic": {
-          "assumption": "Aanname"
+          "assumption": "Aanname",
+          "axiom-a": "Axioma A",
+          "axiom-b": "Axioma B",
+          "axiom-c": "Axioma C",
+          "deduction": "Deductiestelling",
+          "goal": "Doel",
+          "lemma": "Hulpstelling",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativiteit",
         "demorgan": "De Morgan",
@@ -209,7 +426,8 @@
   },
   "shared": {
     "button": {
-      "completeExercise": "Volottoi mijn afleiding",
+      "apply": "Pas toe",
+      "completeExercise": "Voltooi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
       "generateExerciseEasy": "Eenvoudig",
@@ -219,11 +437,13 @@
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",
+      "selectStep": "-- Selecteer stap --",
       "solveExercise": "Toon oplossing",
       "step": "Toon stap",
       "validateStep": "<i class='fas fa-check'></i>"
     },
     "error": {
+      "cannotApply": "Kan '[[rule]]' niet toepassen",
       "correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
       "creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
       "generatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Probeert u het nog een keer.",
@@ -272,12 +492,13 @@
       "useRule": "Gebruik <i>[[rule]]</i>."
     },
     "syntaxError": {
-      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} zijn dubbelzinnig: {{formula}}",
+      "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} is dubbelzinnig: {{formula}}",
       "emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",
       "missingClose": "Er ontbreekt een sluitingshaakje bij het openingshaakje bij positie {{index}}: {{formula}}",
       "missingOpen": "Er ontbreekt een openingshaakje bij het sluitingshaakje bij positie {{index}}: {{formula}}",
       "missingOperand": "Er ontbreekt een operand bij positie {{index}}: {{formula}}",
       "missingOperator": "Er ontbreekt een connectief bij positie {{index}}: {{formula}}",
+      "nestedFirstOrderOperator": "De connectief bij positie {{index}} is te diep genest: {{formula}}",
       "unexpectedChar": "Er is een onverwachte teken bij positie {{index}}: {{formula}}"
     }
   },

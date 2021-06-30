@@ -12,17 +12,10 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       exerciseid: exercise.type,
       prefix: '[]',
       context: {
-        term: [],
+        term: exercise.steps.getObject(),
         environment: {},
         location: []
       }
-    }
-
-    for (const step of exercise.steps.steps) {
-      state.context.term.push({
-        number: step.number,
-        term: step.term
-      })
     }
 
     return state
@@ -42,20 +35,64 @@ export class LogAxExerciseValidator extends ExerciseValidator {
     const state = this.getState(exercise)
 
     const validated = function (response) {
-      for (const responseStep of response.apply.state.context.term) {
-        let exists = false
-        for (const existingStep of exercise.steps.steps) {
-          if (responseStep.number === existingStep.number) {
-            exists = true
-          }
+      if (response.error) {
+        if (response.error.slice(0, 12) === 'Cannot apply') { // syntax error
+          const baseRuleKey = step.rule.split('.')[3]
+          const ruleKey = `rule.logic.propositional.axiomatic.${baseRuleKey}`
+          onErrorValidating({ key: 'shared.error.cannotApply', params: { rule: ruleKey } })
+          return
         }
-        if (!exists) {
-          const newStep = new LogAxStep(responseStep)
-          onValidated(newStep)
+        const BUGGY_RULE_PATTERN = /Buggy rule logic\.propositional\.([a-zA-Z0-9\-_.]+)( {(.*)})?/
+        const key = response.error.split('+')[0] // when more than 1 error take the first
+
+        const match = BUGGY_RULE_PATTERN.exec(key)
+        let params = null
+        if (match !== null) {
+          if (match[3]) {
+            const ps = match[3].split(',')
+            params = {}
+            let currentKey = null
+            for (let i = 0; i < ps.length; i++) {
+              const p = ps[i].trim()
+              if (p.indexOf('=') === -1) { // belongs to previous param
+                params[currentKey] += ', ' + LogAxStep.convertToLatex(p)
+              } else {
+                const ss = p.split('=')
+                currentKey = ss[0]
+                params[ss[0]] = LogAxStep.convertToLatex(ss[1])
+              }
+            }
+          }
+
+          onErrorValidating({
+            key: `buggyRule.${match[1]}`,
+            params: params
+          })
           return
         }
       }
+
+      if (!response.apply) {
+        onErrorValidating()
+        return
+      }
+      exercise.steps.newSet(response.apply.state.context.term)
+      onValidated()
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
+  }
+
+  isFinished (exercise, onFinished, onError) {
+    const state = this.getState(exercise)
+
+    const validated = function (response) {
+      if (!response.finished) {
+        onError()
+        return
+      }
+
+      onFinished(response.finished)
+    }
+    IdeasServiceProxy.finished(this.config, state, validated, onError)
   }
 }

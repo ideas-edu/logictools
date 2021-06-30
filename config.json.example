@@ -2,8 +2,37 @@
   "tools": {
     "DNV": {
       "code": "dnf",
+      "source": "logex",
       "url": "oneway.html?exerciseType=DNV",
       "exampleExercises": [0, 1, 2, 3, 4],
+      "randomExercises": true,
+      "inputOwnExercise": true,
+      "useRuleJustification": true,
+      "displayRuleJustification": false,
+      "useStepValidation": true,
+      "displayStepValidation": false,
+      "displayHintButton": true,
+      "displayNextStepButton": true,
+      "displayDerivationButton": true,
+      "rules": [
+        "logic.propositional.absorption",
+        "logic.propositional.assoc",
+        "logic.propositional.commutativity",
+        "logic.propositional.demorgan",
+        "logic.propositional.distribution",
+        "logic.propositional.doublenegation",
+        "logic.propositional.equivalence",
+        "logic.propositional.falsecomplement",
+        "logic.propositional.falseconjunction",
+        "logic.propositional.falsedisjunction",
+        "logic.propositional.nottrue",
+        "logic.propositional.idempotency",
+        "logic.propositional.implication",
+        "logic.propositional.truecomplement",
+        "logic.propositional.trueconjunction",
+        "logic.propositional.truedisjunction",
+        "logic.propositional.notfalse"
+      ],
       "bundles": {
         "oneWaySolution": "controller/OneWaySolutionController.js",
         "oneWay": "controller/OneWayController.js"
@@ -11,8 +40,37 @@
     },
     "CNV": {
       "code": "cnf",
+      "source": "logex",
       "url": "oneway.html?exerciseType=CNV",
       "exampleExercises": [0, 1, 2, 3, 4],
+      "randomExercises": true,
+      "inputOwnExercise": true,
+      "useRuleJustification": true,
+      "displayRuleJustification": false,
+      "useStepValidation": true,
+      "displayStepValidation": false,
+      "displayHintButton": true,
+      "displayNextStepButton": true,
+      "displayDerivationButton": true,
+      "rules": [
+        "logic.propositional.absorption",
+        "logic.propositional.assoc",
+        "logic.propositional.commutativity",
+        "logic.propositional.demorgan",
+        "logic.propositional.distribution",
+        "logic.propositional.doublenegation",
+        "logic.propositional.equivalence",
+        "logic.propositional.falsecomplement",
+        "logic.propositional.falseconjunction",
+        "logic.propositional.falsedisjunction",
+        "logic.propositional.nottrue",
+        "logic.propositional.idempotency",
+        "logic.propositional.implication",
+        "logic.propositional.truecomplement",
+        "logic.propositional.trueconjunction",
+        "logic.propositional.truedisjunction",
+        "logic.propositional.notfalse"
+      ],
       "bundles": {
         "oneWaySolution": "controller/OneWaySolutionController.js",
         "oneWay": "controller/OneWayController.js"
@@ -20,8 +78,37 @@
     },
     "LOGEQ": {
       "code": "logeq",
+      "source": "logex",
       "url": "twoway.html?exerciseType=LOGEQ",
       "exampleExercises": [0, 15, 16, 29, 30],
+      "randomExercises": true,
+      "inputOwnExercise": true,
+      "useRuleJustification": true,
+      "displayRuleJustification": false,
+      "useStepValidation": true,
+      "displayStepValidation": false,
+      "displayHintButton": true,
+      "displayNextStepButton": true,
+      "displayDerivationButton": true,
+      "rules": [
+        "logic.propositional.absorption",
+        "logic.propositional.assoc",
+        "logic.propositional.commutativity",
+        "logic.propositional.demorgan",
+        "logic.propositional.distribution",
+        "logic.propositional.doublenegation",
+        "logic.propositional.equivalence",
+        "logic.propositional.falsecomplement",
+        "logic.propositional.falseconjunction",
+        "logic.propositional.falsedisjunction",
+        "logic.propositional.nottrue",
+        "logic.propositional.idempotency",
+        "logic.propositional.implication",
+        "logic.propositional.truecomplement",
+        "logic.propositional.trueconjunction",
+        "logic.propositional.truedisjunction",
+        "logic.propositional.notfalse"
+      ],
       "bundles": {
         "twoWaySolution": "controller/TwoWaySolutionController.js",
         "twoWay": "controller/TwoWayController.js"
@@ -31,19 +118,9 @@
       "code": "help",
       "url": "help.html",
       "bundles": {
-        "help": "controller/helpController.js"
+        "help": "controller/HelpController.js"
       }
     }
   },
-  "randomExercises": true,
-  "inputOwnExercise": true,
-  "source": "logex",
-  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi",
-  "useRuleJustification": true,
-  "displayRuleJustification": false,
-  "useStepValidation": true,
-  "displayStepValidation": false,
-  "displayHintButton": true,
-  "displayNextStepButton": true,
-  "displayDerivationButton": true
+  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi"
 }

@@ -1,14 +1,56 @@
 {
   "buggyRule": {
+    "axiomatic": {
+      "deduction": {
+        "buggy-1": "The formula $${{phi}}$$ in step {{n}} is not an implication, so it cannot be the result of the deduction theorem.",
+        "buggy-2": "The formula $${{phi}}$$ in step {{n2}} is not an implication, so it cannot be the result of the deduction theorem.",
+        "buggy-3": "The formula $${{phi}}$$ in step {{n1}} is not equal to the part right of the implication, $${{psi}}$$, in step {{n2}}, so step {{n2}} cannot be the result of an application of the deduction theorem in step {{n1}}.",
+        "buggy-4": "The assumptions in step {{n2}} are not equal to the assumptions in step {{n1}} $$({{as}})$$ from which $${{phi}}$$ is ommitted, so step {{n2}} cannot be the result of an application of the deduction theorem on step {{n1}}.",
+        "buggy-5": "Deduction theorem on step {{n1}} and {{n2}} is not possible, however, you can derive step {{n2}} using an assumption and modus ponens.",
+        "buggybw-1": "Step {{n}} is already motivated, it makes no sense to introduce a new statement  such that step {{n}} is the result of an application of deduction on this new statement",
+        "buggycl-0": "Step {{n2}} is already motivated, and not the result of an application of the deduction theorem on step {{n2}}."
+      },
+      "goal": {
+        "buggy-gl1": "This goal cannot be reached",
+        "buggy-gl2": "This goal is equal or related to the goal of this exercise"
+      },
+      "modusponens": {
+        "buggy-cl1": "The assumptions $$({{as}})$$ in step {{n3}} are not equal to the union of the assumptions in step {{n1}} and step {{n2}}, so step {{n3}} is not the result of an application of Modus Ponens on steps {{n1}} and {{n2}}.",
+        "buggy-cl2": "Applying Modus ponens on {{n1}} and step {{n2}} is not possible because $${{phi}}$$ in step {{n3}} is not equal to the formula left of the implication, $${{psi}}$$, in step {{n2}}. But you can apply the deduction theorem on step {{n3}}.",
+        "buggy-cl3": "Modus ponens is only possible when the complete first formula $${{phi}}$$ in step {{n3}} is equal to the formula left of the implication, $${{psi}}$$, in step {{n2}}",
+        "buggy-cl4": "Modus ponens is not possible, pay attention to the parentheses in formula {{n2}}.",
+        "buggy-cl5": "Applying Modus ponens on step {{n3}} and {{n2}} is not possible becaus $${{phi}}$$ in step {{n3}} is not exactly equal to $${{psi}}$$ in step {{n2}}. These formulas are only equivalent.",
+        "buggy-cl6": "Applying Modus ponens on step {{n3}} and {{n2}} is only possible when $${{phi}}$$ in step {{n3}} is equal to the formula $${{psi}}$$ left of the implication in step {{n2}}. In this case $${{phi}}$$ is equal to the formula to the right of the implication.",
+        "buggy-cl7": "Modus ponens on step {{n3}} and {{n2}} is not possible, pay attention to the parentheses in the formula in step {{n2}}.",
+        "buggy-cl8": "The formula $${{psi}}$$ in step {{n2}} is not an implication.",
+        "buggy-default": "This application of Modus Ponens is not correct.",
+        "buggy-default2": "This application of Modus Ponens is not correct.",
+        "buggy-fw0": "Modus Ponens is applicable, but take care that you enter the implication in the second entry field.",
+        "buggy-fw2": "Applying Modus ponens on step {{n1}} and step {{n2}} is not possible because $${{phi}}$$ in step {{n1}} is not equal to the formula to the left of the implication, $${{psi}}$$, in step {{n2}}.",
+        "buggy-fw3": "Modus ponens is only possible when the complete first formula $${{phi}}$$ in step {{n1}} is equal to formula left of the implication, $${{psi}}$$, in step {{n2}}.",
+        "buggy-fw4": "Modus ponens is not possible, pay attention to the parentheses in formula {{n2}}.",
+        "buggy-fw5": "Applying Modus ponens on step {{n1}} and {{n2}} is not possible becaus $${{phi}}$$ in step {{n1}} is not exactly equal to $${{psi}}$$ in step {{n2}}. These formulas are only equivalent.",
+        "buggy-fw6": "Applying Modus ponens on step {{n1}} and {{n2}} is only possible when $${{phi}}$$ in step {{n1}} is equal to the formula $${{psi}}$$ left of the implication in step {{n2}}. In this case $${{phi}}$$ is equal to the formula to the right of the implication.",
+        "buggy-fw7": "Modus ponens on step {{n1}} and {{n2}} is not possible, pay attention to the parentheses in the formula in step {{n2}}.",
+        "buggy-fw8": "The formula $${{psi}}$$ in the step {{n2}} is not an implication.",
+        "buggy-fw9": "Modus Ponens is only applicable on step {{n1}} and {{n2}} when both steps are already motivated.",
+        "buggy-m1": "The assumption(s) $$({{as}})$$ in step {{n2}} is not part of the assumptions in step {{n3}}, so step {{n3}} is not the result of an application of Modus Ponens on step {{n2}} and a new step.",
+        "buggy-m2": "The assumption(s) $$({{as}})$$ in step {{n1}} is not part of the assumptions in step {{n3}}, so step {{n3}} is not the result of an application of Modus Ponens on step {{n1}} and a new step.",
+        "buggy-m3": "The formula $${{phi}}$$ in step {{n2}} is not an implication.",
+        "buggy-m4": "The right part of the implication ($${{phi}}$$) in step {{n2}} is not equal to the formula ($${{psi}}$$) in step {{n3}}, so step {{n3}} is not the result of an application of Modus Ponens on step {{n2}} and a new step."
+      }
+    },
     "logic": {
       "propositional": {
         "buggy": {
           "absor": "You have applied absorption incorrectly.",
           "absor2": "You have applied absorption incorrectly: pay attention to which subformula you keep.",
           "andcompl": {
+            "#": "You have applied a complement rule incorrectly.",
             "inv": "You have applied a complement rule incorrectly."
           },
-          "andcompl2": "You have applied a complement rule incorrectly.",
+          "andcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation.",
+          "andcompl3": " This is not correct, rewrite the conjunction of complements into F.",
           "andoverand": "You are not allowed to distribute a conjunction over a conjunction, this can only be done on a disjunction",
           "andsame": "You have applied idempoteny incorrectly.",
           "assimp": "You have incorrectly applied associativity to an implication.",
@@ -17,44 +59,57 @@
           "demorgan1": "You have applied De Morgan incorrectly, don't forget the negation signs.",
           "demorgan2": "When applying De Morgan, don't forget to remove the negation sign outside of the brackets.",
           "demorgan3": {
-            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
+            "#": "When applying De Morgan, don't forget to change the disjunction into a conjunction.",
+            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
           },
           "demorgan4": {
-            "inv": "When applying De Morgan, don't forget to change the disjunction into a conjunction."
+            "#": "When applying De Morgan, don't forget to change the conjunction into a disjunction.",
+            "inv": "When applying De Morgan, don't forget to change the conjunction into a disjunction."
           },
           "demorgan5": "When applying De Morgan, take care where you place the brackets. You have inadvertently changed the application range of the negation.",
           "distr": {
-            "inv": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions."
+            "#": "You have applied distribution incorrectly. Take care where you put the conjunctions and where you put the disjunctions.",
+            "inv": "You have applied distribution incorrectly. Take care where you put the disjunctions and where you put the conjunctions."
           },
           "distrnot": "You have forgotten a negation when applying distribution.",
           "equivelim1": "You have applied equivalence definition incorrecly. Take care of the negation signs.",
           "equivelim2": "You have applied equivalence definition incorrecly. Take care of the place of the disjunctions and conjunctions.",
-          "equivelim3": "You have applied implication definition instead of equivalence definition.",
+          "equivelim3": "Mind the left range of the implication and place the negation in front of this range.",
           "falseprop": {
+            "#": "You have applied an F-rule incorrectly.",
             "inv": "You have applied an F-rule incorrectly."
           },
           "idemequi": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
           "idemequiv": {
+            "#": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions.",
             "inv": "Idempotency does not apply to equivalences, only to conjunctions and disjunctions."
           },
           "idemimp": {
+            "#": "Idempotency does not apply to implications, only to conjunctions and disjunctions.",
             "inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions."
           },
-          "implelim": "You have applied implication definition incorrectly.",
+          "implelim": {
+           "#":"You have applied implication definition incorrectly.",
+           "inv": "This is not correct, mind the place of the negation or the disjunction."
+          },  
           "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
           "implelim2": "You have applied equivalence definition instead of implication definition.",
+          "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
           "implnotelim": "You forgot the negation in front of the implication.",
           "notoverimpl": "You are not allowed to distribute a negation sign over an implication. First rewrite the implication and then apply De Morgan.",
           "orcompl": {
+            "#": "You have applied a complement rule incorrectly.",
             "inv": "You have applied a complement rule incorrectly."
           },
-          "orcompl2": "You have applied a complement rule incorrectly.",
+          "orcompl2": "The complement rule is not applicable, since the complement is not within the range of one negation. ",
+          "orcompl3": " This is not correct, rewrite the disjunction of complements into T.",
           "oroveror": "You are not allowed to distribute a disjunction over a disjunction, this can only be done on a conjunction",
           "orsame": "You have applied a T-rule incorrectly.",
           "parenth1": "You are not allowed to move a negation sign. You can apply De Morgan, but remember both negations and switching the conjunction into a disjunction sign or vice versa.",
           "parenth2": "Take care of the brackets. Remember to keep the negation out of the brackets when applying equivalence definition.",
           "parenth3": "Double negation can only be applied if both negations apply to the same subformula.",
           "trueprop": {
+            "#": "You have applied a T-rule incorrectly.",
             "inv": "You have applied a T-rule incorrectly."
           }
         }
@@ -65,9 +120,12 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &"
+        "keys": "a, &, ^"
       },
-      "description": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+      "description": {
+        "logax": "The input of p, q, r, and s can be done with or without using the shift key.",
+        "logex": "The input of T, F, p, q, r, and s can be done with or without using the shift key."
+      },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
         "keys": "e, ="
@@ -131,33 +189,185 @@
         "keys": "enter"
       }
     },
+    "rules": {
+      "absorption": {
+        "action": "$$(p \\land q) \\lor q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land (p \\lor q)\\Leftrightarrow p$$",
+        "title": "Absorption"
+      },
+      "assoc": {
+        "action": "$$(p \\land q) \\land r \\Leftrightarrow p \\land (q \\land r)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$(p \\lor q) \\lor r \\Leftrightarrow p \\lor (q \\lor r)$$",
+        "title": "Associativity"
+      },
+      "commutativity": {
+        "action": "$$p \\lor q \\Leftrightarrow q \\lor p$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$p \\land q \\Leftrightarrow q \\land p$$",
+        "title": "Commutativity"
+      },
+      "demorgan": {
+        "action": "$$\\neg (p \\land q)\\Leftrightarrow \\neg p \\lor \\neg q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$\\neg (p \\lor q)\\Leftrightarrow \\neg p \\land \\neg q$$",
+        "title": "De Morgan"
+      },
+      "distribution": {
+        "action": "$$r \\land (p \\lor q) \\Leftrightarrow (r \\land p) \\lor (r \\land q)$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$r \\lor (p \\land q) \\Leftrightarrow (r \\lor p) \\land (r \\lor q)$$",
+        "title": "Distributivity"
+      },
+      "doublenegation": {
+        "action": "$$\\neg \\neg q \\Leftrightarrow q$$",
+        "title": "Double negation "
+      },
+      "equivalence": {
+        "action": "$$p \\leftrightarrow q \\Leftrightarrow (p \\land q) \\lor (\\neg p \\land \\neg q)$$",
+        "title": "Equivalence elimination"
+      },
+      "falsecomplement": {
+        "action": "$$p \\land F \\Leftrightarrow F$$",
+        "title": "F-rule conjunction"
+      },
+      "falseconjunction": {
+        "action": "$$p \\land \\neg p \\Leftrightarrow F$$",
+        "title": "F-rule complement"
+      },
+      "falsedisjunction": {
+        "action": "$$\\neg T \\Leftrightarrow F$$",
+        "title": "F-rule not T"
+      },
+      "header": {
+        "action": "Example",
+        "title": "Rule"
+      },
+      "idempotency": {
+        "action": "$$p \\lor F \\Leftrightarrow p$$",
+        "title": "F-rule disjunction"
+      },
+      "implication": {
+        "action": "$$q \\land q \\Leftrightarrow q$$ &nbsp;&nbsp; <b>or</b> &nbsp;&nbsp; $$q \\lor q \\Leftrightarrow q$$",
+        "title": "Idempotency"
+      },
+      "note": "NB: Commutative variants from the rules absorption, distributivitity and the $$T$$ and $$F$$ rules are also allowed, e.g. $$p \\lor (p \\land q) \\Leftrightarrow p$$ or $$(p \\lor q) \\land r \\Leftrightarrow (p \\land r) \\lor (q \\land r)$$. Associativity from disjunction and conjunction is always implicitly allowed. Generalisations of distribution [e.g. $$r \\land (p \\lor q \\lor s) \\Leftrightarrow (r \\land p) \\lor (r \\land q) \\lor (r \\land s )$$] and De Morgan [e.g. $$\\neg (p \\land q \\land s) \\Leftrightarrow \\neg p \\lor \\neg q \\lor \\neg s$$] can also be used.",
+      "notfalse": {
+        "action": "$$p \\rightarrow q \\Leftrightarrow \\neg p \\lor q$$",
+        "title": "Implicatiin-elimination"
+      },
+      "nottrue": {
+        "action": "$$q \\land T \\Leftrightarrow q$$",
+        "title": "T-rule conjunction"
+      },
+      "title": "Rules",
+      "truecomplement": {
+        "action": "$$p \\lor \\neg p \\Leftrightarrow T$$",
+        "title": "T-rule complement"
+      },
+      "trueconjunction": {
+        "action": "$$\\neg F \\Leftrightarrow T$$",
+        "title": "T-rule not F"
+      },
+      "truedisjunction": {
+        "action": "$$p \\lor T \\Leftrightarrow T$$",
+        "title": "T-rule disjunction"
+      }
+    },
+    "tabTitle": {
+      "dnf": "Disjunctive Normal Form",
+      "hotKeys": "Hot Keys",
+      "logeq": "Logical Equivalence",
+      "rules": "Rules",
+      "video": "Video"
+    },
     "video": {
       "notSupported": "Your browser does not support embedded videos"
     }
   },
   "logax": {
+    "button": {
+      "addLemma": "Add Lemma",
+      "removeLemma": "Remove Lemma",
+      "renumber": "Renumber"
+    },
+    "completed": "The exercise is finished",
+    "hint": {
+      "applyRule": {
+        "assumption": "Apply an <i>Assumption</i>",
+        "axiom-a": "Apply <i>Axiom A</i>",
+        "axiom-b": "Apply <i>Axiom B</i>",
+        "axiom-c": "Apply <i>Axiom C</i>",
+        "deduction": "Apply the <i>Deduction</i> Theorem",
+        "lemma": "Apply the <i>Lemma</i>",
+        "modusponens": "Apply <i>Modus Ponens</i>"
+      },
+      "motivate": "Add motivation to a step",
+      "performBackward": "Perform a step backward",
+      "performForward": "Perform a step forward",
+      "proveSubgoal": "First try to prove $${{subgoal}}$$"
+    },
     "instruction": {
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
-      "exercise": "<b>[[title]]:</b> Prove {{theorem}}"
+      "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: {{lemma}}",
+      "lemma": "Lemma"
     },
     "rule": {
+      "addBackwardStep": "Add Backward Step",
+      "addForwardStep": "Add Forward Step",
+      "addMotivation": "Add Motivation",
+      "addStep": "Add Step",
       "assumption": {
-        "addMotivation": "Add Motivation",
-        "addStep": "Add Step",
         "def": "$$\\phi\\vdash\\phi$$",
         "phi": "$$\\phi$$",
         "stepnr": "Step"
       },
-      "label": "<b>Rule</b>"
-    }
+      "axiom-a": {
+        "def": "$$\\vdash\\phi\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
+      "axiom-b": {
+        "chi": "$$\\chi$$",
+        "def": "$$\\vdash(\\phi\\rightarrow(\\psi\\rightarrow\\chi))\\rightarrow((\\phi\\rightarrow\\psi)\\rightarrow(\\phi\\rightarrow\\chi))$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
+      "axiom-c": {
+        "def": "$$\\vdash(\\neg\\phi\\rightarrow\\neg\\psi)\\rightarrow(\\psi\\rightarrow\\phi)$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepnr": "Step"
+      },
+      "deduction": {
+        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
+        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "phi": "$$\\phi$$"
+      },
+      "goal": {
+        "def": "$$\\phi\\vdash\\psi$$",
+        "phi": "$$\\phi$$",
+        "psi": "$$\\psi$$",
+        "stepExp": "Specify the number of the new step, or leave empty to get a default number",
+        "stepnr": "Step"
+      },
+      "label": "<b>Rule</b>",
+      "lemma": {
+        "stepExp": "Specify the number of the new step, or leave empty to get a default number",
+        "stepnr": "Step"
+      },
+      "modusponens": {
+        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
+        "n1": "$$\\sum\\vdash_S\\phi$$",
+        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+      }
+    },
+    "title": "Prove Axiomatic"
   },
   "main": {
     "noMobile": "This tool is not optimized for use on screens with a limited width.",
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
       "dnf": "Disjunctive Normal Form",
-      "help": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogax": "<i class='fas fa-question-circle'></i> Help",
+      "helpLogex": "<i class='fas fa-question-circle'></i> Help",
       "logax": "Axiomatic",
       "logeq": "Logical Equivalence"
     }
@@ -187,7 +397,14 @@
         "absorption": "Absorption",
         "assoc": "Associativity",
         "axiomatic": {
-          "assumption": "Assumption"
+          "assumption": "Assumption",
+          "axiom-a": "Axiom A",
+          "axiom-b": "Axiom B",
+          "axiom-c": "Axiom C",
+          "deduction": "Deduction",
+          "goal": "Goal",
+          "lemma": "Lemma",
+          "modusponens": "Modus Ponens"
         },
         "commutativity": "Commutativity",
         "demorgan": "De Morgan",
@@ -209,6 +426,7 @@
   },
   "shared": {
     "button": {
+      "apply": "Apply",
       "completeExercise": "Complete my derivation",
       "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
@@ -219,11 +437,13 @@
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
       "selectRule": "-- Select rule --",
+      "selectStep": "-- Select step --",
       "solveExercise": "Show complete derivation",
       "step": "Show step",
       "validateStep": "<i class='fas fa-check'></i>"
     },
     "error": {
+      "cannotApply": "Cannot apply '[[rule]]'",
       "correctNotVal": "This formula is equivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
       "creatingExercise": "An error occured while creating the exercise. Did you create a valid exercise?",
       "generatingExercise": "An error occured while creating the exercise. Please try again.",
@@ -272,12 +492,13 @@
       "useRule": "Use <i>[[rule]]</i>."
     },
     "syntaxError": {
-      "ambiguougAssoc": "The associativity of operators is ambiguous at index {{index}}: {{formula}}",
+      "ambiguougAssoc": "The range of operators is ambiguous at index {{index}}: {{formula}}",
       "emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",
       "missingClose": "The opening parenthesis at index {{index}} is missing a closing parenthesis: {{formula}}",
       "missingOpen": "The closing parenthesis at index {{index}} is missing a opening parenthesis: {{formula}}",
       "missingOperand": "There is a missing operand at index {{index}}: {{formula}}",
       "missingOperator": "There is a missing operator at index {{index}}: {{formula}}",
+      "nestedFirstOrderOperator": "The operator at index {{index}} is nested too deeply: {{formula}}",
       "unexpectedChar": "There is an unexpected character at index {{index}}: {{formula}}"
     }
   },

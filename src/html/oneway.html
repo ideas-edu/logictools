@@ -58,16 +58,22 @@
 
 	<div id="new-exercise-container" style="display: none">
 		<div class="row">
-			<div>
+			<div class="col-9">
 				<form class="kbinput">
 					<input type="text" class="form-control kbinput" id="new-formula">
 					<div id="new-input" class="kbinput-wrapper"></div>
 				</form>
 			</div>
-			<button type="button" id="create-exercise" translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
+			<div class="col-3">
+				<button type="button" id="create-exercise" translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
+			</div>
 			<div class="row" id="new-exercise-alert-container" style="display: none">
 				<div class="alert col-12" id="new-exercise-alert" role="alert">
-					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span><button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>
+					<button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					</button>
+					<button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
 				</div>
 			</div>
 		</div>
@@ -115,7 +121,11 @@
 					<td colspan="4" class="no-row-divider">
 						<div class="row">
 							<div class="alert col-12" id="exercise-alert" role="alert">
-								<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span><button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+								<span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+								<button id="exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+								    <span aria-hidden="true">&times;</span>
+								</button>
+								<button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
 							</div>
 						</div>
 					</td>
@@ -134,6 +144,7 @@
 		<div class="row" id="bottom">
 			<div class="col-12">
 			<button type="button" id="validate-exercise" class="btn btn-danger float-right"></button>
+			<button type="button" class="btn btn-outline-secondary float-right" id="show-solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
 		</div>
 
 		<!-- templates, see http://borismoore.github.com/jsrender/demos/index.html, http://msdn.microsoft.com/en-us/magazine/hh882454.aspx and

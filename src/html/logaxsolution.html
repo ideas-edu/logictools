@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Ideas - Solution</title>
+        <meta name="description" content="solution">
+        <meta name="viewport" content="width=1020">
+
+		<link rel="stylesheet" href="css/ideas.css">
+    </head>
+    <body>
+        <script src="logaxSolution.bundle.js"></script>
+        <div class="container">
+            <table class="table table-striped">
+                <thead>
+                    <tr id="exercise-table-header">
+                        <th scope="col" id="header-step" translate-key="shared.header.step"></th>
+                        <th scope="col" id="header-term" translate-key="shared.header.term"></th>
+                        <th scope="col" id="header-rule" translate-key="shared.header.rule"></th>
+                    </tr>
+                </thead>
+                <tbody id="exercise-step-table">
+                <tr id="active-step">
+                </tr>
+                </tbody>
+            </table>
+            <div class="row" id="exercise-alert-container" style="display: none">
+                <div class="alert" id="exercise-alert" role="alert">
+                    <span id="exercise-alert-icon"></span>&nbsp;<span id="exercise-alert-span"></span>
+                </div>
+            </div>
+        </div>
+
+        <script id="exercise-step-template" type="text/x-jsrender">
+            <td scope="row" class="col-step">
+                {{>step}}
+            </td>
+            <td class="col-term">
+                <span class="logax-term">{{:term}}</span>
+            </td>
+            <td class="col-rule">
+                <span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span> {{:references}}
+            </td>
+        </script>
+    </body>
+</html>

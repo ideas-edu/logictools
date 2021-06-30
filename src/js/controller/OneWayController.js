@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
 import katex from 'katex'
 
-import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
+import { FormulaPopover } from '../kbinput.js'
 
 import { LogExController } from './LogExController.js'
 import { ExerciseTypes } from '../model/exerciseTypes.js'
@@ -22,7 +22,7 @@ import { OneWayExercise } from '../model/oneway/exercise.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { showdiff } from '../showdiff.js'
-import { translate, translateElement, loadLanguage } from '../translate.js'
+import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -181,7 +181,8 @@ class OneWayController extends LogExController {
       }
     })
     document.getElementById('active-step').style.display = ''
-    document.getElementById('bottom').style.display = ''
+    document.getElementById('validate-exercise').style.display = ''
+    document.getElementById('show-solve-exercise').style.display = 'none'
 
     document.getElementById('formula').value = this.exercise.formula
 
@@ -275,7 +276,7 @@ class OneWayController extends LogExController {
   showNextHint (nextOneWayStep) {
     const oldFormula = this.exercise.steps.steps[this.exercise.steps.steps.length - 1].formula.replaceAll(' ', '')
     const newFormula = nextOneWayStep.formula.replaceAll(' ', '')
-    const formulaDiff = showdiff(oldFormula, newFormula).printKatexStyled()
+    const formulaDiff = showdiff(oldFormula, newFormula, this.formulaOptions).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }
 
@@ -342,7 +343,8 @@ class OneWayController extends LogExController {
     const onSuccess = function (data) {
       if (data.ready) {
         document.getElementById('active-step').style.display = 'none'
-        document.getElementById('bottom').style.display = 'none'
+        document.getElementById('validate-exercise').style.display = 'none'
+        document.getElementById('show-solve-exercise').style.display = ''
 
         const elements = document.getElementsByClassName('remove-step')
         for (const element of elements) {
@@ -392,7 +394,6 @@ class OneWayController extends LogExController {
     if (!currentStep.isValid && this.exercise.usesStepValidation) {
       message = 'shared.error.wrongStep'
       this.exercise.steps.pop()
-      console.log(currentStep)
 
       if (!currentStep.isSyntaxValid) { // Foutieve syntax
         message = 'shared.error.invalidFormula'
@@ -405,6 +406,9 @@ class OneWayController extends LogExController {
         errorLocation = 'formula'
       } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
         message = `buggyRule.${currentStep.buggyRule}`
+        if (!hasTranslation(message)) {
+          message = 'shared.error.wrongStep'
+        }
         errorLocation = 'formula'
       } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
         message = 'shared.error.wrongRule'
@@ -492,7 +496,8 @@ class OneWayController extends LogExController {
 
     document.getElementById('active-step').insertAdjacentElement('beforebegin', exerciseStepHtml)
     document.getElementById('active-step').style.display = 'none'
-    document.getElementById('bottom').style.display = 'none'
+    document.getElementById('validate-exercise').style.display = 'none'
+    document.getElementById('show-solve-exercise').style.display = ''
 
     document.getElementById('header-actions').style.display = 'none'
     const elements = document.getElementsByClassName('remove-step')

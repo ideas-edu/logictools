@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
 import katex from 'katex'
 
-import { FormulaPopover } from '../../shared/kbinput/kbinput.js'
+import { FormulaPopover } from '../kbinput.js'
 
 import { LogExController } from './LogExController.js'
 import { LogEXSession } from '../logEXSession.js'
@@ -22,7 +22,7 @@ import { TwoWayStep } from '../model/twoway/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { Rules } from '../model/rules.js'
 import { showdiff } from '../showdiff.js'
-import { translate, loadLanguage, translateElement } from '../translate.js'
+import { translate, loadLanguage, translateElement, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -193,6 +193,7 @@ class TwoWayController extends LogExController {
     })
 
     document.getElementById('active-step').style.display = ''
+    document.getElementById('show-solve-exercise').style.display = 'none'
 
     this.disableUI(false)
 
@@ -284,7 +285,7 @@ class TwoWayController extends LogExController {
       oldFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
       newFormula = nextOneWayStep.formula.split('==')[0].replaceAll(' ', '')
     }
-    const formulaDiff = showdiff(oldFormula, newFormula).printKatexStyled()
+    const formulaDiff = showdiff(oldFormula, newFormula, this.formulaOptions).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
   }
 
@@ -357,6 +358,7 @@ class TwoWayController extends LogExController {
     }
     this.exercise.isReady = true
     this.updateAlert('twoWay.solution', alertParams, 'complete')
+    document.getElementById('show-solve-exercise').style.display = ''
     this.setProofDirection('complete')
   }
 
@@ -411,6 +413,9 @@ class TwoWayController extends LogExController {
         errorLocation = 'formula'
       } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
         message = `buggyRule.${currentStep.buggyRule}`
+        if (!hasTranslation(message)) {
+          message = 'shared.error.wrongStep'
+        }
         errorLocation = 'formula'
       } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
         message = 'shared.error.wrongRule'

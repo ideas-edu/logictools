@@ -1,4 +1,3 @@
-import { LogAxStep } from './step.js'
 import { LogAxStepCollection } from './stepCollection.js'
 /**
     Represents a one way exercise.
@@ -12,10 +11,11 @@ export class LogAxExercise {
     this.type = exerciseType
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
-    const initialStep = new LogAxStep(steps[0])
-    this.steps = new LogAxStepCollection(initialStep)
-    this.theorem = initialStep.term
-    this.theoremKatex = initialStep.termKatex
+    this.steps = new LogAxStepCollection(steps)
+
+    const lastStep = this.steps.steps[this.steps.steps.length - 1]
+    this.theorem = lastStep.term
+    this.theoremKatex = lastStep.termKatex
   }
 
   /**

@@ -4,12 +4,19 @@ export class ExerciseAlert {
   constructor (id) {
     this.id = id
     this.buttonCallback = undefined
+    this.type = null
+    const dismissButton = document.getElementById(`${this.id}-dismiss`)
+
+    dismissButton.addEventListener('mousedown', function () {
+      document.getElementById(`${this.id}-container`).style.display = 'none'
+    }.bind(this))
   }
 
   // Updates the alert which gives user feedback with the translate string found for given key and styled based on the type of alert.
   // We use keys and params here so that they are updated when switching language
   updateAlert (alertKey, alertParams, type, buttonKey, buttonCallback) {
     document.getElementById(`${this.id}-container`).style.display = ''
+    this.type = type
     switch (type) {
       case 'hint':
         document.getElementById(`${this.id}-icon`).innerHTML = '<i class="fas fa-lg fa-info-circle"></i>'

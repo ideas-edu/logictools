@@ -10,7 +10,7 @@ function setCursor (inputElement, start, end) {
 }
 
 export class FormulaPopover {
-  constructor (inputElement, wrapperElement, options) {
+  constructor (inputElement, wrapperElement, options, onChangeCallback) {
     this.inputElement = inputElement
     this.options = options
 
@@ -19,6 +19,12 @@ export class FormulaPopover {
     if (options.id) {
       this.wrapper.setAttribute('id', options.id)
     }
+    if (onChangeCallback !== undefined) {
+      this.onChangeCallback = onChangeCallback
+    } else {
+      this.onChangeCallback = function () { }
+    }
+    this.wrapper.style.display = 'none'
     this.inputElement.addEventListener('focus', this.onFocus.bind(this))
     this.inputElement.addEventListener('blur', this.onBlur.bind(this))
     this.inputElement.addEventListener('input', this.tidy.bind(this))
@@ -84,6 +90,7 @@ export class FormulaPopover {
     */
   undo () {
     this.setText(this.previousValue)
+    this.onChangeCallback()
   }
 
   /**
@@ -92,6 +99,7 @@ export class FormulaPopover {
     */
   addText (e) {
     this.insertText(e.currentTarget.getAttribute('char'))
+    this.onChangeCallback()
     // Keep focus on inputElement after pressing button
     window.setTimeout(() => {
       this.inputElement.focus()
@@ -104,6 +112,7 @@ export class FormulaPopover {
   setText (text) {
     this.inputElement.value = text
     this.tidy()
+    this.onChangeCallback()
   }
 
   /**
@@ -160,6 +169,7 @@ export class FormulaPopover {
       }
     }
     e.preventDefault()
+    this.onChangeCallback()
   }
 
   onFocus (e) {
@@ -224,6 +234,7 @@ export class FormulaPopover {
       }
     }
     this.tidy()
+    this.onChangeCallback()
   }
 
   /**
@@ -251,8 +262,14 @@ export class FormulaPopover {
       const def = this._findCharDefinition(c)
       if (def) {
         c = def.char
-        if (def.spaces) {
+        if (def.spaces === 'lr') {
           c = ' ' + c + ' '
+        }
+        if (def.spaces === 'l') {
+          c = ' ' + c
+        }
+        if (def.spaces === 'r') {
+          c = c + ' '
         }
         result += c
       }
