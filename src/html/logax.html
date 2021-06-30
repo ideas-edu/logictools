@@ -41,21 +41,58 @@
 
 	<div id="new-exercise-container" style="display: none">
 		<div class="row">
-			<div>
-				<form class="kbinput">
-					<input type="text" class="form-control kbinput" id="new-formula" autocomplete="false">
-					<div id="new-input" class="kbinput-wrapper"></div>
-				</form>
+			<div class="col-4">
+			    <form class="kbinput">
+			        <input type="text" class="form-control kbinput" id="new-formula-1" autocomplete="false">
+			        <div id="new-input-1" class="kbinput-wrapper"></div>
+			    </form>
 			</div>
-			<button type="button" id="create-exercise" translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
-			<div class="row" id="new-exercise-alert-container" style="display: none">
-				<div class="alert col-12" id="new-exercise-alert" role="alert">
-					<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>
-					<button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					</button>
-					<button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
-				</div>
+			<div class="col-1">
+			    <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊢</mo></mrow><annotation encoding="application/x-tex">\vdash</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mrel">⊢</span></span></span></span>
+			</div>
+			<div class="col-4">
+			    <form class="kbinput">
+			        <input type="text" class="form-control kbinput" id="new-formula-2" autocomplete="false">
+			        <div id="new-input-2" class="kbinput-wrapper"></div>
+			    </form>
+			</div>
+			<div class="col-3">
+			    <button type="button" id="create-exercise"  translate-key="shared.button.createExercise" class="btn btn-outline-secondary"></button>
+			</div>
+		</div>
+		<div class="row">
+			<h4 translate-key="logax.instruction.lemma"></h4>
+		</div>
+		<div class="row" id="add-lemma-row">
+			<button type="button" id="add-lemma" translate-key="logax.button.addLemma" class="btn btn-outline-secondary"></button>
+		</div>
+		<div class="row" id="lemma-row" style="display: none">
+			<div class="col-4">
+			    <form class="kbinput">
+			        <input type="text" class="form-control kbinput" id="new-lemma-1" autocomplete="false">
+			        <div id="new-lemma-input-1" class="kbinput-wrapper"></div>
+			    </form>
+			</div>
+			<div class="col-1">
+			    <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊢</mo></mrow><annotation encoding="application/x-tex">\vdash</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mrel">⊢</span></span></span></span>
+			</div>
+			<div class="col-4">
+			    <form class="kbinput">
+			        <input type="text" class="form-control kbinput" id="new-lemma-2" autocomplete="false">
+			        <div id="new-lemma-input-2" class="kbinput-wrapper"></div>
+			    </form>
+			</div>
+			<div class="col-3">
+			    <button type="button" id="remove-lemma" translate-key="logax.button.removeLemma" class="btn btn-outline-secondary"></button>
+			</div>
+		</div>
+		<div class="row" id="new-exercise-alert-container" style="display: none">
+			<div class="alert col-12" id="new-exercise-alert" role="alert">
+				<span id="new-exercise-alert-icon"></span>&nbsp;<span id="new-exercise-alert-span"></span>
+				<button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				</button>
+				<button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
 			</div>
 		</div>
 	</div>
@@ -91,6 +128,13 @@
 							<tr id="subtype-select-row" style="display: none">
 								<td></td><td><select id="subtype-select" class="form-control input custom-select">
 									<option translate-key="logax.rule.addStep"></option>
+									<option translate-key="logax.rule.addMotivation"></option>
+								</select></td>
+							</tr>
+							<tr id="direction-select-row" style="display: none">
+								<td></td><td><select id="direction-select" class="form-control input custom-select">
+									<option translate-key="logax.rule.addForwardStep"></option>
+									<option translate-key="logax.rule.addBackwardStep"></option>
 									<option translate-key="logax.rule.addMotivation"></option>
 								</select></td>
 							</tr>
@@ -243,13 +287,20 @@
 									<div id="goal-psi-input" class="kbinput-wrapper"></div>
 								</form></td>
 							</tr>
-							<tr rule="logic.propositional.axiomatic.goal" id="deduction-close-stepnr-2" style="display: none">
+							<tr rule="logic.propositional.axiomatic.goal" id="goal-stepnr" style="display: none">
 								<td><span translate-key="logax.rule.goal.stepnr" class="float-right"></span></td><td>
-									<input type="text" id="goal-stepnr" class="form-control input" autocomplete="false">
+									<input type="text" id="goal-select-stepnr" class="form-control input" autocomplete="false">
 									<span translate-key="logax.rule.goal.stepExp"></span>
 								</td>
 							</tr>
-							<!--  -->
+							<!-- Lemma-->
+							<tr rule="logic.propositional.axiomatic.lemma" id="lemma-phi" style="display: none">
+							<tr rule="logic.propositional.axiomatic.lemma" id="lemma-stepnr" style="display: none">
+								<td><span translate-key="logax.rule.lemma.stepnr" class="float-right"></span></td><td>
+									<input type="text" id="lemma-select-stepnr" class="form-control input">
+									<span translate-key="logax.rule.lemma.stepExp"></span>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<!-- <tr >
@@ -271,8 +322,10 @@
 						<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
 						<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
 						<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
-						<button type="button" class="dropdown-item" id="validate-exercise" translate-key="shared.button.completeExercise"></button>
+						<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
 					</div>
+					<button type="button" id="undo-step" class="btn btn-outline-secondary" disabled="true"><i class='fas fa-undo'></i></button>
+					<button type="button" id="redo-step" class="btn btn-outline-secondary" disabled="true"><i class='fas fa-redo'></i></button>
 					<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.apply"></button>
 				</div>
 				<div id="completed-rule-container" style="display: none">
@@ -301,13 +354,13 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<td scope="row" class="col-step">
+			<td scope="row" class="col-step {{if highlightStep}}highlight-text{{/if}}">
 				{{>step}}
 			</td>
-			<td class="col-term">
+			<td class="col-term {{if highlightTerm}}highlight-text{{/if}}">
 				<span class="logax-term">{{:term}}</span>
 			</td>
-			<td class="col-rule">
+			<td class="col-rule {{if highlightRule}}highlight-text{{/if}}">
 				<span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span> {{:references}}
 			</td>
 			<td class="remove-step col-actions">

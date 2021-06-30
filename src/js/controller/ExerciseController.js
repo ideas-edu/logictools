@@ -39,7 +39,7 @@ export class ExerciseController {
       this.createExercise()
     }.bind(this))
 
-    document.getElementById('validate-step').addEventListener('click', function () {
+    document.getElementById('validate-step').addEventListener('mousedown', function () {
       this.validateStep()
     }.bind(this))
 
@@ -336,7 +336,7 @@ export class ExerciseController {
         @param onFormulasValidated - The callback function
      */
   validateFormula (formulaElement, alert) {
-    const result = this.syntaxValidator.validateSyntax(formulaElement.value)
+    const result = this.syntaxValidator.validateSyntax(formulaElement.value, this.formulaOptions)
     if (result !== null) {
       this.setErrorLocation(formulaElement.id)
       alert.updateAlert(result.key, result.params, 'error')

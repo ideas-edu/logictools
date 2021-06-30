@@ -13,6 +13,7 @@ export class LogAxStep {
     this.number = step.number
     this.label = step.label
     this.references = step.references
+
     if (rule === undefined && step.label !== undefined) {
       rule = `logic.propositional.axiomatic.${step.label}`
     }
@@ -24,6 +25,11 @@ export class LogAxStep {
     this.termKatex = katex.renderToString(LogAxStep.convertToLatex(this.term), {
       throwOnError: false
     })
+
+    // Highlights
+    this.highlightStep = false
+    this.highlightTerm = false
+    this.highlightRule = false
   }
 
   static convertToLatex (term) {
@@ -42,5 +48,14 @@ export class LogAxStep {
 
   getReferences () {
     return this.references !== undefined ? this.references.join(', ') : null
+  }
+
+  getObject () {
+    return {
+      number: this.number,
+      term: this.term,
+      label: this.label,
+      references: this.references
+    }
   }
 }

@@ -12,19 +12,10 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       exerciseid: exercise.type,
       prefix: '[]',
       context: {
-        term: [],
+        term: exercise.steps.getObject(),
         environment: {},
         location: []
       }
-    }
-
-    for (const step of exercise.steps.steps) {
-      state.context.term.push({
-        number: step.number,
-        term: step.term,
-        label: step.label,
-        references: step.references
-      })
     }
 
     return state
@@ -60,12 +51,14 @@ export class LogAxExerciseValidator extends ExerciseValidator {
           if (match[3]) {
             const ps = match[3].split(',')
             params = {}
+            let currentKey = null
             for (let i = 0; i < ps.length; i++) {
               const p = ps[i].trim()
               if (p.indexOf('=') === -1) { // belongs to previous param
-                params[params.length - 1][1] += ', ' + p
+                params[currentKey] += ', ' + LogAxStep.convertToLatex(p)
               } else {
                 const ss = p.split('=')
+                currentKey = ss[0]
                 params[ss[0]] = LogAxStep.convertToLatex(ss[1])
               }
             }
@@ -83,11 +76,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
         onErrorValidating()
         return
       }
-      exercise.steps.steps = []
-      for (const responseStep of response.apply.state.context.term) {
-        const newStep = new LogAxStep(responseStep)
-        exercise.steps.push(newStep)
-      }
+      exercise.steps.newSet(response.apply.state.context.term)
       onValidated()
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)

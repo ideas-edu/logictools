@@ -458,6 +458,10 @@ table td:first-child .alert .katex {
 	float:inherit;
 }
 
+.help-body td .katex {
+	float: inherit!important;
+}
+
 #bottom {
 	margin-right:0!important;
 }
@@ -663,4 +667,8 @@ button {
 
 #rule-container, #completed-rule-container {
     border: 1px solid #e5e5e5;
+}
+
+.highlight-text {
+	color: #2B68D1;
 }

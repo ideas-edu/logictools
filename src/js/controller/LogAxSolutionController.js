@@ -60,10 +60,7 @@ class LogAxSolutionController extends SolutionController {
         Solves the exercise
      */
   solveExercise () {
-    const term = [{
-      term: this.getFormula(),
-      number: 1000
-    }]
+    const term = JSON.parse(this.getFormula())
 
     const exercise = new this.ExerciseType(term, this.exerciseType, false, false)
     this.exerciseSolver.solve(exercise, this.onExerciseSolved.bind(this), this.onErrorSolvingExercise.bind(this))

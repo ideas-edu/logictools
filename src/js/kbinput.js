@@ -169,6 +169,7 @@ export class FormulaPopover {
       }
     }
     e.preventDefault()
+    this.onChangeCallback()
   }
 
   onFocus (e) {
@@ -261,8 +262,14 @@ export class FormulaPopover {
       const def = this._findCharDefinition(c)
       if (def) {
         c = def.char
-        if (def.spaces) {
+        if (def.spaces === 'lr') {
           c = ' ' + c + ' '
+        }
+        if (def.spaces === 'l') {
+          c = ' ' + c
+        }
+        if (def.spaces === 'r') {
+          c = c + ' '
         }
         result += c
       }
