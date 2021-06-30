@@ -36,5 +36,5 @@
     }
   },
   "source": "logex",
-  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi",
+  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi"
 }
