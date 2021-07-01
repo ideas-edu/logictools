@@ -31,7 +31,7 @@ export class LogAxExerciseSolver extends ExerciseSolver {
       const steps = new this.StepCollection()
       const ds = data.derivation.derivation.derivationsteps
       const last = ds[ds.length - 1]
-      for (const step of last.context.term) {
+      for (const step of last.context.term.proof) {
         steps.push(new this.Step(step))
       }
       onExerciseSolved(steps)
@@ -47,7 +47,7 @@ export class LogAxExerciseSolver extends ExerciseSolver {
       exerciseid: exercise.type,
       prefix: '[]',
       context: {
-        term: exercise.steps.getObject(),
+        term: exercise.getObject(),
         environment: {},
         location: []
       }

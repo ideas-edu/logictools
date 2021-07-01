@@ -302,7 +302,7 @@
       "begin": "Selecteer een opgave om mee te beginnen!",
       "create": "Schrijf de stelling voor je eigen opgave",
       "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
-      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: {{lemma}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: $${{lemma}}$$",
       "lemma": "Hulpstelling"
     },
     "rule": {
