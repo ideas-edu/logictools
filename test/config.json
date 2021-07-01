@@ -35,15 +35,6 @@
       }
     }
   },
-  "randomExercises": true,
-  "inputOwnExercise": true,
   "source": "logex",
-  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi",
-  "useRuleJustification": true,
-  "displayRuleJustification": false,
-  "useStepValidation": true,
-  "displayStepValidation": false,
-  "displayHintButton": true,
-  "displayNextStepButton": true,
-  "displayDerivationButton": true
+  "backend_url": "https://ideas.science.uu.nl/cgi-bin/ideas-logic.cgi"
 }
