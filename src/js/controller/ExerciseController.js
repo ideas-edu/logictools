@@ -2,6 +2,7 @@ import config from '../../../config.json'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { KeyBindings } from '../keyBindings.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
+import { translateElement } from '../translate.js'
 
 export class ExerciseController {
   constructor () {
@@ -107,7 +108,7 @@ export class ExerciseController {
     // Clear ruleset if already set
     comboRule.innerHTML = ''
     const select = document.createElement('option')
-    select.setAttribute('translate-key', 'shared.button.selectRule')
+    translateElement(select, 'shared.button.selectRule')
     comboRule.appendChild(select)
     if (ruleSet === undefined) {
       ruleSet = this.config.rules
@@ -116,7 +117,7 @@ export class ExerciseController {
     for (const rule of ruleSet) {
       // Rule will only be displayed if it has not already been displayed
       const option = document.createElement('option')
-      option.setAttribute('translate-key', `rule.${rule}`)
+      translateElement(option, `rule.${rule}`)
       comboRule.appendChild(option)
     }
     // Show '-- Select rule --'

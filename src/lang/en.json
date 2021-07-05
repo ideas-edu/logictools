@@ -302,7 +302,7 @@
       "begin": "Select an exercise to get started!",
       "create": "Write the theorem for your own exercise",
       "exercise": "<b>[[title]]:</b> Prove {{theorem}}",
-      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: {{lemma}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Prove {{theorem}} while using the lemma: $${{lemma}}$$",
       "lemma": "Lemma"
     },
     "rule": {
@@ -335,9 +335,9 @@
         "stepnr": "Step"
       },
       "deduction": {
-        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
-        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
-        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "def": "$$\\bigl(\\sum,\\phi\\vdash\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash\\psi$$",
+        "n2": "$$\\sum\\vdash\\phi\\rightarrow\\psi$$",
         "phi": "$$\\phi$$"
       },
       "goal": {
@@ -353,10 +353,10 @@
         "stepnr": "Step"
       },
       "modusponens": {
-        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
-        "n1": "$$\\sum\\vdash_S\\phi$$",
-        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
-        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+        "def": "$$\\bigl(\\sum\\vdash\\phi\\bigr), \\bigl(\\Delta\\vdash\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash\\psi$$",
+        "n1": "$$\\sum\\vdash\\phi$$",
+        "n2": "$$\\Delta\\vdash\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash\\psi$$"
       }
     },
     "title": "Prove Axiomatic"
