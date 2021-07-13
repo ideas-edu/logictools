@@ -92,10 +92,6 @@ export class LogExController extends ExerciseController {
       }.bind(this))
     }
 
-    document.getElementById('show-solve-exercise').addEventListener('click', function () {
-      this.showSolution()
-    }.bind(this))
-
     document.getElementById('step-validation-switch').addEventListener('click', function () {
       this.changeStepValidation()
     }.bind(this))
