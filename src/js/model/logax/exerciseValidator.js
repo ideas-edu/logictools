@@ -12,7 +12,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       exerciseid: exercise.type,
       prefix: '[]',
       context: {
-        term: exercise.steps.getObject(),
+        term: exercise.getObject(),
         environment: {},
         location: []
       }
@@ -76,7 +76,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
         onErrorValidating()
         return
       }
-      exercise.steps.newSet(response.apply.state.context.term)
+      exercise.steps.newSet(response.apply.state.context.term.proof)
       onValidated()
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
