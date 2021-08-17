@@ -375,13 +375,13 @@ export class LogAxController extends ExerciseController {
 
     const formula1 = LogAxStep.convertToText(document.getElementById('new-formula-1').value)
     const formula2 = LogAxStep.convertToText(document.getElementById('new-formula-2').value)
-    let createTerm = `${formula1} |- ${formula2}`
     const proof = [{
       term: `${formula1} |- ${formula2}`,
       number: 1000
     }]
     const term = {
-      proof: proof
+      proof: proof,
+      lemmas: []
     }
 
     if (!this.validateFormula(document.getElementById('new-formula-1'), this.newExerciseAlert)) {
@@ -400,7 +400,6 @@ export class LogAxController extends ExerciseController {
         number: 1,
         label: 'lemma'
       })
-      createTerm = `1. ${lemma1} |- ${lemma2} [lemma]\n1000. ${formula1} |- ${formula2}`
       term.lemmas = [`${lemma1} |- ${lemma2}`]
       if (!this.validateFormula(document.getElementById('new-lemma-1'), this.newExerciseAlert)) {
         return
@@ -411,10 +410,16 @@ export class LogAxController extends ExerciseController {
       }
     }
 
+    const context = {
+      term: term,
+      environment: {},
+      location: []
+    }
+
     this.disableUI(true)
     this.dismissAlert()
     this.exercise = new LogAxExercise(term, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, createTerm, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exerciseGenerator.create(exerciseMethod, context, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**

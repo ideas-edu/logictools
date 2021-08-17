@@ -127,16 +127,20 @@ class OneWayController extends LogExController {
       titleKey: 'shared.exerciseName.user'
     }
 
-    const formula = document.getElementById('new-formula')
+    const context = {
+      term: document.getElementById('new-formula').value,
+      environment: {},
+      location: []
+    }
 
-    if (!this.validateFormula(formula, this.newExerciseAlert)) {
+    if (!this.validateFormula(document.getElementById('new-formula'), this.newExerciseAlert)) {
       return
     }
 
     this.disableUI(true)
     this.dismissAlert()
-    this.exercise = new OneWayExercise(formula.value, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, formula.value, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise(context.term, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, context, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**

@@ -44,14 +44,14 @@ export class ExerciseGenerator {
         @param onExerciseCreated - The callback function that is called after the exercise is created.
         @param onErrorCreatingExercise - The callback function that is called if there is a problem creating the exercise.
      */
-  create (exerciseId, formula, properties, onExerciseGenerated, onErrorGeneratingExercise) {
+  create (exerciseId, context, properties, onExerciseGenerated, onErrorGeneratingExercise) {
     const userId = LogEXSession.getStudentId()
     const onError = onErrorGeneratingExercise
     const onSuccess = function (data) {
       this.onSuccess(data.create, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties)
     }.bind(this)
 
-    IdeasServiceProxy.create(this.config, exerciseId, formula, userId, onSuccess, onError)
+    IdeasServiceProxy.create(this.config, exerciseId, context, userId, onSuccess, onError)
   }
 
   onSuccess (result, exerciseId, onErrorGeneratingExercise, onExerciseGenerated, properties) {
