@@ -239,7 +239,7 @@ export class LogAxController extends ExerciseController {
     }
     const goalPhiOptions = {
       id: 11,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const goalPsiOptions = {
       id: 12,

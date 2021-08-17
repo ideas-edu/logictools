@@ -341,8 +341,8 @@
         "phi": "$$\\phi$$"
       },
       "goal": {
-        "def": "$$\\phi\\vdash\\psi$$",
-        "phi": "$$\\phi$$",
+        "def": "$$\\sum\\vdash\\psi$$",
+        "phi": "$$\\sum$$",
         "psi": "$$\\psi$$",
         "stepExp": "Specify the number of the new step, or leave empty to get a default number",
         "stepnr": "Step"
