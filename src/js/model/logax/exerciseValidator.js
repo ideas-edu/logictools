@@ -1,6 +1,5 @@
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseValidator } from '../shared/exerciseValidator.js'
-import { LogAxStep } from './step.js'
 
 /**
     LogAxExerciseValidator is responsible for validating one way exercises.
