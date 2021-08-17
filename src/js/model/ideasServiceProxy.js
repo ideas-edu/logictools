@@ -68,11 +68,11 @@ export class IdeasServiceProxy {
   }
 
   // create :: Exercise, String -> State
-  static create (toolConfig, exerciseId, formula, userid, onSuccess, onError) {
+  static create (toolConfig, exerciseId, context, userid, onSuccess, onError) {
     const request = {
       service: 'create',
       exerciseid: exerciseId,
-      term: formula,
+      context: context,
       userid: userid
     }
 
