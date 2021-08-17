@@ -350,7 +350,8 @@
       "label": "<b>Regel</b>",
       "lemma": {
         "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
-        "stepnr": "Stap"
+        "stepnr": "Stap",
+        "closeStepnr": "Stap"
       },
       "modusponens": {
         "def": "$$\\bigl(\\sum\\vdash\\phi\\bigr), \\bigl(\\Delta\\vdash\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash\\psi$$",
