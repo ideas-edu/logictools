@@ -8,14 +8,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>Ideas - Conjunctive Normal Form</title>
 	<meta name="description" content="">
-	<!-- <meta name="viewport" content="width=1020"> -->
 
 	<script src="logax.bundle.js" type="text/javascript"></script>
 
 	<link rel="stylesheet" href="css/ideas.css">
 </head>
 
-<body class="oneWay-body">
+<body class="logax-body">
 <!--[if lt IE 9]>
 	<p class="alert alert-error">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> to better experience this site.</p>
 <![endif]-->
@@ -92,14 +91,14 @@
 				<button id="new-exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
 				    <span aria-hidden="true">&times;</span>
 				</button>
-				<button type='button' id='new-exercise-alert-button' class='btn btn-dark float-right'></button>
+				<button type='button' id='new-exercise-alert-button' class='btn btn-sm btn-dark float-right'></button>
 			</div>
 		</div>
 	</div>
 
 	<div id="exercise-container" style="display: none">
 		<div class="row">
-			<div class="col-6">
+			<div class="col-7">
 				<table class="table table-striped">
 					<thead>
 						<tr id="exercise-table-header">
@@ -114,7 +113,7 @@
 				</table>
 			</div>
 
-			<div class="col-6">
+			<div class="col-5">
 				<div id="rule-container" style="display: none">
 					<table style="width: 100%">
 						<tbody>
@@ -311,26 +310,28 @@
 									<button id="exercise-alert-dismiss" type="button" class="close float-right" aria-label="Close">
 									    <span aria-hidden="true">&times;</span>
 									</button>
-									<button type='button' id='exercise-alert-button' class='btn btn-dark float-right'></button>
+									<button type='button' id='exercise-alert-button' class='btn btn-sm btn-dark float-right'></button>
 								</div>
 							</div>
 						<!-- </td>
 					</tr> -->
-
-					<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-					<div class="dropdown-menu" aria-labelledby="help-menu">
-						<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
-						<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
-						<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
-						<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+					<div id="logax-actions">
+						<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+						<div class="dropdown-menu" aria-labelledby="help-menu">
+							<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
+							<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
+							<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
+							<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+						</div>
+						<button type="button" id="undo-step" class="btn btn-outline-secondary" disabled="true"><i class='fas fa-undo'></i></button>
+						<button type="button" id="redo-step" class="btn btn-outline-secondary" disabled="true"><i class='fas fa-redo'></i></button>
+						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.apply"></button>
 					</div>
-					<button type="button" id="undo-step" class="btn btn-outline-secondary" disabled="true"><i class='fas fa-undo'></i></button>
-					<button type="button" id="redo-step" class="btn btn-outline-secondary" disabled="true"><i class='fas fa-redo'></i></button>
-					<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.apply"></button>
 				</div>
 				<div id="completed-rule-container" style="display: none">
 					<span translate-key="logax.completed"></span>
 					<button type="button" id="renumber-step" class="btn btn-outline-secondary" translate-key="logax.button.renumber"></button>
+					<button type="button" class="btn btn-outline-secondary" id="show-solve-exercise" translate-key="shared.button.solveExercise"></button>
 				</div>
 			</div>
 		</div>

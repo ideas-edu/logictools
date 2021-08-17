@@ -44,6 +44,10 @@ export class ExerciseController {
       this.validateStep()
     }.bind(this))
 
+    document.getElementById('show-solve-exercise').addEventListener('click', function () {
+      this.showSolution()
+    }.bind(this))
+
     // key bindings
     document.addEventListener('keydown', function (e) {
       this.keyBindings.onKeyDown(e)
