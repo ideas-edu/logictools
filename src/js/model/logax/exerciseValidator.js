@@ -1,5 +1,6 @@
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseValidator } from '../shared/exerciseValidator.js'
+import { LogAxStep } from './step.js'
 
 /**
     LogAxExerciseValidator is responsible for validating one way exercises.
@@ -44,9 +45,14 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       if (response.apply.diagnosetype === 'buggy') {
         const key = response.apply.rule.substring(20) // Remove 'logic.propositional.'
 
+        const params = {}
+        for (const [key, value] of Object.entries(response.apply.environment)) {
+          params[key] = LogAxStep.convertToLatex(value)
+        }
+
         onErrorValidating({
           key: `buggyRule.${key}`,
-          params: response.apply.environment
+          params: params
         })
         return
       }

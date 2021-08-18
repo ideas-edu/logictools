@@ -674,6 +674,17 @@ export class LogAxController extends ExerciseController {
           }
         }
       }
+      case 'logic.propositional.axiomatic.lemma.close': {
+        const stepnr = document.getElementById('lemma-select-close-stepnr')
+
+        return {
+          environment: {
+            n: stepnr.value,
+            st: this.exercise.lemmas[0]
+          },
+          rule: rule
+        }
+      }
     }
   }
 
@@ -798,6 +809,13 @@ export class LogAxController extends ExerciseController {
         applyButton.disabled = false
         break
       }
+      case 'logic.propositional.axiomatic.lemma.close': {
+        const stepnr = document.getElementById('lemma-select-close-stepnr')
+        if (stepnr.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
     }
   }
 
@@ -889,6 +907,9 @@ export class LogAxController extends ExerciseController {
         }
       }
       case 'logic.propositional.axiomatic.lemma': {
+        return true
+      }
+      case 'logic.propositional.axiomatic.lemma.close': {
         return true
       }
     }

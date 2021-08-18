@@ -349,6 +349,7 @@
       },
       "label": "<b>Regel</b>",
       "lemma": {
+        "closeStepnr": "Stap",
         "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
         "stepnr": "Stap"
       },

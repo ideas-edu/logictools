@@ -349,6 +349,7 @@
       },
       "label": "<b>Rule</b>",
       "lemma": {
+        "closeStepnr": "Step",
         "stepExp": "Specify the number of the new step, or leave empty to get a default number",
         "stepnr": "Step"
       },
