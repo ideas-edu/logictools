@@ -1007,13 +1007,22 @@ export class LogAxController extends ExerciseController {
 
     for (let i = 0; i < nextStep.formula.proof.length; i++) {
       if (nextStep.formula.proof[i].number !== this.exercise.steps.steps[i].number) {
-        if (nextStep.formula.proof[i].number < 500) {
-          this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-          return
-        } else {
-          this.updateAlert('logax.hint.performBackward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-          return
+        // Found new step
+        for (let j = 0; j < nextStep.formula.proof.length; j++) {
+          // Determine which step references new step and if the new step is inserted before or after the old step
+          if (nextStep.formula.proof[j].references !== undefined && nextStep.formula.proof[j].references.includes(nextStep.formula.proof[i].number)) {
+            if (nextStep.formula.proof[j].number < nextStep.formula.proof[i].number) {
+              this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+              return
+            } else {
+              this.updateAlert('logax.hint.performBackward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+              return
+            }
+          }
         }
+        // No references to new step; the step should be performed forward
+        this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+        return
       }
     }
   }
