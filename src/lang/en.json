@@ -270,7 +270,10 @@
       "hotKeys": "Hot Keys",
       "logeq": "Logical Equivalence",
       "rules": "Rules",
-      "video": "Video"
+      "video": "Video",
+      "video1": "Video 1",
+      "video2": "Video 2",
+      "video3": "Video 3"
     },
     "video": {
       "notSupported": "Your browser does not support embedded videos"
