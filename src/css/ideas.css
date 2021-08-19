@@ -707,7 +707,10 @@ background-color: red;
 }
 
 .help-body #help-dnv video,
-.help-body #help-cnv video{
+.help-body #help-cnv video,
+.help-body #help-video-1 video,
+.help-body #help-video-2 video,
+.help-body #help-video-3 video{
 	width: 100%;
 	border:1px solid #e5e5e5;
 }

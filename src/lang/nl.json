@@ -270,7 +270,10 @@
       "hotKeys": "Sneltoetsen",
       "logeq": "Logische Equivalentie",
       "rules": "Regels",
-      "video": "Video"
+      "video": "Video",
+      "video1": "Video 1",
+      "video2": "Video 2",
+      "video3": "Video 3"
     },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
