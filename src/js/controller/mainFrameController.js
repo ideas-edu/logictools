@@ -21,6 +21,9 @@ function ready (fn) {
 
 class MainFrameController {
   constructor () {
+    document.getElementById('header-title').innerHTML = config.title
+    document.getElementById('page-title').innerHTML = config.title
+
     this.getUserId()
     this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
