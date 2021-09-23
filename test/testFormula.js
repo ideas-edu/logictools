@@ -11,6 +11,15 @@ const fOptions = {
   literals: ['p', 'q', 'r', 's', 'T', 'F']
 }
 
+const fOptionsMulti = {
+  unaryOperators: ['func'],
+  binaryOperators: ['∧', '∨', '→', '↔', ','],
+  implicitAssociativeBinaryOperators: ['∧', '∨', ','],
+  firstOrderOperators: [','],
+  implicitPrecendence: [{ strong: ',', weak: '→' }],
+  literals: ['p', 'q', 'r', 's', 'T', 'F']
+}
+
 describe('formulaSyntax', function () {
   describe('errors', function () {
     it('should have error Missing closing parenthesis (nested groups)', function () {
@@ -135,6 +144,11 @@ describe('formulaSyntax', function () {
 
     it('should succeed implicit associativity', function () {
       const formula = new Formula('p∧s∧r', fOptions)
+      assert.equal(formula.error, null)
+    })
+
+    it('should succeed operator with multiple characters', function () {
+      const formula = new Formula('func(p)', fOptionsMulti)
       assert.equal(formula.error, null)
     })
   })

@@ -63,7 +63,8 @@ ul.nav .nav-item:last-child {
 #container-dnf,
 #container-cnf,
 #container-logeq,
-#container-logax {
+#container-logax,
+#container-logind {
 	border-radius: 4px;
 	background-color:#fff;
 	border: 1px solid #e5e5e5;
@@ -77,6 +78,10 @@ ul.nav .nav-item:last-child {
 }
 
 #container-logax iframe#fra-logax {
+	min-height: 570px!important;
+}
+
+#container-logind iframe#fra-logind {
 	min-height: 570px!important;
 }
 

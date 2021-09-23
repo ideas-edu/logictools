@@ -17,7 +17,7 @@ export class FormulaPopover {
     this.previousValue = ''
     this.wrapper = wrapperElement
     if (options.id) {
-      this.wrapper.setAttribute('id', options.id)
+      this.wrapper.setAttribute('kb-id', options.id)
     }
     if (onChangeCallback !== undefined) {
       this.onChangeCallback = onChangeCallback
@@ -36,8 +36,13 @@ export class FormulaPopover {
       Adds buttons to allow insertion of characters from this.options.characters in this.inputElement
     */
   setContent () {
+    // Clear content
+    this.wrapper.innerHTML = ''
     // Input buttons
     for (const i in this.options.characters) {
+      if (this.options.characters[i].hideButton) {
+        continue
+      }
       const button = document.createElement('button')
       button.type = 'button'
       if (this.options.characters[i].latex) {
@@ -99,6 +104,12 @@ export class FormulaPopover {
     */
   addText (e) {
     this.insertText(e.currentTarget.getAttribute('char'))
+    const def = this._findCharDefinition(e.currentTarget.getAttribute('char'))
+    if (def.function) {
+      this.insertText('()')
+      this.inputElement.selectionStart -= 1
+      this.inputElement.selectionEnd = this.inputElement.selectionStart
+    }
     this.onChangeCallback()
     // Keep focus on inputElement after pressing button
     window.setTimeout(() => {
@@ -278,8 +289,7 @@ export class FormulaPopover {
   }
 
   _findCharDefinition (c) {
-    for (const i in this.options.characters) {
-      const item = this.options.characters[i]
+    for (const item of this.options.characters) {
       if (item.char === c) {
         return item
       }

@@ -111,4 +111,11 @@ export function translateElement (element, key, params) {
 
   element.innerHTML = translate(element.getAttribute('translate-key'), JSON.parse(element.getAttribute('translate-params')))
 }
+// Updates text of all descendant elements of element with translate-key attribute
+export function translateChildren (element) {
+  const elements = element.querySelectorAll('[translate-key]')
+  for (const element of elements) {
+    translateElement(element)
+  }
+}
 export function loadLanguage (language, callback) { return translateInstance.loadLanguage(language, callback) }

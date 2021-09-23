@@ -5,5 +5,6 @@ export const ExerciseTypes = {
   LOGEQ: 'logic.propositional.proof.unicode',
   DNV: 'logic.propositional.dnf.unicode',
   CNV: 'logic.propositional.cnf.unicode',
-  LOGAX: 'logic.propositional.logax'
+  LOGAX: 'logic.propositional.logax',
+  LOGIND: 'logic.propositional.inductive'
 }
