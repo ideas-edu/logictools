@@ -430,8 +430,8 @@
         "implication": "Implication definition",
         "logind": {
           "base": "Base Case",
-          "inductive": "Inductive Case",
-          "hypothesis": "Hypothesis"
+          "hypothesis": "Hypothesis",
+          "inductive": "Inductive Case"
         },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
