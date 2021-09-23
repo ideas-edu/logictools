@@ -66,19 +66,19 @@ export class LogIndController extends ExerciseController {
       this.renumberSteps()
     }.bind(this))
 
-    document.getElementById('move-step-up').addEventListener('click', function () {
+    document.getElementById('move-step-up').addEventListener('mousedown', function () {
       this.moveStepUp()
     }.bind(this))
 
-    document.getElementById('move-step-down').addEventListener('click', function () {
+    document.getElementById('move-step-down').addEventListener('mousedown', function () {
       this.moveStepDown()
     }.bind(this))
 
-    document.getElementById('insert-step-above').addEventListener('click', function () {
+    document.getElementById('insert-step-above').addEventListener('mousedown', function () {
       this.insertStepAbove()
     }.bind(this))
 
-    document.getElementById('insert-step-below').addEventListener('click', function () {
+    document.getElementById('insert-step-below').addEventListener('mousedown', function () {
       this.insertStepBelow()
     }.bind(this))
 
@@ -527,6 +527,7 @@ export class LogIndController extends ExerciseController {
   }
 
   insertStepAbove () {
+    this.setStep()
     this.exercise.activeCase.insertStepAbove(this.activeStepIndex)
     this.activeStepIndex += 1
     this.updateSteps()
@@ -534,6 +535,7 @@ export class LogIndController extends ExerciseController {
   }
 
   insertStepBelow () {
+    this.setStep()
     this.exercise.activeCase.insertStepBelow(this.activeStepIndex)
     this.updateSteps()
   }

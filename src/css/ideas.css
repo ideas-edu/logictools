@@ -188,10 +188,6 @@ input.kbinput {
 	padding-bottom:10px;
 }
 
-#active-step td:first-child {
-	padding-top:18px!important;
-}
-
 
 input.success {
 	border-color: green;
@@ -583,6 +579,11 @@ button {
 
 }
 
+.oneWay-body #active-step td:first-child,
+.twoWay-body #active-step td:first-child {
+	padding-top:18px!important;
+}
+
 /* Logische Equivalentie */
 .twoWay-body #empty-bottom-step td{
 	background-color:#FBFBFB;
@@ -690,6 +691,9 @@ button {
 	padding:8px 0;
 }
 
+.logind-body #active-step td {
+	vertical-align: top;
+}
 
 
 .formula-highlight {
