@@ -7,22 +7,19 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
-import katex from 'katex'
 
 import { FormulaPopover } from '../kbinput.js'
 
 // import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { LogEXSession } from '../logEXSession.js'
-import { ExerciseTypes } from '../model/exerciseTypes.js'
 import { LogIndExerciseGenerator } from '../model/logind/exerciseGenerator.js'
 import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
 import { LogIndStep } from '../model/logind/step.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
-import { LogIndExercise } from '../model/logind/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
-import { translateChildren, translateElement, loadLanguage, hasTranslation } from '../translate.js'
+import { translateChildren, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 

@@ -11,6 +11,7 @@ export class LogIndCaseCollection {
     if (cases !== null && cases !== undefined) {
       for (const [identifier, _case] of Object.entries(cases)) {
         this.cases.push(_case)
+        this.cases[this.cases.length - 1].identifier = identifier
       }
     }
     this.casesHistory = [JSON.parse(JSON.stringify(this.cases))]

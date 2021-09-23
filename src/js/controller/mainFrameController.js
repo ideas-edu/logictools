@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import config from '../../../config.json'
 
 import { LogEXSession } from '../logEXSession.js'
-import { translateElement, translateChildren, loadLanguage } from '../translate.js'
+import { translateChildren, loadLanguage } from '../translate.js'
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
