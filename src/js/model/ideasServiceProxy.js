@@ -15,7 +15,7 @@ export class IdeasServiceProxy {
   static post (toolConfig, input, onSuccess, onError) {
     const url = config.backend_url
     input.source = toolConfig.source
-    const data = 'input=' + encodeURI(JSON.stringify(input))
+    const data = 'input=' + encodeURIComponent(JSON.stringify(input))
 
     const request = new XMLHttpRequest()
 

@@ -11,20 +11,31 @@ export class LogIndExercise {
     this.type = exerciseType
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
-    this.problem = term.problem
-    this.cases = new LogIndCaseCollection(term.proofs)
-    this.activeCase = new LogIndCase()
-
     this.definitions = term.definitions
     this.language = term.language
     this.theorem = term.theorem
+    this.problem = term.problem
+
+    this.cases = new LogIndCaseCollection(this, term.proofs)
+    this.activeCase = new LogIndCase(this)
   }
 
   getObject () {
     const object = {
-      proofs: this.cases.getObject()
+      definitions: this.definitions,
+      language: this.language,
+      problem: this.problem,
+      proofs: this.cases.getObject(),
+      theorem: this.theorem
+    }
+    if (this.activeCase.steps.some((step) => step.term !== '')) {
+      object.proofs[''] = this.activeCase.getObject()
     }
     return object
+  }
+
+  setCases (cases) {
+    this.cases = new LogIndCaseCollection(this, cases)
   }
 
   /**

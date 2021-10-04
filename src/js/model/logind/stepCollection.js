@@ -6,48 +6,41 @@ import { LogIndStep } from './step.js'
     @param {ProofStep} baseStep - The first proof step.
  */
 export class LogIndCaseCollection {
-  constructor (cases) {
+  constructor (exercise, cases) {
+    this.exercise = exercise
     this.cases = []
     if (cases !== null && cases !== undefined) {
+      let i = 0
       for (const [identifier, _case] of Object.entries(cases)) {
-        this.cases.push(_case)
+        this.cases.push(new LogIndCase(this.exercise, _case))
+        this.cases[this.cases.length - 1].index = i
+        i++
         this.cases[this.cases.length - 1].identifier = identifier
       }
     }
-    this.casesHistory = [JSON.parse(JSON.stringify(this.cases))]
-    this.casesHistoryIndex = 0
+    // this.casesHistory = [JSON.parse(JSON.stringify(this.cases))]
+    // this.casesHistoryIndex = 0
+  }
+
+  getObject () {
+    const object = {}
+    for (const _case of this.cases) {
+      object[_case.identifier] = _case.getObject()
+    }
+    return object
   }
 }
 
 export class LogIndCase extends StepCollection {
-  // [
-  //   "prop (phi&&psi)",
-  //   {
-  //       "motivation": "prop",
-  //       "type": "="
-  //   },
-  //   "prop phi+prop psi",
-  //   {
-  //       "motivation": "ih",
-  //       "type": "="
-  //   },
-  //   "bin phi+1+prop psi",
-  //   {
-  //       "motivation": "ih",
-  //       "type": "="
-  //   },
-  //   "bin phi+1+bin psi+1",
-  //   {
-  //       "motivation": "bin",
-  //       "type": "="
-  //   },
-  //   "bin (phi&&psi)+1"
-  // ]
-  constructor (_case) {
+  constructor (exercise, _case) {
     super()
+    this.exercise = exercise
 
     if (_case === undefined) {
-      _case = ['']
+      _case = ['', {
+        motivation: '?',
+        type: '='
+      }, '']
     }
     this.steps = []
     let rule = null
@@ -55,7 +48,7 @@ export class LogIndCase extends StepCollection {
     let number = 0
     for (const step of _case) {
       if (step.constructor === String) {
-        this.steps.push(new LogIndStep(step, rule, relation, number))
+        this.steps.push(new LogIndStep(this.exercise, step, rule, relation, number))
       } else {
         rule = step.motivation
         relation = step.type
@@ -63,8 +56,8 @@ export class LogIndCase extends StepCollection {
       }
     }
 
-    this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
-    this.stepsHistoryIndex = 0
+    // this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
+    // this.stepsHistoryIndex = 0
   }
 
   getObject () {
@@ -76,7 +69,7 @@ export class LogIndCase extends StepCollection {
           type: step.relation
         })
       }
-      object.push(step.term)
+      object.push(step.unicodeToAscii(step.term))
     }
 
     return object
@@ -89,9 +82,9 @@ export class LogIndCase extends StepCollection {
     if (index === 0) {
       this.steps[0].rule = '?'
       this.steps[0].relation = '='
-      this.steps.splice(index, 0, new LogIndStep('', null, null, index))
+      this.steps.splice(index, 0, new LogIndStep(this.exercise, '', null, null, index))
     } else {
-      this.steps.splice(index, 0, new LogIndStep('', '?', '=', index))
+      this.steps.splice(index, 0, new LogIndStep(this.exercise, '', '?', '=', index))
     }
   }
 
@@ -99,7 +92,7 @@ export class LogIndCase extends StepCollection {
     for (let i = index + 1; i < this.steps.length; i++) {
       this.steps[i].number += 1
     }
-    this.steps.splice(index + 1, 0, new LogIndStep('', '?', '=', index + 1))
+    this.steps.splice(index + 1, 0, new LogIndStep(this.exercise, '', '?', '=', index + 1))
   }
 
   deleteStep (index) {

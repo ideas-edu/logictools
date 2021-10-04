@@ -15,11 +15,12 @@ import { LogEXSession } from '../logEXSession.js'
 import { LogIndExerciseGenerator } from '../model/logind/exerciseGenerator.js'
 import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
-import { LogIndStep } from '../model/logind/step.js'
+import { LogIndExercise } from '../model/logind/exercise.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
 import { translateChildren, loadLanguage, hasTranslation } from '../translate.js'
+import { ExerciseTypes } from '../model/exerciseTypes.js'
 
 const $ = jsrender(null)
 
@@ -139,18 +140,6 @@ export class LogIndController extends ExerciseController {
     document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
     this.clearErrors()
-
-    // // Remove old rows
-    // const exerciseStepTable = document.getElementById('exercise-step-table')
-    // let stepRow = exerciseStepTable.firstElementChild
-    // while (true) {
-    //   if (stepRow && stepRow.classList.contains('exercise-step')) {
-    //     exerciseStepTable.removeChild(stepRow)
-    //     stepRow = exerciseStepTable.firstElementChild
-    //   } else {
-    //     break
-    //   }
-    // }
 
     this.characterOptions = [{
       char: 'φ',
@@ -290,7 +279,7 @@ export class LogIndController extends ExerciseController {
     this.exercise.activeCase.index = this.exercise.cases.cases.length
     this.exercise.activeCase.type = this.getSelectedRuleKey()
     this.exercise.cases.cases.push(this.exercise.activeCase)
-    this.exercise.activeCase = new LogIndCase()
+    this.exercise.activeCase = new LogIndCase(this.exercise)
     this.activeStepIndex = 0
     this.updateCases()
     this.updateSteps()
@@ -368,37 +357,8 @@ export class LogIndController extends ExerciseController {
     const buttonCallback = function () {
       this.showNextHint(nextStep)
     }.bind(this)
-    if (nextStep.stepEnvironment.subgoals !== '') {
-      const subgoal = nextStep.stepEnvironment.subgoals.split(';')[0]
-      this.updateAlert('logind.hint.proveSubgoal', { subgoal: LogIndStep.convertToLatex(subgoal) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-      return
-    }
 
-    if (nextStep.formula.proof.length === this.exercise.steps.steps.length) {
-      this.updateAlert('logind.hint.motivate', { subgoal: LogIndStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-      return
-    }
-
-    for (let i = 0; i < nextStep.formula.proof.length; i++) {
-      if (nextStep.formula.proof[i].number !== this.exercise.steps.steps[i].number) {
-        // Found new step
-        for (let j = 0; j < nextStep.formula.proof.length; j++) {
-          // Determine which step references new step and if the new step is inserted before or after the old step
-          if (nextStep.formula.proof[j].references !== undefined && nextStep.formula.proof[j].references.includes(nextStep.formula.proof[i].number)) {
-            if (nextStep.formula.proof[j].number < nextStep.formula.proof[i].number) {
-              this.updateAlert('logind.hint.performForward', { subgoal: LogIndStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-              return
-            } else {
-              this.updateAlert('logind.hint.performBackward', { subgoal: LogIndStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-              return
-            }
-          }
-        }
-        // No references to new step; the step should be performed forward
-        this.updateAlert('logind.hint.performForward', { subgoal: LogIndStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-        return
-      }
-    }
+    this.updateAlert('logind.hint.message', null, 'hint', 'shared.hint.nextHint', buttonCallback)
   }
 
   showNextHint (nextStep) {
@@ -418,9 +378,11 @@ export class LogIndController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.steps.newSet(nextStep.formula.proof)
-
-    this.onStepValidated()
+    this.exercise.setCases(nextStep.formula.proofs)
+    console.log(this.exercise)
+    this.setInput()
+    this.updateSteps()
+    this.updateCases()
   }
 
   onCompleted (isFinished) {
@@ -559,7 +521,9 @@ export class LogIndController extends ExerciseController {
   }
 
   editCase (index) {
+    console.log(index, this.exercise.cases.cases[index])
     this.exercise.activeCase = this.exercise.cases.cases[index]
+    console.log(this.exercise)
     this.deleteCase(index)
     this.activeStepIndex = 0
     this.updateCases()
@@ -568,9 +532,11 @@ export class LogIndController extends ExerciseController {
   }
 
   setStep () {
-    this.exercise.activeCase.steps[this.activeStepIndex].relation = document.getElementById('relation').value
-    this.exercise.activeCase.steps[this.activeStepIndex].setTerm(document.getElementById('formula').value, this.exercise.definitions)
-    this.exercise.activeCase.steps[this.activeStepIndex].rule = document.getElementById('motivation').value
+    this.exercise.activeCase.steps[this.activeStepIndex].setTerm(document.getElementById('formula').value)
+    if (this.activeStepIndex !== 0) {
+      this.exercise.activeCase.steps[this.activeStepIndex].relation = document.getElementById('relation').value
+      this.exercise.activeCase.steps[this.activeStepIndex].rule = document.getElementById('motivation').value
+    }
   }
 
   setInput () {
