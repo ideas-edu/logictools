@@ -79,7 +79,7 @@ export class LogIndStep {
     this.term = this.asciiToUnicode(term)
     // This does not match the longest function
     let termAnnotated = this.unicodeToLatex(this.term)
-    for (const functionName of this.exercise.definitions) {
+    for (const functionName of this.exercise.definitions.concat(['min', 'max'])) {
       termAnnotated = termAnnotated.replaceAll(functionName, `\\texttt{${functionName}}`)
     }
 

@@ -21,9 +21,9 @@ export class LogIndExerciseValidator extends ExerciseValidator {
     return state
   }
 
-  getContext (exercise, step2) {
+  getContext (exercise) {
     const context = {
-      term: step2.formula,
+      term: exercise.getObject(),
       environment: {},
       location: []
     }
@@ -31,40 +31,30 @@ export class LogIndExerciseValidator extends ExerciseValidator {
     return context
   }
 
-  validateApply (exercise, step, onValidated, onErrorValidating) {
-    const state = this.getState(exercise)
-
-    const validated = function (response) {
-      if (response.apply.diagnosetype === 'incorrect') {
-        const baseRuleKey = step.rule.split('.')[3]
-        const ruleKey = `rule.logic.propositional.axiomatic.${baseRuleKey}`
-        onErrorValidating({ key: 'shared.error.cannotApply', params: { rule: ruleKey } })
-        return
-      }
-
-      if (response.apply.diagnosetype === 'buggy') {
-        const key = response.apply.rule.substring(20) // Remove 'logic.propositional.'
-
-        const params = {}
-        for (const [key, value] of Object.entries(response.apply.environment)) {
-          params[key] = LogIndStep.convertToLatex(value)
+  validateExercise (exercise, onValidated, onErrorValidatingStep) {
+    const onError = onErrorValidatingStep
+    const onSuccess = function (data) {
+      if (data === null || data.error !== undefined) {
+        if (data.error.slice(0, 7) === '(line 1') { // syntax error
+          return
         }
-
-        onErrorValidating({
-          key: `buggyRule.${key}`,
-          params: params
-        })
+        onErrorValidatingStep()
         return
       }
-
-      if (!response.apply) {
-        onErrorValidating()
-        return
+      switch (data.diagnose.diagnosetype) {
+        case 'similar':
+          onValidated('similar')
+          break
+        case 'notequiv':
+          onValidated('notequiv')
+          break
       }
-      exercise.steps.newSet(response.apply.state.context.term.proof)
       onValidated()
     }
-    IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
+
+    const state = this.getState(exercise)
+    const context = this.getContext(exercise)
+    IdeasServiceProxy.diagnose(this.config, state, context, null, onSuccess, onError)
   }
 
   isFinished (exercise, onFinished, onError) {

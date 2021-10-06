@@ -87,6 +87,10 @@ export class LogIndController extends ExerciseController {
       this.deleteStep()
     }.bind(this))
 
+    document.getElementById('check-step').addEventListener('click', function () {
+      this.checkStep()
+    }.bind(this))
+
     document.getElementById('complete-exercise').addEventListener('click', function () {
       this.completeSolution()
     }.bind(this))
@@ -231,6 +235,7 @@ export class LogIndController extends ExerciseController {
     this.setMotivation()
 
     // document.getElementById('header-actions').style.display = ''
+    this.updateCases()
     this.updateSteps()
     this.setInput()
   }
@@ -268,6 +273,11 @@ export class LogIndController extends ExerciseController {
         return this.validateFormula(phi, this.exerciseAlert)
       }
     }
+  }
+
+  checkStep () {
+    this.setStep()
+    this.exerciseValidator.validateExercise(this.exercise, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   /**
@@ -324,19 +334,15 @@ export class LogIndController extends ExerciseController {
         Handles the event that a step is validated
 
      */
-  onStepValidated () {
-    this.updateSteps()
-
-    //    Reset rule value after valid step
-    document.getElementById('rule').selectedIndex = 0
-    document.getElementById('rule').dispatchEvent(new Event('change', { bubbles: true }))
-    // Check if ready
-    for (const step of this.exercise.steps.steps) {
-      if (step.label === undefined) {
-        return true
-      }
+  onStepValidated (result) {
+    switch (result) {
+      case 'similar':
+        this.updateAlert('logind.error.correct', null, 'complete')
+        break
+      case 'notequiv':
+        this.updateAlert('logind.error.incorrect', null, 'error')
+        break
     }
-    this.exerciseValidator.isFinished(this.exercise, this.onCompleted.bind(this), this.onErrorValidatingStep.bind(this))
     return true
   }
 
