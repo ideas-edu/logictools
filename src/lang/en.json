@@ -435,6 +435,7 @@
       "generateExerciseDifficult": "Difficult",
       "generateExerciseEasy": "Easy",
       "generateExerciseNormal": "Normal",
+      "generateExerciseRandom": "Random",
       "help": "Help",
       "hint": "Hint",
       "newExercise": "Manual entry",
