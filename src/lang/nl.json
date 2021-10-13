@@ -8,7 +8,8 @@
         "buggy-4": "De aannames in stap {{n2}} zijn niet gelijk aan de aannames in stap {{n1}} $$({{as}})$$ waaruit $${{phi}}$$ is weggelaten, dus stap {{n2}} kan niet het resultaat zijn van een toepassing van de deductiestelling op stap {{n1}}.",
         "buggy-5": "Deductiestelling op stap {{n1}} en {{n2}} is niet mogelijk, u kunt stap {{n2}} wel afleiden met behulp van een aanname en modus ponens.",
         "buggybw-1": "Stap {{n}} is al gemotiveerd, het heeft geen zin om een nieuwe bewering te zoeken zodat stap {{n}} het resultaat is van een toepassing van de deductiestelling op deze nieuwe regel.",
-        "buggycl-0": "Stap {{n2}} is al gemotiveerd en niet het resultaat van een toepassing van de deductiestelling op {{n2}}."
+        "buggycl-0": "Stap {{n2}} is al gemotiveerd en niet het resultaat van een toepassing van de deductiestelling op {{n2}}.",
+        "buggyfw": "Stap {{n}} is nog niet gemotiveerd waardoor een voorwaartse toepassing van de deductiestelling niet mag. Stap {{n}} kan wel het resultaat zijn van een toepassing van de deductiestelling, zet daarvoor regelnummer {{n}} in het onderste invulveld (bij de implicatie)."
       },
       "goal": {
         "buggy-gl1": "Dit doel is niet afleidbaar",
@@ -91,7 +92,7 @@
           "implelim": {
            "#": "U heeft implicatie eliminatie niet correct toegepast.",
            "inv": "Deze herschrijving naar een implicatie is niet correct, let op de plaats van de negatie of de disjunctie."
-          }, 
+          },
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
           "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
           "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
