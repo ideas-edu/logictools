@@ -157,7 +157,7 @@ export class ExerciseController {
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseDifficult" id="generate-exercise-difficult"></a>'
-      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseRandom" id="generate-exercise-random"></a>' 
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseRandom" id="generate-exercise-random"></a>'
     }
 
     // inserts own input exercises
@@ -198,9 +198,9 @@ export class ExerciseController {
         this.generateExercise({ difficulty: 'difficult' })
       }.bind(this))
 
-      document.getElementById('generate-exercise-random').addEventListener('click', function() {
-        let levels = ['easy', 'medium', 'difficult']
-        let randomValue = levels[Math.floor(Math.random() * levels.length)]
+      document.getElementById('generate-exercise-random').addEventListener('click', function () {
+        const levels = ['easy', 'medium', 'difficult']
+        const randomValue = levels[Math.floor(Math.random() * levels.length)]
         this.generateExercise({ difficulty: randomValue })
       }.bind(this))
     }
