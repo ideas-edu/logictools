@@ -366,6 +366,15 @@
     },
     "title": "Prove Axiomatic"
   },
+  "logind": {
+    "case": {
+      "label": "Case"
+    },
+    "instruction": {
+      "begin": "Select an exercise to get started!"
+    },
+    "title": "Proving with Structural Induction"
+  },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctive Normal Form",
@@ -420,6 +429,11 @@
         "falsedisjunction": "F-rule disjunction",
         "idempotency": "Idempotency",
         "implication": "Implication definition",
+        "logind": {
+          "base": "Base Case",
+          "hypothesis": "Hypothesis",
+          "inductive": "Inductive Case"
+        },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
         "truecomplement": "T-rule complement",
@@ -439,10 +453,13 @@
       "generateExerciseRandom": "Random",
       "help": "Help",
       "hint": "Hint",
+      "insertStepAbove": "Insert Above",
+      "insertStepBelow": "Insert Below",
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
       "selectRule": "-- Select rule --",
       "selectStep": "-- Select step --",
+      "send": "Send",
       "solveExercise": "Show complete derivation",
       "step": "Show step",
       "validateStep": "<i class='fas fa-check'></i>"
@@ -485,6 +502,7 @@
       "actions": "Actions",
       "direction": "",
       "formula": "Formula",
+      "motivation": "Motivation",
       "rule": "Rule",
       "step": "Step",
       "term": "Term"

@@ -366,6 +366,15 @@
     },
     "title": "Bewijs Axiomatisch"
   },
+  "logind": {
+    "case": {
+      "label": "Geval"
+    },
+    "instruction": {
+      "begin": "Selecteer een opgave om mee te beginnen!"
+    },
+    "title": "Bewijzen met volledige inductie"
+  },
   "main": {
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
@@ -420,6 +429,11 @@
         "falsedisjunction": "F-regel disjunctie",
         "idempotency": "Idempotentie",
         "implication": "Implicatie-eliminatie",
+        "logind": {
+          "base": "Basisgeval",
+          "hypothesis": "Hypothesis",
+          "inductive": "Inductiegeval"
+        },
         "notfalse": "T-regel niet F",
         "nottrue": "F-regel niet T",
         "truecomplement": "T-regel complement",
@@ -439,10 +453,13 @@
       "generateExerciseRandom": "Willekeurig",
       "help": "Hulp",
       "hint": "Hint",
+      "insertStepAbove": "Voeg boven toe",
+      "insertStepBelow": "Voeg onder toe",
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",
       "selectStep": "-- Selecteer stap --",
+      "send": "Verzend",
       "solveExercise": "Toon oplossing",
       "step": "Toon stap",
       "validateStep": "<i class='fas fa-check'></i>"
@@ -485,6 +502,7 @@
       "actions": "Acties",
       "direction": "",
       "formula": "Formule",
+      "motivation": "Onderbouwing",
       "rule": "Regel",
       "step": "Stap",
       "term": "Term"
