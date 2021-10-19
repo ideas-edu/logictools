@@ -12,6 +12,7 @@ import katex from 'katex'
 import { FormulaPopover } from '../kbinput.js'
 
 import { LogExController } from './LogExController.js'
+import { SurveyModalController } from './SurveyModalController.js'
 import { ExerciseTypes } from '../model/exerciseTypes.js'
 import { LogEXSession } from '../logEXSession.js'
 import { OneWayExerciseGenerator } from '../model/oneway/exerciseGenerator.js'
@@ -60,6 +61,15 @@ class OneWayController extends LogExController {
     // validation
     this.exerciseValidator = new OneWayExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
+    this.surveyModalController = new SurveyModalController(
+      {
+        questions:
+          [
+            { question: 'question1' },
+            { question: 'question2' }
+          ]
+      }
+    )
 
     document.getElementById('validate-exercise').addEventListener('mousedown', function () {
       this.validateExercise()
@@ -363,6 +373,7 @@ class OneWayController extends LogExController {
         this.exercise.isReady = true
         this.updateAlert('oneWay.solution', alertParams, 'complete')
         this.disableUI(false)
+        this.surveyModalController.show('survey-modal-template', 'exercise-container')
       } else {
         this.setErrorLocation('formula')
         this.updateAlert('shared.error.incomplete.oneWay', null, 'error')

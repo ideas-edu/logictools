@@ -171,6 +171,31 @@
 				{{/if}}
 			</td>
 		</script>
+
+		<script id="survey-modal-template" type="text/x-jsrender">
+			<div class="modal fade" id="survey-modal" tabindex="-1" aria-hidden="true" aria-labelledby="survey-modal-title">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="survey-modal-title" translate-key="survey.modal.title"></h5>
+							<button id="close-modal-btn" type="button" class="btn-close" aria-label="close"></button>
+						</div>
+						<div class="modal-content">
+							<ul>
+								{{for questions}}
+									<li>Question: {{:question}}</li>
+								{{/for}}
+								</ul>
+						</div>
+						<div class="modal-footer">
+							<button id="dismiss-modal-btn" type="button" class="btn btn-secondary" translate-key="survey.modal.buttons.dismiss"></button>
+							<button id="ok-modal-btn" type="button" class="btn btn-primary" translate-key="survey.modal.buttons.ok"></button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</script>
 	</div>
 </body>
 </html>
