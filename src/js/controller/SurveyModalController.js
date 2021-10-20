@@ -1,10 +1,14 @@
 import jsrender from 'jsrender'
 import Modal from 'bootstrap/js/dist/modal'
 
+import { IdeasServiceProxy } from '../model/ideasServiceProxy'
+import { translateChildren } from '../translate.js'
+
 const $ = jsrender(null)
 
 export class SurveyModalController {
-  constructor (survey) {
+  constructor (config, survey) {
+    this.config = config
     this.survey = survey
   }
 
@@ -18,39 +22,37 @@ export class SurveyModalController {
     const html = tmpl.render(this.survey)
     document.getElementById(where).innerHTML += html
 
+    const surveyElement = document.getElementById('survey-modal')
+    translateChildren(surveyElement)
     this.modal = new Modal(
-      document.getElementById('survey-modal'),
-      { backdrop: true, focus: true, keyboard: true }
+      surveyElement, { backdrop: 'static', focus: true, keyboard: true }
     )
-
     this.initializeBehaviour()
     this.modal.show()
   }
 
   close () {
-    const modalElement = document.querySelector('iframe #survey-modal')
-    const modal = Modal.getOrCreateInstance(modalElement)
-    modal.dispose()
+    this.modal.dispose()
   }
 
   initializeBehaviour () {
-    document
-      .getElementById('close-modal-btn')
-      .addEventListener('click', (event) => { this.close() })
+    document.getElementById('close-modal-btn').addEventListener('click', function () {
+      this.close()
+    }.bind(this))
 
-    document
-      .getElementById('dismiss-modal-btn')
-      .addEventListener('click', (event) => { this.close() })
+    document.getElementById('dismiss-modal-btn').addEventListener('click', function () {
+      this.close()
+    }.bind(this))
 
-    document
-      .getElementById('ok-modal-btn')
-      .addEventListener('click', (event) => {
-        this.logFeedback()
-        this.close()
-      })
+    document.getElementById('ok-modal-btn').addEventListener('click', function () {
+      this.logFeedback()
+      this.close()
+    }.bind(this))
   }
 
   logFeedback () {
-    console.log('Feedback!')
+    IdeasServiceProxy.log(this.config, {
+      feedback: document.getElementById('difficulty-select').value
+    })
   }
 }

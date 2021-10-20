@@ -178,14 +178,21 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="survey-modal-title" translate-key="survey.modal.title"></h5>
-							<button id="close-modal-btn" type="button" class="btn-close" aria-label="close"></button>
+							<button id="close-modal-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"><i class='fas fa-times'></i></button>
 						</div>
 						<div class="modal-content">
-							<ul>
-								{{for questions}}
-									<li>Question: {{:question}}</li>
-								{{/for}}
-								</ul>
+							<form>
+								<div class="row">
+									<label for="difficulty-select" class="cil-sm-2 col-form-label">{{:question}}</label>
+									<div class="col-sm-10">
+										<select name="difficulty-select-answer" id="difficulty-select" class="form-select mt-1">
+										{{for options}}
+											<option value="{{:value}}">{{:text}}</option>
+										{{/for}}
+										</select>
+									</div>
+								</div>
+							</form>
 						</div>
 						<div class="modal-footer">
 							<button id="dismiss-modal-btn" type="button" class="btn btn-secondary" translate-key="survey.modal.buttons.dismiss"></button>
@@ -193,7 +200,6 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</script>
 	</div>

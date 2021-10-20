@@ -61,14 +61,10 @@ class OneWayController extends LogExController {
     // validation
     this.exerciseValidator = new OneWayExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
-    this.surveyModalController = new SurveyModalController(
-      {
-        questions:
-          [
-            { question: 'question1' },
-            { question: 'question2' }
-          ]
-      }
+    this.surveyModalController = new SurveyModalController(this.config,
+      [
+        { type: 'option', question: 'How would you rate this exercise?', options: [{ value: 'Easy', text: 'Easy' }, { value: 'Medium', text: 'Medium' }, { value: 'Difficult', text: 'Difficult' }] } // TODO: translate
+      ]
     )
 
     document.getElementById('validate-exercise').addEventListener('mousedown', function () {
@@ -373,7 +369,7 @@ class OneWayController extends LogExController {
         this.exercise.isReady = true
         this.updateAlert('oneWay.solution', alertParams, 'complete')
         this.disableUI(false)
-        this.surveyModalController.show('survey-modal-template', 'exercise-container')
+        this.renderSurvey()
       } else {
         this.setErrorLocation('formula')
         this.updateAlert('shared.error.incomplete.oneWay', null, 'error')
@@ -542,5 +538,9 @@ class OneWayController extends LogExController {
     document.getElementById('active-step-number').innerHTML = this.exercise.steps.steps.length + 1
     this.formulaPopover.previousValue = this.exercise.steps.steps[index - 2].formula
     this.formulaPopover.setText(this.exercise.steps.steps[index - 2].formula)
+  }
+
+  renderSurvey () {
+    this.surveyModalController.show('survey-modal-template', 'exercise-container')
   }
 }

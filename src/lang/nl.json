@@ -537,5 +537,14 @@
     },
     "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": "Bewijs Logische Equivalentie"
+  },
+  "survey": {
+    "modal": {
+      "title": "Survey",
+      "buttons": {
+        "dismiss": "Verberg",
+        "ok": "Verzend feedback"
+      }
+    }
   }
 }
