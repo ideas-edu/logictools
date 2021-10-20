@@ -188,10 +188,6 @@ input.kbinput {
 	padding-bottom:10px;
 }
 
-#active-step td:first-child {
-	padding-top:18px!important;
-}
-
 
 input.success {
 	border-color: green;
@@ -583,6 +579,11 @@ button {
 
 }
 
+.oneWay-body #active-step td:first-child,
+.twoWay-body #active-step td:first-child {
+	padding-top:18px!important;
+}
+
 /* Logische Equivalentie */
 .twoWay-body #empty-bottom-step td{
 	background-color:#FBFBFB;
@@ -639,7 +640,7 @@ button {
 	margin:0!important;
 }
 
-.logax-body #exercise-container .col-7 table {
+.logax-body #proof-container table {
 	border: 1px solid #e8e8e8;
 }
 
@@ -650,6 +651,7 @@ button {
 .logax-body #rule-container table tr:first-child td{
 	border:0!important;
 }
+
 .logax-body #rule-container #exercise-alert-container {
 	padding:10px;
 }
@@ -673,6 +675,25 @@ button {
 	padding:8px 0;
 }
 
+.logind-body #rule-container table tr:first-child td{
+	border:0!important;
+}
+
+.logind-body #rule-container {
+	border: 1px solid #e8e8e8;
+}
+
+.logind-body #case-container table {
+	border: 1px solid #e8e8e8;
+}
+
+.logind-body #rule-container #logind-actions {
+	padding:8px 0;
+}
+
+.logind-body #active-step td {
+	vertical-align: top;
+}
 
 
 .formula-highlight {
@@ -681,6 +702,10 @@ background-color: red;
 
 .highlight-text {
 	color: #2B68D1;
+}
+
+.placeholder-text {
+	color: #999;
 }
 
 /* #rule-container,
