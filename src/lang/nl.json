@@ -373,7 +373,11 @@
         "hypotheses": "Hypotheses",
         "inductiveSteps": "Inductiestappen"
       },
-      "label": "Geval $${{title}}$$",
+      "label": {
+        "baseCase": "Geval $${{title}}$$",
+        "hypothesis": "Hypothese $${{title}}$$",
+        "inductiveStep": "Geval $${{title}}$$"
+      },
       "message": {
         "no_base_case": "U heeft geen basisgevallen geschreven."
       }

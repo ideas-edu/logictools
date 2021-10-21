@@ -373,7 +373,11 @@
         "hypotheses": "Hypotheses",
         "inductiveSteps": "Inductive Steps"
       },
-      "label": "Case $${{title}}$$",
+      "label": {
+        "baseCase": "Case $${{title}}$$",
+        "hypothesis": "Hypothesis $${{title}}$$",
+        "inductiveStep": "Case $${{title}}$$"
+      },
       "message": {
         "no_base_case": "You have no base cases."
       }

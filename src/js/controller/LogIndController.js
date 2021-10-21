@@ -524,6 +524,7 @@ export class LogIndController extends ExerciseController {
 
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
+      type: _case.type,
       steps: newSteps
     })
 
