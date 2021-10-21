@@ -170,7 +170,9 @@ export class IdeasServiceProxy {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'log',
-      state: state
+      state: state,
+      userid: LogEXSession.getStudentId(),
+      taskid: state.taskid
     }
 
     IdeasServiceProxy.post(toolConfig, request, undefined, undefined)
