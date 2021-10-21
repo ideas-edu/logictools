@@ -167,8 +167,7 @@ function convertH2M (str, definitions) {
     }
     str = str.replace(/\s+/g, '') // remove whitespace
     return str
-  }
-  catch (err) {
+  } catch (err) {
     // geeft undefined ?
     console.log(err.name + ': ' + err.message)
     throw new Error(err.message)
@@ -203,6 +202,7 @@ function findLenHaskellParam (str) {
 
 function addBracketsIfNeeded (str) {
   if ((str.charAt(0) !== '(') && (str.charAt(0) !== '{')) {
+    // eslint-disable-next-line no-useless-escape
     if (/[\u222a\+\&\|\<\=\>\*\~\-\ ]/.test(str)) str = addBrackets(str.trim())
   }
   return str
@@ -277,6 +277,7 @@ function convertM2H (str, definitions) {
         pos += lenTerm
         term = str.substring(startTerm, startTerm + lenTerm)
       } else { // look for nonterm
+        // eslint-disable-next-line no-useless-escape
         reResult = /^[\+\&\|\<\=\>\*\~\-\ ]*/.exec(str.substring(pos))[0] // no brackets
         pos += reResult.length
         nonTerm = reResult // keep space
@@ -377,8 +378,7 @@ function convertM2H (str, definitions) {
     newStr = newStr.replace(' && ', '&&')
     newStr = newStr.replace('&& ', '&&')
     return newStr
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err.name + ': ' + err.message)
     throw new Error(err.message)
   }
@@ -419,14 +419,14 @@ function unicodeToHaskell (str) {
  */
 function addBracketsAroundUnionParameters (str) {
   let newStr = str
-  if (/\ union\ /.test(str)) { // quick check to prevent unneeded processing
+  if (/ union /.test(str)) { // quick check to prevent unneeded processing
     newStr = ''
     let pos = 0 // position in formula string
     let previousPos = 0
     let count = 0 // count unbalanced brackets
     // Build a list with positions of 'union ' substrings.
-    let re = /\ union\ /g
-    let result = []
+    const re = / union /g
+    const result = []
     let i = 0
     // Find successive matches
     while (re.exec(str) !== null) {
@@ -454,7 +454,6 @@ function addBracketsAroundUnionParameters (str) {
   return newStr
 }
 
-
 /**
  * Find length of term between brackets
  * @param {*} str Term
@@ -479,7 +478,7 @@ function findLenTermInBrackets (str, openingBracket, closingBracket) {
  */
 function findLenTermNotInBrackets (str) {
   let len = 0
-  let reResult = /^\w+/.exec(str)
+  const reResult = /^\w+/.exec(str)
   if (reResult !== null) len = reResult[0].length
   return len
 }
@@ -489,7 +488,6 @@ function findLenTermNotInBrackets (str) {
  * @param {*} str
  */
 function findLenTerm (str) {
-  let end = null // character at end of parameter
   let len = 0
   switch (str.charAt(0)) {
     case '(':
