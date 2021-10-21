@@ -226,6 +226,16 @@ const baseOptions = {
   literals: []
 }
 
+function matchesStart (options, string) {
+  // See if the start of string matches one of the strings in options. This allows operators with multiple characters
+  for (const option of options) {
+    if (option === string.substring(0, option.length)) {
+      return string.substring(0, option.length)
+    }
+  }
+  return null
+}
+
 export class Formula {
   constructor (formula, options) {
     this.options = Object.assign({}, baseOptions, options)
@@ -245,7 +255,7 @@ export class Formula {
       }
 
       // Unary
-      if (this.options.unaryOperators.includes(expressionString[0])) {
+      if (matchesStart(this.options.unaryOperators, expressionString) !== null) {
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
@@ -257,8 +267,9 @@ export class Formula {
           }
           return
         }
-        const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
-        leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
+        const op = matchesStart(this.options.unaryOperators, expressionString)
+        const unaryExpression = this.findFirstExpression(expressionString.substring(op.length), contextIndex + op.length)
+        leftExpression = new UnaryOperator(op, unaryExpression.exp)
         expressionString = unaryExpression.tailString
         continue
       }
