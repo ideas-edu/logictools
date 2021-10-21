@@ -61,7 +61,7 @@ class OneWayController extends LogExController {
     // validation
     this.exerciseValidator = new OneWayExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
-    this.surveyModalController = new SurveyModalController(this.config,
+    this.surveyModalController = new SurveyModalController(this,
       [
         { type: 'option', question: 'How would you rate this exercise?', options: [{ value: 'Easy', text: 'Easy' }, { value: 'Medium', text: 'Medium' }, { value: 'Difficult', text: 'Difficult' }] } // TODO: translate
       ]

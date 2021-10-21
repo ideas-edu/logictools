@@ -2,13 +2,16 @@ import jsrender from 'jsrender'
 import Modal from 'bootstrap/js/dist/modal'
 
 import { IdeasServiceProxy } from '../model/ideasServiceProxy'
-import { translateChildren } from '../translate.js'
+import { translateChildren } from '../translate'
+import { ExerciseTypes } from '../model/exerciseTypes'
 
 const $ = jsrender(null)
 
 export class SurveyModalController {
-  constructor (config, survey) {
-    this.config = config
+  constructor (exerciseController, survey) {
+    this.config = exerciseController.config
+    this.exerciseController = exerciseController
+    this.exerciseId = ExerciseTypes[exerciseController.exerciseType]
     this.survey = survey
   }
 
@@ -51,8 +54,10 @@ export class SurveyModalController {
   }
 
   logFeedback () {
-    IdeasServiceProxy.log(this.config, {
+    const state = {
+      exerciseid: this.exerciseId,
       feedback: document.getElementById('difficulty-select').value
-    })
+    }
+    IdeasServiceProxy.log(this.config, state)
   }
 }
