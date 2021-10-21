@@ -147,19 +147,44 @@
 
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
-		<script id="exercise-case-step-template" type="text/x-jsrender">
-			<td>{{:relation}}</td>
-			<td>{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}</td>
-			<td>{{if motivation !== null}}({{:motivation}}){{/if}}</td>
+		<script id="exercise-case-header-template" type="text/x-jsrender">
+			<tr><td colspan="2"><h6 translate-key="logind.case.header.{{:title}}"></h6></td><td><span class="float-right">
+				{{if status === "complete"}}<i class='fas fa-check'></i> Complete{{/if}}
+				{{if status === "incomplete"}}<i class='fas fa-ellipsis-h'></i> In progress{{/if}}
+				{{if status === "notStarted"}}Not started{{/if}}
+			</span></td></tr>
+		</script>
+		<script id="exercise-case-message-template" type="text/x-jsrender">
+			<tr><td colspan="3">
+				<i translate-key="logind.case.message.{{:key}}"></i>
+			</td></tr>
 		</script>
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<tr><td colspan="2"><b translate-key="rule.{{:type}}"></b></td><td>
+			<tr><td colspan="2"><b translate-key="logind.case.label" translate-params='{{:titleParams}}'></b></td><td>
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
 			</td></tr>
 			{{for steps}}
 				<tr>{{:}}</tr>
 			{{/for}}
+		</script>
+		<script id="exercise-active-step-template" type="text/x-jsrender">
+			<td>{{if relation !== null}}<select disabled class="form-control input custom-select">
+				<option selected>{{:relation}}</option>
+			</select>{{/if}}</td>
+			<td>
+				<div class="form-control step-formula">
+					{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}
+				</div>
+			</td>
+			<td>{{if motivation !== null}}<select disabled class="form-control input custom-select">
+				<option selected>{{:motivation}}</option>
+			</select>{{/if}}</td>
+		</script>
+		<script id="exercise-case-step-template" type="text/x-jsrender">
+			<td>{{:relation}}</td>
+			<td>{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}</td>
+			<td>{{if motivation !== null}}({{:motivation}}){{/if}}</td>
 		</script>
 	</div>
 </body>

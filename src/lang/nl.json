@@ -367,7 +367,41 @@
   },
   "logind": {
     "case": {
-      "label": "Geval"
+      "header": {
+        "baseCases": "Basisgevallen",
+        "hypotheses": "Hypotheses",
+        "inductiveSteps": "Inductiestappen"
+      },
+      "label": "Geval $${{title}}$$",
+      "message": {
+        "no_base_case": "U heeft geen basisgevallen geschreven."
+      }
+    },
+    "hint": {
+      "basecases": "Formuleer de te bewijzen eigenschap voor een basiselement.",
+      "calculate": {
+        "#": "Pas een berekening toe.",
+        "close": "U kunt het bewijs door een berekening sluiten."
+      },
+      "function": {
+        "#": "Pas de definitie van $$\\texttt{{{function}}}$$ toe.",
+        "close": "Pas de definitie van $$\\texttt{{{function}}}$$ toe."
+      },
+      "hypotheses": "Formuleer de inductiehypothese voor willekeurige formules $$\\phi$$ en $$\\psi$$.",
+      "ih": {
+        "#": "Pas de inductiehypothese toe.",
+        "close": "Pas de inductiehypothese toe."
+      },
+      "inductivecases": "Formuleer de te bewijzen eigenschap voor samengestelde formules.",
+      "logic": "Pas een logische equivalentie toe.",
+      "set": {
+        "#": "Pas een verzamelingalgebra regel toe.",
+        "close": "Pas een verzamelingalgebra regel toe."
+      },
+      "valab": {
+        "#": "Gebruik het gegeven over valA en valB.",
+        "close": "Gebruik het gegeven over valA en valB."
+      }
     },
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!"
@@ -381,7 +415,8 @@
       "helpLogax": "<i class='fas fa-question-circle'></i> Hulp",
       "helpLogex": "<i class='fas fa-question-circle'></i> Hulp",
       "logax": "Axiomatisch",
-      "logeq": "Logische Equivalentie"
+      "logeq": "Logische Equivalentie",
+      "logind": "Inductief"
     }
   },
   "oneWay": {
@@ -429,9 +464,9 @@
         "idempotency": "Idempotentie",
         "implication": "Implicatie-eliminatie",
         "logind": {
-          "base": "Basisgeval",
+          "baseCase": "Basisgeval",
           "hypothesis": "Hypothesis",
-          "inductive": "Inductiegeval"
+          "inductiveStep": "Inductiestap"
         },
         "notfalse": "T-regel niet F",
         "nottrue": "F-regel niet T",

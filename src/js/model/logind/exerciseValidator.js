@@ -41,20 +41,30 @@ export class LogIndExerciseValidator extends ExerciseValidator {
         onErrorValidatingStep()
         return
       }
-      switch (data.diagnose.diagnosetype) {
-        case 'similar':
-          onValidated('similar')
-          break
-        case 'notequiv':
-          onValidated('notequiv')
-          break
+      if (data.diagnose.state !== undefined) {
+        onValidated(data.diagnose.state.context.term, data.diagnose.diagnosetype)
+      } else {
+        onValidated(undefined, data.diagnose.diagnosetype)
       }
-      onValidated()
     }
 
     const state = this.getState(exercise)
     const context = this.getContext(exercise)
     IdeasServiceProxy.diagnose(this.config, state, context, null, onSuccess, onError)
+  }
+
+  checkConstraints (exercise, onFinished, onError) {
+    const state = this.getState(exercise)
+
+    const validated = function (response) {
+      if (!response.constraints) {
+        onError()
+        return
+      }
+
+      onFinished(response.constraints)
+    }
+    IdeasServiceProxy.constraints(this.config, state, validated, onError)
   }
 
   isFinished (exercise, onFinished, onError) {

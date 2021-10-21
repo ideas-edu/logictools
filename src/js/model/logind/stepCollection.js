@@ -8,18 +8,32 @@ import { LogIndStep } from './step.js'
 export class LogIndCaseCollection {
   constructor (exercise, cases) {
     this.exercise = exercise
-    this.cases = []
+    this.baseCases = []
+    this.hypotheses = []
+    this.inductiveSteps = []
     if (cases !== null && cases !== undefined) {
       let i = 0
+      let j = 0
+      let k = 0
       for (const [identifier, _case] of Object.entries(cases)) {
-        this.cases.push(new LogIndCase(this.exercise, _case))
-        this.cases[this.cases.length - 1].index = i
-        i++
-        this.cases[this.cases.length - 1].identifier = identifier
+        if (['p', 'q', 'r', 's'].includes(identifier)) {
+          this.baseCases.push(new LogIndCase(this.exercise, _case, i, identifier, 'baseCase'))
+          i++
+        } else if (['psi', 'phi', 'chi'].includes(identifier)) {
+          this.hypotheses.push(new LogIndCase(this.exercise, _case, j, identifier, 'hypothesis'))
+          j++
+        } else {
+          this.inductiveSteps.push(new LogIndCase(this.exercise, _case, k, identifier, 'inductiveStep'))
+          k++
+        }
       }
     }
     // this.casesHistory = [JSON.parse(JSON.stringify(this.cases))]
     // this.casesHistoryIndex = 0
+  }
+
+  get cases () {
+    return this.baseCases.concat(this.hypotheses.concat(this.inductiveSteps))
   }
 
   getObject () {
@@ -31,10 +45,26 @@ export class LogIndCaseCollection {
   }
 }
 
+const IDENTIFIERS = {
+  p: 'p',
+  q: 'q',
+  r: 'r',
+  phi: '\\phi',
+  psi: '\\psi',
+  chi: '\\chi',
+  NEGATION: '\\neg',
+  OR: '\\lor',
+  AND: '\\land',
+  IMPLIES: '\\rightarrow'
+}
+
 export class LogIndCase extends StepCollection {
-  constructor (exercise, _case) {
+  constructor (exercise, _case, index, identifier, type) {
     super()
     this.exercise = exercise
+    this.index = index
+    this.identifier = identifier
+    this.type = type
 
     if (_case === undefined) {
       _case = ['', {
@@ -73,6 +103,10 @@ export class LogIndCase extends StepCollection {
     }
 
     return object
+  }
+
+  getFormattedIdentifier () {
+    return IDENTIFIERS[this.identifier]
   }
 
   insertStepAbove (index) {

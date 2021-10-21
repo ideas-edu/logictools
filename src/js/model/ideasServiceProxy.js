@@ -165,6 +165,16 @@ export class IdeasServiceProxy {
     IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
   }
 
+  static constraints (toolConfig, state, onSuccess, onError) {
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'constraints',
+      state: state
+    }
+
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
+  }
+
   // log:: ? -> Empty
   static log (toolConfig, state) {
     state = LogEXSession.applyIdentifiers(state)

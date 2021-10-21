@@ -61,14 +61,14 @@ class Translate {
     // key.nested resolves to key.nested.#
     if (string.constructor === Object) {
       if (string['#'] !== undefined) {
-        return string['#']
+        string = string['#']
       } else {
         return key
       }
     }
 
     // Find all cases of {{param}}.
-    const paramRegex = /\{\{(.*?)\}\}/g
+    const paramRegex = /\{\{([^{]*?)\}\}/g
 
     string = string.replace(paramRegex, function (match, token) {
       return params[token]
@@ -108,7 +108,6 @@ export function translateElement (element, key, params) {
   if (params !== undefined) {
     element.setAttribute('translate-params', JSON.stringify(params))
   }
-
   element.innerHTML = translate(element.getAttribute('translate-key'), JSON.parse(element.getAttribute('translate-params')))
 }
 // Updates text of all descendant elements of element with translate-key attribute

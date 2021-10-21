@@ -250,7 +250,7 @@ function isSurroundedByBrackets (str) {
   return result
 }
 
-function convertM2H(str, definitions) {
+function convertM2H (str, definitions) {
   try {
     str = unicodeToHaskell(str)
     str = addBracketsAroundUnionParameters(str)
@@ -331,7 +331,7 @@ function convertM2H(str, definitions) {
               term = temp
               break
             case 'subst':
-              //throw new Error('!! subst in h2m bereikt!') // deze is hier overbodig denk ik
+              // throw new Error('!! subst in h2m bereikt!') // deze is hier overbodig denk ik
               temp = currentFunctionName + ' ' + recursiveConvertM2H(term.trim(), definitions)
               term = temp
               break
@@ -451,7 +451,6 @@ function addBracketsAroundUnionParameters (str) {
       newStr = str
     }
   }
-  //if (DEBUG) console.log(str + ' >>>>>>>>>> ' + newStr)
   return newStr
 }
 
@@ -479,7 +478,6 @@ function findLenTermInBrackets (str, openingBracket, closingBracket) {
  * @param {*} str Term
  */
 function findLenTermNotInBrackets (str) {
-  //let len = str.search(/\W/);
   let len = 0
   let reResult = /^\w+/.exec(str)
   if (reResult !== null) len = reResult[0].length
@@ -534,7 +532,6 @@ function removeCurlyBrackets (str) {
     str = str.substring(1, str.length - 1)
   }
   return str
-
 }
 
 function removeSquareBrackets (str) {

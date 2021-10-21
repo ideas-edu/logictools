@@ -15,9 +15,14 @@ export class LogIndExercise {
     this.language = term.language
     this.theorem = term.theorem
     this.problem = term.problem
+    this.constraints = null
 
     this.cases = new LogIndCaseCollection(this, term.proofs)
     this.activeCase = new LogIndCase(this)
+
+    this.baseCasesStatus = 'notStarted'
+    this.hypothesesStatus = 'notStarted'
+    this.inductiveStepsStatus = 'notStarted'
   }
 
   getObject () {
@@ -26,7 +31,8 @@ export class LogIndExercise {
       language: this.language,
       problem: this.problem,
       proofs: this.cases.getObject(),
-      theorem: this.theorem
+      theorem: this.theorem,
+      active: null
     }
     if (this.activeCase.steps.some((step) => step.term !== '')) {
       object.proofs[''] = this.activeCase.getObject()
@@ -54,10 +60,53 @@ export class LogIndExercise {
     return this.steps.getPreviousStep()
   }
 
-  deleteCase (index) {
-    for (let i = index + 1; i < this.cases.cases.length; i++) {
-      this.cases.cases[i].index -= 1
+  getCase (index, type) {
+    switch (type) {
+      case 'baseCase':
+        return this.cases.baseCases[index]
+      case 'hypothesis':
+        return this.cases.hypotheses[index]
+      case 'inductiveStep':
+        return this.cases.inductiveSteps[index]
     }
-    this.cases.cases.splice(index, 1)
+  }
+
+  addCase (_case) {
+    switch (_case.type) {
+      case 'baseCase':
+        _case.index = this.cases.baseCases.length
+        this.cases.baseCases.push(_case)
+        break
+      case 'hypothesis':
+        _case.index = this.cases.hypotheses.length
+        this.cases.hypotheses.push(_case)
+        break
+      case 'inductiveStep':
+        _case.index = this.cases.inductiveSteps.length
+        this.cases.inductiveSteps.push(_case)
+        break
+    }
+  }
+
+  deleteCase (index, type) {
+    let set = null
+
+    switch (type) {
+      case 'baseCase':
+        set = this.cases.baseCases
+        break
+      case 'hypothesis':
+        set = this.cases.hypotheses
+        break
+      case 'inductiveStep':
+        set = this.cases.inductiveSteps
+        break
+    }
+
+    for (let i = index + 1; i < set.length; i++) {
+      set[i].index -= 1
+    }
+
+    set.splice(index, 1)
   }
 }
