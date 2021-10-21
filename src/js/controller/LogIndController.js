@@ -15,12 +15,11 @@ import { LogEXSession } from '../logEXSession.js'
 import { LogIndExerciseGenerator } from '../model/logind/exerciseGenerator.js'
 import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
-import { LogIndExercise } from '../model/logind/exercise.js'
+import { LogIndStep } from '../model/logind/step.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
 import { translateChildren, loadLanguage, hasTranslation } from '../translate.js'
-import { ExerciseTypes } from '../model/exerciseTypes.js'
 
 const $ = jsrender(null)
 
