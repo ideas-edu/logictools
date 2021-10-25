@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import config from '../../../config.json'
 
 import { LogEXSession } from '../logEXSession.js'
-import { translateElement, loadLanguage } from '../translate.js'
+import { translateChildren, loadLanguage } from '../translate.js'
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -58,7 +58,7 @@ class MainFrameController {
       containerItem.innerHTML = `<iframe src="" seamless frameBorder="0" id="fra-${tool.code}" width="100%" scrolling="no"></iframe>`
       document.getElementById('tab-container').appendChild(containerItem)
 
-      document.getElementById(`fra-${tool.code}`).onload = () => { updateTexts(document.getElementById(`fra-${tool.code}`).contentWindow.document) }
+      document.getElementById(`fra-${tool.code}`).onload = () => { translateChildren(document.getElementById(`fra-${tool.code}`).contentWindow.document) }
     }
   }
 
@@ -101,24 +101,16 @@ class MainFrameController {
   initializeLabels () {
     const language = LogEXSession.getLanguage()
     const langCallback = () => {
-      updateTexts(document)
+      translateChildren(document)
       document.querySelectorAll('iframe').forEach(item => {
         if (item.getAttribute('src') !== '') {
           item.contentWindow.translate(LogEXSession.getLanguage())
         }
-        updateTexts(item.contentWindow.document)
+        translateChildren(item.contentWindow.document)
       })
     }
     loadLanguage(language, langCallback)
     document.getElementById(`lang-${language}`).classList.add('active')
-  }
-}
-
-// Updates text of all descendant elements of element with translate-key attribute
-function updateTexts (element) {
-  const elements = element.querySelectorAll('[translate-key]')
-  for (const element of elements) {
-    translateElement(element)
   }
 }
 

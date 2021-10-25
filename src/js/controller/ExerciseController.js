@@ -14,7 +14,12 @@ export class ExerciseController {
     this.keyBindings = new KeyBindings(this)
     this.exampleExercises = null
     this.exerciseAlert = new ExerciseAlert('exercise-alert')
-    this.newExerciseAlert = new ExerciseAlert('new-exercise-alert')
+    if (document.getElementById('create-exercise')) {
+      this.newExerciseAlert = new ExerciseAlert('new-exercise-alert')
+      document.getElementById('create-exercise').addEventListener('mousedown', function () {
+        this.createExercise()
+      }.bind(this))
+    }
 
     this.getExerciseType()
     this.config = config.tools[this.exerciseType]
@@ -34,10 +39,6 @@ export class ExerciseController {
 
     document.getElementById('show-hint').addEventListener('click', function () {
       this.showHint()
-    }.bind(this))
-
-    document.getElementById('create-exercise').addEventListener('mousedown', function () {
-      this.createExercise()
     }.bind(this))
 
     document.getElementById('validate-step').addEventListener('mousedown', function () {
@@ -212,8 +213,7 @@ export class ExerciseController {
   generateExercise (properties) {
     this.clearErrors()
     this.disableUI(true)
-    document.getElementById('exercise-container').style.display = ''
-    document.getElementById('new-exercise-container').style.display = 'none'
+    this.setContainer('exercise-container')
 
     properties.titleKey = `shared.exerciseName.${properties.difficulty}`
 
@@ -230,8 +230,7 @@ export class ExerciseController {
     }
     this.clearErrors()
     this.disableUI(true)
-    document.getElementById('exercise-container').style.display = ''
-    document.getElementById('new-exercise-container').style.display = 'none'
+    this.setContainer('exercise-container')
 
     this.exerciseGenerator.example(properties.exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
   }
@@ -240,8 +239,18 @@ export class ExerciseController {
         Shows the form for creating a new exercise
      */
   newExercise () {
+    this.setContainer('new-exercise-container')
+  }
+
+  setContainer (container) {
     document.getElementById('exercise-container').style.display = 'none'
-    document.getElementById('new-exercise-container').style.display = ''
+    if (document.getElementById('new-exercise-container')) {
+      document.getElementById('new-exercise-container').style.display = 'none'
+    }
+
+    if (document.getElementById(container)) {
+      document.getElementById(container).style.display = ''
+    }
   }
 
   /**
@@ -308,11 +317,14 @@ export class ExerciseController {
 
   dismissAlert () {
     document.getElementById('exercise-alert-container').style.display = 'none'
-    document.getElementById('new-exercise-alert-container').style.display = 'none'
     this.exerciseAlert.alertKey = null
-    this.newExerciseAlert.alertKey = null
     this.exerciseAlert.alertParams = null
-    this.newExerciseAlert.alertParams = null
+
+    if (document.getElementById('new-exercise-alert-container')) {
+      document.getElementById('new-exercise-alert-container').style.display = 'none'
+      this.newExerciseAlert.alertKey = null
+      this.newExerciseAlert.alertParams = null
+    }
   }
 
   disableUI (disable) {
