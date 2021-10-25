@@ -371,7 +371,8 @@
       "label": "Geval"
     },
     "instruction": {
-      "begin": "Selecteer een opgave om mee te beginnen!"
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "exercise": "<b>[[title]]:</b> {{problem}}"
     },
     "title": "Bewijzen met volledige inductie"
   },
