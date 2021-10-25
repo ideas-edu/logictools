@@ -712,9 +712,9 @@ button {
 	margin-bottom:0;
 }
 
-.logind-body .step-formula {
+/*.logind-body .step-formula {
 	background-color: #eaecef;
-}
+}*/
 
 .logind-body #active-step td {
 	vertical-align: top;

@@ -10,7 +10,6 @@ import 'katex/dist/katex.min.css'
 
 import { FormulaPopover } from '../kbinput.js'
 
-// import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { LogEXSession } from '../logEXSession.js'
 import { LogIndExerciseGenerator } from '../model/logind/exerciseGenerator.js'
 import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
@@ -510,6 +509,10 @@ export class LogIndController extends ExerciseController {
     } else if (step.number > this.activeStepIndex) {
       exerciseStepTable.appendChild(exerciseStep)
     }
+
+    exerciseStep.addEventListener('mousedown', function () {
+      this.moveToStep(step.number)
+    }.bind(this))
   }
 
   renderCase (_case, canDelete) {
@@ -637,16 +640,20 @@ export class LogIndController extends ExerciseController {
     document.getElementById('motivation').value = this.exercise.activeCase.steps[this.activeStepIndex].rule
   }
 
+  moveToStep (index) {
+    this.setStep()
+    this.activeStepIndex = index
+    this.setInput()
+
+    this.updateSteps()
+  }
+
   moveStepUp () {
     if (this.activeStepIndex === 0) {
       return
     }
 
-    this.setStep()
-    this.activeStepIndex -= 1
-    this.setInput()
-
-    this.updateSteps()
+    this.moveToStep(this.activeStepIndex - 1)
   }
 
   moveStepDown () {
@@ -654,11 +661,7 @@ export class LogIndController extends ExerciseController {
       return
     }
 
-    this.setStep()
-    this.activeStepIndex += 1
-    this.setInput()
-
-    this.updateSteps()
+    this.moveToStep(this.activeStepIndex + 1)
   }
 
   updateSteps () {
