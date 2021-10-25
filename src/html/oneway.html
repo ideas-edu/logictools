@@ -131,6 +131,7 @@
 						</div>
 					</td>
 				</tr>
+				<tr id="exercise-feedback-container" style="display: none"></tr>
 			</tbody>
 		</table>
 
@@ -172,35 +173,19 @@
 			</td>
 		</script>
 
-		<script id="survey-modal-template" type="text/x-jsrender">
-			<div class="modal fade" id="survey-modal" tabindex="-1" aria-hidden="true" aria-labelledby="survey-modal-title">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="survey-modal-title" translate-key="survey.modal.title"></h5>
-							<button id="close-modal-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"><i class='fas fa-times'></i></button>
-						</div>
-						<div class="modal-content">
-							<form>
-								<div class="row">
-									<label for="difficulty-select" class="cil-sm-2 col-form-label">{{:question}}</label>
-									<div class="col-sm-10">
-										<select name="difficulty-select-answer" id="difficulty-select" class="form-select mt-1">
-										{{for options}}
-											<option value="{{:value}}">{{:text}}</option>
-										{{/for}}
-										</select>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button id="dismiss-modal-btn" type="button" class="btn btn-secondary" translate-key="survey.modal.buttons.dismiss"></button>
-							<button id="ok-modal-btn" type="button" class="btn btn-primary" translate-key="survey.modal.buttons.ok"></button>
-						</div>
-					</div>
-				</div>
-			</div>
+		<script id="survey-feedback-template" type="text/x-jsrender">
+				<td scope="row" class="col-step"></td>
+				<td scope="row" class="col-formula">{{:question}}</td>
+				<td class="col-rule">
+					<select name="difficulty-select-answer" id="difficulty-select" class="form-select mt-1">
+					{{for options}}
+						<option value="{{:value}}">{{:text}}</option>
+					{{/for}}
+					</select>
+				</td>
+				<td class="col-actions">
+					<button id="feedback-submit-btn" class="btn btn-outline-primary" translate-key="survey.buttons.ok"></button>
+				</td>
 		</script>
 	</div>
 </body>

@@ -539,12 +539,10 @@
     "title": "Bewijs Logische Equivalentie"
   },
   "survey": {
-    "modal": {
-      "title": "Survey",
-      "buttons": {
-        "dismiss": "Verberg",
-        "ok": "Verzend feedback"
-      }
+    "title": "Survey",
+    "buttons": {
+      "dismiss": "Verberg",
+      "ok": "Verzend feedback"
     }
   }
 }

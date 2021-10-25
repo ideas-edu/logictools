@@ -539,12 +539,10 @@
     "title": "Prove Logical Equivalence"
   },
   "survey": {
-    "modal": {
-      "title": "Survey",
-      "buttons": {
-        "dismiss": "Dismiss",
-        "ok": "Send feedback"
-      }
+    "title": "Survey",
+    "buttons": {
+      "dismiss": "Dismiss",
+      "ok": "Send feedback"
     }
   }
 }

@@ -1,5 +1,4 @@
 import jsrender from 'jsrender'
-import Modal from 'bootstrap/js/dist/modal'
 
 import { IdeasServiceProxy } from '../model/ideasServiceProxy'
 import { translateChildren } from '../translate'
@@ -18,36 +17,25 @@ export class SurveyModalController {
   /**
    * Show the modal
    * @param {String} which The template to show
-   * @param {String} where The id of the element to load the modal in
+   * @param {Element} where The element to load the modal in
    */
   show (which, where) {
+    this.where = where
     const tmpl = $.templates('#' + which)
     const html = tmpl.render(this.survey)
-    document.getElementById(where).innerHTML += html
+    this.where.innerHTML = html
+    this.where.style.display = ''
 
-    const surveyElement = document.getElementById('survey-modal')
-    translateChildren(surveyElement)
-    this.modal = new Modal(
-      surveyElement, { backdrop: 'static', focus: true, keyboard: true }
-    )
+    translateChildren(where)
     this.initializeBehaviour()
-    this.modal.show()
   }
 
   close () {
-    this.modal.dispose()
+    this.where.innerHTML = ''
   }
 
   initializeBehaviour () {
-    document.getElementById('close-modal-btn').addEventListener('click', function () {
-      this.close()
-    }.bind(this))
-
-    document.getElementById('dismiss-modal-btn').addEventListener('click', function () {
-      this.close()
-    }.bind(this))
-
-    document.getElementById('ok-modal-btn').addEventListener('click', function () {
+    document.getElementById('feedback-submit-btn').addEventListener('click', function () {
       this.logFeedback()
       this.close()
     }.bind(this))

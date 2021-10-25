@@ -368,8 +368,8 @@ class OneWayController extends LogExController {
         }
         this.exercise.isReady = true
         this.updateAlert('oneWay.solution', alertParams, 'complete')
-        this.disableUI(false)
         this.renderSurvey()
+        this.disableUI(false)
       } else {
         this.setErrorLocation('formula')
         this.updateAlert('shared.error.incomplete.oneWay', null, 'error')
@@ -541,6 +541,6 @@ class OneWayController extends LogExController {
   }
 
   renderSurvey () {
-    this.surveyModalController.show('survey-modal-template', 'exercise-container')
+    this.surveyModalController.show('survey-feedback-template', document.getElementById('exercise-feedback-container'))
   }
 }
