@@ -411,6 +411,13 @@
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!"
     },
+    "step": {
+      "placeholder": {
+        "left": "Linkerkant van formule",
+        "middle": "Formule",
+        "right": "Rechterkant van formule"
+      }
+    },
     "title": "Bewijzen met volledige inductie"
   },
   "main": {

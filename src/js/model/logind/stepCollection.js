@@ -78,7 +78,7 @@ export class LogIndCase extends StepCollection {
     let number = 0
     for (const step of _case) {
       if (step.constructor === String) {
-        this.steps.push(new LogIndStep(this.exercise, step, rule, relation, number))
+        this.steps.push(new LogIndStep(this, step, rule, relation, number))
       } else {
         rule = step.motivation
         relation = step.type
@@ -116,9 +116,9 @@ export class LogIndCase extends StepCollection {
     if (index === 0) {
       this.steps[0].rule = '?'
       this.steps[0].relation = '='
-      this.steps.splice(index, 0, new LogIndStep(this.exercise, '', null, null, index))
+      this.steps.splice(index, 0, new LogIndStep(this, '', null, null, index))
     } else {
-      this.steps.splice(index, 0, new LogIndStep(this.exercise, '', '?', '=', index))
+      this.steps.splice(index, 0, new LogIndStep(this, '', '?', '=', index))
     }
   }
 
@@ -126,7 +126,7 @@ export class LogIndCase extends StepCollection {
     for (let i = index + 1; i < this.steps.length; i++) {
       this.steps[i].number += 1
     }
-    this.steps.splice(index + 1, 0, new LogIndStep(this.exercise, '', '?', '=', index + 1))
+    this.steps.splice(index + 1, 0, new LogIndStep(this, '', '?', '=', index + 1))
   }
 
   deleteStep (index) {

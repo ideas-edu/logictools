@@ -174,7 +174,17 @@
 			</select>{{/if}}</td>
 			<td>
 				<div class="form-control step-formula">
-					{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}
+					{{if isEmptyFormula}}
+						{{if isFirst}}
+							<i class="placeholder-text" translate-key="logind.step.placeholder.left"></i>
+						{{else isLast}}
+							<i class="placeholder-text" translate-key="logind.step.placeholder.right"></i>
+						{{else}}
+							<i class="placeholder-text" translate-key="logind.step.placeholder.middle"></i>
+						{{/if}}
+					{{else}}
+						{{:formula}}
+					{{/if}}
 				</div>
 			</td>
 			<td>{{if motivation !== null}}<select class="form-control input custom-select">

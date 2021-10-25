@@ -41,6 +41,10 @@ export class LogIndExercise {
   }
 
   setCases (cases) {
+    if ('' in cases) {
+      this.activeCase = new LogIndCase(this, cases[''])
+      delete cases['']
+    }
     this.cases = new LogIndCaseCollection(this, cases)
   }
 

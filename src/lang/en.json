@@ -411,6 +411,13 @@
     "instruction": {
       "begin": "Select an exercise to get started!"
     },
+    "step": {
+      "placeholder": {
+        "left": "Left-hand side of formula",
+        "middle": "Formula",
+        "right": "Right-hand side of formula"
+      }
+    },
     "title": "Proving with Structural Induction"
   },
   "main": {

@@ -50,7 +50,7 @@ export class LogIndController extends ExerciseController {
     this.motivationOptions = []
     this.setExampleExercises()
 
-    this.activeStepIndex = 0
+    this.activeStepIndex = null
 
     this.exerciseGenerator = new LogIndExerciseGenerator(this.config)
     this.exerciseSolver = new LogIndExerciseSolver(this.config)
@@ -133,7 +133,7 @@ export class LogIndController extends ExerciseController {
   /**
     */
   showExercise () {
-    this.activeStepIndex = 0
+    this.activeStepIndex = null
     document.getElementById('rule').selectedIndex = 0
     this.initializeRules(document.getElementById('rule'))
     document.getElementById('exercise-container').style.display = ''
@@ -296,7 +296,7 @@ export class LogIndController extends ExerciseController {
       }
       this.exercise.setCases(term.proofs)
       this.exercise.activeCase = new LogIndCase(this.exercise)
-      this.activeStepIndex = 0
+      this.activeStepIndex = null
       const onSuccess = function (result) {
         this.onCheckConstraints(result)
         this.setInput()
@@ -503,8 +503,10 @@ export class LogIndController extends ExerciseController {
     exerciseStep.classList.add('case-step-row')
     exerciseStep.innerHTML = this.renderStep(step, true)
 
+    translateChildren(exerciseStep)
+
     const exerciseStepTable = document.getElementById('exercise-step-table')
-    if (step.number < this.activeStepIndex) {
+    if (step.number < this.activeStepIndex || this.activeStepIndex === null) {
       exerciseStepTable.insertBefore(exerciseStep, document.getElementById('active-step'))
     } else if (step.number > this.activeStepIndex) {
       exerciseStepTable.appendChild(exerciseStep)
@@ -556,6 +558,8 @@ export class LogIndController extends ExerciseController {
     const stepTemplate = $.templates(isActive ? '#exercise-active-step-template' : '#exercise-case-step-template')
     const exerciseStepHtml = stepTemplate.render({
       isEmptyFormula: step.term === '',
+      isFirst: step.number === 0,
+      isLast: step.number === step.case.steps.length - 1,
       formula: step.termKatex,
       relation: step.number > 0 ? step.relation : null,
       motivation: step.number > 0 ? step.rule : null
@@ -610,7 +614,6 @@ export class LogIndController extends ExerciseController {
   }
 
   deleteCase (index, type) {
-    console.log(index, type)
     this.exercise.deleteCase(index, type)
     this.updateCases()
   }
@@ -620,13 +623,16 @@ export class LogIndController extends ExerciseController {
     this.exercise.activeCase = this.exercise.getCase(index, type)
     document.getElementById('rule').value = `logic.propositional.logind.${this.exercise.activeCase.type}`
     this.deleteCase(index, type)
-    this.activeStepIndex = 0
+    this.activeStepIndex = null
     this.updateCases()
     this.updateSteps()
     this.setInput()
   }
 
   setStep () {
+    if (this.activeStepIndex === null) {
+      return
+    }
     this.exercise.activeCase.steps[this.activeStepIndex].setTerm(document.getElementById('formula').value)
     if (this.activeStepIndex !== 0) {
       this.exercise.activeCase.steps[this.activeStepIndex].relation = document.getElementById('relation').value
@@ -635,6 +641,11 @@ export class LogIndController extends ExerciseController {
   }
 
   setInput () {
+    if (this.activeStepIndex === null) {
+      document.getElementById('active-step').style.display = 'none'
+      return
+    }
+    document.getElementById('active-step').style.display = ''
     document.getElementById('relation').value = this.exercise.activeCase.steps[this.activeStepIndex].relation
     document.getElementById('formula').value = this.exercise.activeCase.steps[this.activeStepIndex].term
     document.getElementById('motivation').value = this.exercise.activeCase.steps[this.activeStepIndex].rule

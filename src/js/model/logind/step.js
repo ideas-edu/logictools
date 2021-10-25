@@ -9,8 +9,8 @@ import katex from 'katex'
     @property {string} rule The applied rule.
  */
 export class LogIndStep {
-  constructor (exercise, step, rule, relation, number) {
-    this.exercise = exercise
+  constructor (_case, step, rule, relation, number) {
+    this.case = _case
     this.setTerm(step)
     this.number = number
     this.rule = rule
@@ -51,7 +51,7 @@ export class LogIndStep {
     term = term.replaceAll('chi', 'χ')
 
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertH2M(term, this.exercise.definitions.concat(DEFINITIONS))
+    term = convertH2M(term, this.case.exercise.definitions.concat(DEFINITIONS))
     term = term.replaceAll('union', '∪')
 
     return term
@@ -70,7 +70,7 @@ export class LogIndStep {
     term = term.replaceAll('\\', ' del ')
 
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
+    term = convertM2H(term, this.case.exercise.definitions.concat(DEFINITIONS))
 
     return term
   }
@@ -79,7 +79,7 @@ export class LogIndStep {
     this.term = this.asciiToUnicode(term)
     // This does not match the longest function
     let termAnnotated = this.unicodeToLatex(this.term)
-    for (const functionName of this.exercise.definitions.concat(['min', 'max'])) {
+    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
       termAnnotated = termAnnotated.replaceAll(functionName, `\\texttt{${functionName}}`)
     }
 
