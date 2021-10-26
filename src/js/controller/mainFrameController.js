@@ -66,15 +66,12 @@ class MainFrameController {
       Gets the exercisetype as given in the querystring
     */
   getUserId () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-    let sParameterName
-    let i
+    const sPageURL = window.location.search
+    const urlParams = new URLSearchParams(sPageURL)
 
-    for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === 'userId') {
-        LogEXSession.setStudentId(sParameterName[1])
+    for (const entry of urlParams.entries()) {
+      if (entry[0].toLowerCase() === 'userid') {
+        LogEXSession.setStudentId(entry[1])
         return
       }
     }
