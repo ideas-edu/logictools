@@ -123,6 +123,7 @@ export class ExerciseController {
       // Rule will only be displayed if it has not already been displayed
       const option = document.createElement('option')
       translateElement(option, `rule.${rule}`)
+      option.value = rule
       comboRule.appendChild(option)
     }
     // Show '-- Select rule --'

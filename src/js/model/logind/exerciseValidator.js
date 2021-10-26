@@ -1,6 +1,5 @@
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseValidator } from '../shared/exerciseValidator.js'
-import { LogIndStep } from './step.js'
 
 /**
     LogIndExerciseValidator is responsible for validating one way exercises.
@@ -21,9 +20,9 @@ export class LogIndExerciseValidator extends ExerciseValidator {
     return state
   }
 
-  getContext (exercise, step2) {
+  getContext (exercise) {
     const context = {
-      term: step2.formula,
+      term: exercise.getObject(),
       environment: {},
       location: []
     }
@@ -31,40 +30,40 @@ export class LogIndExerciseValidator extends ExerciseValidator {
     return context
   }
 
-  validateApply (exercise, step, onValidated, onErrorValidating) {
+  validateExercise (exercise, onValidated, onErrorValidatingStep) {
+    const onError = onErrorValidatingStep
+    const onSuccess = function (data) {
+      if (data === null || data.error !== undefined) {
+        if (data.error.slice(0, 7) === '(line 1') { // syntax error
+          return
+        }
+        onErrorValidatingStep()
+        return
+      }
+      if (data.diagnose.state !== undefined) {
+        onValidated(data.diagnose.state.context.term, data.diagnose.diagnosetype)
+      } else {
+        onValidated(undefined, data.diagnose.diagnosetype)
+      }
+    }
+
+    const state = this.getState(exercise)
+    const context = this.getContext(exercise)
+    IdeasServiceProxy.diagnose(this.config, state, context, null, onSuccess, onError)
+  }
+
+  checkConstraints (exercise, onFinished, onError) {
     const state = this.getState(exercise)
 
     const validated = function (response) {
-      if (response.apply.diagnosetype === 'incorrect') {
-        const baseRuleKey = step.rule.split('.')[3]
-        const ruleKey = `rule.logic.propositional.axiomatic.${baseRuleKey}`
-        onErrorValidating({ key: 'shared.error.cannotApply', params: { rule: ruleKey } })
+      if (!response.constraints) {
+        onError()
         return
       }
 
-      if (response.apply.diagnosetype === 'buggy') {
-        const key = response.apply.rule.substring(20) // Remove 'logic.propositional.'
-
-        const params = {}
-        for (const [key, value] of Object.entries(response.apply.environment)) {
-          params[key] = LogIndStep.convertToLatex(value)
-        }
-
-        onErrorValidating({
-          key: `buggyRule.${key}`,
-          params: params
-        })
-        return
-      }
-
-      if (!response.apply) {
-        onErrorValidating()
-        return
-      }
-      exercise.steps.newSet(response.apply.state.context.term.proof)
-      onValidated()
+      onFinished(response.constraints)
     }
-    IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
+    IdeasServiceProxy.constraints(this.config, state, validated, onError)
   }
 
   isFinished (exercise, onFinished, onError) {

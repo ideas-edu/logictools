@@ -368,7 +368,45 @@
   },
   "logind": {
     "case": {
-      "label": "Case"
+      "header": {
+        "baseCases": "Base Cases",
+        "hypotheses": "Hypotheses",
+        "inductiveSteps": "Inductive Steps"
+      },
+      "label": {
+        "baseCase": "Case $${{title}}$$",
+        "hypothesis": "Hypothesis $${{title}}$$",
+        "inductiveStep": "Case $${{title}}$$"
+      },
+      "message": {
+        "no_base_case": "You have no base cases."
+      }
+    },
+    "hint":{
+      "basecases": "Formulate the theorem to be proven for a base element of the language.",
+      "calculate": {
+        "#": "Apply a calculation.",
+        "close": "You can close the proof with a calculation."
+      },
+      "function": {
+        "#": "Apply the definition of $$\\texttt{{{function}}}$$.",
+        "close": "Apply the definition of $$\\texttt{{{function}}}$$."
+      },
+      "hypotheses": "Formulate the induction hypothesis for random formulas $$\\phi$$ and $$\\psi$$.",
+      "ih": {
+        "#": "Apply the induction hypothesis.",
+        "close": "Apply the induction hypothesis."
+      },
+      "inductivecases": "Formulate the theorem to be tested for compound formulas.",
+      "logic": "Apply a logical equivalence.",
+      "set": {
+        "#": "Apply a set rule.",
+        "close": "Apply a set rule."
+      },
+      "valab": {
+        "#": "Use the information about valA and valB.",
+        "close": "Use the information about valA and valB."
+      }
     },
     "instruction": {
       "begin": "Select an exercise to get started!"
@@ -382,7 +420,8 @@
       "helpLogax": "<i class='fas fa-question-circle'></i> Help",
       "helpLogex": "<i class='fas fa-question-circle'></i> Help",
       "logax": "Axiomatic",
-      "logeq": "Logical Equivalence"
+      "logeq": "Logical Equivalence",
+      "logind": "Inductive"
     }
   },
   "oneWay": {
@@ -430,9 +469,9 @@
         "idempotency": "Idempotency",
         "implication": "Implication definition",
         "logind": {
-          "base": "Base Case",
+          "baseCase": "Base Case",
           "hypothesis": "Hypothesis",
-          "inductive": "Inductive Case"
+          "inductiveStep": "Inductive Step"
         },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
