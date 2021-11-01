@@ -409,7 +409,8 @@
       }
     },
     "instruction": {
-      "begin": "Select an exercise to get started!"
+      "begin": "Select an exercise to get started!",
+      "exercise": "<b>[[title]]:</b> {{problem}}"
     },
     "step": {
       "placeholder": {

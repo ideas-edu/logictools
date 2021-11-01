@@ -17,7 +17,7 @@ import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
-import { translateChildren, loadLanguage, hasTranslation } from '../translate.js'
+import { translateElement, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -139,10 +139,17 @@ export class LogIndController extends ExerciseController {
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
+
     document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
     document.getElementById('rule').addEventListener('change', function () {
-      document.getElementById('exercise-step-table').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
+    document.getElementById('exercise-step-table').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
+    translateElement(document.getElementById('instruction'), 'logind.instruction.exercise', {
+      problem: this.exercise.problem,
+      title: {
+        key: this.exercise.titleKey,
+        params: this.exercise.titleParams
+      }
     })
     this.clearErrors()
 

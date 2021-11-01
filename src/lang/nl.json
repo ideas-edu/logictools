@@ -409,7 +409,8 @@
       }
     },
     "instruction": {
-      "begin": "Selecteer een opgave om mee te beginnen!"
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "exercise": "<b>[[title]]:</b> {{problem}}"
     },
     "step": {
       "placeholder": {
