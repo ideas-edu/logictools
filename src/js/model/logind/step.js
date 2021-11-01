@@ -41,6 +41,9 @@ export class LogIndStep {
   }
 
   asciiToUnicode (term) {
+    const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
+    term = convertH2M(term, this.exercise.definitions.concat(DEFINITIONS))
+
     term = term.replaceAll('&&', '∧')
     term = term.replaceAll('||', '∨')
     term = term.replaceAll('~', '¬')
@@ -49,9 +52,6 @@ export class LogIndStep {
     term = term.replaceAll('phi', 'φ')
     term = term.replaceAll('psi', 'ψ')
     term = term.replaceAll('chi', 'χ')
-
-    const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertH2M(term, this.exercise.definitions.concat(DEFINITIONS))
     term = term.replaceAll('union', '∪')
 
     return term
