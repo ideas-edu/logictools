@@ -143,7 +143,8 @@ export class LogIndController extends ExerciseController {
     document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
     document.getElementById('rule').addEventListener('change', function () {
-    document.getElementById('exercise-step-table').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
+      document.getElementById('exercise-step-table').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
+    })
     translateElement(document.getElementById('instruction'), 'logind.instruction.exercise', {
       problem: this.exercise.problem,
       title: {
