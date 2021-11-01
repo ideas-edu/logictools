@@ -87,8 +87,8 @@
 									<button id="move-step-down" type="button" class="btn btn-sm btn-outline-secondary"><i class='fas fa-chevron-down'></i></button>
 								</td>
 								<td>
-									<button id="insert-step-above" type="button" class="btn btn-outline-secondary" translate-key="shared.button.insertStepAbove"></button>
-									<button id="insert-step-below" type="button" class="btn btn-outline-secondary" translate-key="shared.button.insertStepBelow"></button>
+									<button id="insert-step-above" type="button" class="btn btn-sm btn-outline-secondary" translate-key="shared.button.insertStepAbove"></button>
+									<button id="insert-step-below" type="button" class="btn btn-sm btn-outline-secondary" translate-key="shared.button.insertStepBelow"></button>
 								</td>
 								<td>
 									<button id="delete-step" type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
@@ -117,7 +117,7 @@
 							<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
 							<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
 						</div>
-						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.send"></button>
+						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.new"></button>
 						<button type="button" id="check-step" class="btn btn-outline-secondary" translate-key="shared.button.check"></button>
 					</div>
 				</div>
@@ -160,16 +160,16 @@
 			</td></tr>
 		</script>
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<tr><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b></td><td>
+			<tr class="border-top-{{:border}}"><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b></td><td>
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
 			</td></tr>
 			{{for steps}}
-				<tr>{{:}}</tr>
+				{{:}}
 			{{/for}}
 		</script>
 		<script id="exercise-active-step-template" type="text/x-jsrender">
-			<td>{{if relation !== null}}<select disabled class="form-control input custom-select">
+			<td>{{if relation !== null}}<select class="form-control input custom-select">
 				<option selected>{{:relation}}</option>
 			</select>{{/if}}</td>
 			<td>
@@ -192,9 +192,15 @@
 			</select>{{/if}}</td>
 		</script>
 		<script id="exercise-case-step-template" type="text/x-jsrender">
+			{{if isLast}}
+				<tr class="border-bottom-{{:border}}">
+			{{else}}
+				<tr class="border-middle-{{:border}}">
+			{{/if}}
 			<td>{{:relation}}</td>
 			<td>{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}</td>
 			<td>{{if motivation !== null}}({{:motivation}}){{/if}}</td>
+			</tr>
 		</script>
 	</div>
 </body>

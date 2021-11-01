@@ -72,6 +72,9 @@ export class LogIndCase extends StepCollection {
         type: '='
       }, '']
     }
+    if (identifier === undefined) {
+      this.identifier = ''
+    }
     this.steps = []
     let rule = null
     let relation = null

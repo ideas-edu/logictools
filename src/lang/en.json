@@ -491,6 +491,7 @@
   "shared": {
     "button": {
       "apply": "Apply",
+      "check": "Check",
       "completeExercise": "Complete my derivation",
       "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
@@ -500,6 +501,7 @@
       "hint": "Hint",
       "insertStepAbove": "Insert Above",
       "insertStepBelow": "Insert Below",
+      "new": "New",
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
       "selectRule": "-- Select rule --",

@@ -491,6 +491,7 @@
   "shared": {
     "button": {
       "apply": "Pas toe",
+      "check": "Controleer",
       "completeExercise": "Voltooi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
@@ -500,6 +501,7 @@
       "hint": "Hint",
       "insertStepAbove": "Voeg boven toe",
       "insertStepBelow": "Voeg onder toe",
+      "new": "Nieuw",
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
       "selectRule": "-- Selecteer regel --",

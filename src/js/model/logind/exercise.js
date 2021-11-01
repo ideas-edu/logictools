@@ -34,18 +34,20 @@ export class LogIndExercise {
       theorem: this.theorem,
       active: null
     }
-    if (this.activeCase.steps.some((step) => step.term !== '')) {
+    if (this.activeCase !== null) {
+      object.active = this.activeCase.identifier
+    }
+    if (this.activeCase.steps.some((step) => step.term !== '') && this.activeCase.identifier === '') {
       object.proofs[''] = this.activeCase.getObject()
     }
     return object
   }
 
-  setCases (cases) {
-    if ('' in cases) {
-      this.activeCase = new LogIndCase(this, cases[''])
-      delete cases['']
-    }
+  setCases (cases, activeCase) {
     this.cases = new LogIndCaseCollection(this, cases)
+    if (activeCase) {
+      this.activeCase = new LogIndCase(this, cases[activeCase], null, activeCase)
+    }
   }
 
   /**

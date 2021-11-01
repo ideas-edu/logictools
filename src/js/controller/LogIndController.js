@@ -101,7 +101,7 @@ export class LogIndController extends ExerciseController {
       id: 1,
       characters: this.characterOptions
     }
-    this.assumptionPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('formula-input'), formulaOptions, this.applyReady.bind(this))
+    this.assumptionPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('formula-input'), formulaOptions, this.kbCallback.bind(this))
 
     this.setMotivation()
 
@@ -139,7 +139,11 @@ export class LogIndController extends ExerciseController {
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
+    document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
+    document.getElementById('rule').addEventListener('change', function () {
+      document.getElementById('exercise-step-table').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
+    })
     this.clearErrors()
 
     this.characterOptions = [{
@@ -302,6 +306,8 @@ export class LogIndController extends ExerciseController {
         this.setInput()
         this.updateSteps()
         this.updateCases()
+        document.getElementById('rule').selectedIndex = 0
+        document.getElementById('exercise-step-table').style.display = 'none'
       }
       this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
 
@@ -385,6 +391,8 @@ export class LogIndController extends ExerciseController {
   onStepValidated (term, resultType) {
     switch (resultType) {
       case 'similar':
+        this.exercise.setCases(term.proofs, term.active)
+        this.updateCases()
         this.updateAlert('logind.error.correct', null, 'complete')
         break
       case 'notequiv':
@@ -431,7 +439,7 @@ export class LogIndController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.setCases(nextStep.formula.proofs)
+    this.exercise.setCases(nextStep.formula.proofs, nextStep.formula.active)
     const onSuccess = function (result) {
       this.onCheckConstraints(result)
       this.setInput()
@@ -525,9 +533,15 @@ export class LogIndController extends ExerciseController {
     for (const step of _case.steps) {
       newSteps.push(this.renderStep(step, false))
     }
+    let border = null
+
+    if (_case.identifier === this.exercise.activeCase.identifier) {
+      border = 'active'
+    }
 
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
+      border: border,
       type: _case.type,
       steps: newSteps
     })
@@ -537,6 +551,7 @@ export class LogIndController extends ExerciseController {
 
   renderCaseHeader (title, status) {
     const stepTemplate = $.templates('#exercise-case-header-template')
+
     const exerciseStepHtml = stepTemplate.render({
       title: title,
       status: status
@@ -556,7 +571,14 @@ export class LogIndController extends ExerciseController {
 
   renderStep (step, isActive) {
     const stepTemplate = $.templates(isActive ? '#exercise-active-step-template' : '#exercise-case-step-template')
+    let border = null
+
+    if (step.case.identifier === this.exercise.activeCase.identifier) {
+      border = 'active'
+    }
+
     const exerciseStepHtml = stepTemplate.render({
+      border: border,
       isEmptyFormula: step.term === '',
       isFirst: step.number === 0,
       isLast: step.number === step.case.steps.length - 1,
@@ -592,12 +614,14 @@ export class LogIndController extends ExerciseController {
     this.activeStepIndex += 1
     this.updateSteps()
     this.setInput()
+    this.updateCases()
   }
 
   insertStepBelow () {
     this.setStep()
     this.exercise.activeCase.insertStepBelow(this.activeStepIndex)
     this.updateSteps()
+    this.updateCases()
   }
 
   deleteStep () {
@@ -611,6 +635,7 @@ export class LogIndController extends ExerciseController {
     }
 
     this.updateSteps()
+    this.updateCases()
   }
 
   deleteCase (index, type) {
@@ -622,7 +647,9 @@ export class LogIndController extends ExerciseController {
     // console.log(index, this.exercise.cases.cases[index])
     this.exercise.activeCase = this.exercise.getCase(index, type)
     document.getElementById('rule').value = `logic.propositional.logind.${this.exercise.activeCase.type}`
-    this.deleteCase(index, type)
+    document.getElementById('exercise-step-table').style.display = ''
+
+    // this.deleteCase(index, type)
     this.activeStepIndex = null
     this.updateCases()
     this.updateSteps()
@@ -638,17 +665,24 @@ export class LogIndController extends ExerciseController {
       this.exercise.activeCase.steps[this.activeStepIndex].relation = document.getElementById('relation').value
       this.exercise.activeCase.steps[this.activeStepIndex].rule = document.getElementById('motivation').value
     }
+    this.updateCases()
   }
 
   setInput () {
     if (this.activeStepIndex === null) {
       document.getElementById('active-step').style.display = 'none'
+      document.getElementById('add-row').style.display = 'none'
       return
     }
     document.getElementById('active-step').style.display = ''
+    document.getElementById('add-row').style.display = ''
     document.getElementById('relation').value = this.exercise.activeCase.steps[this.activeStepIndex].relation
     document.getElementById('formula').value = this.exercise.activeCase.steps[this.activeStepIndex].term
     document.getElementById('motivation').value = this.exercise.activeCase.steps[this.activeStepIndex].rule
+  }
+
+  kbCallback () {
+    this.setStep()
   }
 
   moveToStep (index) {
