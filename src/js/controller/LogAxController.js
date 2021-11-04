@@ -1149,21 +1149,17 @@ export class LogAxController extends ExerciseController {
   }
 
   removeStep (index) {
-    let newSteps = null
-    if (index < 500) {
-      newSteps = this.exercise.steps.steps.filter(x => x.number < index || x.number > 500)
-    } else {
-      newSteps = this.exercise.steps.steps.filter(x => x.number > index || x.number < 500)
-    }
-    for (const step of newSteps) {
-      if (step.references && step.references.includes(index)) {
-        step.references = undefined
-        step.label = undefined
+    const removeStep = {
+      rule: 'logic.propositional.axiomatic.removeline',
+      environment: {
+        n: index
       }
     }
-    this.exercise.steps.newSet(newSteps)
-    this.updateSteps()
-    this.updateStepnrSelectors()
+    const callback = function () {
+      this.updateSteps()
+      this.updateStepnrSelectors()
+    }.bind(this)
+    this.exerciseValidator.validateApply(this.exercise, removeStep, callback, this.onErrorValidatingStep.bind(this))
   }
 
   updateSteps () {
