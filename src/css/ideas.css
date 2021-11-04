@@ -424,6 +424,11 @@ table td:first-child .alert .katex {
 	float:inherit;
 }
 
+table #exercise-case-table td:first-child .katex {
+	margin-top:0;
+	float:inherit;
+}
+
 #bottom {
 	margin-right:0!important;
 	padding-bottom: 15px;
@@ -689,6 +694,26 @@ button {
 
 .logind-body #rule-container #logind-actions {
 	padding:8px 0;
+}
+
+.logind-body #exercise-container .row {
+	margin:0!important;
+}
+
+.logind-body #rule-container #exercise-alert-container {
+	padding:10px;
+}
+
+.logind-body #rule-container #exercise-alert-container {
+	border-bottom: 1px solid #e8e8e8;
+}
+
+.logind-body #rule-container #exercise-alert-container #exercise-alert {
+	margin-bottom:0;
+}
+
+.logind-body .step-formula {
+	background-color: #eaecef;
 }
 
 .logind-body #active-step td {
