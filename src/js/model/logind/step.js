@@ -9,12 +9,19 @@ import katex from 'katex'
     @property {string} rule The applied rule.
  */
 export class LogIndStep {
-  constructor (_case, step, rule, relation, number) {
+  constructor (_case, step, rule, relation, number, isTopStep) {
     this.case = _case
     this.setTerm(step)
     this.number = number
+    if (relation === '<=') {
+      this.relation = '≤'
+    } else if (relation === '>=') {
+      this.relation = '≥'
+    } else {
+      this.relation = relation
+    }
     this.rule = rule
-    this.relation = relation
+    this.isTopStep = isTopStep
 
     // Highlights
     this.highlightStep = false
@@ -22,20 +29,41 @@ export class LogIndStep {
     this.highlightRule = false
   }
 
+  getPreviousStep () {
+    return this.case.steps.find(step => step.number === this.number - 1)
+  }
+
+  getNextStep () {
+    return this.case.steps.find(step => step.number === this.number + 1)
+  }
+
+  getAsciiRelation () {
+    if (this.relation === '≤') {
+      return '<='
+    } else if (this.relation === '≥') {
+      return '>='
+    }
+    return this.relation
+  }
+
   unicodeToLatex (term) {
     term = term.replaceAll('\\', '\\setminus ')
 
-    term = term.replaceAll('∧', '\\land')
-    term = term.replaceAll('∨', '\\lor')
-    term = term.replaceAll('¬', '\\neg')
-    term = term.replaceAll('->', '\\rightarrow')
+    term = term.replaceAll('∧', '\\land ')
+    term = term.replaceAll('∨', '\\lor ')
+    term = term.replaceAll('¬', '\\neg ')
+    term = term.replaceAll('->', '\\rightarrow ')
 
-    term = term.replaceAll('φ', '\\phi')
-    term = term.replaceAll('ψ', '\\psi')
-    term = term.replaceAll('χ', '\\chi')
+    term = term.replaceAll('φ', '\\phi ')
+    term = term.replaceAll('ψ', '\\psi ')
+    term = term.replaceAll('χ', '\\chi ')
 
-    term = term.replaceAll('{', '\\{')
-    term = term.replaceAll('}', '\\}')
+    term = term.replaceAll('{', '\\{ ')
+    term = term.replaceAll('}', '\\} ')
+
+    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
+      term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
+    }
 
     return term
   }
@@ -78,10 +106,7 @@ export class LogIndStep {
   setTerm (term) {
     this.term = this.asciiToUnicode(term)
     // This does not match the longest function
-    let termAnnotated = this.unicodeToLatex(this.term)
-    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
-      termAnnotated = termAnnotated.replaceAll(functionName, `\\texttt{${functionName}}`)
-    }
+    const termAnnotated = this.unicodeToLatex(this.term)
 
     this.termKatex = katex.renderToString(termAnnotated, {
       throwOnError: false
@@ -250,7 +275,7 @@ function isSurroundedByBrackets (str) {
   return result
 }
 
-function convertM2H (str, definitions) {
+export function convertM2H (str, definitions) {
   try {
     str = unicodeToHaskell(str)
     str = addBracketsAroundUnionParameters(str)

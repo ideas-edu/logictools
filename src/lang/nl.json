@@ -413,6 +413,9 @@
       "exercise": "<b>[[title]]:</b> {{problem}}"
     },
     "step": {
+      "message": {
+        "prove": "<i>Bewijs</i>: $${{formula}}$$"
+      },
       "placeholder": {
         "left": "Linkerkant van formule",
         "middle": "Formule",
@@ -478,8 +481,19 @@
         "implication": "Implicatie-eliminatie",
         "logind": {
           "baseCase": "Basisgeval",
+          "calculate": "Rekenen",
+          "definition": "Definitie {{function}}",
+          "del": "Definitie del",
+          "given": "Gegeven",
           "hypothesis": "Hypothesis",
-          "inductiveStep": "Inductiestap"
+          "ih": "Inductie Hypothese",
+          "inductiveStep": "Inductiestap",
+          "logic": "Logica",
+          "max": "Definitie max",
+          "min": "Definitie min",
+          "set": "Verzamelingleer",
+          "subst": "Definitie substitution",
+          "union": "Definitie union"
         },
         "notfalse": "T-regel niet F",
         "nottrue": "F-regel niet T",

@@ -15,6 +15,7 @@ import { LogIndExerciseGenerator } from '../model/logind/exerciseGenerator.js'
 import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
+import { convertM2H } from '../model/logind/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
 import { translateElement, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
@@ -48,9 +49,9 @@ export class LogIndController extends ExerciseController {
     }
     this.characterOptions = []
     this.motivationOptions = []
-    this.setExampleExercises()
+    this.baseMotivations = ['calculate', 'del', 'ih', 'logic', 'max', 'min', 'set', 'subst', 'union', 'given']
 
-    this.activeStepIndex = null
+    this.setExampleExercises()
 
     this.exerciseGenerator = new LogIndExerciseGenerator(this.config)
     this.exerciseSolver = new LogIndExerciseSolver(this.config)
@@ -60,32 +61,19 @@ export class LogIndController extends ExerciseController {
 
     this.initializeInput()
 
-    document.getElementById('renumber-step').addEventListener('click', function () {
-      this.renumberSteps()
+    document.getElementById('change-direction').addEventListener('mousedown', function () {
+      if (this.proofDirection === 'down') {
+        this.setProofDirection('up')
+        return
+      }
+      if (this.proofDirection === 'up') {
+        this.setProofDirection('down')
+        return
+      }
     }.bind(this))
 
-    document.getElementById('move-step-up').addEventListener('mousedown', function () {
-      this.moveStepUp()
-    }.bind(this))
-
-    document.getElementById('move-step-down').addEventListener('mousedown', function () {
-      this.moveStepDown()
-    }.bind(this))
-
-    document.getElementById('insert-step-above').addEventListener('mousedown', function () {
-      this.insertStepAbove()
-    }.bind(this))
-
-    document.getElementById('insert-step-below').addEventListener('mousedown', function () {
-      this.insertStepBelow()
-    }.bind(this))
-
-    document.getElementById('delete-step').addEventListener('click', function () {
-      this.deleteStep()
-    }.bind(this))
-
-    document.getElementById('check-step').addEventListener('click', function () {
-      this.checkStep()
+    document.getElementById('new-case').addEventListener('mousedown', function () {
+      this.newCase()
     }.bind(this))
 
     document.getElementById('complete-exercise').addEventListener('click', function () {
@@ -97,54 +85,56 @@ export class LogIndController extends ExerciseController {
         Creates the popover for the input of symbols
     */
   initializeInput () {
-    const formulaOptions = {
+    const formulaOptionsTop = {
       id: 1,
       characters: this.characterOptions
     }
-    this.assumptionPopover = new FormulaPopover(document.getElementById('formula'), document.getElementById('formula-input'), formulaOptions, this.kbCallback.bind(this))
+    const formulaOptionsBottom = {
+      id: 2,
+      characters: this.characterOptions
+    }
+    this.assumptionPopoverTop = new FormulaPopover(document.getElementById('formula-top'), document.getElementById('formula-input-top'), formulaOptionsTop)
+    this.assumptionPopoverBottom = new FormulaPopover(document.getElementById('formula-bottom'), document.getElementById('formula-input-bottom'), formulaOptionsBottom)
 
-    this.setMotivation()
+    this.setMotivation(document.getElementById('motivation-top'))
+    this.setMotivation(document.getElementById('motivation-bottom'))
 
     // // apply
-    const applyButton = document.getElementById('validate-step')
+    const applyButton = document.getElementById('new-case')
     applyButton.disabled = false
   }
 
-  setMotivation () {
-    document.getElementById('motivation').innerHTML = ''
+  setMotivation (motivationElement) {
+    motivationElement.innerHTML = ''
     for (const motivation of this.motivationOptions) {
       const option = document.createElement('option')
       option.value = motivation
-      option.innerHTML = motivation
-      document.getElementById('motivation').appendChild(option)
+      if (this.baseMotivations.includes(motivation)) {
+        translateElement(option, `rule.logic.propositional.logind.${motivation}`)
+      } else {
+        translateElement(option, 'rule.logic.propositional.logind.definition', { function: motivation })
+      }
+      motivationElement.appendChild(option)
     }
-  }
-
-  /**
-        Handles the error that an exercise can not be created
-     */
-  onErrorCreatingExercise () {
-    this.exercise = null
-    this.disableUI(false)
-    this.setErrorLocation('new-formula-1')
-    this.newExerciseAlert.updateAlert('shared.error.creatingExercise', null, 'error')
   }
 
   /**
     */
   showExercise () {
-    this.activeStepIndex = null
     document.getElementById('rule').selectedIndex = 0
     this.initializeRules(document.getElementById('rule'))
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
-
     document.getElementById('exercise-step-table').style.display = 'none'
+    document.getElementById('validate-step').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
+    document.getElementById('formula-top').value = ''
+    document.getElementById('formula-bottom').value = ''
     document.getElementById('rule').addEventListener('change', function () {
-      document.getElementById('exercise-step-table').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
-    })
+      document.getElementById('validate-step').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
+      this.setProofDirection('begin')
+    }.bind(this))
     translateElement(document.getElementById('instruction'), 'logind.instruction.exercise', {
       problem: this.exercise.problem,
       title: {
@@ -152,6 +142,7 @@ export class LogIndController extends ExerciseController {
         params: this.exercise.titleParams
       }
     })
+    this.dismissAlert()
     this.clearErrors()
 
     this.characterOptions = [{
@@ -195,8 +186,7 @@ export class LogIndController extends ExerciseController {
         hideButton: true
       })
     }
-    this.motivationOptions = ['?', 'calculate', 'definition del', 'induction hypothesis', 'logic', 'definition max',
-      'definition min', 'setrule', 'definition subst', 'definition union', 'given']
+    this.motivationOptions = [].concat(this.baseMotivations)
     for (const term of this.exercise.language) {
       switch (term) {
         case 'NEGATION':
@@ -239,14 +229,18 @@ export class LogIndController extends ExerciseController {
       })
       this.motivationOptions.push(term)
     }
-    this.assumptionPopover.options.characters = this.characterOptions
-    this.assumptionPopover.setContent()
-    this.setMotivation()
+    this.assumptionPopoverTop.options.characters = this.characterOptions
+    this.assumptionPopoverTop.setContent()
+    this.assumptionPopoverBottom.options.characters = this.characterOptions
+    this.assumptionPopoverBottom.setContent()
+    this.setMotivation(document.getElementById('motivation-top'))
+    this.setMotivation(document.getElementById('motivation-bottom'))
 
     // document.getElementById('header-actions').style.display = ''
+    this.setProofDirection('none')
     this.updateCases()
     this.updateSteps()
-    this.setInput()
+    this.setStep()
   }
 
   showSolution () {
@@ -256,11 +250,19 @@ export class LogIndController extends ExerciseController {
         number: 1000
       }]
     }
-    window.open('logindsolution.html?formula=' + encodeURIComponent(JSON.stringify(term)) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    window.open(
+      `logindsolution.html?formula=${encodeURIComponent(JSON.stringify(term))}&exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
+      '_blank',
+      'location=no,width=1020,height=600,status=no,toolbar=no'
+    )
   }
 
   completeSolution () {
-    window.open('logindsolution.html?formula=' + encodeURIComponent(JSON.stringify(this.exercise.getObject())) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    window.open(`logindsolution.html?formula=${encodeURIComponent(JSON.stringify(this.exercise.getObject()))}` +
+      `exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
+    '_blank',
+    'location=no,width=1020,height=600,status=no,toolbar=no'
+    )
   }
 
   disableUI (disable) {
@@ -269,31 +271,87 @@ export class LogIndController extends ExerciseController {
   }
 
   applyReady () {
-    const applyButton = document.getElementById('validate-step')
+    const applyButton = document.getElementById('new-case')
     applyButton.disabled = false
   }
 
-  validateFormulas () {
-    const rule = this.ruleKey
-
-    switch (rule) {
-      case 'logic.propositional.axiomatic.assumption': {
-        const phi = document.getElementById('assumption-formula-phi')
-        return this.validateFormula(phi, this.exerciseAlert)
+  validateStep () {
+    this.setStep()
+    if (!this.validateFormula()) {
+      return
+    }
+    // Deep copy exercise in case that the step is invalid
+    this.oldCases = this.exercise.cases.getObject()
+    this.oldActive = this.exercise.activeCase.identifier
+    console.log(this.oldCases)
+    if (this.proofDirection === 'begin') {
+      this.exercise.activeCase.steps = []
+      this.exercise.activeCase.insertTopStep()
+      this.exercise.activeCase.insertBottomStep()
+      this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
+      this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
+      this.exercise.activeCase.proofRelation = document.getElementById('relation-gap').value
+    }
+    if (this.proofDirection === 'down') {
+      let newStep = null
+      if (document.getElementById('formula-top').value === this.exercise.activeCase.bottomSteps[0].term) {
+        // Close proof
+        newStep = this.exercise.activeCase.bottomSteps[0]
+      } else {
+        newStep = this.exercise.activeCase.insertTopStep()
+      }
+      newStep.setTerm(document.getElementById('formula-top').value)
+      newStep.relation = document.getElementById('relation-top').value
+      newStep.rule = document.getElementById('motivation-top').value
+    }
+    if (this.proofDirection === 'up') {
+      if (document.getElementById('formula-bottom').value === this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term) {
+        // Close proof
+        this.exercise.activeCase.closeProof(document.getElementById('relation-bottom').value, document.getElementById('motivation-bottom').value)
+      } else {
+        const newStep = this.exercise.activeCase.insertBottomStep()
+        const nextStep = this.exercise.activeCase.steps[newStep.number + 1]
+        newStep.setTerm(document.getElementById('formula-bottom').value)
+        nextStep.relation = document.getElementById('relation-bottom').value
+        nextStep.rule = document.getElementById('motivation-bottom').value
       }
     }
+    this.exerciseValidator.validateExercise(this.exercise, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
-  checkStep () {
-    this.setStep()
-    this.exerciseValidator.validateExercise(this.exercise, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+  validateFormula () {
+    const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
+    if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
+      try {
+        convertM2H(document.getElementById('formula-top').value, this.exercise.definitions.concat(DEFINITIONS))
+      } catch {
+        this.setErrorLocation('formula-top')
+        this.updateAlert('logind.error.syntax', null, 'error')
+        return false
+      }
+    }
+    if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
+      try {
+        convertM2H(document.getElementById('formula-bottom').value, this.exercise.definitions.concat(DEFINITIONS))
+      } catch {
+        this.setErrorLocation('formula-bottom')
+        this.updateAlert('logind.error.syntax', null, 'error')
+        return false
+      }
+    }
+    return true
   }
 
   /**
     Validates a step
       Runs callback after correct step has been validated
      */
-  validateStep () {
+  newCase () {
+    if (document.getElementById('exercise-step-table').style.display === 'none') {
+      document.getElementById('exercise-step-table').style.display = ''
+      return
+    }
+
     if (this.getSelectedRuleKey() === null) {
       this.setErrorLocation('rule')
       this.updateAlert('shared.error.noRule', null, 'error')
@@ -308,7 +366,6 @@ export class LogIndController extends ExerciseController {
       }
       this.exercise.setCases(term.proofs)
       this.exercise.activeCase = new LogIndCase(this.exercise)
-      this.activeStepIndex = null
       const onSuccess = function (result) {
         this.onCheckConstraints(result)
         this.setInput()
@@ -379,8 +436,9 @@ export class LogIndController extends ExerciseController {
      */
   onErrorValidatingStep (error) {
     this.disableUI(false)
+    this.exercise.setCases(this.oldCases, this.oldActive)
     if (error === undefined) {
-      this.setErrorLocation('validate-step')
+      this.setErrorLocation('new-case')
       this.updateAlert('shared.error.validatingStep', null, 'error')
       return
     }
@@ -388,7 +446,7 @@ export class LogIndController extends ExerciseController {
     if (!hasTranslation(message)) {
       message = 'shared.error.wrongStep'
     }
-    this.setErrorLocation('validate-step')
+    this.setErrorLocation('new-case')
     this.updateAlert(message, error.params, 'error')
   }
 
@@ -399,11 +457,10 @@ export class LogIndController extends ExerciseController {
   onStepValidated (term, resultType) {
     switch (resultType) {
       case 'similar':
-        this.exercise.setCases(term.proofs, term.active)
-        this.updateCases()
-        this.updateAlert('logind.error.correct', null, 'complete')
+        this.doNextStep({ formula: term })
         break
       case 'notequiv':
+        this.exercise.setCases(this.oldCases, this.oldActive)
         this.updateAlert('logind.error.incorrect', null, 'error')
         break
     }
@@ -448,31 +505,43 @@ export class LogIndController extends ExerciseController {
      */
   doNextStep (nextStep) {
     this.exercise.setCases(nextStep.formula.proofs, nextStep.formula.active)
+    this.dismissAlert()
     const onSuccess = function (result) {
       this.onCheckConstraints(result)
-      this.setInput()
-      this.updateSteps()
-      this.updateCases()
+      if (this.exercise.activeCase.complete) {
+        this.onCaseCompleted()
+      } else {
+        this.setProofDirection('down')
+        this.setStep()
+        this.updateSteps()
+        this.updateCases()
+      }
     }
     this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
+  }
+
+  onCaseCompleted () {
+    this.exercise.activeCase = new LogIndCase(this.exercise)
+    document.getElementById('completed-rule-container').style.display = 'none'
+    document.getElementById('exercise-step-table').style.display = 'none'
+    document.getElementById('validate-step').style.display = 'none'
+    document.getElementById('rule').selectedIndex = 0
+    this.setProofDirection('none')
+    this.setStep()
+    this.updateSteps()
+    this.updateCases()
   }
 
   onCompleted (isFinished) {
     if (isFinished) {
       document.getElementById('rule-container').style.display = 'none'
       document.getElementById('completed-rule-container').style.display = ''
-
-      this.removeDeleteButtons()
     }
   }
 
-  removeDeleteButtons () {
-    const elements = document.getElementsByClassName('remove-step')
-    for (const element of elements) {
-      element.style.display = 'none'
-    }
-    document.getElementById('header-actions').style.display = 'none'
-  }
+  // ####################################################################
+  // Rendering
+  // ####################################################################
 
   insertCaseHeader (title, status) {
     const exerciseCaseHeaderDiv = document.createElement('template')
@@ -500,14 +569,17 @@ export class LogIndController extends ExerciseController {
 
     translateChildren(exerciseCaseDiv.content)
 
-    exerciseCaseDiv.content.querySelector('.delete-case').addEventListener('click', function () {
-      this.deleteCase(_case.index, _case.type)
-    }.bind(this))
+    if (_case.identifier !== this.exercise.activeCase.identifier) {
+      exerciseCaseDiv.content.querySelector('.delete-case').addEventListener('click', function () {
+        this.deleteCase(_case.index, _case.type)
+      }.bind(this))
 
-    exerciseCaseDiv.content.querySelector('.edit-case').addEventListener('click', function () {
-      this.editCase(_case.index, _case.type)
-    }.bind(this))
-
+      if (!_case.complete) {
+        exerciseCaseDiv.content.querySelector('.edit-case').addEventListener('click', function () {
+          this.editCase(_case.index, _case.type)
+        }.bind(this))
+      }
+    }
     const exerciseCaseTable = document.getElementById('exercise-case-table')
     exerciseCaseTable.appendChild(exerciseCaseDiv.content)
   }
@@ -515,22 +587,28 @@ export class LogIndController extends ExerciseController {
   insertStep (step, isActive) {
     this.dismissAlert()
 
-    const exerciseStep = document.createElement('tr')
-    exerciseStep.classList.add('case-step-row')
+    const exerciseStep = document.createElement('template')
     exerciseStep.innerHTML = this.renderStep(step, true)
+
+    translateChildren(exerciseStep.content)
+
+    const exerciseStepTable = document.getElementById('exercise-step-table')
+    if (step.isTopStep) {
+      exerciseStepTable.insertBefore(exerciseStep.content, document.getElementById('active-step-top'))
+    } else {
+      exerciseStepTable.appendChild(exerciseStep.content)
+    }
+  }
+
+  insertActiveHeader () {
+    const exerciseStep = document.createElement('tr')
+    exerciseStep.id = 'case-header-row'
+    exerciseStep.innerHTML = this.renderActiveHeader()
 
     translateChildren(exerciseStep)
 
     const exerciseStepTable = document.getElementById('exercise-step-table')
-    if (step.number < this.activeStepIndex || this.activeStepIndex === null) {
-      exerciseStepTable.insertBefore(exerciseStep, document.getElementById('active-step'))
-    } else if (step.number > this.activeStepIndex) {
-      exerciseStepTable.appendChild(exerciseStep)
-    }
-
-    exerciseStep.addEventListener('mousedown', function () {
-      this.moveToStep(step.number)
-    }.bind(this))
+    exerciseStepTable.appendChild(exerciseStep)
   }
 
   renderCase (_case, canDelete) {
@@ -538,20 +616,38 @@ export class LogIndController extends ExerciseController {
 
     const newSteps = []
 
+    let wasTopStep = true
     for (const step of _case.steps) {
+      if (!step.isTopStep && wasTopStep) {
+        newSteps.push(this.renderCaseBuffer(_case))
+      }
+      wasTopStep = step.isTopStep
       newSteps.push(this.renderStep(step, false))
     }
     let border = null
-
+    let status = null
     if (_case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
+      status = 'Active'
     }
 
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
+      complete: _case.complete,
       type: _case.type,
+      status: status,
       steps: newSteps
+    })
+
+    return exerciseStepHtml
+  }
+
+  renderActiveHeader () {
+    const stepTemplate = $.templates('#exercise-active-case-header-template')
+
+    const exerciseStepHtml = stepTemplate.render({
+      proof: this.exercise.activeCase.getProof()
     })
 
     return exerciseStepHtml
@@ -577,74 +673,53 @@ export class LogIndController extends ExerciseController {
     return exerciseStepHtml
   }
 
+  renderCaseBuffer (_case) {
+    const stepTemplate = $.templates('#exercise-case-step-buffer-template')
+    let border = null
+    if (_case.identifier === this.exercise.activeCase.identifier) {
+      border = 'active'
+    }
+
+    const exerciseStepBufferHtml = stepTemplate.render({
+      border: border
+    })
+
+    return exerciseStepBufferHtml
+  }
+
   renderStep (step, isActive) {
-    const stepTemplate = $.templates(isActive ? '#exercise-active-step-template' : '#exercise-case-step-template')
+    const stepTemplate = $.templates(isActive ? (step.isTopStep ? '#exercise-active-top-step-template' : '#exercise-active-bottom-step-template') : '#exercise-case-step-template')
     let border = null
 
     if (step.case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
     }
 
+    let motivation = step.rule
+    let motivationParams = {}
+    if (step.rule !== null && !this.baseMotivations.includes(step.rule)) {
+      motivationParams = { function: motivation }
+      motivation = 'definition'
+    }
+
     const exerciseStepHtml = stepTemplate.render({
       border: border,
       isEmptyFormula: step.term === '',
       isFirst: step.number === 0,
+      isTopStep: step.isTopStep,
       isLast: step.number === step.case.steps.length - 1,
       formula: step.termKatex,
       relation: step.number > 0 ? step.relation : null,
-      motivation: step.number > 0 ? step.rule : null
+      motivation: motivation,
+      motivationParams: JSON.stringify(motivationParams)
     })
 
     return exerciseStepHtml
   }
 
-  removeStep (index) {
-    let newSteps = null
-    if (index < 500) {
-      newSteps = this.exercise.steps.steps.filter(x => x.number < index || x.number > 500)
-    } else {
-      newSteps = this.exercise.steps.steps.filter(x => x.number > index || x.number < 500)
-    }
-    for (const step of newSteps) {
-      if (step.references && step.references.includes(index)) {
-        step.references = undefined
-        step.label = undefined
-      }
-    }
-    this.exercise.steps.newSet(newSteps)
-    this.updateSteps()
-    this.updateStepnrSelectors()
-  }
-
-  insertStepAbove () {
-    this.setStep()
-    this.exercise.activeCase.insertStepAbove(this.activeStepIndex)
-    this.activeStepIndex += 1
-    this.updateSteps()
-    this.setInput()
-    this.updateCases()
-  }
-
-  insertStepBelow () {
-    this.setStep()
-    this.exercise.activeCase.insertStepBelow(this.activeStepIndex)
-    this.updateSteps()
-    this.updateCases()
-  }
-
-  deleteStep () {
-    if (this.activeStepIndex === this.exercise.activeCase.steps.length - 1) {
-      this.moveStepUp()
-      this.exercise.activeCase.deleteStep(this.activeStepIndex + 1)
-    } else {
-      this.moveStepDown()
-      this.exercise.activeCase.deleteStep(this.activeStepIndex - 1)
-      this.activeStepIndex -= 1
-    }
-
-    this.updateSteps()
-    this.updateCases()
-  }
+  // ####################################################################
+  // Cases
+  // ####################################################################
 
   deleteCase (index, type) {
     this.exercise.deleteCase(index, type)
@@ -652,75 +727,100 @@ export class LogIndController extends ExerciseController {
   }
 
   editCase (index, type) {
-    // console.log(index, this.exercise.cases.cases[index])
     this.exercise.activeCase = this.exercise.getCase(index, type)
     document.getElementById('rule').value = `logic.propositional.logind.${this.exercise.activeCase.type}`
     document.getElementById('exercise-step-table').style.display = ''
+    document.getElementById('validate-step').style.display = ''
 
-    // this.deleteCase(index, type)
-    this.activeStepIndex = null
+    this.setProofDirection('down')
     this.updateCases()
     this.updateSteps()
-    this.setInput()
+    this.setStep()
+  }
+
+  // ####################################################################
+  // Interface formatting
+  // ####################################################################
+
+  setProofDirection (direction) {
+    this.proofDirection = direction
+    const topStep = document.getElementById('active-step-top')
+    const topFormula = document.getElementById('active-formula-top')
+    const bottomStep = document.getElementById('active-step-bottom')
+    const bottomFormula = document.getElementById('active-formula-bottom')
+    const relationGap = document.getElementById('relation-gap')
+    const directionButton = document.getElementById('change-direction')
+    const activeMessage = document.getElementById('active-message')
+    const stepBuffer = document.getElementById('step-buffer')
+
+    if (direction === 'down') {
+      activeMessage.style.display = ''
+      topStep.style.display = ''
+      topFormula.style.display = ''
+      bottomStep.style.display = 'none'
+      bottomFormula.style.display = 'none'
+      relationGap.style.display = 'none'
+      directionButton.style.display = ''
+      stepBuffer.style.display = ''
+    }
+    if (direction === 'up') {
+      activeMessage.style.display = ''
+      topStep.style.display = 'none'
+      topFormula.style.display = 'none'
+      bottomStep.style.display = ''
+      bottomFormula.style.display = ''
+      relationGap.style.display = 'none'
+      directionButton.style.display = ''
+      stepBuffer.style.display = ''
+    }
+    if (direction === 'none') {
+      activeMessage.style.display = 'none'
+      topStep.style.display = 'none'
+      topFormula.style.display = 'none'
+      bottomStep.style.display = 'none'
+      bottomFormula.style.display = 'none'
+      relationGap.style.display = 'none'
+      directionButton.style.display = 'none'
+      stepBuffer.style.display = 'none'
+    }
+    if (direction === 'begin') {
+      activeMessage.style.display = 'none'
+      topStep.style.display = 'none'
+      topFormula.style.display = ''
+      bottomStep.style.display = 'none'
+      bottomFormula.style.display = ''
+      directionButton.style.display = 'none'
+      relationGap.style.display = ''
+      stepBuffer.style.display = ''
+    }
+    this.setStep()
   }
 
   setStep () {
-    if (this.activeStepIndex === null) {
-      return
+    if (this.exercise.activeCase.topSteps.length === 0) {
+      document.getElementById('relation-top').style.display = 'none'
+      document.getElementById('motivation-top').style.display = 'none'
+    } else {
+      document.getElementById('relation-top').style.display = ''
+      document.getElementById('motivation-top').style.display = ''
     }
-    this.exercise.activeCase.steps[this.activeStepIndex].setTerm(document.getElementById('formula').value)
-    if (this.activeStepIndex !== 0) {
-      this.exercise.activeCase.steps[this.activeStepIndex].relation = document.getElementById('relation').value
-      this.exercise.activeCase.steps[this.activeStepIndex].rule = document.getElementById('motivation').value
+    if (this.exercise.activeCase.bottomSteps.length === 0) {
+      document.getElementById('relation-bottom').style.display = ''
+      document.getElementById('motivation-bottom').style.display = 'none'
+    } else {
+      document.getElementById('relation-bottom').style.display = ''
+      document.getElementById('motivation-bottom').style.display = ''
     }
-    this.updateCases()
-  }
-
-  setInput () {
-    if (this.activeStepIndex === null) {
-      document.getElementById('active-step').style.display = 'none'
-      document.getElementById('add-row').style.display = 'none'
-      return
-    }
-    document.getElementById('active-step').style.display = ''
-    document.getElementById('add-row').style.display = ''
-    document.getElementById('relation').value = this.exercise.activeCase.steps[this.activeStepIndex].relation
-    document.getElementById('formula').value = this.exercise.activeCase.steps[this.activeStepIndex].term
-    document.getElementById('motivation').value = this.exercise.activeCase.steps[this.activeStepIndex].rule
-  }
-
-  kbCallback () {
-    this.setStep()
-  }
-
-  moveToStep (index) {
-    this.setStep()
-    this.activeStepIndex = index
-    this.setInput()
-
-    this.updateSteps()
-  }
-
-  moveStepUp () {
-    if (this.activeStepIndex === 0) {
-      return
-    }
-
-    this.moveToStep(this.activeStepIndex - 1)
-  }
-
-  moveStepDown () {
-    if (this.activeStepIndex === this.exercise.activeCase.steps.length - 1) {
-      return
-    }
-
-    this.moveToStep(this.activeStepIndex + 1)
   }
 
   updateSteps () {
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
 
     const exerciseStepTable = document.getElementById('exercise-step-table')
+    translateElement(document.getElementById('active-message-text'), 'logind.step.message.prove', {
+      formula: this.exercise.activeCase.getProof()
+    })
+
     const steps = document.querySelectorAll('.case-step-row')
     for (const step of steps) {
       exerciseStepTable.removeChild(step)
@@ -729,9 +829,6 @@ export class LogIndController extends ExerciseController {
     for (const step of this.exercise.activeCase.steps) {
       this.insertStep(step)
     }
-
-    document.getElementById('relation').style.display = this.activeStepIndex === 0 ? 'none' : ''
-    document.getElementById('motivation').style.display = this.activeStepIndex === 0 ? 'none' : ''
 
     this.disableUI(false)
   }

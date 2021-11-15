@@ -46,7 +46,7 @@ export class LogIndExercise {
   setCases (cases, activeCase) {
     this.cases = new LogIndCaseCollection(this, cases)
     if (activeCase) {
-      this.activeCase = new LogIndCase(this, cases[activeCase], null, activeCase)
+      this.activeCase = this.cases.cases.find(x => x.identifier === activeCase)
     }
   }
 

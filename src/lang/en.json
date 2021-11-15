@@ -413,6 +413,9 @@
       "exercise": "<b>[[title]]:</b> {{problem}}"
     },
     "step": {
+      "message": {
+        "prove": "<i>Prove</i>: $${{formula}}$$"
+      },
       "placeholder": {
         "left": "Left-hand side of formula",
         "middle": "Formula",
@@ -478,8 +481,19 @@
         "implication": "Implication definition",
         "logind": {
           "baseCase": "Base Case",
+          "calculate": "Calculation",
+          "definition": "Definition {{function}}",
+          "del": "Definition del",
+          "given": "Given",
           "hypothesis": "Hypothesis",
-          "inductiveStep": "Inductive Step"
+          "ih": "Induction Hypothesis",
+          "inductiveStep": "Inductive Step",
+          "logic": "Logic",
+          "max": "Definition max",
+          "min": "Definition min",
+          "set": "Set rule",
+          "subst": "Definition substitution",
+          "union": "Definition union"
         },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
