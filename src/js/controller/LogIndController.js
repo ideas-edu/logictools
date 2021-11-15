@@ -68,7 +68,6 @@ export class LogIndController extends ExerciseController {
       }
       if (this.proofDirection === 'up') {
         this.setProofDirection('down')
-        return
       }
     }.bind(this))
 
