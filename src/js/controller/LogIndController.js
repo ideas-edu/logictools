@@ -275,6 +275,7 @@ export class LogIndController extends ExerciseController {
   }
 
   validateStep () {
+    console.log('valid')
     this.setStep()
     if (!this.validateFormula()) {
       return
@@ -282,14 +283,24 @@ export class LogIndController extends ExerciseController {
     // Deep copy exercise in case that the step is invalid
     this.oldCases = this.exercise.cases.getObject()
     this.oldActive = this.exercise.activeCase.identifier
-    console.log(this.oldCases)
     if (this.proofDirection === 'begin') {
-      this.exercise.activeCase.steps = []
-      this.exercise.activeCase.insertTopStep()
-      this.exercise.activeCase.insertBottomStep()
-      this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
-      this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
-      this.exercise.activeCase.proofRelation = document.getElementById('relation-gap').value
+      if (document.getElementById('rule').value === 'logic.propositional.logind.hypothesis') {
+        this.exercise.activeCase.steps = []
+        this.exercise.activeCase.insertTopStep()
+        this.exercise.activeCase.insertTopStep()
+        this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
+        this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
+        this.exercise.activeCase.steps[1].rule = 'ih'
+        this.exercise.activeCase.steps[1].relation = document.getElementById('relation-gap').value
+        console.log(this.exercise)
+      } else {
+        this.exercise.activeCase.steps = []
+        this.exercise.activeCase.insertTopStep()
+        this.exercise.activeCase.insertBottomStep()
+        this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
+        this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
+        this.exercise.activeCase.proofRelation = document.getElementById('relation-gap').value
+      }
     }
     if (this.proofDirection === 'down') {
       let newStep = null
@@ -319,10 +330,23 @@ export class LogIndController extends ExerciseController {
   }
 
   validateFormula () {
+    console.log("here")
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
     if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
       try {
-        convertM2H(document.getElementById('formula-top').value, this.exercise.definitions.concat(DEFINITIONS))
+        let term = document.getElementById('formula-top').value
+        term = term.replaceAll('∧', '&&')
+        term = term.replaceAll('∨', '||')
+        term = term.replaceAll('¬', '~')
+        term = term.replaceAll('→', '->')
+
+        term = term.replaceAll('φ', ' phi ')
+        term = term.replaceAll('ψ', ' psi ')
+        term = term.replaceAll('χ', ' chi ')
+        term = term.replaceAll('∪', ' union ')
+        term = term.replaceAll('\\', ' del ')
+        console.log(term)
+        convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-top')
         this.updateAlert('logind.error.syntax', null, 'error')
@@ -331,7 +355,19 @@ export class LogIndController extends ExerciseController {
     }
     if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
       try {
-        convertM2H(document.getElementById('formula-bottom').value, this.exercise.definitions.concat(DEFINITIONS))
+        let term = document.getElementById('formula-bottom').value
+        term = term.replaceAll('∧', '&&')
+        term = term.replaceAll('∨', '||')
+        term = term.replaceAll('¬', '~')
+        term = term.replaceAll('→', '->')
+
+        term = term.replaceAll('φ', ' phi ')
+        term = term.replaceAll('ψ', ' psi ')
+        term = term.replaceAll('χ', ' chi ')
+        term = term.replaceAll('∪', ' union ')
+        term = term.replaceAll('\\', ' del ')
+        console.log(term)
+        convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-bottom')
         this.updateAlert('logind.error.syntax', null, 'error')
@@ -434,6 +470,7 @@ export class LogIndController extends ExerciseController {
         Handles the error that the step can not be validated
      */
   onErrorValidatingStep (error) {
+    console.log('test2')
     this.disableUI(false)
     this.exercise.setCases(this.oldCases, this.oldActive)
     if (error === undefined) {
@@ -454,6 +491,7 @@ export class LogIndController extends ExerciseController {
 
      */
   onStepValidated (term, resultType) {
+    console.log('test')
     switch (resultType) {
       case 'similar':
         this.doNextStep({ formula: term })
