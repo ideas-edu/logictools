@@ -18,7 +18,7 @@ export class LogIndExercise {
     this.constraints = null
 
     this.cases = new LogIndCaseCollection(this, term.proofs)
-    this.activeCase = new LogIndCase(this)
+    this.activeCase = null
 
     this.baseCasesStatus = 'notStarted'
     this.hypothesesStatus = 'notStarted'
@@ -36,9 +36,9 @@ export class LogIndExercise {
     }
     if (this.activeCase !== null) {
       object.active = this.activeCase.identifier
-    }
-    if (this.activeCase.steps.some((step) => step.term !== '') && this.activeCase.identifier === '') {
-      object.proofs[''] = this.activeCase.getObject()
+      if (this.activeCase.steps.some((step) => step.term !== '') && this.activeCase.identifier === '') {
+        object.proofs[''] = this.activeCase.getObject()
+      }
     }
     return object
   }
@@ -47,6 +47,8 @@ export class LogIndExercise {
     this.cases = new LogIndCaseCollection(this, cases)
     if (activeCase) {
       this.activeCase = this.cases.cases.find(x => x.identifier === activeCase)
+    } else {
+      this.activeCase = null
     }
   }
 

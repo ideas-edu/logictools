@@ -275,7 +275,6 @@ export class LogIndController extends ExerciseController {
   }
 
   validateStep () {
-    console.log('valid')
     this.setStep()
     if (!this.validateFormula()) {
       return
@@ -292,7 +291,6 @@ export class LogIndController extends ExerciseController {
         this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
         this.exercise.activeCase.steps[1].rule = 'ih'
         this.exercise.activeCase.steps[1].relation = document.getElementById('relation-gap').value
-        console.log(this.exercise)
       } else {
         this.exercise.activeCase.steps = []
         this.exercise.activeCase.insertTopStep()
@@ -330,7 +328,6 @@ export class LogIndController extends ExerciseController {
   }
 
   validateFormula () {
-    console.log("here")
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
     if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
       try {
@@ -345,7 +342,6 @@ export class LogIndController extends ExerciseController {
         term = term.replaceAll('χ', ' chi ')
         term = term.replaceAll('∪', ' union ')
         term = term.replaceAll('\\', ' del ')
-        console.log(term)
         convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-top')
@@ -366,7 +362,6 @@ export class LogIndController extends ExerciseController {
         term = term.replaceAll('χ', ' chi ')
         term = term.replaceAll('∪', ' union ')
         term = term.replaceAll('\\', ' del ')
-        console.log(term)
         convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-bottom')
@@ -384,6 +379,11 @@ export class LogIndController extends ExerciseController {
   newCase () {
     if (document.getElementById('exercise-step-table').style.display === 'none') {
       document.getElementById('exercise-step-table').style.display = ''
+      this.setProofDirection('begin')
+      this.setStep()
+      this.updateSteps()
+      this.updateCases()
+      document.getElementById('rule').selectedIndex = 0
       return
     }
 
@@ -403,7 +403,7 @@ export class LogIndController extends ExerciseController {
       this.exercise.activeCase = new LogIndCase(this.exercise)
       const onSuccess = function (result) {
         this.onCheckConstraints(result)
-        this.setInput()
+        this.setStep()
         this.updateSteps()
         this.updateCases()
         document.getElementById('rule').selectedIndex = 0
@@ -470,7 +470,6 @@ export class LogIndController extends ExerciseController {
         Handles the error that the step can not be validated
      */
   onErrorValidatingStep (error) {
-    console.log('test2')
     this.disableUI(false)
     this.exercise.setCases(this.oldCases, this.oldActive)
     if (error === undefined) {
@@ -491,7 +490,6 @@ export class LogIndController extends ExerciseController {
 
      */
   onStepValidated (term, resultType) {
-    console.log('test')
     switch (resultType) {
       case 'similar':
         this.doNextStep({ formula: term })
@@ -545,10 +543,14 @@ export class LogIndController extends ExerciseController {
     this.dismissAlert()
     const onSuccess = function (result) {
       this.onCheckConstraints(result)
-      if (this.exercise.activeCase.complete) {
+      if (this.exercise.activeCase !== null && this.exercise.activeCase.complete) {
         this.onCaseCompleted()
       } else {
-        this.setProofDirection('down')
+        if (this.exercise.activeCase !== null) {
+          this.setProofDirection('down')
+          document.getElementById('formula-top').value = this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term
+          document.getElementById('formula-bottom').value = this.exercise.activeCase.bottomSteps[0].term
+        }
         this.setStep()
         this.updateSteps()
         this.updateCases()
@@ -558,11 +560,14 @@ export class LogIndController extends ExerciseController {
   }
 
   onCaseCompleted () {
-    this.exercise.activeCase = new LogIndCase(this.exercise)
+    this.exercise.activeCase = null
     document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('validate-step').style.display = 'none'
     document.getElementById('rule').selectedIndex = 0
+    document.getElementById('formula-top').value = ''
+    document.getElementById('formula-bottom').value = ''
+
     this.setProofDirection('none')
     this.setStep()
     this.updateSteps()
@@ -606,7 +611,7 @@ export class LogIndController extends ExerciseController {
 
     translateChildren(exerciseCaseDiv.content)
 
-    if (_case.identifier !== this.exercise.activeCase.identifier) {
+    if (this.exercise.activeCase === null || _case.identifier !== this.exercise.activeCase.identifier) {
       exerciseCaseDiv.content.querySelector('.delete-case').addEventListener('click', function () {
         this.deleteCase(_case.index, _case.type)
       }.bind(this))
@@ -663,7 +668,7 @@ export class LogIndController extends ExerciseController {
     }
     let border = null
     let status = null
-    if (_case.identifier === this.exercise.activeCase.identifier) {
+    if (this.exercise.activeCase !== null && _case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
       status = 'Active'
     }
@@ -713,7 +718,7 @@ export class LogIndController extends ExerciseController {
   renderCaseBuffer (_case) {
     const stepTemplate = $.templates('#exercise-case-step-buffer-template')
     let border = null
-    if (_case.identifier === this.exercise.activeCase.identifier) {
+    if (this.exercise.activeCase !== null && _case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
     }
 
@@ -728,7 +733,7 @@ export class LogIndController extends ExerciseController {
     const stepTemplate = $.templates(isActive ? (step.isTopStep ? '#exercise-active-top-step-template' : '#exercise-active-bottom-step-template') : '#exercise-case-step-template')
     let border = null
 
-    if (step.case.identifier === this.exercise.activeCase.identifier) {
+    if (this.exercise.activeCase !== null && step.case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
     }
 
@@ -834,6 +839,16 @@ export class LogIndController extends ExerciseController {
   }
 
   setStep () {
+    if (this.exercise.activeCase === null) {
+      return
+    }
+    if (this.exercise.activeCase.steps.length >= 2) {
+      document.getElementById('formula-top').value = this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term
+      document.getElementById('formula-bottom').value = this.exercise.activeCase.bottomSteps[0].term
+    } else {
+      document.getElementById('formula-top').value = ''
+      document.getElementById('formula-bottom').value = ''
+    }
     if (this.exercise.activeCase.topSteps.length === 0) {
       document.getElementById('relation-top').style.display = 'none'
       document.getElementById('motivation-top').style.display = 'none'
@@ -852,16 +867,19 @@ export class LogIndController extends ExerciseController {
 
   updateSteps () {
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
-
-    const exerciseStepTable = document.getElementById('exercise-step-table')
-    translateElement(document.getElementById('active-message-text'), 'logind.step.message.prove', {
-      formula: this.exercise.activeCase.getProof()
-    })
-
     const steps = document.querySelectorAll('.case-step-row')
+    const exerciseStepTable = document.getElementById('exercise-step-table')
     for (const step of steps) {
       exerciseStepTable.removeChild(step)
     }
+
+    if (this.exercise.activeCase === null) {
+      return
+    }
+
+    translateElement(document.getElementById('active-message-text'), 'logind.step.message.prove', {
+      formula: this.exercise.activeCase.getProof()
+    })
 
     for (const step of this.exercise.activeCase.steps) {
       this.insertStep(step)
