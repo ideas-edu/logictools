@@ -47,13 +47,18 @@ export class LogIndStep {
   }
 
   unicodeToLatex (term) {
-    term = term.replaceAll('{', '\\{ ')
-    term = term.replaceAll('}', '\\} ')
-    term = term.replaceAll('\\', '\\setminus ')
+    // Give {, }, and \ a reserved characters. Replacing with setminus will conflict with 'min' function definition
+    term = term.replaceAll('{', '@1 ')
+    term = term.replaceAll('}', '@2 ')
+    term = term.replaceAll('\\', '@3')
 
     for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
       term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
     }
+
+    term = term.replaceAll('@1', '\\{ ')
+    term = term.replaceAll('@2', '\\} ')
+    term = term.replaceAll('@3', '\\setminus ')
 
     term = term.replaceAll('∧', '\\land ')
     term = term.replaceAll('∨', '\\lor ')
