@@ -47,7 +47,13 @@ export class LogIndStep {
   }
 
   unicodeToLatex (term) {
+    term = term.replaceAll('{', '\\{ ')
+    term = term.replaceAll('}', '\\} ')
     term = term.replaceAll('\\', '\\setminus ')
+
+    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
+      term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
+    }
 
     term = term.replaceAll('∧', '\\land ')
     term = term.replaceAll('∨', '\\lor ')
@@ -57,13 +63,6 @@ export class LogIndStep {
     term = term.replaceAll('φ', '\\phi ')
     term = term.replaceAll('ψ', '\\psi ')
     term = term.replaceAll('χ', '\\chi ')
-
-    term = term.replaceAll('{', '\\{ ')
-    term = term.replaceAll('}', '\\} ')
-
-    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
-      term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
-    }
 
     return term
   }

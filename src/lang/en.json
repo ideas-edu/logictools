@@ -374,6 +374,12 @@
         "inductiveSteps": "Inductive Steps"
       },
       "label": {
+        "badge": {
+          "active": "Active",
+          "complete": "Complete",
+          "incomplete": "In Progress",
+          "notStarted": "Not Started"
+        },
         "baseCase": "Case $${{title}}$$",
         "hypothesis": "Hypothesis $${{title}}$$",
         "inductiveStep": "Case $${{title}}$$"

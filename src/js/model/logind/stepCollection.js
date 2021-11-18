@@ -66,7 +66,6 @@ export class LogIndCase extends StepCollection {
     this.identifier = identifier
     this.type = type
     this.steps = []
-    this.complete = false
     this.proofRelation = null
     if (identifier === undefined) {
       this.identifier = ''
@@ -117,9 +116,6 @@ export class LogIndCase extends StepCollection {
     if (!isTopStep && currentStep !== null) {
       this.steps.push(new LogIndStep(this, currentStep, null, null, number, isTopStep))
     }
-    if (isTopStep) {
-      this.complete = true
-    }
 
     // this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
     // this.stepsHistoryIndex = 0
@@ -162,7 +158,13 @@ export class LogIndCase extends StepCollection {
     }
     const leftExpression = this.steps[0].unicodeToLatex(this.steps[0].term)
     const rightExpression = this.steps[this.steps.length - 1].unicodeToLatex(this.steps[this.steps.length - 1].term)
-    const proofKatex = `${leftExpression}${this.proofRelation}${rightExpression}`
+    let relation = this.proofRelation
+    if (this.proofRelation === '<=') {
+      relation = '\\leq'
+    } else if (this.proofRelation === '>=') {
+      relation = '\\geq'
+    }
+    const proofKatex = `${leftExpression}${relation}${rightExpression}`
     return proofKatex
   }
 

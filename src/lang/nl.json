@@ -374,6 +374,12 @@
         "inductiveSteps": "Inductiestappen"
       },
       "label": {
+        "badge": {
+          "active": "Actief",
+          "complete": "Voltooid",
+          "incomplete": "In Werking",
+          "notStarted": "Niet Begonnen"
+        },
         "baseCase": "Geval $${{title}}$$",
         "hypothesis": "Hypothese $${{title}}$$",
         "inductiveStep": "Geval $${{title}}$$"

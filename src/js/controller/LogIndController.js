@@ -359,47 +359,15 @@ export class LogIndController extends ExerciseController {
     return true
   }
 
-  /**
-    Validates a step
-      Runs callback after correct step has been validated
-     */
   newCase (type) {
-    // if (document.getElementById('exercise-step-table').style.display === 'none') {
-      this.exercise.activeCase = new LogIndCase(this.exercise)
-      this.exercise.activeCase.type = type
-      document.getElementById('exercise-step-table').style.display = ''
-      document.getElementById('validate-step').style.display = ''
-      this.setProofDirection('begin')
-      this.setStep()
-      this.updateSteps()
-      this.updateCases()
-    //   return
-    // }
-
-    // const onSuccess = function (term, resultType) {
-    //   if (term === undefined) {
-    //     this.onStepValidated(term, resultType)
-    //     this.disableUI(false)
-    //     return
-    //   }
-    //   this.exercise.setCases(term.proofs)
-    //   this.exercise.activeCase = new LogIndCase(this.exercise)
-    //   const onSuccess = function (result) {
-    //     this.onCheckConstraints(result)
-    //     this.setStep()
-    //     this.updateSteps()
-    //     this.updateCases()
-    //     document.getElementById('exercise-step-table').style.display = 'none'
-    //   }
-    //   this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
-
-    //   this.disableUI(false)
-    //   this.clearErrors()
-    // }.bind(this)
-
-    // this.setStep()
-    // this.disableUI(true)
-    // this.exerciseValidator.validateExercise(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
+    this.exercise.activeCase = new LogIndCase(this.exercise)
+    this.exercise.activeCase.type = type
+    document.getElementById('exercise-step-table').style.display = ''
+    document.getElementById('validate-step').style.display = ''
+    this.setProofDirection('begin')
+    this.setStep()
+    this.updateSteps()
+    this.updateCases()
   }
 
   onCheckConstraints (result) {
@@ -444,6 +412,23 @@ export class LogIndController extends ExerciseController {
               break
           }
           break
+      }
+      if (constraint.constraint.startsWith('case-finished')) {
+        const identifier = constraint.constraint.split('.')[2]
+        const _case = this.exercise.cases.cases.find(x => x.identifier.toLowerCase() === identifier.toLowerCase())
+        if (_case !== undefined) {
+          switch (constraint.value) {
+            case 'ok':
+              _case.status = 'complete'
+              break
+            case 'irrelevant':
+              _case.status = 'notStarted'
+              break
+            default:
+              _case.status = 'incomplete'
+              break
+          }
+        }
       }
     }
   }
@@ -525,7 +510,7 @@ export class LogIndController extends ExerciseController {
     this.dismissAlert()
     const onSuccess = function (result) {
       this.onCheckConstraints(result)
-      if (this.exercise.activeCase !== null && this.exercise.activeCase.complete) {
+      if (this.exercise.activeCase !== null && this.exercise.activeCase.status === 'complete') {
         this.onCaseCompleted()
       } else {
         if (this.exercise.activeCase !== null) {
@@ -543,7 +528,6 @@ export class LogIndController extends ExerciseController {
 
   onCaseCompleted () {
     this.exercise.activeCase = null
-    document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('validate-step').style.display = 'none'
     document.getElementById('formula-top').value = ''
@@ -597,7 +581,7 @@ export class LogIndController extends ExerciseController {
         this.deleteCase(_case.index, _case.type)
       }.bind(this))
 
-      if (!_case.complete) {
+      if (_case.status !== 'complete') {
         exerciseCaseDiv.content.querySelector('.edit-case').addEventListener('click', function () {
           this.editCase(_case.index, _case.type)
         }.bind(this))
@@ -651,13 +635,14 @@ export class LogIndController extends ExerciseController {
     let status = null
     if (this.exercise.activeCase !== null && _case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
-      status = 'Active'
+      status = 'active'
+    } else {
+      status = _case.status
     }
 
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
-      complete: _case.complete,
       type: _case.type,
       status: status,
       steps: newSteps
@@ -850,7 +835,6 @@ export class LogIndController extends ExerciseController {
   }
 
   updateSteps () {
-
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
     const steps = document.querySelectorAll('.case-step-row')
     const exerciseStepTable = document.getElementById('exercise-step-table')

@@ -40,7 +40,7 @@
 
 	<div id="exercise-container" style="display: none">
 		<div class="row">
-			<div class="col-5" id="case-container">
+			<div class="col-6" id="case-container">
 				<table class="table table-striped">
 					<thead>
 						<tr id="exercise-table-header">
@@ -54,7 +54,7 @@
 				</table>
 			</div>
 
-			<div class="col-7">
+			<div class="col-6">
 				<div id="rule-container">
 					<table style="width: 100%">
 						<tbody id="exercise-step-table" style="display: none">
@@ -169,9 +169,15 @@
 			-->
 		<script id="exercise-case-header-template" type="text/x-jsrender">
 			<tr><td colspan="2"><h6 translate-key="logind.case.header.{{:title}}"></h6></td><td><h6><span class="float-right">
-				{{if status === "complete"}}<span class="badge badge-success"><i class='fas fa-check'></i> Complete</span>{{/if}}
-				{{if status === "incomplete"}}<span class="badge badge-warning"><i class='fas fa-ellipsis-h'></i> In progress</span>{{/if}}
-				{{if status === "notStarted"}}Not started{{/if}}
+				{{if status === "complete"}}
+					<span class="badge badge-success"><i class='fas fa-check'></i> <span translate-key="logind.case.label.badge.complete"></span></span>
+					{{/if}}
+				{{if status === "incomplete"}}
+					<span class="badge badge-warning"><i class='fas fa-ellipsis-h'></i> <span translate-key="logind.case.label.badge.incomplete"></span></span>
+				{{/if}}
+				{{if status === "notStarted"}}
+					<span class="badge badge-secondary"><i class='far fa-circle'></i> <span translate-key="logind.case.label.badge.notStarted"></span></span>
+				{{/if}}
 			</span></h6></td></tr>
 		</script>
 		<script id="exercise-active-case-header-template" type="text/x-jsrender">
@@ -184,13 +190,19 @@
 		</script>
 		<script id="exercise-step-template" type="text/x-jsrender">
 			<tr class="border-top-{{:border}}"><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b>
-				{{if status !== null}}
-					 <span class="badge badge-primary"><i>{{:status}}</i></span>
+				{{if status === 'active'}}
+					 <span class="badge badge-primary"><i translate-key="logind.case.label.badge.active"></i></span>
+				{{/if}}
+				{{if status === 'complete'}}
+					 <span class="badge badge-success"><i translate-key="logind.case.label.badge.complete"></i></span>
+				{{/if}}
+				{{if status === 'incomplete'}}
+					 <span class="badge badge-warning"><i translate-key="logind.case.label.badge.incomplete"></i></span>
 				{{/if}}
 			</td><td>
 			{{if border !== 'active'}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
-				{{if !complete}}
+				{{if status !== 'complete'}}
 					<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
 				{{/if}}
 			{{/if}}
