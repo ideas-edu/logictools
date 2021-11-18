@@ -1,4 +1,4 @@
-import { LogIndCaseCollection, LogIndCase } from './stepCollection.js'
+import { LogIndCaseCollection } from './stepCollection.js'
 /**
     Represents a one way exercise.
     @constructor

@@ -58,11 +58,7 @@
 				<div id="rule-container">
 					<table style="width: 100%">
 						<tbody id="exercise-step-table" style="display: none">
-							<tr id="exercise-step-header">
-								<td style="width: 20%"></td>
-								<td><select id="rule" class="form-control input custom-select"></select></td>
-							</tr>
-							<tr id="active-message" style="display: none">
+							<tr id="active-message">
 								<td colspan="2" id="active-message-text"></td>
 							</tr>
 							<!-- Assumption -->
@@ -126,20 +122,28 @@
 						<!-- </td>
 					</tr> -->
 					<div id="logind-actions">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-						<div class="dropdown-menu" aria-labelledby="help-menu">
-							<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
-							<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
-							<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
-							<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+							<div class="dropdown-menu" aria-labelledby="help-menu">
+								<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+							</div>
 						</div>
-						<button type="button" id="new-case" class="btn btn-outline-secondary" translate-key="shared.button.new"></button>
-						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.check"></button>
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="new-menu" translate-key="shared.button.new" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+							<div class="dropdown-menu" aria-labelledby="new-menu">
+								<button type="button" class="dropdown-item" id="new-base-case" translate-key="rule.logic.propositional.logind.baseCase"></button>
+								<button type="button" class="dropdown-item" id="new-hypothesis" translate-key="rule.logic.propositional.logind.hypothesis"></button>
+								<button type="button" class="dropdown-item" id="new-inductive-step" translate-key="rule.logic.propositional.logind.inductiveStep"></button>
+							</div>
+						</div>
+						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.check" style="display: none"></button>
 					</div>
 				</div>
 				<div id="completed-rule-container" style="display: none">
 					<span translate-key="logind.completed"></span>
-					<button type="button" id="renumber-step" class="btn btn-outline-secondary" translate-key="logind.button.renumber"></button>
 					<button type="button" class="btn btn-outline-secondary" id="show-solve-exercise" translate-key="shared.button.solveExercise"></button>
 				</div>
 			</div>

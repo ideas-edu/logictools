@@ -414,7 +414,12 @@
     },
     "step": {
       "message": {
-        "prove": "<i>Bewijs</i>: $${{formula}}$$"
+        "begin": {
+          "baseCase": "<i>Formuleer het basisgeval</i>",
+          "hypothesis": "<i>Formuleer de inductiehypothese</i>",
+          "inductiveStep": "<i>Formuleer de inductiestap</i>"
+        },
+        "prove": "<i>Te Bewijzen</i>: $${{formula}}$$"
       },
       "placeholder": {
         "left": "Linkerkant van formule",

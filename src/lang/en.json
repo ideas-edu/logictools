@@ -414,6 +414,11 @@
     },
     "step": {
       "message": {
+        "begin": {
+          "baseCase": "<i>Formulate the base case</i>",
+          "hypothesis": "<i>Formulate the induction hypothesis</i>",
+          "inductiveStep": "<i>Formulate the inductive case</i>"
+        },
         "prove": "<i>Prove</i>: $${{formula}}$$"
       },
       "placeholder": {

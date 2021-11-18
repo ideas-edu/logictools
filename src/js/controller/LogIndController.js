@@ -18,7 +18,7 @@ import { LogIndCase } from '../model/logind/stepCollection.js'
 import { convertM2H } from '../model/logind/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
-import { translateElement, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
+import { translateElement, translateElementPlaceholder, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
 
@@ -71,8 +71,16 @@ export class LogIndController extends ExerciseController {
       }
     }.bind(this))
 
-    document.getElementById('new-case').addEventListener('mousedown', function () {
-      this.newCase()
+    document.getElementById('new-base-case').addEventListener('mousedown', function () {
+      this.newCase('baseCase')
+    }.bind(this))
+
+    document.getElementById('new-hypothesis').addEventListener('mousedown', function () {
+      this.newCase('hypothesis')
+    }.bind(this))
+
+    document.getElementById('new-inductive-step').addEventListener('mousedown', function () {
+      this.newCase('inductiveStep')
     }.bind(this))
 
     document.getElementById('complete-exercise').addEventListener('click', function () {
@@ -97,10 +105,6 @@ export class LogIndController extends ExerciseController {
 
     this.setMotivation(document.getElementById('motivation-top'))
     this.setMotivation(document.getElementById('motivation-bottom'))
-
-    // // apply
-    const applyButton = document.getElementById('new-case')
-    applyButton.disabled = false
   }
 
   setMotivation (motivationElement) {
@@ -120,8 +124,6 @@ export class LogIndController extends ExerciseController {
   /**
     */
   showExercise () {
-    document.getElementById('rule').selectedIndex = 0
-    this.initializeRules(document.getElementById('rule'))
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
@@ -130,10 +132,6 @@ export class LogIndController extends ExerciseController {
     document.getElementById('instruction').innerHTML = this.exercise.problem
     document.getElementById('formula-top').value = ''
     document.getElementById('formula-bottom').value = ''
-    document.getElementById('rule').addEventListener('change', function () {
-      document.getElementById('validate-step').style.display = document.getElementById('rule').selectedIndex === 0 ? 'none' : ''
-      this.setProofDirection('begin')
-    }.bind(this))
     translateElement(document.getElementById('instruction'), 'logind.instruction.exercise', {
       problem: this.exercise.problem,
       title: {
@@ -264,18 +262,7 @@ export class LogIndController extends ExerciseController {
     )
   }
 
-  disableUI (disable) {
-    super.disableUI(disable)
-    this.applyReady()
-  }
-
-  applyReady () {
-    const applyButton = document.getElementById('new-case')
-    applyButton.disabled = false
-  }
-
   validateStep () {
-    this.setStep()
     if (!this.validateFormula()) {
       return
     }
@@ -283,7 +270,7 @@ export class LogIndController extends ExerciseController {
     this.oldCases = this.exercise.cases.getObject()
     this.oldActive = this.exercise.activeCase.identifier
     if (this.proofDirection === 'begin') {
-      if (document.getElementById('rule').value === 'logic.propositional.logind.hypothesis') {
+      if (this.exercise.activeCase.type === 'hypothesis') {
         this.exercise.activeCase.steps = []
         this.exercise.activeCase.insertTopStep()
         this.exercise.activeCase.insertTopStep()
@@ -376,48 +363,43 @@ export class LogIndController extends ExerciseController {
     Validates a step
       Runs callback after correct step has been validated
      */
-  newCase () {
-    if (document.getElementById('exercise-step-table').style.display === 'none') {
+  newCase (type) {
+    // if (document.getElementById('exercise-step-table').style.display === 'none') {
+      this.exercise.activeCase = new LogIndCase(this.exercise)
+      this.exercise.activeCase.type = type
       document.getElementById('exercise-step-table').style.display = ''
+      document.getElementById('validate-step').style.display = ''
       this.setProofDirection('begin')
       this.setStep()
       this.updateSteps()
       this.updateCases()
-      document.getElementById('rule').selectedIndex = 0
-      return
-    }
+    //   return
+    // }
 
-    if (this.getSelectedRuleKey() === null) {
-      this.setErrorLocation('rule')
-      this.updateAlert('shared.error.noRule', null, 'error')
-      return false
-    }
+    // const onSuccess = function (term, resultType) {
+    //   if (term === undefined) {
+    //     this.onStepValidated(term, resultType)
+    //     this.disableUI(false)
+    //     return
+    //   }
+    //   this.exercise.setCases(term.proofs)
+    //   this.exercise.activeCase = new LogIndCase(this.exercise)
+    //   const onSuccess = function (result) {
+    //     this.onCheckConstraints(result)
+    //     this.setStep()
+    //     this.updateSteps()
+    //     this.updateCases()
+    //     document.getElementById('exercise-step-table').style.display = 'none'
+    //   }
+    //   this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
 
-    const onSuccess = function (term, resultType) {
-      if (term === undefined) {
-        this.onStepValidated(term, resultType)
-        this.disableUI(false)
-        return
-      }
-      this.exercise.setCases(term.proofs)
-      this.exercise.activeCase = new LogIndCase(this.exercise)
-      const onSuccess = function (result) {
-        this.onCheckConstraints(result)
-        this.setStep()
-        this.updateSteps()
-        this.updateCases()
-        document.getElementById('rule').selectedIndex = 0
-        document.getElementById('exercise-step-table').style.display = 'none'
-      }
-      this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
+    //   this.disableUI(false)
+    //   this.clearErrors()
+    // }.bind(this)
 
-      this.disableUI(false)
-      this.clearErrors()
-    }.bind(this)
-
-    this.setStep()
-    this.disableUI(true)
-    this.exerciseValidator.validateExercise(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
+    // this.setStep()
+    // this.disableUI(true)
+    // this.exerciseValidator.validateExercise(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   onCheckConstraints (result) {
@@ -564,7 +546,6 @@ export class LogIndController extends ExerciseController {
     document.getElementById('completed-rule-container').style.display = 'none'
     document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('validate-step').style.display = 'none'
-    document.getElementById('rule').selectedIndex = 0
     document.getElementById('formula-top').value = ''
     document.getElementById('formula-bottom').value = ''
 
@@ -770,7 +751,6 @@ export class LogIndController extends ExerciseController {
 
   editCase (index, type) {
     this.exercise.activeCase = this.exercise.getCase(index, type)
-    document.getElementById('rule').value = `logic.propositional.logind.${this.exercise.activeCase.type}`
     document.getElementById('exercise-step-table').style.display = ''
     document.getElementById('validate-step').style.display = ''
 
@@ -826,7 +806,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = 'none'
     }
     if (direction === 'begin') {
-      activeMessage.style.display = 'none'
+      activeMessage.style.display = ''
       topStep.style.display = 'none'
       topFormula.style.display = ''
       bottomStep.style.display = 'none'
@@ -852,20 +832,25 @@ export class LogIndController extends ExerciseController {
     if (this.exercise.activeCase.topSteps.length === 0) {
       document.getElementById('relation-top').style.display = 'none'
       document.getElementById('motivation-top').style.display = 'none'
+      translateElementPlaceholder(document.getElementById('formula-top'), 'logind.step.placeholder.left')
     } else {
       document.getElementById('relation-top').style.display = ''
       document.getElementById('motivation-top').style.display = ''
+      translateElementPlaceholder(document.getElementById('formula-top'), 'logind.step.placeholder.middle')
     }
     if (this.exercise.activeCase.bottomSteps.length === 0) {
       document.getElementById('relation-bottom').style.display = ''
       document.getElementById('motivation-bottom').style.display = 'none'
+      translateElementPlaceholder(document.getElementById('formula-bottom'), 'logind.step.placeholder.right')
     } else {
       document.getElementById('relation-bottom').style.display = ''
       document.getElementById('motivation-bottom').style.display = ''
+      translateElementPlaceholder(document.getElementById('formula-bottom'), 'logind.step.placeholder.middle')
     }
   }
 
   updateSteps () {
+
     this.clearErrors() // verwijder alle voorgaande foutmeldingen van het scherm
     const steps = document.querySelectorAll('.case-step-row')
     const exerciseStepTable = document.getElementById('exercise-step-table')
@@ -877,9 +862,13 @@ export class LogIndController extends ExerciseController {
       return
     }
 
-    translateElement(document.getElementById('active-message-text'), 'logind.step.message.prove', {
-      formula: this.exercise.activeCase.getProof()
-    })
+    if (this.exercise.activeCase.getProof() === null) {
+      translateElement(document.getElementById('active-message-text'), `logind.step.message.begin.${this.exercise.activeCase.type}`)
+    } else {
+      translateElement(document.getElementById('active-message-text'), 'logind.step.message.prove', {
+        formula: this.exercise.activeCase.getProof()
+      })
+    }
 
     for (const step of this.exercise.activeCase.steps) {
       this.insertStep(step)
