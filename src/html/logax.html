@@ -348,13 +348,13 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<td scope="row" class="col-step {{if highlightStep}}highlight-text{{/if}}">
+			<td scope="row" class="col-step {{if deleteStep}}delete-text{{else highlightStep}}highlight-text{{/if}}">
 				{{>step}}
 			</td>
-			<td class="col-term {{if highlightTerm}}highlight-text{{/if}}">
+			<td class="col-term {{if deleteTerm}}delete-text{{else highlightTerm}}highlight-text{{/if}}">
 				<span class="logax-term">{{:term}}</span>
 			</td>
-			<td class="col-rule {{if highlightRule}}highlight-text{{/if}}">
+			<td class="col-rule {{if deleteRule}}delete-text{{else highlightRule}}highlight-text{{/if}}">
 				<span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span> {{:references}}
 			</td>
 			<td class="remove-step col-actions">

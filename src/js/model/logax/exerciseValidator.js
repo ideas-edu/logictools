@@ -61,8 +61,8 @@ export class LogAxExerciseValidator extends ExerciseValidator {
         onErrorValidating()
         return
       }
-      exercise.steps.newSet(response.apply.state.context.term.proof)
-      onValidated()
+      // exercise.steps.newSet()
+      onValidated(response.apply.state.context.term.proof)
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)
   }
