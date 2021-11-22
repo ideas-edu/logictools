@@ -1,6 +1,5 @@
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseSolver } from '../shared/exerciseSolver.js'
-import { LogIndExercise } from './exercise.js'
 import { LogIndCaseCollection } from './stepCollection.js'
 import { LogIndStep } from './step.js'
 
@@ -32,7 +31,6 @@ export class LogIndExerciseSolver extends ExerciseSolver {
       const ds = data.derivation.derivation.derivationsteps
       const last = ds[ds.length - 1]
       exercise.setCases(last.context.term.proofs)
-      console.log(exercise)
       onExerciseSolved(exercise)
     }
 
