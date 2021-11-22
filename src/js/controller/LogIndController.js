@@ -241,12 +241,8 @@ export class LogIndController extends ExerciseController {
   }
 
   showSolution () {
-    const term = {
-      proof: [{
-        term: this.exercise.theorem,
-        number: 1000
-      }]
-    }
+    const term = this.exercise.getObject()
+    term.proofs = {}
     window.open(
       `logindsolution.html?formula=${encodeURIComponent(JSON.stringify(term))}&exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
       '_blank',
@@ -256,7 +252,7 @@ export class LogIndController extends ExerciseController {
 
   completeSolution () {
     window.open(`logindsolution.html?formula=${encodeURIComponent(JSON.stringify(this.exercise.getObject()))}` +
-      `exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
+      `&exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
     '_blank',
     'location=no,width=1020,height=600,status=no,toolbar=no'
     )
@@ -431,6 +427,9 @@ export class LogIndController extends ExerciseController {
         }
       }
     }
+    if (this.exercise.baseCasesStatus === 'complete' && this.exercise.hypothesesStatus === 'complete' && this.exercise.inductiveStepsStatus === 'complete') {
+      this.onCompleted()
+    }
   }
 
   /**
@@ -539,11 +538,9 @@ export class LogIndController extends ExerciseController {
     this.updateCases()
   }
 
-  onCompleted (isFinished) {
-    if (isFinished) {
-      document.getElementById('rule-container').style.display = 'none'
-      document.getElementById('completed-rule-container').style.display = ''
-    }
+  onCompleted () {
+    document.getElementById('rule-container').style.display = 'none'
+    document.getElementById('completed-rule-container').style.display = ''
   }
 
   // ####################################################################

@@ -388,7 +388,8 @@
         "no_base_case": "You have no base cases."
       }
     },
-    "hint":{
+    "completed": "The exercise is finished.",
+    "hint": {
       "basecases": "Formulate the theorem to be proven for a base element of the language.",
       "calculate": {
         "#": "Apply a calculation.",

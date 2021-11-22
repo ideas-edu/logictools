@@ -388,6 +388,7 @@
         "no_base_case": "U heeft geen basisgevallen geschreven."
       }
     },
+    "completed": "De uitwerking is compleet",
     "hint": {
       "basecases": "Formuleer de te bewijzen eigenschap voor een basiselement.",
       "calculate": {
