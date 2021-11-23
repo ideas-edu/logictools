@@ -41,6 +41,7 @@ ready(setUp)
 export class LogIndController extends ExerciseController {
   constructor () {
     super()
+    this.exerciseComplete = false
     this.ruleKey = null
     this.formulaOptions = {
       unaryOperators: ['¬'],
@@ -124,6 +125,7 @@ export class LogIndController extends ExerciseController {
   /**
     */
   showExercise () {
+    this.exerciseComplete = false
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
@@ -377,6 +379,13 @@ export class LogIndController extends ExerciseController {
             case 'irrelevant':
               this.exercise.baseCasesStatus = 'notStarted'
               break
+            case 'error':
+              if (constraint.message === 'no atom var') {
+                this.exercise.baseCasesStatus = 'notStarted'
+              } else {
+                this.exercise.baseCasesStatus = 'incomplete'
+              }
+              break
             default:
               this.exercise.baseCasesStatus = 'incomplete'
               break
@@ -539,6 +548,7 @@ export class LogIndController extends ExerciseController {
   }
 
   onCompleted () {
+    this.exerciseComplete = true
     document.getElementById('rule-container').style.display = 'none'
     document.getElementById('completed-rule-container').style.display = ''
   }
@@ -573,7 +583,7 @@ export class LogIndController extends ExerciseController {
 
     translateChildren(exerciseCaseDiv.content)
 
-    if (this.exercise.activeCase === null || _case.identifier !== this.exercise.activeCase.identifier) {
+    if (!this.exerciseComplete && (this.exercise.activeCase === null || _case.identifier !== this.exercise.activeCase.identifier)) {
       exerciseCaseDiv.content.querySelector('.delete-case').addEventListener('click', function () {
         this.deleteCase(_case.index, _case.type)
       }.bind(this))
@@ -640,6 +650,7 @@ export class LogIndController extends ExerciseController {
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
+      exerciseComplete: this.exerciseComplete,
       type: _case.type,
       status: status,
       steps: newSteps
@@ -728,7 +739,11 @@ export class LogIndController extends ExerciseController {
 
   deleteCase (index, type) {
     this.exercise.deleteCase(index, type)
-    this.updateCases()
+    const onSuccess = function (result) {
+      this.onCheckConstraints(result)
+      this.updateCases()
+    }
+    this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   editCase (index, type) {

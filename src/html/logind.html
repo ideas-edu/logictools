@@ -200,7 +200,7 @@
 					 <span class="badge badge-warning"><i translate-key="logind.case.label.badge.incomplete"></i></span>
 				{{/if}}
 			</td><td>
-			{{if border !== 'active'}}
+			{{if (exerciseComplete === false && border !== 'active')}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
 				{{if status !== 'complete'}}
 					<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
