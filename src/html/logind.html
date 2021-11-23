@@ -225,6 +225,9 @@
 			<tr class="case-step-row">
 				<td colspan="2">
 					{{:formula}}
+					{{if !isFirst}}
+						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+					{{/if}}
 				</td>
 			</tr>
 		</script>
@@ -232,6 +235,9 @@
 			<tr class="case-step-row">
 				<td colspan="2">
 					{{:formula}}
+					{{if !isLast}}
+						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+					{{/if}}
 				</td>
 			</tr>
 			{{if relation !== null || motivation !== null}}

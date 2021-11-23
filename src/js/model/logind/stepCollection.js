@@ -73,10 +73,6 @@ export class LogIndCase extends StepCollection {
 
     if (_case === undefined) {
       _case = {}
-      // _case = ['', {
-      //   motivation: '?',
-      //   type: '='
-      // }, '']
       return
     }
 
@@ -123,15 +119,7 @@ export class LogIndCase extends StepCollection {
 
   getObject () {
     const object = []
-    // let wasTopStep = true
     for (const step of this.steps) {
-      // if (!step.isTopStep && wasTopStep) {
-      //   object.push({
-      //     motivation: '?',
-      //     type: '='
-      //   })
-      // }
-      // wasTopStep = step.isTopStep
       const intermediate = {
         motivation: step.rule === null ? '<GAP>' : step.rule,
         type: step.rule === null ? this.proofRelation : step.getAsciiRelation()
@@ -144,8 +132,6 @@ export class LogIndCase extends StepCollection {
       } else {
         object.push(intermediate)
         object.push(step.unicodeToAscii(step.term))
-        // if (step.rule !== null) {
-        // }
       }
     }
 
@@ -215,9 +201,5 @@ export class LogIndCase extends StepCollection {
       this.steps[i].number -= 1
     }
     this.steps.splice(index, 1)
-    if (index === 0) {
-      this.steps[0].rule = null
-      this.steps[0].relation = null
-    }
   }
 }

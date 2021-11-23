@@ -129,7 +129,6 @@ export class LogIndController extends ExerciseController {
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
-    document.getElementById('validate-step').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
     document.getElementById('formula-top').value = ''
     document.getElementById('formula-bottom').value = ''
@@ -359,7 +358,6 @@ export class LogIndController extends ExerciseController {
   newCase (type) {
     this.exercise.activeCase = new LogIndCase(this.exercise)
     this.exercise.activeCase.type = type
-    document.getElementById('validate-step').style.display = ''
     this.setProofDirection('begin')
     this.setStep()
     this.updateSteps()
@@ -520,7 +518,9 @@ export class LogIndController extends ExerciseController {
         this.onCaseCompleted()
       } else {
         if (this.exercise.activeCase !== null) {
-          this.setProofDirection('down')
+          if (this.proofDirection !== 'up') {
+            this.setProofDirection('down')
+          }
           document.getElementById('formula-top').value = this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term
           document.getElementById('formula-bottom').value = this.exercise.activeCase.bottomSteps[0].term
         }
@@ -534,7 +534,6 @@ export class LogIndController extends ExerciseController {
 
   onCaseCompleted () {
     this.exercise.activeCase = null
-    document.getElementById('validate-step').style.display = 'none'
     document.getElementById('formula-top').value = ''
     document.getElementById('formula-bottom').value = ''
 
@@ -580,16 +579,16 @@ export class LogIndController extends ExerciseController {
 
     translateChildren(exerciseCaseDiv.content)
 
-    if (!this.exerciseComplete && (this.exercise.activeCase === null || _case.identifier !== this.exercise.activeCase.identifier)) {
+    if (exerciseCaseDiv.content.querySelector('.delete-case') !== null) {
       exerciseCaseDiv.content.querySelector('.delete-case').addEventListener('click', function () {
         this.deleteCase(_case.index, _case.type)
       }.bind(this))
+    }
 
-      if (_case.status !== 'complete') {
-        exerciseCaseDiv.content.querySelector('.edit-case').addEventListener('click', function () {
-          this.editCase(_case.index, _case.type)
-        }.bind(this))
-      }
+    if (exerciseCaseDiv.content.querySelector('.edit-case') !== null) {
+      exerciseCaseDiv.content.querySelector('.edit-case').addEventListener('click', function () {
+        this.editCase(_case.index, _case.type)
+      }.bind(this))
     }
     const exerciseCaseTable = document.getElementById('exercise-case-table')
     exerciseCaseTable.appendChild(exerciseCaseDiv.content)
@@ -602,6 +601,12 @@ export class LogIndController extends ExerciseController {
     exerciseStep.innerHTML = this.renderStep(step, true)
 
     translateChildren(exerciseStep.content)
+
+    if (exerciseStep.content.querySelector('.delete-step') !== null) {
+      exerciseStep.content.querySelector('.delete-step').addEventListener('click', function () {
+        this.deleteStep(step.number)
+      }.bind(this))
+    }
 
     const exerciseStepTable = document.getElementById('exercise-step-table')
     if (step.isTopStep) {
@@ -745,12 +750,22 @@ export class LogIndController extends ExerciseController {
 
   editCase (index, type) {
     this.exercise.activeCase = this.exercise.getCase(index, type)
-    document.getElementById('validate-step').style.display = ''
 
     this.setProofDirection('down')
     this.updateCases()
     this.updateSteps()
     this.setStep()
+  }
+
+  deleteStep (index) {
+    this.exercise.activeCase.deleteStep(index)
+    const onSuccess = function (result) {
+      this.onCheckConstraints(result)
+      this.updateCases()
+      this.updateSteps()
+      this.setStep()
+    }
+    this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   // ####################################################################
@@ -759,6 +774,7 @@ export class LogIndController extends ExerciseController {
 
   setProofDirection (direction) {
     this.proofDirection = direction
+    const validateStep = document.getElementById('validate-step')
     const steps = document.getElementById('exercise-step-table')
     const topStep = document.getElementById('active-step-top')
     const topFormula = document.getElementById('active-formula-top')
@@ -770,6 +786,7 @@ export class LogIndController extends ExerciseController {
     const stepBuffer = document.getElementById('step-buffer')
 
     if (direction === 'down') {
+      validateStep.style.display = ''
       steps.style.display = ''
       activeMessage.style.display = ''
       topStep.style.display = ''
@@ -781,6 +798,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = ''
     }
     if (direction === 'up') {
+      validateStep.style.display = ''
       steps.style.display = ''
       activeMessage.style.display = ''
       topStep.style.display = 'none'
@@ -792,6 +810,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = ''
     }
     if (direction === 'none') {
+      validateStep.style.display = 'none'
       steps.style.display = 'none'
       activeMessage.style.display = 'none'
       topStep.style.display = 'none'
@@ -803,6 +822,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = 'none'
     }
     if (direction === 'begin') {
+      validateStep.style.display = ''
       steps.style.display = ''
       activeMessage.style.display = ''
       topStep.style.display = 'none'
