@@ -45,6 +45,7 @@ export class LogAxController extends ExerciseController {
   constructor () {
     super()
     this.ruleKey = null
+    this.hoverNumber = null
     this.formulaOptions = {
       unaryOperators: ['¬'],
       binaryOperators: ['→', ','],
@@ -1180,8 +1181,12 @@ export class LogAxController extends ExerciseController {
         n: index
       }
     }
+    this.hoverNumber = index
 
     const callback = function (deleteSet) {
+      if (this.hoverNumber !== index) {
+        return
+      }
       for (const step of this.exercise.steps.steps) {
         step.deleteStep = true
         step.deleteTerm = true
@@ -1203,14 +1208,23 @@ export class LogAxController extends ExerciseController {
       }
       for (const element of document.getElementsByClassName('exercise-step')) {
         for (const step of this.exercise.steps.steps) {
-          if (Number(element.getAttribute('number')) === step.number && step.deleteStep) {
+          if (Number(element.getAttribute('number')) !== step.number) {
+            continue
+          }
+          if (step.deleteStep) {
             element.getElementsByClassName('col-step')[0].classList.add('delete-text')
+          } else {
+            element.getElementsByClassName('col-step')[0].classList.remove('delete-text')
           }
-          if (Number(element.getAttribute('number')) === step.number && step.deleteTerm) {
+          if (step.deleteTerm) {
             element.getElementsByClassName('col-term')[0].classList.add('delete-text')
+          } else {
+            element.getElementsByClassName('col-term')[0].classList.remove('delete-text')
           }
-          if (Number(element.getAttribute('number')) === step.number && step.deleteRule) {
+          if (step.deleteRule) {
             element.getElementsByClassName('col-rule')[0].classList.add('delete-text')
+          } else {
+            element.getElementsByClassName('col-rule')[0].classList.remove('delete-text')
           }
         }
       }
@@ -1219,6 +1233,7 @@ export class LogAxController extends ExerciseController {
   }
 
   resetRemoveStep () {
+    this.hoverNumber = null
     for (const step of this.exercise.steps.steps) {
       step.deleteStep = false
       step.deleteTerm = false
