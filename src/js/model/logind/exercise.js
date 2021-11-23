@@ -44,11 +44,22 @@ export class LogIndExercise {
   }
 
   setCases (cases, activeCase) {
+    const oldIdentifiers = []
+    for (const _case of this.cases.cases) {
+      oldIdentifiers.push(_case.identifier)
+    }
     this.cases = new LogIndCaseCollection(this, cases)
     if (activeCase) {
       this.activeCase = this.cases.cases.find(x => x.identifier === activeCase)
     } else {
       this.activeCase = null
+      // If there is no active case and there is a new case given make this the active case
+      for (const _case of this.cases.cases) {
+        if (!oldIdentifiers.includes(_case.identifier)) {
+          this.activeCase = _case
+          break
+        }
+      }
     }
   }
 

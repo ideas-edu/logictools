@@ -129,7 +129,6 @@ export class LogIndController extends ExerciseController {
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
-    document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('validate-step').style.display = 'none'
     document.getElementById('instruction').innerHTML = this.exercise.problem
     document.getElementById('formula-top').value = ''
@@ -360,7 +359,6 @@ export class LogIndController extends ExerciseController {
   newCase (type) {
     this.exercise.activeCase = new LogIndCase(this.exercise)
     this.exercise.activeCase.type = type
-    document.getElementById('exercise-step-table').style.display = ''
     document.getElementById('validate-step').style.display = ''
     this.setProofDirection('begin')
     this.setStep()
@@ -536,7 +534,6 @@ export class LogIndController extends ExerciseController {
 
   onCaseCompleted () {
     this.exercise.activeCase = null
-    document.getElementById('exercise-step-table').style.display = 'none'
     document.getElementById('validate-step').style.display = 'none'
     document.getElementById('formula-top').value = ''
     document.getElementById('formula-bottom').value = ''
@@ -748,7 +745,6 @@ export class LogIndController extends ExerciseController {
 
   editCase (index, type) {
     this.exercise.activeCase = this.exercise.getCase(index, type)
-    document.getElementById('exercise-step-table').style.display = ''
     document.getElementById('validate-step').style.display = ''
 
     this.setProofDirection('down')
@@ -763,6 +759,7 @@ export class LogIndController extends ExerciseController {
 
   setProofDirection (direction) {
     this.proofDirection = direction
+    const steps = document.getElementById('exercise-step-table')
     const topStep = document.getElementById('active-step-top')
     const topFormula = document.getElementById('active-formula-top')
     const bottomStep = document.getElementById('active-step-bottom')
@@ -773,6 +770,7 @@ export class LogIndController extends ExerciseController {
     const stepBuffer = document.getElementById('step-buffer')
 
     if (direction === 'down') {
+      steps.style.display = ''
       activeMessage.style.display = ''
       topStep.style.display = ''
       topFormula.style.display = ''
@@ -783,6 +781,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = ''
     }
     if (direction === 'up') {
+      steps.style.display = ''
       activeMessage.style.display = ''
       topStep.style.display = 'none'
       topFormula.style.display = 'none'
@@ -793,6 +792,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = ''
     }
     if (direction === 'none') {
+      steps.style.display = 'none'
       activeMessage.style.display = 'none'
       topStep.style.display = 'none'
       topFormula.style.display = 'none'
@@ -803,6 +803,7 @@ export class LogIndController extends ExerciseController {
       stepBuffer.style.display = 'none'
     }
     if (direction === 'begin') {
+      steps.style.display = ''
       activeMessage.style.display = ''
       topStep.style.display = 'none'
       topFormula.style.display = ''
