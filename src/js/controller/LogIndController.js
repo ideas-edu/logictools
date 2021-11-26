@@ -461,7 +461,7 @@ export class LogIndController extends ExerciseController {
     this.disableUI(false)
     this.exercise.setCases(this.oldCases, this.oldActive)
     if (error === undefined) {
-      this.setErrorLocation('new-case')
+      // this.setErrorLocation('new-case')
       this.updateAlert('shared.error.validatingStep', null, 'error')
       return
     }
@@ -469,7 +469,7 @@ export class LogIndController extends ExerciseController {
     if (!hasTranslation(message)) {
       message = 'shared.error.wrongStep'
     }
-    this.setErrorLocation('new-case')
+    // this.setErrorLocation('new-case')
     this.updateAlert(message, error.params, 'error')
   }
 
@@ -527,7 +527,9 @@ export class LogIndController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
+    // console.log(nextStep)
     this.exercise.setCases(nextStep.formula.proofs, nextStep.formula.active)
+    // console.log(this.exercise.getObject())
     this.dismissAlert()
     const onSuccess = function (result) {
       this.onCheckConstraints(result)

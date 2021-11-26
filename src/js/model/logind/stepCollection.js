@@ -100,18 +100,18 @@ export class LogIndCase extends StepCollection {
         // Bottom step
         if (step.constructor === String) {
           currentStep = step
+          this.steps.push(new LogIndStep(this, currentStep, rule, relation, number, isTopStep))
         } else {
           rule = step.motivation
           relation = step.type
-          this.steps.push(new LogIndStep(this, currentStep, rule, relation, number, isTopStep))
           number += 1
           currentStep = null
         }
       }
     }
-    if (!isTopStep && currentStep !== null) {
-      this.steps.push(new LogIndStep(this, currentStep, null, null, number, isTopStep))
-    }
+    // if (!isTopStep && currentStep !== null) {
+    //   this.steps.push(new LogIndStep(this, currentStep, null, null, number, isTopStep))
+    // }
 
     // this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
     // this.stepsHistoryIndex = 0

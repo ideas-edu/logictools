@@ -108,7 +108,9 @@ export class LogIndStep {
   }
 
   setTerm (term) {
+    console.log(term)
     this.term = this.asciiToUnicode(term)
+    console.log(this.term)
     // This does not match the longest function
     const termAnnotated = this.unicodeToLatex(this.term)
 
@@ -123,7 +125,7 @@ export class LogIndStep {
  * @param {*} str
  * @param {*} definitions List of functionnames, e.q. val1, min
  */
-function convertH2M (str, definitions) {
+export function convertH2M (str, definitions) {
   try {
     let pos = 0
     // walk linearly through str
@@ -148,6 +150,7 @@ function convertH2M (str, definitions) {
           case 'del':
           case 'subst':
           case 'union':
+          case 'set':
             // then it has a second parameter after the first parameter
             startParam2 = startParam1 + lenParam1 + str.substring(startParam1 + lenParam1).search(/\S/) // ignore whitespace
             lenParam2 = findLenHaskellParam(str.substring(startParam2))
@@ -166,6 +169,11 @@ function convertH2M (str, definitions) {
             paramsStr = 'min(' + removeBrackets(convertH2M(param1, definitions)) + ',' + removeBrackets(convertH2M(param2, definitions)) + ')'
             break
           case 'set': // unary function
+            if (param2 != ')' && startParam1 !== startParam2) {
+              posNewFrom = startParam2 + lenParam2
+              paramsStr = '{' + removeBrackets(convertH2M(param1, definitions)) + ',' + removeBrackets(convertH2M(param2, definitions)) + '}'
+              break
+            }
             posNewFrom = startParam1 + lenParam1
             paramsStr = '{' + removeBrackets(convertH2M(param1, definitions)) + '}'
             break
@@ -194,7 +202,7 @@ function convertH2M (str, definitions) {
     if (typeof str !== 'string') {
       console.log('very bad!')
     }
-    str = str.replace(/\s+/g, '') // remove whitespace
+    // str = str.replace(/\s+/g, '') // remove whitespace
     return str
   } catch (err) {
     // geeft undefined ?
@@ -316,7 +324,7 @@ export function convertM2H (str, definitions) {
       if (term !== '') {
         if (/^\{/.test(term)) {
           term = removeCurlyBrackets(term)
-          term = 'set ' + term
+          term = 'set ' + term.replaceAll(',', ' ')
         }
       }
       // subst
