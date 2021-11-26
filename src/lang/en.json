@@ -531,6 +531,7 @@
       "new": "New",
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
+      "selectMotivation": "-- Select motivation --",
       "selectRule": "-- Select rule --",
       "selectStep": "-- Select step --",
       "send": "Send",
@@ -549,6 +550,7 @@
         "twoWay": "The proof is not yet completed"
       },
       "invalidFormula": "This formula has an incorrect syntax",
+      "noMotivation": "You must indicate which motivation you have applied",
       "noRule": "You must indicate which rule you have applied",
       "noStepPossible": "The formula is in normal form.",
       "notChanged": "You have not changed the equation",

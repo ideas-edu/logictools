@@ -385,7 +385,15 @@ table td .row{
 	margin-left: 0px!important;
 }
 
-table td:first-child {
+.oneWay-body table td:first-child {
+	padding-right: 0!important;
+}
+
+.twoWay-body table td:first-child {
+	padding-right: 0!important;
+}
+
+.logax-body table td:first-child {
 	padding-right: 0!important;
 }
 
@@ -683,7 +691,7 @@ button {
 }
 
 .logind-body #rule-container #logind-actions {
-	padding:8px 0;
+	padding:8px 15px 8px 5px;
 }
 
 .logind-body #exercise-container .row {
@@ -713,6 +721,10 @@ button {
 
 .logind-body table #active-message {
 	border-top: none;
+}
+
+.logind-body table #relation-gap {
+	width: 90px;
 }
 
 .logind-body .border-top-active {

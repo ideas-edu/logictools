@@ -110,6 +110,9 @@ export class LogIndController extends ExerciseController {
 
   setMotivation (motivationElement) {
     motivationElement.innerHTML = ''
+    const select = document.createElement('option')
+    translateElement(select, 'shared.button.selectMotivation')
+    motivationElement.appendChild(select)
     for (const motivation of this.motivationOptions) {
       const option = document.createElement('option')
       option.value = motivation
@@ -120,6 +123,10 @@ export class LogIndController extends ExerciseController {
       }
       motivationElement.appendChild(option)
     }
+
+    motivationElement.addEventListener('change', function () {
+      this.clearErrors()
+    }.bind(this))
   }
 
   /**
@@ -284,6 +291,11 @@ export class LogIndController extends ExerciseController {
       }
     }
     if (this.proofDirection === 'down') {
+      if (document.getElementById('motivation-top').selectedIndex === 0) {
+        this.setErrorLocation('motivation-top')
+        this.updateAlert('shared.error.noMotivation', null, 'error')
+        return
+      }
       let newStep = null
       if (document.getElementById('formula-top').value === this.exercise.activeCase.bottomSteps[0].term) {
         // Close proof
@@ -296,6 +308,11 @@ export class LogIndController extends ExerciseController {
       newStep.rule = document.getElementById('motivation-top').value
     }
     if (this.proofDirection === 'up') {
+      if (document.getElementById('motivation-bottom').selectedIndex === 0) {
+        this.setErrorLocation('motivation-bottom')
+        this.updateAlert('shared.error.noMotivation', null, 'error')
+        return
+      }
       if (document.getElementById('formula-bottom').value === this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term) {
         // Close proof
         this.exercise.activeCase.closeProof(document.getElementById('relation-bottom').value, document.getElementById('motivation-bottom').value)

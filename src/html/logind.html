@@ -123,15 +123,6 @@
 					</tr> -->
 					<div id="logind-actions">
 						<div class="btn-group">
-							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-							<div class="dropdown-menu" aria-labelledby="help-menu">
-								<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
-								<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
-								<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
-								<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
-							</div>
-						</div>
-						<div class="btn-group">
 							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="new-menu" translate-key="shared.button.new" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 							<div class="dropdown-menu" aria-labelledby="new-menu">
 								<button type="button" class="dropdown-item" id="new-base-case" translate-key="rule.logic.propositional.logind.baseCase"></button>
@@ -139,7 +130,16 @@
 								<button type="button" class="dropdown-item" id="new-inductive-step" translate-key="rule.logic.propositional.logind.inductiveStep"></button>
 							</div>
 						</div>
-						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.check" style="display: none"></button>
+						<button type="button" id="validate-step" class="btn btn-outline-secondary float-right" translate-key="shared.button.check" style="display: none"></button>
+						<div class="btn-group float-right">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="help-menu">
+								<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div id="completed-rule-container" style="display: none">
