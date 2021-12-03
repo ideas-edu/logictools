@@ -270,8 +270,8 @@ export class LogIndController extends ExerciseController {
       return
     }
     // Deep copy exercise in case that the step is invalid
-    this.oldCases = this.exercise.cases.getObject()
-    this.oldActive = this.exercise.activeCase.identifier
+    const oldCases = this.exercise.cases.getObject()
+    const oldActive = this.exercise.activeCase.identifier
     if (this.proofDirection === 'begin') {
       if (this.exercise.activeCase.type === 'hypothesis') {
         this.exercise.activeCase.steps = []
@@ -324,7 +324,9 @@ export class LogIndController extends ExerciseController {
         nextStep.rule = document.getElementById('motivation-bottom').value
       }
     }
-    this.exerciseValidator.validateExercise(this.exercise, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+    const newStep = this.exercise.getObject()
+    this.exercise.setCases(oldCases, oldActive)
+    this.exerciseValidator.validateExercise(this.exercise, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   validateFormula () {
@@ -459,7 +461,6 @@ export class LogIndController extends ExerciseController {
      */
   onErrorValidatingStep (error) {
     this.disableUI(false)
-    this.exercise.setCases(this.oldCases, this.oldActive)
     if (error === undefined) {
       // this.setErrorLocation('new-case')
       this.updateAlert('shared.error.validatingStep', null, 'error')
@@ -479,12 +480,12 @@ export class LogIndController extends ExerciseController {
      */
   onStepValidated (term, resultType) {
     switch (resultType) {
-      case 'similar':
-        this.doNextStep({ formula: term })
-        break
       case 'notequiv':
-        this.exercise.setCases(this.oldCases, this.oldActive)
         this.updateAlert('logind.error.incorrect', null, 'error')
+        break
+      case 'expected':
+      case 'correct':
+        this.doNextStep({ formula: term })
         break
     }
     return true
