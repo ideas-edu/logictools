@@ -63,7 +63,8 @@ export class LogIndStep {
     term = term.replaceAll('∧', '\\land ')
     term = term.replaceAll('∨', '\\lor ')
     term = term.replaceAll('¬', '\\neg ')
-    term = term.replaceAll('->', '\\rightarrow ')
+    term = term.replaceAll('→', '\\rightarrow ')
+    term = term.replaceAll('⋅', '\\cdot')
 
     term = term.replaceAll('φ', '\\phi ')
     term = term.replaceAll('ψ', '\\psi ')
@@ -80,6 +81,7 @@ export class LogIndStep {
     term = term.replaceAll('||', '∨')
     term = term.replaceAll('~', '¬')
     term = term.replaceAll('->', '→')
+    term = term.replaceAll('*', '⋅')
 
     term = term.replaceAll('phi', 'φ')
     term = term.replaceAll('psi', 'ψ')
@@ -94,13 +96,14 @@ export class LogIndStep {
     term = term.replaceAll('∨', '||')
     term = term.replaceAll('¬', '~')
     term = term.replaceAll('→', '->')
+    term = term.replaceAll('⋅', '*')
 
     term = term.replaceAll('φ', ' phi ')
     term = term.replaceAll('ψ', ' psi ')
     term = term.replaceAll('χ', ' chi ')
     term = term.replaceAll('∪', ' union ')
     term = term.replaceAll('\\', ' del ')
-
+    console.log(term)
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
     term = convertM2H(term, this.case.exercise.definitions.concat(DEFINITIONS))
 

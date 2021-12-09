@@ -152,7 +152,7 @@ export class LogIndController extends ExerciseController {
     this.characterOptions = [{
       char: 'φ',
       latex: '\\phi',
-      triggers: []
+      triggers: ['ϕ', 'φ']
     },
     {
       char: 'ψ',
@@ -168,6 +168,12 @@ export class LogIndController extends ExerciseController {
       char: '∪',
       latex: '\\cup',
       triggers: []
+    },
+    {
+      char: '⋅',
+      latex: '\\cdot',
+      triggers: ['*', '∗'],
+      hideButton: true
     }]
     for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
       this.characterOptions.push({
@@ -183,7 +189,7 @@ export class LogIndController extends ExerciseController {
         hideButton: true
       })
     }
-    for (const char of ['+', '-', '*', '/', '(', ')', ',', '{', '}', '[', ']', '\\']) {
+    for (const char of ['+', '-', '/', '(', ')', ',', '{', '}', '[', ']', '\\']) {
       this.characterOptions.push({
         char: char,
         triggers: [char],
@@ -266,12 +272,18 @@ export class LogIndController extends ExerciseController {
   }
 
   validateStep () {
+    console.log('test1')
+
     if (!this.validateFormula()) {
       return
     }
+        console.log('test2')
+
     // Deep copy exercise in case that the step is invalid
     const oldCases = this.exercise.cases.getObject()
     const oldActive = this.exercise.activeCase.identifier
+        console.log('test3')
+
     if (this.proofDirection === 'begin') {
       let relation = document.getElementById('relation-gap').value
       if (relation === '≤') {
@@ -283,6 +295,7 @@ export class LogIndController extends ExerciseController {
         this.exercise.activeCase.steps = []
         this.exercise.activeCase.insertTopStep()
         this.exercise.activeCase.insertTopStep()
+        console.log('test')
         this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
         this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
         this.exercise.activeCase.steps[1].rule = 'ih'
@@ -344,6 +357,7 @@ export class LogIndController extends ExerciseController {
         term = term.replaceAll('∨', '||')
         term = term.replaceAll('¬', '~')
         term = term.replaceAll('→', '->')
+        term = term.replaceAll('⋅', '*')
 
         term = term.replaceAll('φ', ' phi ')
         term = term.replaceAll('ψ', ' psi ')
@@ -364,6 +378,7 @@ export class LogIndController extends ExerciseController {
         term = term.replaceAll('∨', '||')
         term = term.replaceAll('¬', '~')
         term = term.replaceAll('→', '->')
+        term = term.replaceAll('⋅', '*')
 
         term = term.replaceAll('φ', ' phi ')
         term = term.replaceAll('ψ', ' psi ')
