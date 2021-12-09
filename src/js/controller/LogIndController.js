@@ -273,6 +273,12 @@ export class LogIndController extends ExerciseController {
     const oldCases = this.exercise.cases.getObject()
     const oldActive = this.exercise.activeCase.identifier
     if (this.proofDirection === 'begin') {
+      let relation = document.getElementById('relation-gap').value
+      if (relation === '≤') {
+        relation = '<='
+      } else if (relation === '≥') {
+        relation = '>='
+      }
       if (this.exercise.activeCase.type === 'hypothesis') {
         this.exercise.activeCase.steps = []
         this.exercise.activeCase.insertTopStep()
@@ -280,14 +286,14 @@ export class LogIndController extends ExerciseController {
         this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
         this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
         this.exercise.activeCase.steps[1].rule = 'ih'
-        this.exercise.activeCase.steps[1].relation = document.getElementById('relation-gap').value
+        this.exercise.activeCase.steps[1].relation = relation
       } else {
         this.exercise.activeCase.steps = []
         this.exercise.activeCase.insertTopStep()
         this.exercise.activeCase.insertBottomStep()
         this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
         this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
-        this.exercise.activeCase.proofRelation = document.getElementById('relation-gap').value
+        this.exercise.activeCase.proofRelation = relation
       }
     }
     if (this.proofDirection === 'down') {
