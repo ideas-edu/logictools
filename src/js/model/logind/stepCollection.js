@@ -187,8 +187,8 @@ export class LogIndCase extends StepCollection {
     const bs = [].concat(this.bottomSteps)
     for (let index = this.bottomSteps.length - 1; index > 0; index--) {
       bs[index].isTopStep = true
-      bs[index].rule = this.bottomSteps[index - 1].rule
-      bs[index].relation = this.bottomSteps[index - 1].relation
+      // bs[index].rule = this.bottomSteps[index - 1].rule
+      // bs[index].relation = this.bottomSteps[index - 1].relation
     }
 
     bs[0].isTopStep = true

@@ -103,7 +103,7 @@ export class LogIndStep {
     term = term.replaceAll('χ', ' chi ')
     term = term.replaceAll('∪', ' union ')
     term = term.replaceAll('\\', ' del ')
-    console.log(term)
+
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
     term = convertM2H(term, this.case.exercise.definitions.concat(DEFINITIONS))
 
@@ -111,9 +111,7 @@ export class LogIndStep {
   }
 
   setTerm (term) {
-    console.log(term)
     this.term = this.asciiToUnicode(term)
-    console.log(this.term)
     // This does not match the longest function
     const termAnnotated = this.unicodeToLatex(this.term)
 

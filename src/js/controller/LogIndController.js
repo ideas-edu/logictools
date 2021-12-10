@@ -14,6 +14,7 @@ import { LogEXSession } from '../logEXSession.js'
 import { LogIndExerciseGenerator } from '../model/logind/exerciseGenerator.js'
 import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
+import { LogIndExercise } from '../model/logind/exercise.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
 import { convertM2H } from '../model/logind/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
@@ -139,6 +140,9 @@ export class LogIndController extends ExerciseController {
     document.getElementById('instruction').innerHTML = this.exercise.problem
     document.getElementById('formula-top').value = ''
     document.getElementById('formula-bottom').value = ''
+    document.getElementById('relation-gap').value = '='
+    document.getElementById('relation-top').value = '='
+    document.getElementById('relation-bottom').value = '='
     translateElement(document.getElementById('instruction'), 'logind.instruction.exercise', {
       problem: this.exercise.problem,
       title: {
@@ -272,19 +276,33 @@ export class LogIndController extends ExerciseController {
   }
 
   validateStep () {
-    console.log('test1')
-
     if (!this.validateFormula()) {
       return
     }
-        console.log('test2')
 
     // Deep copy exercise in case that the step is invalid
-    const oldCases = this.exercise.cases.getObject()
-    const oldActive = this.exercise.activeCase.identifier
-        console.log('test3')
+    console.log(this.exercise.getObject(), this.exercise.type, this.exercise.properties)
+    const newExercise = new LogIndExercise(
+      this.exercise.getObject(),
+      this.exercise.exerciseType,
+      {
+        titleKey: this.exercise.titleKey,
+        titleParams: this.exercise.titleParams
+      }
+    )
 
+    // const oldCases = this.exercise.cases.getObject()
+    // console.log(this.exercise.activeCase)
+    // const oldActive = this.exercise.activeCase.identifier
+    // console.log(oldActive)
     if (this.proofDirection === 'begin') {
+      newExercise.activeCase = new LogIndCase(
+        newExercise,
+        this.exercise.activeCase.getObject(),
+        this.exercise.activeCase.index,
+        this.exercise.activeCase.identifier,
+        this.exercise.activeCase.type
+      )
       let relation = document.getElementById('relation-gap').value
       if (relation === '≤') {
         relation = '<='
@@ -292,21 +310,20 @@ export class LogIndController extends ExerciseController {
         relation = '>='
       }
       if (this.exercise.activeCase.type === 'hypothesis') {
-        this.exercise.activeCase.steps = []
-        this.exercise.activeCase.insertTopStep()
-        this.exercise.activeCase.insertTopStep()
-        console.log('test')
-        this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
-        this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
-        this.exercise.activeCase.steps[1].rule = 'ih'
-        this.exercise.activeCase.steps[1].relation = relation
+        newExercise.activeCase.steps = []
+        newExercise.activeCase.insertTopStep()
+        newExercise.activeCase.insertTopStep()
+        newExercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
+        newExercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
+        newExercise.activeCase.steps[1].rule = 'ih'
+        newExercise.activeCase.steps[1].relation = relation
       } else {
-        this.exercise.activeCase.steps = []
-        this.exercise.activeCase.insertTopStep()
-        this.exercise.activeCase.insertBottomStep()
-        this.exercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
-        this.exercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
-        this.exercise.activeCase.proofRelation = relation
+        newExercise.activeCase.steps = []
+        newExercise.activeCase.insertTopStep()
+        newExercise.activeCase.insertBottomStep()
+        newExercise.activeCase.steps[0].setTerm(document.getElementById('formula-top').value)
+        newExercise.activeCase.steps[1].setTerm(document.getElementById('formula-bottom').value)
+        newExercise.activeCase.proofRelation = relation
       }
     }
     if (this.proofDirection === 'down') {
@@ -316,11 +333,11 @@ export class LogIndController extends ExerciseController {
         return
       }
       let newStep = null
-      if (document.getElementById('formula-top').value === this.exercise.activeCase.bottomSteps[0].term) {
+      if (document.getElementById('formula-top').value === newExercise.activeCase.bottomSteps[0].term) {
         // Close proof
-        newStep = this.exercise.activeCase.bottomSteps[0]
+        newStep = newExercise.activeCase.bottomSteps[0]
       } else {
-        newStep = this.exercise.activeCase.insertTopStep()
+        newStep = newExercise.activeCase.insertTopStep()
       }
       newStep.setTerm(document.getElementById('formula-top').value)
       newStep.relation = document.getElementById('relation-top').value
@@ -332,20 +349,25 @@ export class LogIndController extends ExerciseController {
         this.updateAlert('shared.error.noMotivation', null, 'error')
         return
       }
-      if (document.getElementById('formula-bottom').value === this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term) {
+      if (document.getElementById('formula-bottom').value === newExercise.activeCase.topSteps[newExercise.activeCase.topSteps.length - 1].term) {
         // Close proof
-        this.exercise.activeCase.closeProof(document.getElementById('relation-bottom').value, document.getElementById('motivation-bottom').value)
+        newExercise.activeCase.closeProof(document.getElementById('relation-bottom').value, document.getElementById('motivation-bottom').value)
       } else {
-        const newStep = this.exercise.activeCase.insertBottomStep()
-        const nextStep = this.exercise.activeCase.steps[newStep.number + 1]
+        const newStep = newExercise.activeCase.insertBottomStep()
+        const nextStep = newExercise.activeCase.steps[newStep.number + 1]
         newStep.setTerm(document.getElementById('formula-bottom').value)
         nextStep.relation = document.getElementById('relation-bottom').value
         nextStep.rule = document.getElementById('motivation-bottom').value
       }
     }
-    const newStep = this.exercise.getObject()
-    this.exercise.setCases(oldCases, oldActive)
-    this.exerciseValidator.validateExercise(this.exercise, newStep, this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
+    // const newStep = this.exercise.getObject()
+    // this.exercise.setCases(oldCases, oldActive)
+    // if (this.proofDirection === 'begin') {
+    //   this.exercise.activeCase = oldActiveCase
+    // }
+    console.log(newExercise, newExercise.getObject())
+
+    this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   validateFormula () {

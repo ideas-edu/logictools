@@ -18,7 +18,11 @@ export class LogIndExercise {
     this.constraints = null
 
     this.cases = new LogIndCaseCollection(this, term.proofs)
-    this.activeCase = null
+    if (term.active) {
+      this.activeCase = this.cases.cases.find(x => x.identifier === term.active)
+    } else {
+      this.activeCase = null
+    }
 
     this.baseCasesStatus = 'notStarted'
     this.hypothesesStatus = 'notStarted'

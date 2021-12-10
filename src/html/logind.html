@@ -232,14 +232,6 @@
 			</tr>
 		</script>
 		<script id="exercise-active-bottom-step-template" type="text/x-jsrender">
-			<tr class="case-step-row">
-				<td colspan="2">
-					{{:formula}}
-					{{if !isLast}}
-						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
-					{{/if}}
-				</td>
-			</tr>
 			{{if relation !== null || motivation !== null}}
 			<tr class="case-step-row">
 				<td>{{if relation !== null}}
@@ -250,6 +242,14 @@
 				{{/if}}</td>
 			</tr>
 			{{/if}}
+			<tr class="case-step-row">
+				<td colspan="2">
+					{{:formula}}
+					{{if !isLast}}
+						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+					{{/if}}
+				</td>
+			</tr>
 		</script>
 		<script id="exercise-case-step-template" type="text/x-jsrender">
 			{{if isLast}}
