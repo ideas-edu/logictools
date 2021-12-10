@@ -454,11 +454,12 @@ export class LogIndController extends ExerciseController {
             case 'ok':
               this.exercise.hypothesesStatus = 'complete'
               break
-            case 'irrelevant':
-              this.exercise.hypothesesStatus = 'notStarted'
-              break
             default:
-              this.exercise.hypothesesStatus = 'incomplete'
+              if (this.exercise.cases.hypotheses.length > 0) {
+                this.exercise.hypothesesStatus = 'incomplete'
+              } else {
+                this.exercise.hypothesesStatus = 'notStarted'
+              }
               break
           }
           break
@@ -467,11 +468,12 @@ export class LogIndController extends ExerciseController {
             case 'ok':
               this.exercise.inductiveStepsStatus = 'complete'
               break
-            case 'irrelevant':
-              this.exercise.inductiveStepsStatus = 'notStarted'
-              break
             default:
-              this.exercise.inductiveStepsStatus = 'incomplete'
+              if (this.exercise.cases.inductiveSteps.length > 0) {
+                this.exercise.inductiveStepsStatus = 'incomplete'
+              } else {
+                this.exercise.inductiveStepsStatus = 'notStarted'
+              }
               break
           }
           break
