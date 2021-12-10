@@ -170,7 +170,7 @@ export function convertH2M (str, definitions) {
             paramsStr = 'min(' + removeBrackets(convertH2M(param1, definitions)) + ',' + removeBrackets(convertH2M(param2, definitions)) + ')'
             break
           case 'set': // unary function
-            if (param2 != ')' && startParam1 !== startParam2) {
+            if (param2 !== ')' && startParam1 !== startParam2) {
               posNewFrom = startParam2 + lenParam2
               paramsStr = '{' + removeBrackets(convertH2M(param1, definitions)) + ',' + removeBrackets(convertH2M(param2, definitions)) + '}'
               break
