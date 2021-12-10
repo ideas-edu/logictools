@@ -28,14 +28,11 @@ export class LogIndExerciseSolver extends ExerciseSolver {
         onErrorSolvingExercise()
         return
       }
-      const steps = new this.StepCollection()
       const ds = data.derivation.derivation.derivationsteps
       const last = ds[ds.length - 1]
-      for (const step of last.context.term.proof) {
-        steps.push(new this.Step(step))
-      }
-      onExerciseSolved(steps)
-    }.bind(this)
+      exercise.setCases(last.context.term.proofs)
+      onExerciseSolved(exercise)
+    }
 
     const state = this._getState(exercise)
 

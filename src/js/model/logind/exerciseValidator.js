@@ -22,7 +22,7 @@ export class LogIndExerciseValidator extends ExerciseValidator {
 
   getContext (exercise) {
     const context = {
-      term: exercise.getObject(),
+      term: exercise,
       environment: {},
       location: []
     }
@@ -30,7 +30,7 @@ export class LogIndExerciseValidator extends ExerciseValidator {
     return context
   }
 
-  validateExercise (exercise, onValidated, onErrorValidatingStep) {
+  validateExercise (exercise, newStepObject, onValidated, onErrorValidatingStep) {
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined) {
@@ -48,7 +48,7 @@ export class LogIndExerciseValidator extends ExerciseValidator {
     }
 
     const state = this.getState(exercise)
-    const context = this.getContext(exercise)
+    const context = this.getContext(newStepObject)
     IdeasServiceProxy.diagnose(this.config, state, context, null, onSuccess, onError)
   }
 

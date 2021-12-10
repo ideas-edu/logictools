@@ -37,6 +37,7 @@ function ready (fn) {
 function setUp () {
   const controller = new TwoWayController()
   window.translate = loadLanguage
+  window.controller = controller
   loadLanguage(LogEXSession.getLanguage())
   controller.initializeStepValidation()
   controller.initializeInput()

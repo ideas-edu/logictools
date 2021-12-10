@@ -106,9 +106,10 @@ export class FormulaPopover {
     this.insertText(e.currentTarget.getAttribute('char'))
     const def = this._findCharDefinition(e.currentTarget.getAttribute('char'))
     if (def.function) {
+      const cursor = this.inputElement.selectionStart
       this.insertText('()')
-      this.inputElement.selectionStart -= 1
-      this.inputElement.selectionEnd = this.inputElement.selectionStart
+      setCursor(this.inputElement, cursor + 1)
+      // console.log(this.inputElement.value.substring(0, cursor + 1), this.inputElement.selectionStart, this.inputElement.value.substring(cursor + 1))
     }
     this.onChangeCallback()
     // Keep focus on inputElement after pressing button
@@ -290,7 +291,7 @@ export class FormulaPopover {
 
   _findCharDefinition (c) {
     for (const item of this.options.characters) {
-      if (item.char === c) {
+      if (item.char === c || item.triggers.includes(c)) {
         return item
       }
     }

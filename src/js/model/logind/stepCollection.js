@@ -65,26 +65,53 @@ export class LogIndCase extends StepCollection {
     this.index = index
     this.identifier = identifier
     this.type = type
+    this.steps = []
+    this.proofRelation = null
+    if (identifier === undefined) {
+      this.identifier = ''
+    }
 
     if (_case === undefined) {
-      _case = ['', {
-        motivation: '?',
-        type: '='
-      }, '']
+      _case = {}
+      return
     }
-    this.steps = []
+
     let rule = null
     let relation = null
     let number = 0
+    let isTopStep = true
+    let currentStep = null
     for (const step of _case) {
-      if (step.constructor === String) {
-        this.steps.push(new LogIndStep(this.exercise, step, rule, relation, number))
+      if (isTopStep) {
+        if (step.constructor === String) {
+          this.steps.push(new LogIndStep(this, step, rule, relation, number, isTopStep))
+        } else {
+          rule = step.motivation
+          relation = step.type
+          if (rule === '<GAP>') {
+            this.proofRelation = relation
+            relation = null
+            rule = null
+            isTopStep = false
+          }
+          number += 1
+        }
       } else {
-        rule = step.motivation
-        relation = step.type
-        number += 1
+        // Bottom step
+        if (step.constructor === String) {
+          currentStep = step
+          this.steps.push(new LogIndStep(this, currentStep, rule, relation, number, isTopStep))
+        } else {
+          rule = step.motivation
+          relation = step.type
+          number += 1
+          currentStep = null
+        }
       }
     }
+    // if (!isTopStep && currentStep !== null) {
+    //   this.steps.push(new LogIndStep(this, currentStep, null, null, number, isTopStep))
+    // }
 
     // this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
     // this.stepsHistoryIndex = 0
@@ -93,40 +120,80 @@ export class LogIndCase extends StepCollection {
   getObject () {
     const object = []
     for (const step of this.steps) {
-      if (step.rule !== null) {
-        object.push({
-          motivation: step.rule,
-          type: step.relation
-        })
+      const intermediate = {
+        motivation: step.rule === null ? '<GAP>' : step.rule,
+        type: step.rule === null ? this.proofRelation : step.getAsciiRelation()
       }
-      object.push(step.unicodeToAscii(step.term))
+      if (step.isTopStep) {
+        if (step.rule !== null) {
+          object.push(intermediate)
+        }
+        object.push(step.unicodeToAscii(step.term))
+      } else {
+        object.push(intermediate)
+        object.push(step.unicodeToAscii(step.term))
+      }
     }
 
     return object
+  }
+
+  getProof () {
+    if (this.steps.length < 2) {
+      return null
+    }
+    const leftExpression = this.steps[0].unicodeToLatex(this.steps[0].term)
+    const rightExpression = this.steps[this.steps.length - 1].unicodeToLatex(this.steps[this.steps.length - 1].term)
+    let relation = this.proofRelation
+    if (this.proofRelation === '<=') {
+      relation = '\\leq'
+    } else if (this.proofRelation === '>=') {
+      relation = '\\geq'
+    }
+    const proofKatex = `${leftExpression}${relation}${rightExpression}`
+    return proofKatex
   }
 
   getFormattedIdentifier () {
     return IDENTIFIERS[this.identifier]
   }
 
-  insertStepAbove (index) {
-    for (let i = index; i < this.steps.length; i++) {
-      this.steps[i].number += 1
-    }
-    if (index === 0) {
-      this.steps[0].rule = '?'
-      this.steps[0].relation = '='
-      this.steps.splice(index, 0, new LogIndStep(this.exercise, '', null, null, index))
-    } else {
-      this.steps.splice(index, 0, new LogIndStep(this.exercise, '', '?', '=', index))
-    }
+  get topSteps () {
+    return this.steps.filter(x => x.isTopStep)
   }
 
-  insertStepBelow (index) {
-    for (let i = index + 1; i < this.steps.length; i++) {
-      this.steps[i].number += 1
+  get bottomSteps () {
+    return this.steps.filter(x => !x.isTopStep)
+  }
+
+  insertTopStep () {
+    const index = this.topSteps.length
+    const newStep = new LogIndStep(this, '', null, index === 0 ? null : null, index, true)
+    this.steps.splice(index, 0, newStep)
+    return newStep
+  }
+
+  insertBottomStep () {
+    for (const bottomStep of this.bottomSteps) {
+      bottomStep.number += 1
     }
-    this.steps.splice(index + 1, 0, new LogIndStep(this.exercise, '', '?', '=', index + 1))
+    const index = this.steps.length - this.bottomSteps.length
+    const newStep = new LogIndStep(this, '', null, this.bottomSteps.length === 0 ? null : null, index, false)
+    this.steps.splice(index, 0, newStep)
+    return newStep
+  }
+
+  closeProof (relation, rule) {
+    const bs = [].concat(this.bottomSteps)
+    for (let index = this.bottomSteps.length - 1; index > 0; index--) {
+      bs[index].isTopStep = true
+      // bs[index].rule = this.bottomSteps[index - 1].rule
+      // bs[index].relation = this.bottomSteps[index - 1].relation
+    }
+
+    bs[0].isTopStep = true
+    bs[0].rule = rule
+    bs[0].relation = relation
   }
 
   deleteStep (index) {
@@ -134,9 +201,5 @@ export class LogIndCase extends StepCollection {
       this.steps[i].number -= 1
     }
     this.steps.splice(index, 1)
-    if (index === 0) {
-      this.steps[0].rule = null
-      this.steps[0].relation = null
-    }
   }
 }

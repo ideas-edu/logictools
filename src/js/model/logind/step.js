@@ -9,12 +9,19 @@ import katex from 'katex'
     @property {string} rule The applied rule.
  */
 export class LogIndStep {
-  constructor (exercise, step, rule, relation, number) {
-    this.exercise = exercise
+  constructor (_case, step, rule, relation, number, isTopStep) {
+    this.case = _case
     this.setTerm(step)
     this.number = number
+    if (relation === '<=') {
+      this.relation = '≤'
+    } else if (relation === '>=') {
+      this.relation = '≥'
+    } else {
+      this.relation = relation
+    }
     this.rule = rule
-    this.relation = relation
+    this.isTopStep = isTopStep
 
     // Highlights
     this.highlightStep = false
@@ -22,32 +29,59 @@ export class LogIndStep {
     this.highlightRule = false
   }
 
+  getPreviousStep () {
+    return this.case.steps.find(step => step.number === this.number - 1)
+  }
+
+  getNextStep () {
+    return this.case.steps.find(step => step.number === this.number + 1)
+  }
+
+  getAsciiRelation () {
+    if (this.relation === '≤') {
+      return '<='
+    } else if (this.relation === '≥') {
+      return '>='
+    }
+    return this.relation
+  }
+
   unicodeToLatex (term) {
-    term = term.replaceAll('\\', '\\setminus ')
+    // Give {, }, and \ a reserved characters. Replacing with setminus will conflict with 'min' function definition
+    term = term.replaceAll('{', '@1 ')
+    term = term.replaceAll('}', '@2 ')
+    term = term.replaceAll('\\', '@3')
 
-    term = term.replaceAll('∧', '\\land')
-    term = term.replaceAll('∨', '\\lor')
-    term = term.replaceAll('¬', '\\neg')
-    term = term.replaceAll('->', '\\rightarrow')
+    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
+      term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
+    }
 
-    term = term.replaceAll('φ', '\\phi')
-    term = term.replaceAll('ψ', '\\psi')
-    term = term.replaceAll('χ', '\\chi')
+    term = term.replaceAll('@1', '\\{ ')
+    term = term.replaceAll('@2', '\\} ')
+    term = term.replaceAll('@3', '\\setminus ')
 
-    term = term.replaceAll('{', '\\{')
-    term = term.replaceAll('}', '\\}')
+    term = term.replaceAll('∧', '\\land ')
+    term = term.replaceAll('∨', '\\lor ')
+    term = term.replaceAll('¬', '\\neg ')
+    term = term.replaceAll('→', '\\rightarrow ')
+    term = term.replaceAll('⋅', '\\cdot')
+
+    term = term.replaceAll('φ', '\\phi ')
+    term = term.replaceAll('ψ', '\\psi ')
+    term = term.replaceAll('χ', '\\chi ')
 
     return term
   }
 
   asciiToUnicode (term) {
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertH2M(term, this.exercise.definitions.concat(DEFINITIONS))
+    term = convertH2M(term, this.case.exercise.definitions.concat(DEFINITIONS))
 
     term = term.replaceAll('&&', '∧')
     term = term.replaceAll('||', '∨')
     term = term.replaceAll('~', '¬')
     term = term.replaceAll('->', '→')
+    term = term.replaceAll('*', '⋅')
 
     term = term.replaceAll('phi', 'φ')
     term = term.replaceAll('psi', 'ψ')
@@ -62,6 +96,7 @@ export class LogIndStep {
     term = term.replaceAll('∨', '||')
     term = term.replaceAll('¬', '~')
     term = term.replaceAll('→', '->')
+    term = term.replaceAll('⋅', '*')
 
     term = term.replaceAll('φ', ' phi ')
     term = term.replaceAll('ψ', ' psi ')
@@ -70,7 +105,7 @@ export class LogIndStep {
     term = term.replaceAll('\\', ' del ')
 
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
+    term = convertM2H(term, this.case.exercise.definitions.concat(DEFINITIONS))
 
     return term
   }
@@ -78,10 +113,7 @@ export class LogIndStep {
   setTerm (term) {
     this.term = this.asciiToUnicode(term)
     // This does not match the longest function
-    let termAnnotated = this.unicodeToLatex(this.term)
-    for (const functionName of this.exercise.definitions.concat(['min', 'max'])) {
-      termAnnotated = termAnnotated.replaceAll(functionName, `\\texttt{${functionName}}`)
-    }
+    const termAnnotated = this.unicodeToLatex(this.term)
 
     this.termKatex = katex.renderToString(termAnnotated, {
       throwOnError: false
@@ -94,7 +126,7 @@ export class LogIndStep {
  * @param {*} str
  * @param {*} definitions List of functionnames, e.q. val1, min
  */
-function convertH2M (str, definitions) {
+export function convertH2M (str, definitions) {
   try {
     let pos = 0
     // walk linearly through str
@@ -119,6 +151,7 @@ function convertH2M (str, definitions) {
           case 'del':
           case 'subst':
           case 'union':
+          case 'set':
             // then it has a second parameter after the first parameter
             startParam2 = startParam1 + lenParam1 + str.substring(startParam1 + lenParam1).search(/\S/) // ignore whitespace
             lenParam2 = findLenHaskellParam(str.substring(startParam2))
@@ -137,6 +170,11 @@ function convertH2M (str, definitions) {
             paramsStr = 'min(' + removeBrackets(convertH2M(param1, definitions)) + ',' + removeBrackets(convertH2M(param2, definitions)) + ')'
             break
           case 'set': // unary function
+            if (param2 !== ')' && startParam1 !== startParam2) {
+              posNewFrom = startParam2 + lenParam2
+              paramsStr = '{' + removeBrackets(convertH2M(param1, definitions)) + ',' + removeBrackets(convertH2M(param2, definitions)) + '}'
+              break
+            }
             posNewFrom = startParam1 + lenParam1
             paramsStr = '{' + removeBrackets(convertH2M(param1, definitions)) + '}'
             break
@@ -165,7 +203,7 @@ function convertH2M (str, definitions) {
     if (typeof str !== 'string') {
       console.log('very bad!')
     }
-    str = str.replace(/\s+/g, '') // remove whitespace
+    // str = str.replace(/\s+/g, '') // remove whitespace
     return str
   } catch (err) {
     // geeft undefined ?
@@ -250,7 +288,7 @@ function isSurroundedByBrackets (str) {
   return result
 }
 
-function convertM2H (str, definitions) {
+export function convertM2H (str, definitions) {
   try {
     str = unicodeToHaskell(str)
     str = addBracketsAroundUnionParameters(str)
@@ -287,7 +325,7 @@ function convertM2H (str, definitions) {
       if (term !== '') {
         if (/^\{/.test(term)) {
           term = removeCurlyBrackets(term)
-          term = 'set ' + term
+          term = 'set ' + term.replaceAll(',', ' ')
         }
       }
       // subst

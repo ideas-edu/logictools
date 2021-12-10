@@ -374,6 +374,12 @@
         "inductiveSteps": "Inductiestappen"
       },
       "label": {
+        "badge": {
+          "active": "Actief",
+          "complete": "Voltooid",
+          "incomplete": "In Werking",
+          "notStarted": "Niet Begonnen"
+        },
         "baseCase": "Geval $${{title}}$$",
         "hypothesis": "Hypothese $${{title}}$$",
         "inductiveStep": "Geval $${{title}}$$"
@@ -382,6 +388,7 @@
         "no_base_case": "U heeft geen basisgevallen geschreven."
       }
     },
+    "completed": "De uitwerking is compleet",
     "hint": {
       "basecases": "Formuleer de te bewijzen eigenschap voor een basiselement.",
       "calculate": {
@@ -411,6 +418,21 @@
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!",
       "exercise": "<b>[[title]]:</b> {{problem}}"
+    },
+    "step": {
+      "message": {
+        "begin": {
+          "baseCase": "<i>Formuleer het basisgeval</i>",
+          "hypothesis": "<i>Formuleer de inductiehypothese</i>",
+          "inductiveStep": "<i>Formuleer de inductiestap</i>"
+        },
+        "prove": "<i>Te Bewijzen</i>: $${{formula}}$$"
+      },
+      "placeholder": {
+        "left": "Linkerkant van formule",
+        "middle": "Formule",
+        "right": "Rechterkant van formule"
+      }
     },
     "title": "Bewijzen met volledige inductie"
   },
@@ -471,8 +493,19 @@
         "implication": "Implicatie-eliminatie",
         "logind": {
           "baseCase": "Basisgeval",
-          "hypothesis": "Hypothesis",
-          "inductiveStep": "Inductiestap"
+          "calculate": "Rekenen",
+          "definition": "Definitie {{function}}",
+          "del": "Definitie del",
+          "given": "Gegeven",
+          "hypothesis": "Hypothese",
+          "ih": "Inductie Hypothese",
+          "inductiveStep": "Inductiestap",
+          "logic": "Logica",
+          "max": "Definitie max",
+          "min": "Definitie min",
+          "set": "Verzamelingleer",
+          "subst": "Definitie substitution",
+          "union": "Definitie union"
         },
         "notfalse": "T-regel niet F",
         "nottrue": "F-regel niet T",
@@ -485,6 +518,7 @@
   "shared": {
     "button": {
       "apply": "Pas toe",
+      "check": "Controleer",
       "completeExercise": "Voltooi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
@@ -494,8 +528,10 @@
       "hint": "Hint",
       "insertStepAbove": "Voeg boven toe",
       "insertStepBelow": "Voeg onder toe",
+      "new": "Nieuw",
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
+      "selectMotivation": "-- Selecteer motivatie --",
       "selectRule": "-- Selecteer regel --",
       "selectStep": "-- Selecteer stap --",
       "send": "Verzend",
@@ -514,6 +550,7 @@
         "twoWay": "Bewijs is nog niet voltooid"
       },
       "invalidFormula": "Deze formule is grammaticaal niet correct",
+      "noMotivation": "U moet aangeven welke motivatie u heeft toegepast",
       "noRule": "U moet aangeven welke regel u heeft toegepast",
       "noStepPossible": "De formule is al in normaalvorm.",
       "notChanged": "U heeft de formule niet gewijzigd",

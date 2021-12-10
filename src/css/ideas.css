@@ -109,35 +109,11 @@ input.kbinput {
 	padding-left: 0px;
 }
 
-.studentid-popover-content .navbar .navbar-inner .nav {
-	margin-bottom: 0px;
-}
-
-.studentid-popover-content .navbar .nav > li > a {
-	padding: 2px 2px 2px;
-}
-
-
-
-
-
-.questionmark {
-	position: relative;
-	left:14px;
-	bottom:4px;
-}
-
 .equivalence {
 	font-size:18px;
 	position:relative;
 	top:7px;
 	right:5px;
-}
-
-.oneven {
-	background-color: #F9F9F9;
-	border-bottom: 1px solid #eee;
-	border-top: 1px solid #eee;
 }
 
 .wrong {
@@ -397,9 +373,8 @@ table thead th {
 	font-weight: bold;
 }
 
-table th,
-table td {
-	border-top: 1px solid #e8e8e8!important;
+table tr {
+	border-top: 1px solid #e8e8e8;
 }
 
 table td {
@@ -410,11 +385,29 @@ table td .row{
 	margin-left: 0px!important;
 }
 
-table td:first-child {
+.oneWay-body table td:first-child {
 	padding-right: 0!important;
 }
 
-table td:first-child .katex {
+.twoWay-body table td:first-child {
+	padding-right: 0!important;
+}
+
+.logax-body table td:first-child {
+	padding-right: 0!important;
+}
+
+.oneWay-body table td:first-child .katex {
+	margin-top:2px;
+	float:right;
+}
+
+.twoWay-body table td:first-child .katex {
+	margin-top:2px;
+	float:right;
+}
+
+.logax-body table td:first-child .katex {
 	margin-top:2px;
 	float:right;
 }
@@ -595,6 +588,11 @@ button {
 	height: 52px;
 }
 
+.twoWay-body #empty-top-step td{
+	background-color:#FBFBFB;
+	height: 52px;
+}
+
 
 .twoWay-body .col-direction {
 	padding-left:15px;
@@ -693,7 +691,7 @@ button {
 }
 
 .logind-body #rule-container #logind-actions {
-	padding:8px 0;
+	padding:8px 15px 8px 5px;
 }
 
 .logind-body #exercise-container .row {
@@ -712,14 +710,39 @@ button {
 	margin-bottom:0;
 }
 
-.logind-body .step-formula {
-	background-color: #eaecef;
+.logind-body #step-buffer td{
+	background-color:#FBFBFB;
+	height: 52px;
 }
 
 .logind-body #active-step td {
 	vertical-align: top;
 }
 
+.logind-body table #active-message {
+	border-top: none;
+}
+
+.logind-body table #relation-gap {
+	width: 90px;
+}
+
+.logind-body .border-top-active {
+	border-top: 2px solid #2B68D1;
+	border-left: 2px solid #2B68D1;
+	border-right: 2px solid #2B68D1;
+}
+
+.logind-body .border-middle-active {
+	border-left: 2px solid #2B68D1;
+	border-right: 2px solid #2B68D1;
+}
+
+.logind-body .border-bottom-active {
+	border-bottom: 2px solid #2B68D1;
+	border-left: 2px solid #2B68D1;
+	border-right: 2px solid #2B68D1;
+}
 
 .formula-highlight {
 background-color: red;
