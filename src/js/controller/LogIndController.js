@@ -281,7 +281,6 @@ export class LogIndController extends ExerciseController {
     }
 
     // Deep copy exercise in case that the step is invalid
-    console.log(this.exercise.getObject(), this.exercise.type, this.exercise.properties)
     const newExercise = new LogIndExercise(
       this.exercise.getObject(),
       this.exercise.exerciseType,
@@ -360,12 +359,6 @@ export class LogIndController extends ExerciseController {
         nextStep.rule = document.getElementById('motivation-bottom').value
       }
     }
-    // const newStep = this.exercise.getObject()
-    // this.exercise.setCases(oldCases, oldActive)
-    // if (this.proofDirection === 'begin') {
-    //   this.exercise.activeCase = oldActiveCase
-    // }
-    console.log(newExercise, newExercise.getObject())
 
     this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
@@ -573,9 +566,8 @@ export class LogIndController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    // console.log(nextStep)
+
     this.exercise.setCases(nextStep.formula.proofs, nextStep.formula.active)
-    // console.log(this.exercise.getObject())
     this.dismissAlert()
     const onSuccess = function (result) {
       this.onCheckConstraints(result)
