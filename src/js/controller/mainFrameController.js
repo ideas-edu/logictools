@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/brands'
 import config from '../../../config.json'
 
 import { LogEXSession } from '../logEXSession.js'
-import { translateElement, loadLanguage } from '../translate.js'
+import { translateChildren, loadLanguage } from '../translate.js'
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -21,11 +21,14 @@ function ready (fn) {
 
 class MainFrameController {
   constructor () {
+    document.getElementById('header-title').innerHTML = config.title
+    document.getElementById('page-title').innerHTML = config.title
+
     this.getUserId()
     this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
       LogEXSession.setLanguage('nl')
-      this.initializeLabels()
+      this.initializeLabels(false)
 
       // Switch view of the buttons (Bold = Active)
       document.getElementById('lang-nl').classList.add('active')
@@ -34,7 +37,7 @@ class MainFrameController {
 
     document.getElementById('lang-en').addEventListener('click', function () {
       LogEXSession.setLanguage('en')
-      this.initializeLabels()
+      this.initializeLabels(false)
 
       // Switch view of the buttons (Bold = Active)
       document.getElementById('lang-en').classList.add('active')
@@ -45,7 +48,7 @@ class MainFrameController {
     for (const tool of Object.values(config.tools)) {
       const tabItem = document.createElement('li')
       tabItem.classList = ['nav-item']
-      tabItem.innerHTML = `<a class="nav-link" data-toggle="tab" href="#container-${tool.code}" frame-id="fra-${tool.code}" id="tab-${tool.code}" translate-key="main.tabTitle.${tool.code}"></a>`
+      tabItem.innerHTML = `<a class="nav-link" data-toggle="tab" href="#container-${tool.code}" tool-code="${tool.code}" id="tab-${tool.code}" translate-key="main.tabTitle.${tool.code}"></a>`
       document.getElementById('myTabs').appendChild(tabItem)
 
       const containerItem = document.createElement('div')
@@ -55,7 +58,7 @@ class MainFrameController {
       containerItem.innerHTML = `<iframe src="" seamless frameBorder="0" id="fra-${tool.code}" width="100%" scrolling="no"></iframe>`
       document.getElementById('tab-container').appendChild(containerItem)
 
-      document.getElementById(`fra-${tool.code}`).onload = () => { updateTexts(document.getElementById(`fra-${tool.code}`).contentWindow.document) }
+      document.getElementById(`fra-${tool.code}`).onload = () => { translateChildren(document.getElementById(`fra-${tool.code}`).contentWindow.document) }
     }
   }
 
@@ -63,18 +66,61 @@ class MainFrameController {
       Gets the exercisetype as given in the querystring
     */
   getUserId () {
-    const sPageURL = window.location.search.substring(1)
-    const sURLVariables = sPageURL.split('&')
-    let sParameterName
-    let i
+    const sPageURL = window.location.search
+    const urlParams = new URLSearchParams(sPageURL)
 
-    for (i = 0; i < sURLVariables.length; i += 1) {
-      sParameterName = sURLVariables[i].split('=')
-      if (sParameterName[0] === 'userId') {
-        LogEXSession.setStudentId(sParameterName[1])
+    for (const entry of urlParams.entries()) {
+      if (entry[0].toLowerCase() === 'userid') {
+        LogEXSession.setStudentId(entry[1])
         return
       }
     }
+  }
+
+  /**
+      Directly navigate to tool if specified in url
+    */
+  autoRedirect () {
+    const sPageURL = window.location.search
+    const urlParams = new URLSearchParams(sPageURL)
+    let tool = null
+    for (const entry of urlParams.entries()) {
+      if (entry[0].toLowerCase() === 'tool') {
+        tool = Object.values(config.tools).find(t => t.code.toLowerCase() === entry[1].toLowerCase())
+        document.getElementById(`tab-${tool.code}`).classList.add('active')
+        document.getElementById(`container-${tool.code}`).classList.add('active')
+        selectTool(tool.code, tool.url)
+        break
+      }
+    }
+    if (tool === null) {
+      return
+    }
+    for (const entry of urlParams.entries()) {
+      if (entry[0].toLowerCase() === 'exercise') {
+        this.loadExercise(tool, Number(entry[1]))
+        return
+      }
+    }
+  }
+
+  loadExercise (tool, exercise) {
+    const contentWindow = document.getElementById(`fra-${tool.code}`).contentWindow
+    if (contentWindow !== null) {
+      const controller = contentWindow.controller
+      if (controller !== null && controller !== undefined) {
+        controller.useExercise({
+          exerciseNumber: exercise,
+          displayNumber: exercise + 1
+        })
+        return
+      }
+    }
+
+    // The exercise controller is not loaded, wait 100ms and try again
+    window.setTimeout(function () {
+      this.loadExercise(tool, exercise)
+    }.bind(this), 100)
   }
 
   /**
@@ -98,53 +144,53 @@ class MainFrameController {
   /**
         Initializes all buttons and label to correct language
      */
-  initializeLabels () {
+  initializeLabels (autoRedirect) {
     const language = LogEXSession.getLanguage()
     const langCallback = () => {
-      updateTexts(document)
+      translateChildren(document)
       document.querySelectorAll('iframe').forEach(item => {
         if (item.getAttribute('src') !== '') {
           item.contentWindow.translate(LogEXSession.getLanguage())
         }
-        updateTexts(item.contentWindow.document)
+        translateChildren(item.contentWindow.document)
       })
+      if (autoRedirect) {
+        this.autoRedirect()
+      }
     }
     loadLanguage(language, langCallback)
     document.getElementById(`lang-${language}`).classList.add('active')
   }
 }
 
-// Updates text of all descendant elements of element with translate-key attribute
-function updateTexts (element) {
-  const elements = element.querySelectorAll('[translate-key]')
-  for (const element of elements) {
-    translateElement(element)
+function selectTool (code, url) {
+  const frame = document.getElementById(`fra-${code}`)
+
+  // if the iframe hasnt already been loaded: load it once
+  if (frame.getAttribute('src') === '') {
+    frame.setAttribute('src', url)
   }
+  // Set focus to iframe so that keydown events are passed to the iframe contents
+  frame.contentWindow.focus()
 }
 
 function setUp () {
   const mainFrameController = new MainFrameController()
 
   mainFrameController.initializeLanguage()
-  mainFrameController.initializeLabels()
+  mainFrameController.initializeLabels(true)
 
   // Make sure tabs are only loaded when they are clicked for the first time.
   const elements = document.getElementsByClassName('nav-link')
 
   for (const element of elements) {
     element.addEventListener('click', function (e) {
+      const toolCode = this.getAttribute('tool-code')
       const paneID = this.getAttribute('href').replace('#', '')
-      const frameID = this.getAttribute('frame-id')
       const tab = document.getElementById(paneID)
       const src = tab.getAttribute('data-src')
-      const frame = document.getElementById(frameID)
 
-      // if the iframe hasnt already been loaded: load it once
-      if (frame.getAttribute('src') === '') {
-        frame.setAttribute('src', src)
-      }
-      // Set focus to iframe so that keydown events are passed to the iframe contents
-      frame.contentWindow.focus()
+      selectTool(toolCode, src)
     }.bind(element))
   }
 

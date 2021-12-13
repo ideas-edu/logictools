@@ -61,14 +61,14 @@ class Translate {
     // key.nested resolves to key.nested.#
     if (string.constructor === Object) {
       if (string['#'] !== undefined) {
-        return string['#']
+        string = string['#']
       } else {
         return key
       }
     }
 
     // Find all cases of {{param}}.
-    const paramRegex = /\{\{(.*?)\}\}/g
+    const paramRegex = /\{\{([^{]*?)\}\}/g
 
     string = string.replace(paramRegex, function (match, token) {
       return params[token]
@@ -108,7 +108,28 @@ export function translateElement (element, key, params) {
   if (params !== undefined) {
     element.setAttribute('translate-params', JSON.stringify(params))
   }
-
   element.innerHTML = translate(element.getAttribute('translate-key'), JSON.parse(element.getAttribute('translate-params')))
+  // Translate placeholder
+  if (element.hasAttribute('translate-placeholder-key')) {
+    element.placeholder = translate(element.getAttribute('translate-placeholder-key'))
+  }
+}
+export function translateElementPlaceholder (element, key, params) {
+  if (key !== undefined) {
+    element.setAttribute('translate-placeholder-key', key)
+  }
+  if (params !== undefined) {
+    element.setAttribute('translate-placeholder-params', JSON.stringify(params))
+  }
+  element.placeholder = translate(element.getAttribute('translate-placeholder-key'), JSON.parse(element.getAttribute('translate-placeholder-params')))
+}
+// Updates text of all descendant elements of element with translate-key attribute
+export function translateChildren (element) {
+  for (const childElement of element.querySelectorAll('[translate-key]')) {
+    translateElement(childElement)
+  }
+  for (const childElement of element.querySelectorAll('[translate-placeholder-key]')) {
+    translateElementPlaceholder(childElement)
+  }
 }
 export function loadLanguage (language, callback) { return translateInstance.loadLanguage(language, callback) }

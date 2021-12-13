@@ -1,5 +1,5 @@
 [![GitHub Super-Linter](https://github.com/ideas-edu/logictools/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
-[![Build Status](https://travis-ci.org/ideas-edu/logictools.svg?branch=main)](https://travis-ci.org/ideas-edu/logictools)
+[![Node.js CI](https://github.com/ideas-edu/logictools/actions/workflows/node.js.yml/badge.svg)](https://github.com/ideas-edu/logictools/actions/workflows/node.js.yml)
 
 # Logic Tools
 Logic Tools is a project of [IDEAS](https://ideas.science.uu.nl//#projects).

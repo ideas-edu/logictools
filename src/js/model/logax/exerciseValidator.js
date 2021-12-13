@@ -12,7 +12,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       exerciseid: exercise.type,
       prefix: '[]',
       context: {
-        term: exercise.steps.getObject(),
+        term: exercise.getObject(),
         environment: {},
         location: []
       }
@@ -35,48 +35,33 @@ export class LogAxExerciseValidator extends ExerciseValidator {
     const state = this.getState(exercise)
 
     const validated = function (response) {
-      if (response.error) {
-        if (response.error.slice(0, 12) === 'Cannot apply') { // syntax error
-          const baseRuleKey = step.rule.split('.')[3]
-          const ruleKey = `rule.logic.propositional.axiomatic.${baseRuleKey}`
-          onErrorValidating({ key: 'shared.error.cannotApply', params: { rule: ruleKey } })
-          return
-        }
-        const BUGGY_RULE_PATTERN = /Buggy rule logic\.propositional\.([a-zA-Z0-9\-_.]+)( {(.*)})?/
-        const key = response.error.split('+')[0] // when more than 1 error take the first
+      if (response.apply.diagnosetype === 'incorrect') {
+        const baseRuleKey = step.rule.split('.')[3]
+        const ruleKey = `rule.logic.propositional.axiomatic.${baseRuleKey}`
+        onErrorValidating({ key: 'shared.error.cannotApply', params: { rule: ruleKey } })
+        return
+      }
 
-        const match = BUGGY_RULE_PATTERN.exec(key)
-        let params = null
-        if (match !== null) {
-          if (match[3]) {
-            const ps = match[3].split(',')
-            params = {}
-            let currentKey = null
-            for (let i = 0; i < ps.length; i++) {
-              const p = ps[i].trim()
-              if (p.indexOf('=') === -1) { // belongs to previous param
-                params[currentKey] += ', ' + LogAxStep.convertToLatex(p)
-              } else {
-                const ss = p.split('=')
-                currentKey = ss[0]
-                params[ss[0]] = LogAxStep.convertToLatex(ss[1])
-              }
-            }
-          }
+      if (response.apply.diagnosetype === 'buggy') {
+        const key = response.apply.rule.substring(20) // Remove 'logic.propositional.'
 
-          onErrorValidating({
-            key: `buggyRule.${match[1]}`,
-            params: params
-          })
-          return
+        const params = {}
+        for (const [key, value] of Object.entries(response.apply.environment)) {
+          params[key] = LogAxStep.convertToLatex(value)
         }
+
+        onErrorValidating({
+          key: `buggyRule.${key}`,
+          params: params
+        })
+        return
       }
 
       if (!response.apply) {
         onErrorValidating()
         return
       }
-      exercise.steps.newSet(response.apply.state.context.term)
+      exercise.steps.newSet(response.apply.state.context.term.proof)
       onValidated()
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, validated, onErrorValidating)

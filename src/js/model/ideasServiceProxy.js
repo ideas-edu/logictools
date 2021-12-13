@@ -15,7 +15,7 @@ export class IdeasServiceProxy {
   static post (toolConfig, input, onSuccess, onError) {
     const url = config.backend_url
     input.source = toolConfig.source
-    const data = 'input=' + encodeURI(JSON.stringify(input))
+    const data = 'input=' + encodeURIComponent(JSON.stringify(input))
 
     const request = new XMLHttpRequest()
 
@@ -68,11 +68,11 @@ export class IdeasServiceProxy {
   }
 
   // create :: Exercise, String -> State
-  static create (toolConfig, exerciseId, formula, userid, onSuccess, onError) {
+  static create (toolConfig, exerciseId, context, userid, onSuccess, onError) {
     const request = {
       service: 'create',
       exerciseid: exerciseId,
-      term: formula,
+      context: context,
       userid: userid
     }
 
@@ -160,6 +160,16 @@ export class IdeasServiceProxy {
       environment: environment,
       location: location,
       rule: rule
+    }
+
+    IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
+  }
+
+  static constraints (toolConfig, state, onSuccess, onError) {
+    state = LogEXSession.applyIdentifiers(state)
+    const request = {
+      service: 'constraints',
+      state: state
     }
 
     IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)
