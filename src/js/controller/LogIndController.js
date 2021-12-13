@@ -562,7 +562,6 @@ export class LogIndController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-
     this.exercise.setCases(nextStep.formula.proofs, nextStep.formula.active)
     this.dismissAlert()
     const onSuccess = function (result) {
