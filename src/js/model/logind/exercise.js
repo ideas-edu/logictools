@@ -1,4 +1,4 @@
-import { LogIndCaseCollection, LogIndCase } from './stepCollection.js'
+import { LogIndCaseCollection } from './stepCollection.js'
 /**
     Represents a one way exercise.
     @constructor
@@ -18,7 +18,11 @@ export class LogIndExercise {
     this.constraints = null
 
     this.cases = new LogIndCaseCollection(this, term.proofs)
-    this.activeCase = new LogIndCase(this)
+    if (term.active) {
+      this.activeCase = this.cases.cases.find(x => x.identifier === term.active)
+    } else {
+      this.activeCase = null
+    }
 
     this.baseCasesStatus = 'notStarted'
     this.hypothesesStatus = 'notStarted'
@@ -34,14 +38,33 @@ export class LogIndExercise {
       theorem: this.theorem,
       active: null
     }
-    if (this.activeCase.steps.some((step) => step.term !== '')) {
-      object.proofs[''] = this.activeCase.getObject()
+    if (this.activeCase !== null) {
+      object.active = this.activeCase.identifier
+      if (this.activeCase.steps.some((step) => step.term !== '') && this.activeCase.identifier === '') {
+        object.proofs[''] = this.activeCase.getObject()
+      }
     }
     return object
   }
 
-  setCases (cases) {
+  setCases (cases, activeCase) {
+    const oldIdentifiers = []
+    for (const _case of this.cases.cases) {
+      oldIdentifiers.push(_case.identifier)
+    }
     this.cases = new LogIndCaseCollection(this, cases)
+    if (activeCase) {
+      this.activeCase = this.cases.cases.find(x => x.identifier === activeCase)
+    } else {
+      this.activeCase = null
+      // If there is no active case and there is a new case given make this the active case
+      for (const _case of this.cases.cases) {
+        if (!oldIdentifiers.includes(_case.identifier)) {
+          this.activeCase = _case
+          break
+        }
+      }
+    }
   }
 
   /**

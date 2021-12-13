@@ -37,6 +37,7 @@ function ready (fn) {
 function setUp () {
   const controller = new TwoWayController()
   window.translate = loadLanguage
+  window.controller = controller
   loadLanguage(LogEXSession.getLanguage())
   controller.initializeStepValidation()
   controller.initializeInput()
@@ -116,7 +117,7 @@ class TwoWayController extends LogExController {
     const exerciseMethod = ExerciseTypes[this.exerciseType]
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked,
+      stepValidation: true,
       titleKey: 'shared.exerciseName.user'
     }
 

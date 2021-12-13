@@ -15,7 +15,7 @@
     <body>
         <script src="logindSolution.bundle.js"></script>
         <div class="container">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     <tr id="exercise-table-header">
                         <th scope="col" id="header-step" translate-key="shared.header.step"></th>
@@ -23,9 +23,8 @@
                         <th scope="col" id="header-rule" translate-key="shared.header.rule"></th>
                     </tr>
                 </thead>
-                <tbody id="exercise-step-table">
-                <tr id="active-step">
-                </tr>
+                <tbody id="exercise-case-table">
+
                 </tbody>
             </table>
             <div class="row" id="exercise-alert-container" style="display: none">
@@ -35,16 +34,24 @@
             </div>
         </div>
 
+        <script id="exercise-case-header-template" type="text/x-jsrender">
+            <tr><td colspan="2"><h6 translate-key="logind.case.header.{{:title}}"></h6></td><td></td></tr>
+        </script>
         <script id="exercise-step-template" type="text/x-jsrender">
-            <td scope="row" class="col-step">
-                {{>step}}
-            </td>
-            <td class="col-term">
-                <span class="logax-term">{{:term}}</span>
-            </td>
-            <td class="col-rule">
-                <span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span> {{:references}}
-            </td>
+            <tr class="border-top-{{:border}}"><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b>
+            </td><td>
+            </td></tr>
+            {{for steps}}
+                {{:}}
+            {{/for}}
+        </script>
+        <script id="exercise-case-step-template" type="text/x-jsrender">
+            <td>{{:relation}}</td>
+            <td>{{:formula}}</td>
+            <td>{{if motivation !== null}}
+                (<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
+            {{/if}}</td>
+            </tr>
         </script>
     </body>
 </html>

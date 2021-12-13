@@ -374,6 +374,12 @@
         "inductiveSteps": "Inductive Steps"
       },
       "label": {
+        "badge": {
+          "active": "Active",
+          "complete": "Complete",
+          "incomplete": "In Progress",
+          "notStarted": "Not Started"
+        },
         "baseCase": "Case $${{title}}$$",
         "hypothesis": "Hypothesis $${{title}}$$",
         "inductiveStep": "Case $${{title}}$$"
@@ -382,7 +388,8 @@
         "no_base_case": "You have no base cases."
       }
     },
-    "hint":{
+    "completed": "The exercise is finished.",
+    "hint": {
       "basecases": "Formulate the theorem to be proven for a base element of the language.",
       "calculate": {
         "#": "Apply a calculation.",
@@ -411,6 +418,21 @@
     "instruction": {
       "begin": "Select an exercise to get started!",
       "exercise": "<b>[[title]]:</b> {{problem}}"
+    },
+    "step": {
+      "message": {
+        "begin": {
+          "baseCase": "<i>Formulate the base case</i>",
+          "hypothesis": "<i>Formulate the induction hypothesis</i>",
+          "inductiveStep": "<i>Formulate the inductive case</i>"
+        },
+        "prove": "<i>Prove</i>: $${{formula}}$$"
+      },
+      "placeholder": {
+        "left": "Left-hand side of formula",
+        "middle": "Formula",
+        "right": "Right-hand side of formula"
+      }
     },
     "title": "Proving with Structural Induction"
   },
@@ -471,8 +493,19 @@
         "implication": "Implication definition",
         "logind": {
           "baseCase": "Base Case",
+          "calculate": "Calculation",
+          "definition": "Definition {{function}}",
+          "del": "Definition del",
+          "given": "Given",
           "hypothesis": "Hypothesis",
-          "inductiveStep": "Inductive Step"
+          "ih": "Induction Hypothesis",
+          "inductiveStep": "Inductive Step",
+          "logic": "Logic",
+          "max": "Definition max",
+          "min": "Definition min",
+          "set": "Set rule",
+          "subst": "Definition substitution",
+          "union": "Definition union"
         },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
@@ -485,6 +518,7 @@
   "shared": {
     "button": {
       "apply": "Apply",
+      "check": "Check",
       "completeExercise": "Complete my derivation",
       "createExercise": "Create",
       "generateExerciseDifficult": "Difficult",
@@ -494,8 +528,10 @@
       "hint": "Hint",
       "insertStepAbove": "Insert Above",
       "insertStepBelow": "Insert Below",
+      "new": "New",
       "newExercise": "Manual entry",
       "selectExercise": "Select Exercise",
+      "selectMotivation": "-- Select motivation --",
       "selectRule": "-- Select rule --",
       "selectStep": "-- Select step --",
       "send": "Send",
@@ -514,6 +550,7 @@
         "twoWay": "The proof is not yet completed"
       },
       "invalidFormula": "This formula has an incorrect syntax",
+      "noMotivation": "You must indicate which motivation you have applied",
       "noRule": "You must indicate which rule you have applied",
       "noStepPossible": "The formula is in normal form.",
       "notChanged": "You have not changed the equation",

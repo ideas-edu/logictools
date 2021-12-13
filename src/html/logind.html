@@ -40,7 +40,7 @@
 
 	<div id="exercise-container" style="display: none">
 		<div class="row">
-			<div class="col-5" id="case-container">
+			<div class="col-6" id="case-container">
 				<table class="table table-striped">
 					<thead>
 						<tr id="exercise-table-header">
@@ -54,45 +54,57 @@
 				</table>
 			</div>
 
-			<div class="col-7">
-				<div id="rule-container" style="display: none">
+			<div class="col-6">
+				<div id="rule-container">
 					<table style="width: 100%">
-						<thead>
-							<tr>
-								<td style="width: 20%"></td>
-								<td><select id="rule" class="form-control input custom-select"></select></td>
-								<td style="width: 20%"></td>
+						<tbody id="exercise-step-table" style="display: none">
+							<tr id="active-message">
+								<td colspan="2" id="active-message-text"></td>
 							</tr>
-						</thead>
-						<tbody id="exercise-step-table">
 							<!-- Assumption -->
-							<tr id="active-step">
-								<td><select id="relation" class="form-control input custom-select">
+							<tr id="active-step-top">
+								<td><select id="relation-top" class="form-control input custom-select">
 									<option value="≤">≤</option>
 									<option value="<">&lt;</option>
-									<option value="=">=</option>
+									<option value="=" selected>=</option>
 									<option value="≥">≥</option>
 									<option value=">">&gt;</option>
 								</select></td>
-								<td><form class="kbinput">
-									<input type="text" class="form-control kbinput" id="formula">
-									<div id="formula-input" class="kbinput-wrapper"></div>
-								</form></td>
-								<td><select id="motivation" class="form-control input custom-select">
+								<td><select id="motivation-top" class="form-control input custom-select">
 								</select></td>
 							</tr>
-							<tr id="add-row">
-								<td>
-									<button id="move-step-up" type="button" class="btn btn-sm btn-outline-secondary"><i class='fas fa-chevron-up'></i></button>
-									<button id="move-step-down" type="button" class="btn btn-sm btn-outline-secondary"><i class='fas fa-chevron-down'></i></button>
-								</td>
-								<td>
-									<button id="insert-step-above" type="button" class="btn btn-outline-secondary" translate-key="shared.button.insertStepAbove"></button>
-									<button id="insert-step-below" type="button" class="btn btn-outline-secondary" translate-key="shared.button.insertStepBelow"></button>
-								</td>
-								<td>
-									<button id="delete-step" type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
-								</td>
+							<tr id="active-formula-top">
+								<td colspan="2"><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="formula-top">
+									<div id="formula-input-top" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+							<tr id="step-buffer"><td>
+								<button type="button" id="change-direction" class="btn btn-outline-secondary"><i class='fas fa-sort'></i></button>
+								<select id="relation-gap" class="form-control input custom-select">
+									<option value="≤">≤</option>
+									<option value="<">&lt;</option>
+									<option value="=" selected>=</option>
+									<option value="≥">≥</option>
+									<option value=">">&gt;</option>
+								</select>
+		                    </td><td></td></tr>
+		                    <tr id="active-formula-bottom">
+								<td colspan="2"><form class="kbinput">
+									<input type="text" class="form-control kbinput" id="formula-bottom">
+									<div id="formula-input-bottom" class="kbinput-wrapper"></div>
+								</form></td>
+							</tr>
+		                    <tr id="active-step-bottom">
+								<td><select id="relation-bottom" class="form-control input custom-select">
+									<option value="≤">≤</option>
+									<option value="<">&lt;</option>
+									<option value="=" selected>=</option>
+									<option value="≥">≥</option>
+									<option value=">">&gt;</option>
+								</select></td>
+								<td><select id="motivation-bottom" class="form-control input custom-select">
+								</select></td>
 							</tr>
 						</tbody>
 					</table>
@@ -110,20 +122,28 @@
 						<!-- </td>
 					</tr> -->
 					<div id="logind-actions">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-						<div class="dropdown-menu" aria-labelledby="help-menu">
-							<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
-							<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
-							<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
-							<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+						<div class="btn-group">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="new-menu" translate-key="shared.button.new" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+							<div class="dropdown-menu" aria-labelledby="new-menu">
+								<button type="button" class="dropdown-item" id="new-base-case" translate-key="rule.logic.propositional.logind.baseCase"></button>
+								<button type="button" class="dropdown-item" id="new-hypothesis" translate-key="rule.logic.propositional.logind.hypothesis"></button>
+								<button type="button" class="dropdown-item" id="new-inductive-step" translate-key="rule.logic.propositional.logind.inductiveStep"></button>
+							</div>
 						</div>
-						<button type="button" id="validate-step" class="btn btn-outline-secondary" translate-key="shared.button.send"></button>
-						<button type="button" id="check-step" class="btn btn-outline-secondary" translate-key="shared.button.check"></button>
+						<button type="button" id="validate-step" class="btn btn-outline-secondary float-right" translate-key="shared.button.check" style="display: none"></button>
+						<div class="btn-group float-right">
+							<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="help-menu" translate-key="shared.button.help" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="help-menu">
+								<button type="button" class="dropdown-item" id="show-hint"  translate-key="shared.button.hint" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="show-next-step" translate-key="shared.button.step" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="solve-exercise" translate-key="shared.button.solveExercise" style="display: none"></button>
+								<button type="button" class="dropdown-item" id="complete-exercise" translate-key="shared.button.completeExercise"></button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div id="completed-rule-container" style="display: none">
 					<span translate-key="logind.completed"></span>
-					<button type="button" id="renumber-step" class="btn btn-outline-secondary" translate-key="logind.button.renumber"></button>
 					<button type="button" class="btn btn-outline-secondary" id="show-solve-exercise" translate-key="shared.button.solveExercise"></button>
 				</div>
 			</div>
@@ -148,11 +168,20 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-case-header-template" type="text/x-jsrender">
-			<tr><td colspan="2"><h6 translate-key="logind.case.header.{{:title}}"></h6></td><td><span class="float-right">
-				{{if status === "complete"}}<i class='fas fa-check'></i> Complete{{/if}}
-				{{if status === "incomplete"}}<i class='fas fa-ellipsis-h'></i> In progress{{/if}}
-				{{if status === "notStarted"}}Not started{{/if}}
-			</span></td></tr>
+			<tr><td colspan="2"><h6 translate-key="logind.case.header.{{:title}}"></h6></td><td><h6><span class="float-right">
+				{{if status === "complete"}}
+					<span class="badge badge-success"><i class='fas fa-check'></i> <span translate-key="logind.case.label.badge.complete"></span></span>
+					{{/if}}
+				{{if status === "incomplete"}}
+					<span class="badge badge-warning"><i class='fas fa-ellipsis-h'></i> <span translate-key="logind.case.label.badge.incomplete"></span></span>
+				{{/if}}
+				{{if status === "notStarted"}}
+					<span class="badge badge-secondary"><i class='far fa-circle'></i> <span translate-key="logind.case.label.badge.notStarted"></span></span>
+				{{/if}}
+			</span></h6></td></tr>
+		</script>
+		<script id="exercise-active-case-header-template" type="text/x-jsrender">
+			<td>Te bewijzen:</td><td>{{:proof}}</td><td></td>
 		</script>
 		<script id="exercise-case-message-template" type="text/x-jsrender">
 			<tr><td colspan="3">
@@ -160,31 +189,85 @@
 			</td></tr>
 		</script>
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<tr><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b></td><td>
+			<tr class="border-top-{{:border}}"><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b>
+				{{if status === 'active'}}
+					 <span class="badge badge-primary"><i translate-key="logind.case.label.badge.active"></i></span>
+				{{/if}}
+				{{if status === 'complete'}}
+					 <span class="badge badge-success"><i translate-key="logind.case.label.badge.complete"></i></span>
+				{{/if}}
+				{{if status === 'incomplete'}}
+					 <span class="badge badge-warning"><i translate-key="logind.case.label.badge.incomplete"></i></span>
+				{{/if}}
+			</td><td>
+			{{if (exerciseComplete === false && border !== 'active')}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
-				<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
+				{{if status !== 'complete'}}
+					<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
+				{{/if}}
+			{{/if}}
 			</td></tr>
 			{{for steps}}
-				<tr>{{:}}</tr>
+				{{:}}
 			{{/for}}
 		</script>
-		<script id="exercise-active-step-template" type="text/x-jsrender">
-			<td>{{if relation !== null}}<select disabled class="form-control input custom-select">
-				<option selected>{{:relation}}</option>
-			</select>{{/if}}</td>
-			<td>
-				<div class="form-control step-formula">
-					{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}
-				</div>
-			</td>
-			<td>{{if motivation !== null}}<select disabled class="form-control input custom-select">
-				<option selected>{{:motivation}}</option>
-			</select>{{/if}}</td>
+		<script id="exercise-active-top-step-template" type="text/x-jsrender">
+			{{if relation !== null || motivation !== null}}
+			<tr class="case-step-row">
+				<td>{{if relation !== null}}
+					{{:relation}}
+				{{/if}}</td>
+				<td>{{if motivation !== null}}
+					(<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
+				{{/if}}</td>
+			</tr>
+			{{/if}}
+			<tr class="case-step-row">
+				<td colspan="2">
+					{{:formula}}
+					{{if !isFirst}}
+						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+					{{/if}}
+				</td>
+			</tr>
+		</script>
+		<script id="exercise-active-bottom-step-template" type="text/x-jsrender">
+			{{if relation !== null || motivation !== null}}
+			<tr class="case-step-row">
+				<td>{{if relation !== null}}
+					{{:relation}}
+				{{/if}}</td>
+				<td>{{if motivation !== null}}
+					(<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
+				{{/if}}</td>
+			</tr>
+			{{/if}}
+			<tr class="case-step-row">
+				<td colspan="2">
+					{{:formula}}
+					{{if !isLast}}
+						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
+					{{/if}}
+				</td>
+			</tr>
 		</script>
 		<script id="exercise-case-step-template" type="text/x-jsrender">
+			{{if isLast}}
+				<tr class="border-bottom-{{:border}}">
+			{{else}}
+				<tr class="border-middle-{{:border}}">
+			{{/if}}
+			<!-- <td>{{:relation}}{{if relation === null && !isFirst}}={{/if}}</td> -->
 			<td>{{:relation}}</td>
 			<td>{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}</td>
-			<td>{{if motivation !== null}}({{:motivation}}){{/if}}</td>
+			<!-- <td>{{if motivation !== null}}({{:motivation}}){{else !isFirst}}(?){{/if}}</td> -->
+			<td>{{if motivation !== null}}
+				(<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
+			{{/if}}</td>
+			</tr>
+		</script>
+		<script id="exercise-case-step-buffer-template" type="text/x-jsrender">
+			<tr class="border-middle-{{:border}}"><td></td><td>???</td><td></td></tr>
 		</script>
 	</div>
 </body>
