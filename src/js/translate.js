@@ -69,8 +69,11 @@ class Translate {
 
     // Find all cases of {{param}}.
     const paramRegex = /\{\{([^{]*?)\}\}/g
-
     string = string.replace(paramRegex, function (match, token) {
+      console.log(typeof params[token], params[token])
+      if (typeof params[token] === 'object') {
+        return params[token][language.toUpperCase()]
+      }
       return params[token]
     })
 
