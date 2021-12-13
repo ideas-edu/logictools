@@ -1180,7 +1180,7 @@ export class LogAxController extends ExerciseController {
       environment: {
         n: index
       },
-      requestInfo: "tryout"
+      requestInfo: 'tryout'
     }
     this.hoverNumber = index
 
