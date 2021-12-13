@@ -64,7 +64,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
       onValidated(response.apply.state.context.term.proof)
     }
     if (step.requestInfo === undefined) {
-      step.requestInfo = ""
+      step.requestInfo = ''
     }
     IdeasServiceProxy.apply(this.config, state, step.environment, [], step.rule, step.requestInfo, validated, onErrorValidating)
   }
