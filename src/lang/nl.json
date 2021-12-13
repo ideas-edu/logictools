@@ -8,7 +8,8 @@
         "buggy-4": "De aannames in stap {{n2}} zijn niet gelijk aan de aannames in stap {{n1}} $$({{as}})$$ waaruit $${{phi}}$$ is weggelaten, dus stap {{n2}} kan niet het resultaat zijn van een toepassing van de deductiestelling op stap {{n1}}.",
         "buggy-5": "Deductiestelling op stap {{n1}} en {{n2}} is niet mogelijk, u kunt stap {{n2}} wel afleiden met behulp van een aanname en modus ponens.",
         "buggybw-1": "Stap {{n}} is al gemotiveerd, het heeft geen zin om een nieuwe bewering te zoeken zodat stap {{n}} het resultaat is van een toepassing van de deductiestelling op deze nieuwe regel.",
-        "buggycl-0": "Stap {{n2}} is al gemotiveerd en niet het resultaat van een toepassing van de deductiestelling op {{n2}}."
+        "buggycl-0": "Stap {{n2}} is al gemotiveerd en niet het resultaat van een toepassing van de deductiestelling op {{n2}}.",
+        "buggyfw": "Stap {{n}} is nog niet gemotiveerd waardoor een voorwaartse toepassing van de deductiestelling niet mag. Stap {{n}} kan wel het resultaat zijn van een toepassing van de deductiestelling, zet daarvoor regelnummer {{n}} in het onderste invulveld (bij de implicatie)."
       },
       "goal": {
         "buggy-gl1": "Dit doel is niet afleidbaar",
@@ -91,7 +92,7 @@
           "implelim": {
            "#": "U heeft implicatie eliminatie niet correct toegepast.",
            "inv": "Deze herschrijving naar een implicatie is niet correct, let op de plaats van de negatie of de disjunctie."
-          }, 
+          },
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
           "implelim2": "U heeft de regel voor equivalentie eliminatie in plaats van implicatie eliminatie toegepast.",
           "implelim3": "Let op het linker bereik van de implicatie en plaats de negatie daarvoor. ",
@@ -270,7 +271,10 @@
       "hotKeys": "Sneltoetsen",
       "logeq": "Logische Equivalentie",
       "rules": "Regels",
-      "video": "Video"
+      "video": "Video",
+      "video1": "Video 1",
+      "video2": "Video 2",
+      "video3": "Video 3"
     },
     "video": {
       "notSupported": "Jouw browser heeft geen ondersteuning voor ingebedde videos"
@@ -302,7 +306,7 @@
       "begin": "Selecteer een opgave om mee te beginnen!",
       "create": "Schrijf de stelling voor je eigen opgave",
       "exercise": "<b>[[title]]:</b> Bewijs {{theorem}}",
-      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: {{lemma}}",
+      "exerciseWithLemma": "<b>[[title]]:</b> Bewijs {{theorem}} met behulp van de volgende hulpstelling: $${{lemma}}$$",
       "lemma": "Hulpstelling"
     },
     "rule": {
@@ -335,9 +339,9 @@
         "stepnr": "Stap"
       },
       "deduction": {
-        "def": "$$\\bigl(\\sum,\\phi\\vdash_S\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash_S\\phi\\rightarrow\\psi\\bigr)$$",
-        "n1": "$$\\sum,\\phi\\vdash_S\\psi$$",
-        "n2": "$$\\sum\\vdash_S\\phi\\rightarrow\\psi$$",
+        "def": "$$\\bigl(\\sum,\\phi\\vdash\\psi\\bigr) \\Rightarrow \\bigl(\\sum\\vdash\\phi\\rightarrow\\psi\\bigr)$$",
+        "n1": "$$\\sum,\\phi\\vdash\\psi$$",
+        "n2": "$$\\sum\\vdash\\phi\\rightarrow\\psi$$",
         "phi": "$$\\phi$$"
       },
       "goal": {
@@ -349,17 +353,88 @@
       },
       "label": "<b>Regel</b>",
       "lemma": {
+        "closeStepnr": "Stap",
         "stepExp": "Geef het nummer van de nieuwe stap, of laat leeg om automatisch een nummer te bepalen",
         "stepnr": "Stap"
       },
       "modusponens": {
-        "def": "$$\\bigl(\\sum\\vdash_S\\phi\\bigr), \\bigl(\\Delta\\vdash_S\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash_S\\psi$$",
-        "n1": "$$\\sum\\vdash_S\\phi$$",
-        "n2": "$$\\Delta\\vdash_S\\phi\\rightarrow\\psi$$",
-        "n3": "$$\\sum\\cup\\Delta\\vdash_S\\psi$$"
+        "def": "$$\\bigl(\\sum\\vdash\\phi\\bigr), \\bigl(\\Delta\\vdash\\phi\\rightarrow\\psi\\bigr) \\Rightarrow \\sum\\cup\\Delta\\vdash\\psi$$",
+        "n1": "$$\\sum\\vdash\\phi$$",
+        "n2": "$$\\Delta\\vdash\\phi\\rightarrow\\psi$$",
+        "n3": "$$\\sum\\cup\\Delta\\vdash\\psi$$"
       }
     },
     "title": "Bewijs Axiomatisch"
+  },
+  "logind": {
+    "case": {
+      "header": {
+        "baseCases": "Basisgevallen",
+        "hypotheses": "Hypotheses",
+        "inductiveSteps": "Inductiestappen"
+      },
+      "label": {
+        "badge": {
+          "active": "Actief",
+          "complete": "Voltooid",
+          "incomplete": "In Werking",
+          "notStarted": "Niet Begonnen"
+        },
+        "baseCase": "Geval $${{title}}$$",
+        "hypothesis": "Hypothese $${{title}}$$",
+        "inductiveStep": "Geval $${{title}}$$"
+      },
+      "message": {
+        "no_base_case": "U heeft geen basisgevallen geschreven."
+      }
+    },
+    "completed": "De uitwerking is compleet",
+    "hint": {
+      "basecases": "Formuleer de te bewijzen eigenschap voor een basiselement.",
+      "calculate": {
+        "#": "Pas een berekening toe.",
+        "close": "U kunt het bewijs door een berekening sluiten."
+      },
+      "function": {
+        "#": "Pas de definitie van $$\\texttt{{{function}}}$$ toe.",
+        "close": "Pas de definitie van $$\\texttt{{{function}}}$$ toe."
+      },
+      "hypotheses": "Formuleer de inductiehypothese voor willekeurige formules $$\\phi$$ en $$\\psi$$.",
+      "ih": {
+        "#": "Pas de inductiehypothese toe.",
+        "close": "Pas de inductiehypothese toe."
+      },
+      "inductivecases": "Formuleer de te bewijzen eigenschap voor samengestelde formules.",
+      "logic": "Pas een logische equivalentie toe.",
+      "set": {
+        "#": "Pas een verzamelingalgebra regel toe.",
+        "close": "Pas een verzamelingalgebra regel toe."
+      },
+      "valab": {
+        "#": "Gebruik het gegeven over valA en valB.",
+        "close": "Gebruik het gegeven over valA en valB."
+      }
+    },
+    "instruction": {
+      "begin": "Selecteer een opgave om mee te beginnen!",
+      "exercise": "<b>[[title]]:</b> {{problem}}"
+    },
+    "step": {
+      "message": {
+        "begin": {
+          "baseCase": "<i>Formuleer het basisgeval</i>",
+          "hypothesis": "<i>Formuleer de inductiehypothese</i>",
+          "inductiveStep": "<i>Formuleer de inductiestap</i>"
+        },
+        "prove": "<i>Te Bewijzen</i>: $${{formula}}$$"
+      },
+      "placeholder": {
+        "left": "Linkerkant van formule",
+        "middle": "Formule",
+        "right": "Rechterkant van formule"
+      }
+    },
+    "title": "Bewijzen met volledige inductie"
   },
   "main": {
     "noMobile": "Dit programma is niet geoptimaliseerd voor beeldschermen met een beperkte breedte.",
@@ -369,7 +444,8 @@
       "helpLogax": "<i class='fas fa-question-circle'></i> Hulp",
       "helpLogex": "<i class='fas fa-question-circle'></i> Hulp",
       "logax": "Axiomatisch",
-      "logeq": "Logische Equivalentie"
+      "logeq": "Logische Equivalentie",
+      "logind": "Inductief"
     }
   },
   "oneWay": {
@@ -416,6 +492,22 @@
         "falsedisjunction": "F-regel disjunctie",
         "idempotency": "Idempotentie",
         "implication": "Implicatie-eliminatie",
+        "logind": {
+          "baseCase": "Basisgeval",
+          "calculate": "Rekenen",
+          "definition": "Definitie {{function}}",
+          "del": "Definitie del",
+          "given": "Gegeven",
+          "hypothesis": "Hypothese",
+          "ih": "Inductie Hypothese",
+          "inductiveStep": "Inductiestap",
+          "logic": "Logica",
+          "max": "Definitie max",
+          "min": "Definitie min",
+          "set": "Verzamelingleer",
+          "subst": "Definitie substitution",
+          "union": "Definitie union"
+        },
         "notfalse": "T-regel niet F",
         "nottrue": "F-regel niet T",
         "truecomplement": "T-regel complement",
@@ -427,6 +519,7 @@
   "shared": {
     "button": {
       "apply": "Pas toe",
+      "check": "Controleer",
       "completeExercise": "Voltooi mijn afleiding",
       "createExercise": "Maak aan",
       "generateExerciseDifficult": "Moeilijk",
@@ -434,10 +527,15 @@
       "generateExerciseNormal": "Normaal",
       "help": "Hulp",
       "hint": "Hint",
+      "insertStepAbove": "Voeg boven toe",
+      "insertStepBelow": "Voeg onder toe",
+      "new": "Nieuw",
       "newExercise": "Zelf invoeren",
       "selectExercise": "Selecteer Opgave",
+      "selectMotivation": "-- Selecteer motivatie --",
       "selectRule": "-- Selecteer regel --",
       "selectStep": "-- Selecteer stap --",
+      "send": "Verzend",
       "solveExercise": "Toon oplossing",
       "step": "Toon stap",
       "validateStep": "<i class='fas fa-check'></i>"
@@ -453,6 +551,7 @@
         "twoWay": "Bewijs is nog niet voltooid"
       },
       "invalidFormula": "Deze formule is grammaticaal niet correct",
+      "noMotivation": "U moet aangeven welke motivatie u heeft toegepast",
       "noRule": "U moet aangeven welke regel u heeft toegepast",
       "noStepPossible": "De formule is al in normaalvorm.",
       "notChanged": "U heeft de formule niet gewijzigd",
@@ -480,6 +579,7 @@
       "actions": "Acties",
       "direction": "",
       "formula": "Formule",
+      "motivation": "Onderbouwing",
       "rule": "Regel",
       "step": "Stap",
       "term": "Term"

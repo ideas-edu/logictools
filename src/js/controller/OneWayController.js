@@ -37,6 +37,7 @@ function ready (fn) {
 function setUp () {
   const controller = new OneWayController()
   window.translate = loadLanguage
+  window.controller = controller
   loadLanguage(LogEXSession.getLanguage())
   controller.initializeRuleJustification()
   controller.initializeStepValidation()
@@ -123,20 +124,24 @@ class OneWayController extends LogExController {
     const exerciseMethod = ExerciseTypes[this.exerciseType]
     const properties = {
       ruleJustification: document.getElementById('rule-switch').checked,
-      stepValidation: document.getElementById('step-validation-switch').checked,
+      stepValidation: true,
       titleKey: 'shared.exerciseName.user'
     }
 
-    const formula = document.getElementById('new-formula')
+    const context = {
+      term: document.getElementById('new-formula').value,
+      environment: {},
+      location: []
+    }
 
-    if (!this.validateFormula(formula, this.newExerciseAlert)) {
+    if (!this.validateFormula(document.getElementById('new-formula'), this.newExerciseAlert)) {
       return
     }
 
     this.disableUI(true)
     this.dismissAlert()
-    this.exercise = new OneWayExercise(formula.value, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, formula.value, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exercise = new OneWayExercise(context.term, exerciseMethod, properties)
+    this.exerciseGenerator.create(exerciseMethod, context, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**

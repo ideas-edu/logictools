@@ -1,17 +1,17 @@
 import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseSolver } from '../shared/exerciseSolver.js'
-import { LogAxStepCollection } from './stepCollection.js'
-import { LogAxStep } from './step.js'
+import { LogIndCaseCollection } from './stepCollection.js'
+import { LogIndStep } from './step.js'
 
 /**
-    LogAxExerciseSolver is responsible for solving one way exercises.
+    LogIndExerciseSolver is responsible for solving one way exercises.
     @constructor
  */
-export class LogAxExerciseSolver extends ExerciseSolver {
+export class LogIndExerciseSolver extends ExerciseSolver {
   constructor (config) {
     super(config)
-    this.Step = LogAxStep
-    this.StepCollection = LogAxStepCollection
+    this.Step = LogIndStep
+    this.StepCollection = LogIndCaseCollection
   }
 
   /**
@@ -28,14 +28,11 @@ export class LogAxExerciseSolver extends ExerciseSolver {
         onErrorSolvingExercise()
         return
       }
-      const steps = new this.StepCollection()
       const ds = data.derivation.derivation.derivationsteps
       const last = ds[ds.length - 1]
-      for (const step of last.context.term.proof) {
-        steps.push(new this.Step(step))
-      }
-      onExerciseSolved(steps)
-    }.bind(this)
+      exercise.setCases(last.context.term.proofs)
+      onExerciseSolved(exercise)
+    }
 
     const state = this._getState(exercise)
 

@@ -7,7 +7,7 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/regular'
 import '@fortawesome/fontawesome-free/js/brands'
 import 'katex/dist/katex.min.css'
-// import katex from 'katex'
+import katex from 'katex'
 
 import { FormulaPopover } from '../kbinput.js'
 
@@ -21,7 +21,6 @@ import { LogAxStep } from '../model/logax/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { LogAxExercise } from '../model/logax/exercise.js'
 import { ExerciseController } from './ExerciseController.js'
-// import config from '../../../config.json'
 import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
@@ -169,7 +168,6 @@ export class LogAxController extends ExerciseController {
     this.exerciseValidator = new LogAxExerciseValidator(this.config)
     this.syntaxValidator = new SyntaxValidator()
 
-    this.initializeRules(document.getElementById('rule'))
     this.initializeInput()
 
     document.getElementById('renumber-step').addEventListener('click', function () {
@@ -241,7 +239,7 @@ export class LogAxController extends ExerciseController {
     }
     const goalPhiOptions = {
       id: 11,
-      characters: this.characterOptions
+      characters: this.newExerciseCharacterOptions
     }
     const goalPsiOptions = {
       id: 12,
@@ -291,9 +289,13 @@ export class LogAxController extends ExerciseController {
   }
 
   initializeRules (ruleElement) {
-    super.initializeRules(ruleElement, this.config.rules.map(rule => rule.split('.')[3])
+    let rules = this.config.rules.map(rule => rule.split('.')[3])
       .filter((value, index, self) => self.indexOf(value) === index)
-      .map(baseRule => `logic.propositional.axiomatic.${baseRule}`))
+      .map(baseRule => `logic.propositional.axiomatic.${baseRule}`)
+    if (this.exercise.lemmas.length === 0) {
+      rules = rules.filter(x => x !== 'logic.propositional.axiomatic.lemma')
+    }
+    super.initializeRules(ruleElement, rules)
     const subSelect = document.getElementById('subtype-select')
 
     ruleElement.addEventListener('change', function () {
@@ -322,7 +324,9 @@ export class LogAxController extends ExerciseController {
       document.getElementById('rule-definition-row').style.display = ''
       if (simpleRule === 'lemma') {
         document.getElementById('rule-definition').setAttribute('translate-key', '')
-        document.getElementById('rule-definition').innerHTML = this.exercise.steps.steps[0].termKatex
+        document.getElementById('rule-definition').innerHTML = katex.renderToString(LogAxStep.convertToLatex(this.exercise.lemmas[0]), {
+          throwOnError: false
+        })
       } else {
         translateElement(document.getElementById('rule-definition'), `logax.rule.${simpleRule}.def`)
       }
@@ -371,11 +375,14 @@ export class LogAxController extends ExerciseController {
 
     const formula1 = LogAxStep.convertToText(document.getElementById('new-formula-1').value)
     const formula2 = LogAxStep.convertToText(document.getElementById('new-formula-2').value)
-    let createTerm = `${formula1} |- ${formula2}`
-    const term = [{
+    const proof = [{
       term: `${formula1} |- ${formula2}`,
       number: 1000
     }]
+    const term = {
+      proof: proof,
+      lemmas: []
+    }
 
     if (!this.validateFormula(document.getElementById('new-formula-1'), this.newExerciseAlert)) {
       return
@@ -388,13 +395,12 @@ export class LogAxController extends ExerciseController {
     if (document.getElementById('lemma-row').style.display === '') {
       const lemma1 = LogAxStep.convertToText(document.getElementById('new-lemma-1').value)
       const lemma2 = LogAxStep.convertToText(document.getElementById('new-lemma-2').value)
-      term.unshift({
+      proof.unshift({
         term: `${lemma1} |- ${lemma2}`,
-        number: 0,
+        number: 1,
         label: 'lemma'
       })
-      createTerm = `0. ${lemma1} |- ${lemma2} [lemma]\n1000. ${formula1} |- ${formula2}`
-
+      term.lemmas = [`${lemma1} |- ${lemma2}`]
       if (!this.validateFormula(document.getElementById('new-lemma-1'), this.newExerciseAlert)) {
         return
       }
@@ -404,10 +410,16 @@ export class LogAxController extends ExerciseController {
       }
     }
 
+    const context = {
+      term: term,
+      environment: {},
+      location: []
+    }
+
     this.disableUI(true)
     this.dismissAlert()
     this.exercise = new LogAxExercise(term, exerciseMethod, properties)
-    this.exerciseGenerator.create(exerciseMethod, createTerm, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
+    this.exerciseGenerator.create(exerciseMethod, context, properties, this.showExercise.bind(this), this.onErrorCreatingExercise.bind(this))
   }
 
   /**
@@ -423,6 +435,9 @@ export class LogAxController extends ExerciseController {
   /**
     */
   showExercise () {
+    document.getElementById('rule').selectedIndex = 0
+    this.initializeRules(document.getElementById('rule'))
+    this.updateRuleVisibility(document.getElementById('rule'), document.getElementById('subtype-select'))
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
@@ -445,10 +460,9 @@ export class LogAxController extends ExerciseController {
     document.getElementById('header-actions').style.display = ''
 
     let lemma = null
-    for (const step of this.exercise.steps.steps) {
-      if (step.label === 'lemma') {
-        lemma = step
-      }
+
+    if (this.exercise.lemmas.length > 0) {
+      lemma = LogAxStep.convertToLatex(this.exercise.lemmas[0])
     }
 
     if (lemma === null) {
@@ -462,7 +476,7 @@ export class LogAxController extends ExerciseController {
     } else {
       translateElement(document.getElementById('instruction'), 'logax.instruction.exerciseWithLemma', {
         theorem: this.exercise.theoremKatex,
-        lemma: lemma.termKatex,
+        lemma: lemma,
         title: {
           key: this.exercise.titleKey,
           params: this.exercise.titleParams
@@ -473,15 +487,17 @@ export class LogAxController extends ExerciseController {
   }
 
   showSolution () {
-    const steps = [{
-      term: this.exercise.theorem,
-      number: 1000
-    }]
-    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(steps)) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    const term = {
+      proof: [{
+        term: this.exercise.theorem,
+        number: 1000
+      }]
+    }
+    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(term)) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   completeSolution () {
-    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(this.exercise.steps.getObject())) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    window.open('logaxsolution.html?formula=' + encodeURIComponent(JSON.stringify(this.exercise.getObject())) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
 
   getNewStep () {
@@ -644,7 +660,7 @@ export class LogAxController extends ExerciseController {
         if (stepnr.value === '') {
           return {
             environment: {
-              st: this.exercise.steps.steps[0].term
+              st: this.exercise.lemmas[0]
             },
             rule: rule
           }
@@ -652,10 +668,21 @@ export class LogAxController extends ExerciseController {
           return {
             environment: {
               n: stepnr.value,
-              st: this.exercise.steps.steps[0].term
+              st: this.exercise.lemmas[0]
             },
             rule: rule
           }
+        }
+      }
+      case 'logic.propositional.axiomatic.lemma.close': {
+        const stepnr = document.getElementById('lemma-select-close-stepnr')
+
+        return {
+          environment: {
+            n: stepnr.value,
+            st: this.exercise.lemmas[0]
+          },
+          rule: rule
         }
       }
     }
@@ -782,6 +809,13 @@ export class LogAxController extends ExerciseController {
         applyButton.disabled = false
         break
       }
+      case 'logic.propositional.axiomatic.lemma.close': {
+        const stepnr = document.getElementById('lemma-select-close-stepnr')
+        if (stepnr.value !== '') {
+          applyButton.disabled = false
+        }
+        break
+      }
     }
   }
 
@@ -875,6 +909,9 @@ export class LogAxController extends ExerciseController {
       case 'logic.propositional.axiomatic.lemma': {
         return true
       }
+      case 'logic.propositional.axiomatic.lemma.close': {
+        return true
+      }
     }
   }
 
@@ -963,20 +1000,29 @@ export class LogAxController extends ExerciseController {
       return
     }
 
-    if (nextStep.formula.length === this.exercise.steps.steps.length) {
+    if (nextStep.formula.proof.length === this.exercise.steps.steps.length) {
       this.updateAlert('logax.hint.motivate', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
       return
     }
 
-    for (let i = 0; i < nextStep.formula.length; i++) {
-      if (nextStep.formula[i].number !== this.exercise.steps.steps[i].number) {
-        if (nextStep.formula[i].number < 500) {
-          this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-          return
-        } else {
-          this.updateAlert('logax.hint.performBackward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
-          return
+    for (let i = 0; i < nextStep.formula.proof.length; i++) {
+      if (nextStep.formula.proof[i].number !== this.exercise.steps.steps[i].number) {
+        // Found new step
+        for (let j = 0; j < nextStep.formula.proof.length; j++) {
+          // Determine which step references new step and if the new step is inserted before or after the old step
+          if (nextStep.formula.proof[j].references !== undefined && nextStep.formula.proof[j].references.includes(nextStep.formula.proof[i].number)) {
+            if (nextStep.formula.proof[j].number < nextStep.formula.proof[i].number) {
+              this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+              return
+            } else {
+              this.updateAlert('logax.hint.performBackward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+              return
+            }
+          }
         }
+        // No references to new step; the step should be performed forward
+        this.updateAlert('logax.hint.performForward', { subgoal: LogAxStep.convertToLatex(nextStep.stepEnvironment.subgoals) }, 'hint', 'shared.hint.nextHint', buttonCallback)
+        return
       }
     }
   }
@@ -998,7 +1044,7 @@ export class LogAxController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.steps.newSet(nextStep.formula)
+    this.exercise.steps.newSet(nextStep.formula.proof)
 
     this.onStepValidated()
   }
@@ -1103,21 +1149,17 @@ export class LogAxController extends ExerciseController {
   }
 
   removeStep (index) {
-    let newSteps = null
-    if (index < 500) {
-      newSteps = this.exercise.steps.steps.filter(x => x.number < index || x.number > 500)
-    } else {
-      newSteps = this.exercise.steps.steps.filter(x => x.number > index || x.number < 500)
-    }
-    for (const step of newSteps) {
-      if (step.references && step.references.includes(index)) {
-        step.references = undefined
-        step.label = undefined
+    const removeStep = {
+      rule: 'logic.propositional.axiomatic.removeline',
+      environment: {
+        n: index
       }
     }
-    this.exercise.steps.newSet(newSteps)
-    this.updateSteps()
-    this.updateStepnrSelectors()
+    const callback = function () {
+      this.updateSteps()
+      this.updateStepnrSelectors()
+    }.bind(this)
+    this.exerciseValidator.validateApply(this.exercise, removeStep, callback, this.onErrorValidatingStep.bind(this))
   }
 
   updateSteps () {
@@ -1127,9 +1169,7 @@ export class LogAxController extends ExerciseController {
     exerciseStepTable.innerHTML = ''
 
     for (const step of this.exercise.steps.steps) {
-      if (step.label !== 'lemma') {
-        this.insertStep(step, step.number !== 1000)
-      }
+      this.insertStep(step, step.number !== 1000)
     }
     this.disableUI(false)
   }
