@@ -960,7 +960,9 @@ export class LogAxController extends ExerciseController {
         Handles the event that a step is validated
 
      */
-  onStepValidated () {
+  onStepValidated (newSet) {
+    this.exercise.steps.newSet(newSet)
+
     this.updateSteps()
 
     //    Reset rule value after valid step
@@ -1045,9 +1047,7 @@ export class LogAxController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.steps.newSet(nextStep.formula.proof)
-
-    this.onStepValidated()
+    this.onStepValidated(nextStep.formula.proof)
   }
 
   onCompleted (isFinished) {
@@ -1072,14 +1072,15 @@ export class LogAxController extends ExerciseController {
       rule: 'logic.propositional.axiomatic.renumber',
       environment: {}
     }
-    const callback = function () {
+    const callback = function (newSet) {
       // Don't highlight steps after renumbering
+      this.onStepValidated(newSet)
       for (const step of this.exercise.steps.steps) {
         step.highlightStep = false
         step.highlightTerm = false
         step.highlightRule = false
       }
-      this.onStepValidated()
+      this.updateSteps()
       this.removeDeleteButtons()
     }.bind(this)
     this.exerciseValidator.validateApply(this.exercise, renumberStep, callback, this.onErrorValidatingStep.bind(this))
@@ -1096,7 +1097,6 @@ export class LogAxController extends ExerciseController {
     if (canDelete) {
       const deleteButton = exerciseStep.getElementsByClassName('delete-step')[0]
       deleteButton.addEventListener('mousedown', function () {
-        console.log('click')
         this.removeStep(step.number)
       }.bind(this))
       deleteButton.addEventListener('mouseenter', function () {
@@ -1179,7 +1179,8 @@ export class LogAxController extends ExerciseController {
       rule: 'logic.propositional.axiomatic.removeline',
       environment: {
         n: index
-      }
+      },
+      requestInfo: "tryout"
     }
     this.hoverNumber = index
 
