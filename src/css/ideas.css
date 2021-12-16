@@ -745,11 +745,15 @@ button {
 }
 
 .formula-highlight {
-background-color: red;
+	background-color: red;
 }
 
 .highlight-text {
 	color: #2B68D1;
+}
+
+.delete-text {
+	color: red;
 }
 
 .placeholder-text {

@@ -30,6 +30,10 @@ export class LogAxStep {
     this.highlightStep = false
     this.highlightTerm = false
     this.highlightRule = false
+
+    this.deleteStep = false
+    this.deleteTerm = false
+    this.deleteRule = false
   }
 
   static convertToLatex (term) {

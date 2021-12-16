@@ -152,14 +152,15 @@ export class IdeasServiceProxy {
   }
 
   // apply:: State -> Boolean
-  static apply (toolConfig, state, environment, location, rule, onSuccess, onError) {
+  static apply (toolConfig, state, environment, location, rule, requestInfo, onSuccess, onError) {
     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'apply',
       state: state,
       environment: environment,
       location: location,
-      rule: rule
+      rule: rule,
+      requestinfo: requestInfo
     }
 
     IdeasServiceProxy.post(toolConfig, request, onSuccess, onError)

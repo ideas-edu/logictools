@@ -290,10 +290,6 @@ export class LogIndController extends ExerciseController {
       }
     )
 
-    // const oldCases = this.exercise.cases.getObject()
-    // console.log(this.exercise.activeCase)
-    // const oldActive = this.exercise.activeCase.identifier
-    // console.log(oldActive)
     if (this.proofDirection === 'begin') {
       newExercise.activeCase = new LogIndCase(
         newExercise,
@@ -566,7 +562,6 @@ export class LogIndController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-
     this.exercise.setCases(nextStep.formula.proofs, nextStep.formula.active)
     this.dismissAlert()
     const onSuccess = function (result) {
