@@ -45,6 +45,7 @@ export class LogAxController extends ExerciseController {
   constructor () {
     super()
     this.ruleKey = null
+    this.hoverNumber = null
     this.formulaOptions = {
       unaryOperators: ['¬'],
       binaryOperators: ['→', ','],
@@ -959,7 +960,9 @@ export class LogAxController extends ExerciseController {
         Handles the event that a step is validated
 
      */
-  onStepValidated () {
+  onStepValidated (newSet) {
+    this.exercise.steps.newSet(newSet)
+
     this.updateSteps()
 
     //    Reset rule value after valid step
@@ -1044,9 +1047,7 @@ export class LogAxController extends ExerciseController {
         Shows the next step
      */
   doNextStep (nextStep) {
-    this.exercise.steps.newSet(nextStep.formula.proof)
-
-    this.onStepValidated()
+    this.onStepValidated(nextStep.formula.proof)
   }
 
   onCompleted (isFinished) {
@@ -1071,14 +1072,15 @@ export class LogAxController extends ExerciseController {
       rule: 'logic.propositional.axiomatic.renumber',
       environment: {}
     }
-    const callback = function () {
+    const callback = function (newSet) {
       // Don't highlight steps after renumbering
+      this.onStepValidated(newSet)
       for (const step of this.exercise.steps.steps) {
         step.highlightStep = false
         step.highlightTerm = false
         step.highlightRule = false
       }
-      this.onStepValidated()
+      this.updateSteps()
       this.removeDeleteButtons()
     }.bind(this)
     this.exerciseValidator.validateApply(this.exercise, renumberStep, callback, this.onErrorValidatingStep.bind(this))
@@ -1094,8 +1096,14 @@ export class LogAxController extends ExerciseController {
 
     if (canDelete) {
       const deleteButton = exerciseStep.getElementsByClassName('delete-step')[0]
-      deleteButton.addEventListener('click', function () {
+      deleteButton.addEventListener('mousedown', function () {
         this.removeStep(step.number)
+      }.bind(this))
+      deleteButton.addEventListener('mouseenter', function () {
+        this.previewRemoveStep(step.number)
+      }.bind(this))
+      deleteButton.addEventListener('mouseleave', function () {
+        this.resetRemoveStep()
       }.bind(this))
     }
 
@@ -1142,7 +1150,10 @@ export class LogAxController extends ExerciseController {
       step: step.number,
       highlightStep: step.highlightStep,
       highlightTerm: step.highlightTerm,
-      highlightRule: step.highlightRule
+      highlightRule: step.highlightRule,
+      deleteStep: step.deleteStep,
+      deleteTerm: step.deleteTerm,
+      deleteRule: step.deleteRule
     })
 
     return exerciseStepHtml
@@ -1155,11 +1166,84 @@ export class LogAxController extends ExerciseController {
         n: index
       }
     }
-    const callback = function () {
+    const callback = function (newSet) {
+      this.exercise.steps.newSet(newSet)
       this.updateSteps()
       this.updateStepnrSelectors()
     }.bind(this)
     this.exerciseValidator.validateApply(this.exercise, removeStep, callback, this.onErrorValidatingStep.bind(this))
+  }
+
+  previewRemoveStep (index) {
+    const removeStep = {
+      rule: 'logic.propositional.axiomatic.removeline',
+      environment: {
+        n: index
+      },
+      requestInfo: 'tryout'
+    }
+    this.hoverNumber = index
+
+    const callback = function (deleteSet) {
+      if (this.hoverNumber !== index) {
+        return
+      }
+      for (const step of this.exercise.steps.steps) {
+        step.deleteStep = true
+        step.deleteTerm = true
+        step.deleteRule = true
+        for (const responseStep of deleteSet) {
+          const newStep = new LogAxStep(responseStep)
+          // highlight differences
+          if (step.number === newStep.number) {
+            step.deleteStep = false
+            if (step.rule === newStep.rule) {
+              step.deleteRule = false
+            }
+            if (step.term === newStep.term) {
+              step.deleteTerm = false
+            }
+            break
+          }
+        }
+      }
+      for (const element of document.getElementsByClassName('exercise-step')) {
+        for (const step of this.exercise.steps.steps) {
+          if (Number(element.getAttribute('number')) !== step.number) {
+            continue
+          }
+          if (step.deleteStep) {
+            element.getElementsByClassName('col-step')[0].classList.add('delete-text')
+          } else {
+            element.getElementsByClassName('col-step')[0].classList.remove('delete-text')
+          }
+          if (step.deleteTerm) {
+            element.getElementsByClassName('col-term')[0].classList.add('delete-text')
+          } else {
+            element.getElementsByClassName('col-term')[0].classList.remove('delete-text')
+          }
+          if (step.deleteRule) {
+            element.getElementsByClassName('col-rule')[0].classList.add('delete-text')
+          } else {
+            element.getElementsByClassName('col-rule')[0].classList.remove('delete-text')
+          }
+        }
+      }
+    }.bind(this)
+    this.exerciseValidator.validateApply(this.exercise, removeStep, callback, this.onErrorValidatingStep.bind(this))
+  }
+
+  resetRemoveStep () {
+    this.hoverNumber = null
+    for (const step of this.exercise.steps.steps) {
+      step.deleteStep = false
+      step.deleteTerm = false
+      step.deleteRule = false
+    }
+    const elements = document.getElementsByClassName('delete-text')
+    while (elements[0]) {
+      elements[0].classList.remove('delete-text')
+    }
   }
 
   updateSteps () {

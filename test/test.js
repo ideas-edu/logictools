@@ -17,7 +17,6 @@ describe('ideasService', function () {
         done()
       }
       const onFailure = function (response) {
-        console.log(response)
         assert(false)
         done()
       }
