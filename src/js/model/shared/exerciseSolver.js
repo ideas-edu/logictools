@@ -90,10 +90,8 @@ export class ExerciseSolver {
           onErrorGettingHelpForNextStep('shared.error.showingHint')
         }
       } else {
-        // const currentStep = exercise.steps.getCurrentStep()
-        // const steps = new this.StepCollection(new this.Step(currentStep.formula, null))
         const result = data.onefirst.first
-        // steps.push(new this.Step(result.state.context.term, result.step.rule))
+        exercise.prefix = result.state.prefix
         onHelpForNextStepFound({
           formula: result.state.context.term,
           rule: result.step.rule,
