@@ -15,6 +15,7 @@ export class LogIndExercise {
     this.language = term.language
     this.theorem = term.theorem
     this.problem = term.problem
+    this.motivations = term.motivations
     this.constraints = null
 
     this.cases = new LogIndCaseCollection(this, term.proofs)

@@ -51,7 +51,7 @@ export class LogIndController extends ExerciseController {
     }
     this.characterOptions = []
     this.motivationOptions = []
-    this.baseMotivations = ['calculate', 'del', 'ih', 'logic', 'max', 'min', 'set', 'subst', 'union', 'given']
+    this.baseMotivations = ['calculate', 'ih', 'logic']
 
     this.setExampleExercises()
 
@@ -200,7 +200,7 @@ export class LogIndController extends ExerciseController {
         hideButton: true
       })
     }
-    this.motivationOptions = [].concat(this.baseMotivations)
+    this.motivationOptions = [].concat(this.baseMotivations).concat(this.exercise.motivations)
     for (const term of this.exercise.language) {
       switch (term) {
         case 'NEGATION':
@@ -243,6 +243,7 @@ export class LogIndController extends ExerciseController {
       })
       this.motivationOptions.push(term)
     }
+
     this.assumptionPopoverTop.options.characters = this.characterOptions
     this.assumptionPopoverTop.setContent()
     this.assumptionPopoverBottom.options.characters = this.characterOptions
