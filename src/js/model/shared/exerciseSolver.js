@@ -63,6 +63,7 @@ export class ExerciseSolver {
       }
       const result = data.onefirst.first
       const nextStep = new this.Step(result.state.context.term, result.step.rule)
+      nextStep.strategyStatus = result.state.prefix
       if (nextStep) {
         onNextStepSolved(nextStep)
       }

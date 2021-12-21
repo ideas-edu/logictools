@@ -14,6 +14,7 @@ export class OneWayExercise {
     this.type = exerciseType
     this.usesRuleJustification = properties.ruleJustification
     this.usesStepValidation = properties.stepValidation
+    this.prefix = '[]'
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
     this.isReady = false
