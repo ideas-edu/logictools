@@ -177,7 +177,7 @@ export class LogIndController extends ExerciseController {
       char: '⋅',
       latex: '\\cdot',
       triggers: ['*', '∗'],
-      hideButton: true
+      spaces: 'lr'
     }]
     for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
       this.characterOptions.push({
