@@ -518,6 +518,7 @@
   "shared": {
     "button": {
       "apply": "Pas toe",
+      "changeDirection": "<i class='fas fa-sort'></i> Wissel richting",
       "check": "Controleer",
       "completeExercise": "Voltooi mijn afleiding",
       "createExercise": "Maak aan",
