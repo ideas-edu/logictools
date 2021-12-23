@@ -518,6 +518,7 @@
   "shared": {
     "button": {
       "apply": "Pas toe",
+      "changeDirection": "<i class='fas fa-sort'></i> Wissel richting",
       "check": "Controleer",
       "completeExercise": "Voltooi mijn afleiding",
       "createExercise": "Maak aan",
@@ -541,6 +542,7 @@
     },
     "error": {
       "cannotApply": "Kan '[[rule]]' niet toepassen",
+      "caseExists": "Dit geval bestaat al.",
       "correctNotVal": "Deze formule is equivalent met de vorige, maar u hebt ofwel meer stappen in een keer gedaan, ofwel een regel fout toegepast.",
       "creatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Heeft u een valide opgave opgevoerd?",
       "generatingExercise": "Er is een probleem opgetreden bij het aanmaken van de opgave. Probeert u het nog een keer.",
