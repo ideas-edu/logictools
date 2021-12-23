@@ -518,6 +518,7 @@
   "shared": {
     "button": {
       "apply": "Apply",
+      "changeDirection": "<i class='fas fa-sort'></i> Switch direction",
       "check": "Check",
       "completeExercise": "Complete my derivation",
       "createExercise": "Create",
