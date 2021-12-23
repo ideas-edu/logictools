@@ -622,7 +622,7 @@ class TwoWayController extends LogExController {
       this.formulaPopover.previousValue = this.exercise.steps.topSteps[index - 2].formula
       this.formulaPopover.setText(this.exercise.steps.topSteps[index - 2].formula)
     }
-    this.exercise.prefix = "[]"
+    this.exercise.prefix = '[]'
   }
 
   /**
@@ -657,7 +657,7 @@ class TwoWayController extends LogExController {
       this.formulaPopover.previousValue = this.exercise.steps.bottomSteps[index - 2].formula
       this.formulaPopover.setText(this.exercise.steps.bottomSteps[index - 2].formula)
     }
-    this.exercise.prefix = "[]"
+    this.exercise.prefix = '[]'
   }
 
   changeStepValidation (stepValidation) {
