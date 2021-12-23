@@ -14,7 +14,7 @@ export class TwoWayExerciseValidator extends ExerciseValidator {
     }
     const state = {
       exerciseid: exercise.type,
-      prefix: step1.strategyStatus,
+      prefix: exercise.prefix,
       context: {
         term: term,
         environment: {},

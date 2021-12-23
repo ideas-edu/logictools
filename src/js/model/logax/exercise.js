@@ -11,6 +11,7 @@ export class LogAxExercise {
     this.type = exerciseType
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
+    this.prefix = '[]'
     this.steps = new LogAxStepCollection(term.proof)
     this.lemmas = term.lemmas === undefined ? [] : term.lemmas
 

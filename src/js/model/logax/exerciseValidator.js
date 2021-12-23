@@ -10,7 +10,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
   getState (exercise) {
     const state = {
       exerciseid: exercise.type,
-      prefix: '[]',
+      prefix: exercise.prefix,
       context: {
         term: exercise.getObject(),
         environment: {},
@@ -61,6 +61,7 @@ export class LogAxExerciseValidator extends ExerciseValidator {
         onErrorValidating()
         return
       }
+      exercise.prefix = response.apply.state.prefix
       onValidated(response.apply.state.context.term.proof)
     }
     if (step.requestInfo === undefined) {

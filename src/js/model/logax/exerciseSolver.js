@@ -45,7 +45,7 @@ export class LogAxExerciseSolver extends ExerciseSolver {
   _getState (exercise) {
     const state = {
       exerciseid: exercise.type,
-      prefix: '[]',
+      prefix: exercise.prefix,
       context: {
         term: exercise.getObject(),
         environment: {},

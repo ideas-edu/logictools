@@ -20,12 +20,10 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
     const currentBottomStep = exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1]
 
     const currentFormula = `${currentTopStep.formula} == ${currentBottomStep.formula}`
-    const currentStrategy = currentTopStep.strategyStatus
-    // const currentLocation = currentTopStep.strategyLocation
 
     const state = {
       exerciseid: exercise.type,
-      prefix: currentStrategy,
+      prefix: exercise.prefix,
       context: {
         term: currentFormula,
         environment: {},
@@ -95,6 +93,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
       } else {
         nextStep = new this.Step(equation.formula1, result.step.rule, 'top')
       }
+      exercise.prefix = result.state.prefix
       if (nextStep) {
         onNextStepSolved(nextStep)
       }
