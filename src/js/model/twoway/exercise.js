@@ -11,7 +11,7 @@ import { TwoWayStepCollection } from './stepCollection.js'
 export class TwoWayExercise {
   constructor (equationText, exerciseType, properties) {
     this.type = exerciseType
-    this.prefix = "[]"
+    this.prefix = '[]'
     this.usesStepValidation = properties.stepValidation
     this.titleKey = properties.titleKey
     this.titleParams = properties.titleParams
