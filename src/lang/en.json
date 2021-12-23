@@ -542,6 +542,7 @@
     },
     "error": {
       "cannotApply": "Cannot apply '[[rule]]'",
+      "caseExists": "This case already exists.",
       "correctNotVal": "This formula is equivalent with the last, but you have either performed multiple steps at once or performed an incorrect step.",
       "creatingExercise": "An error occured while creating the exercise. Did you create a valid exercise?",
       "generatingExercise": "An error occured while creating the exercise. Please try again.",
