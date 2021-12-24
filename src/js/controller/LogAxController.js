@@ -489,6 +489,7 @@ export class LogAxController extends ExerciseController {
 
   showSolution () {
     const term = {
+      lemmas: this.exercise.lemmas,
       proof: [{
         term: this.exercise.theorem,
         number: 1000
