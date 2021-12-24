@@ -20,7 +20,8 @@ export class LogIndStep {
     } else {
       this.relation = relation
     }
-    this.rule = rule
+    this.rule = rule === 'calculate.close' ? 'calculate' : rule
+
     this.isTopStep = isTopStep
 
     // Highlights
