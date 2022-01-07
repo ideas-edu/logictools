@@ -177,7 +177,7 @@ export class LogIndController extends ExerciseController {
       char: '⋅',
       latex: '\\cdot',
       triggers: ['*', '∗'],
-      hideButton: true
+      spaces: 'lr'
     }]
     for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
       this.characterOptions.push({
@@ -299,6 +299,12 @@ export class LogIndController extends ExerciseController {
         this.exercise.activeCase.identifier,
         this.exercise.activeCase.type
       )
+      // Don't allow a user to restart an existing case
+      if (this.exercise.cases.cases.some(x => x.steps[0].term === document.getElementById('formula-top').value &&
+          x.steps[x.steps.length - 1].term === document.getElementById('formula-bottom').value)) {
+        this.updateAlert('shared.error.caseExists', null, 'error')
+        return
+      }
       let relation = document.getElementById('relation-gap').value
       if (relation === '≤') {
         relation = '<='

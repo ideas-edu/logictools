@@ -20,7 +20,8 @@ export class LogIndStep {
     } else {
       this.relation = relation
     }
-    this.rule = rule
+    this.rule = rule === 'calculate.close' ? 'calculate' : rule
+
     this.isTopStep = isTopStep
 
     // Highlights
@@ -290,7 +291,6 @@ function isSurroundedByBrackets (str) {
 
 export function convertM2H (str, definitions) {
   try {
-    str = unicodeToHaskell(str)
     str = addBracketsAroundUnionParameters(str)
     let term = ''
     let previousTerm = ''
@@ -317,6 +317,9 @@ export function convertM2H (str, definitions) {
       } else { // look for nonterm
         // eslint-disable-next-line no-useless-escape
         reResult = /^[\+\&\|\<\=\>\*\~\-\ ]*/.exec(str.substring(pos))[0] // no brackets
+        if (reResult.length === 0) {
+          pos = str.length
+        }
         pos += reResult.length
         nonTerm = reResult // keep space
       }
@@ -420,35 +423,6 @@ export function convertM2H (str, definitions) {
     console.log(err.name + ': ' + err.message)
     throw new Error(err.message)
   }
-}
-
-/**
- * Converts unicode to Haskell notation.
- * @param {*} str A string.
- */
-function unicodeToHaskell (str) {
-  // let symbols = []
-  // for (let i = 0; i < symbols.length; i++) {
-  //   try {
-  //     switch (symbols[i][1]) {
-  //       case 'or':
-  //         str = str.replace(new RegExp('\u2228', 'g'), '||');
-  //         break;
-  //       case 'del':
-  //         str = str.replace(new RegExp('\\\\', 'g'), ' ' + symbols[i][2] + ' ');
-  //         break;
-  //       case 'union':
-  //         str = str.replace(new RegExp('\u222a', 'g'), ' ' + symbols[i][2] + ' ');
-  //         break;
-  //       default:
-  //         str = str.replace(new RegExp(symbols[i][0], 'g'), symbols[i][2]);
-  //     }
-  //   } catch (err) {
-  //     console.log(err.message);
-  //     console.log(typeof str);
-  //   }
-  // }
-  return str
 }
 
 /**
