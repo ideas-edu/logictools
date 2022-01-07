@@ -117,7 +117,7 @@ export class LogIndController extends ExerciseController {
     for (const motivation of this.motivationOptions) {
       const option = document.createElement('option')
       option.value = motivation
-      if (this.baseMotivations.includes(motivation)) {
+      if ([].concat(this.baseMotivations).concat(this.exercise.motivations).includes(motivation)) {
         translateElement(option, `rule.logic.propositional.logind.${motivation}`)
       } else {
         translateElement(option, 'rule.logic.propositional.logind.definition', { function: motivation })

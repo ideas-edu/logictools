@@ -505,7 +505,8 @@
           "min": "Definitie min",
           "set": "Verzamelingleer",
           "subst": "Definitie substitution",
-          "union": "Definitie union"
+          "union": "Definitie union",
+          "valab": "valAB"
         },
         "notfalse": "T-regel niet F",
         "nottrue": "F-regel niet T",
