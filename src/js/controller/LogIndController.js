@@ -774,7 +774,7 @@ export class LogIndController extends ExerciseController {
 
     let motivation = step.rule
     let motivationParams = {}
-    if (step.rule !== null && !this.baseMotivations.includes(step.rule)) {
+    if (step.rule !== null && ![].concat(this.baseMotivations).concat(this.exercise.motivations).includes(step.rule)) {
       motivationParams = { function: motivation }
       motivation = 'definition'
     }
