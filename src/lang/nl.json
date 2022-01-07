@@ -411,6 +411,7 @@
       "notInInductionHypotheses": "De metavariabele $${{metaVar}}$$ komt niet voor in de inductiehypothese; formuleer deze eerst voor $${{metaVar}}$$ of kies een andere metavariabele.",
       "notInstantiation": "De eerste en laatste regel van het deelbewijs vormen geen correcte instantie van de stelling",
       "similarExpr": "Je hebt de expressie niet gewijzigd.",
+      "tooManyBasecases": "Eén basisgeval volstaat.",
       "wrongIHBottom": "De tweede expressie van de inductiehypothese  is geen correcte instantie van de rechterkant van de stelling",
       "wrongIHTop": "De eerste expressie van de inductiehypothese  is geen correcte instantie van de linkerkant van de stelling",
       "wrongMotivation": "Deze motivatie is niet correct, de correctie motivatie is [[motivation]]",

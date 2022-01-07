@@ -645,6 +645,11 @@ export class LogIndController extends ExerciseController {
           this.updateAlert('logind.error.wrongIHBottom', null, 'error')
           break
         }
+        if (term.includes('too many basecases')) {
+          this.setErrorLocation(null)
+          this.updateAlert('logind.error.tooManyBasecases', null, 'error')
+          break
+        }
         if (term.includes('double case')) {
           const _case = term.split(':')[1].split(" ")[1]
           let caseLatex = null
