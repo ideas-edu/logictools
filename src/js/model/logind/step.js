@@ -25,7 +25,7 @@ export class LogIndStep {
     this.isTopStep = isTopStep
 
     // Highlights
-    this.highlightStep = false
+    this.highlightRelation = false
     this.highlightTerm = false
     this.highlightRule = false
   }
