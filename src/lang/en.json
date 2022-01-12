@@ -505,7 +505,8 @@
           "min": "Definition min",
           "set": "Set rule",
           "subst": "Definition substitution",
-          "union": "Definition union"
+          "union": "Definition union",
+          "valab": "valAB"
         },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
