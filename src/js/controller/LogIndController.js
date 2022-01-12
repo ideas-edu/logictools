@@ -51,7 +51,7 @@ export class LogIndController extends ExerciseController {
     }
     this.characterOptions = []
     this.motivationOptions = []
-    this.baseMotivations = ['calculate', 'del', 'ih', 'logic', 'max', 'min', 'set', 'subst', 'union', 'given']
+    this.baseMotivations = ['calculate', 'ih', 'logic']
 
     this.setExampleExercises()
 
@@ -117,7 +117,7 @@ export class LogIndController extends ExerciseController {
     for (const motivation of this.motivationOptions) {
       const option = document.createElement('option')
       option.value = motivation
-      if (this.baseMotivations.includes(motivation)) {
+      if ([].concat(this.baseMotivations).concat(this.exercise.motivations).includes(motivation)) {
         translateElement(option, `rule.logic.propositional.logind.${motivation}`)
       } else {
         translateElement(option, 'rule.logic.propositional.logind.definition', { function: motivation })
@@ -200,7 +200,7 @@ export class LogIndController extends ExerciseController {
         hideButton: true
       })
     }
-    this.motivationOptions = [].concat(this.baseMotivations)
+    this.motivationOptions = [].concat(this.baseMotivations).concat(this.exercise.motivations)
     for (const term of this.exercise.language) {
       switch (term) {
         case 'NEGATION':
@@ -243,6 +243,7 @@ export class LogIndController extends ExerciseController {
       })
       this.motivationOptions.push(term)
     }
+
     this.assumptionPopoverTop.options.characters = this.characterOptions
     this.assumptionPopoverTop.setContent()
     this.assumptionPopoverBottom.options.characters = this.characterOptions
@@ -773,7 +774,7 @@ export class LogIndController extends ExerciseController {
 
     let motivation = step.rule
     let motivationParams = {}
-    if (step.rule !== null && !this.baseMotivations.includes(step.rule)) {
+    if (step.rule !== null && ![].concat(this.baseMotivations).concat(this.exercise.motivations).includes(step.rule)) {
       motivationParams = { function: motivation }
       motivation = 'definition'
     }
