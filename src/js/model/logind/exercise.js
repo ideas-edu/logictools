@@ -53,6 +53,7 @@ export class LogIndExercise {
     for (const _case of this.cases.cases) {
       oldIdentifiers.push(_case.identifier)
     }
+    const oldCases = this.cases
     this.cases = new LogIndCaseCollection(this, cases)
     if (activeCase) {
       this.activeCase = this.cases.cases.find(x => x.identifier === activeCase)
@@ -63,6 +64,41 @@ export class LogIndExercise {
         if (!oldIdentifiers.includes(_case.identifier)) {
           this.activeCase = _case
           break
+        }
+      }
+    }
+    for (const _case of this.cases.cases) {
+      if (!oldIdentifiers.includes(_case.identifier)) {
+        for (const step of _case.steps) {
+          step.highlightRelation = true
+          step.highlightTerm = true
+          step.highlightRule = true
+        }
+      } else {
+        const oldCase = oldCases.cases.find(x => x.identifier === _case.identifier)
+        for (const step of _case.steps) {
+          let oldStep = null
+          if (step.isTopStep) {
+            if (_case.steps[_case.steps.length - 1].isTopStep) { // case complete
+              oldStep = oldCase.steps.find(x => x.number === step.number)
+            } else {
+              oldStep = oldCase.steps.find(x => x.number === step.number && x.isTopStep === true)
+            }
+          } else {
+            oldStep = oldCase.steps.find(x => oldCase.steps.length - x.number === _case.steps.length - step.number)
+            // if (oldStep.isTopStep) {
+            //   continue
+            // }
+          }
+          if (oldStep === undefined || step.relation !== oldStep.relation) {
+            step.highlightRelation = true
+          }
+          if (oldStep === undefined || step.term !== oldStep.term) {
+            step.highlightTerm = true
+          }
+          if (oldStep === undefined || step.rule !== oldStep.rule) {
+            step.highlightRule = true
+          }
         }
       }
     }

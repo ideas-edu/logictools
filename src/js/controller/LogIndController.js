@@ -781,6 +781,9 @@ export class LogIndController extends ExerciseController {
 
     const exerciseStepHtml = stepTemplate.render({
       border: border,
+      highlightRelation: step.highlightRelation,
+      highlightTerm: step.highlightTerm,
+      highlightRule: step.highlightRule,
       isEmptyFormula: step.term === '',
       isFirst: step.number === 0,
       isTopStep: step.isTopStep,
