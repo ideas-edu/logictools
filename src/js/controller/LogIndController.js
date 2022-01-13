@@ -524,6 +524,7 @@ export class LogIndController extends ExerciseController {
       case 'notequiv':
         this.updateAlert('logind.error.incorrect', null, 'error')
         break
+      case 'detour':
       case 'expected':
       case 'correct':
         this.doNextStep({ formula: term })
