@@ -657,7 +657,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('double case')) {
-          const _case = term.split(':')[1].split(" ")[1]
+          const _case = term.split(':')[1].split(" ")[2]
           let caseLatex = null
           switch (_case) {
             case 'NEGATION':
@@ -674,7 +674,7 @@ export class LogIndController extends ExerciseController {
               break
           }
           this.setErrorLocation(['formula-bottom', 'formula-top'])
-          this.updateAlert('logind.error.doubleCase', {case: caseLatex}, 'error')
+          this.updateAlert('logind.error.doubleCase', { case: caseLatex }, 'error')
           break
         }
 
