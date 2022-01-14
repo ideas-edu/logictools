@@ -197,13 +197,15 @@ export class LogIndCase extends StepCollection {
   }
 
   deleteStep (index) {
-    for (let i = index + 1; i < this.steps.length; i++) {
-      this.steps[i].number -= 1
-    }
-    if (!this.steps[index].isTopStep) {
+    if (this.steps[index].isTopStep) {
+      this.steps = this.steps.filter(step => !(step.number >= index && step.isTopStep))
+    } else {
       this.steps[index + 1].relation = null
       this.steps[index + 1].rule = null
+      this.steps = this.steps.filter(step => !(step.number <= index && !step.isTopStep))
     }
-    this.steps.splice(index, 1)
+    for (let i = 0; i < this.steps.length; i++) {
+      this.steps[i].number = i
+    }
   }
 }
