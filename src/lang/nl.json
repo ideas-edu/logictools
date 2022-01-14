@@ -385,7 +385,10 @@
         "inductiveStep": "Geval $${{title}}$$"
       },
       "message": {
-        "no_base_case": "U heeft geen basisgevallen geschreven."
+        "hypothesis": "Neem aan dat voor een willekeurige $${{title}}$$ geldt:",
+        "no_base_case": "U heeft geen basisgevallen geschreven.",
+        "no_hypotheses": "U heeft geen hypotheses geschreven.",
+        "no_inductive_steps": "U heeft geen inductiestappen geschreven."
       }
     },
     "completed": "De uitwerking is compleet",
@@ -423,7 +426,7 @@
       "message": {
         "begin": {
           "baseCase": "<i>Formuleer het basisgeval</i>",
-          "hypothesis": "<i>Formuleer de inductiehypothese</i>",
+          "hypothesis": "<i>Formuleer de inductiehypothese. Neem aan dat:</i>",
           "inductiveStep": "<i>Formuleer de inductiestap</i>"
         },
         "prove": "<i>Te Bewijzen</i>: $${{formula}}$$"

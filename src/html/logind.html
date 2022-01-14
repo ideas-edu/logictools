@@ -199,6 +199,9 @@
 				{{if status === 'incomplete'}}
 					 <span class="badge badge-warning"><i translate-key="logind.case.label.badge.incomplete"></i></span>
 				{{/if}}
+				{{if message}}
+					</br><span translate-key="logind.case.message.{{:message}}" translate-params='{{:messageParams}}'>
+				{{/if}}
 			</td><td>
 			{{if (exerciseComplete === false && border !== 'active')}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>

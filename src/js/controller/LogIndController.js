@@ -702,17 +702,25 @@ export class LogIndController extends ExerciseController {
     }
     let border = null
     let status = null
+    let message = null
+    let messageParams = null
     if (this.exercise.activeCase !== null && _case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
       status = 'active'
     } else {
       status = _case.status
     }
+    if (_case.type === 'hypothesis') {
+      message = 'hypothesis'
+      messageParams = JSON.stringify({ title: _case.getFormattedIdentifier() })
+    }
 
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
       exerciseComplete: this.exerciseComplete,
+      message: message,
+      messageParams: messageParams,
       type: _case.type,
       status: status,
       steps: newSteps
@@ -975,10 +983,16 @@ export class LogIndController extends ExerciseController {
     for (const _case of this.exercise.cases.hypotheses) {
       this.insertCase(_case)
     }
+    if (this.exercise.baseCasesStatus === 'complete' && this.exercise.cases.hypotheses.length === 0) {
+      this.insertCaseMessage('no_hypotheses')
+    }
 
     this.insertCaseHeader('inductiveSteps', this.exercise.inductiveStepsStatus)
     for (const _case of this.exercise.cases.inductiveSteps) {
       this.insertCase(_case)
+    }
+    if (this.exercise.hypothesesStatus === 'complete' && this.exercise.cases.inductiveSteps.length === 0) {
+      this.insertCaseMessage('no_inductive_steps')
     }
 
     this.disableUI(false)
