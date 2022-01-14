@@ -571,7 +571,7 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('different meta vars in hypothesis')) {
           if (term.includes('IHStep')) {
-            const metaVar = term.split('\\"')[1]
+            const metaVar = term.split('\"')[1]
             this.setErrorLocation(['formula-bottom', 'formula-top'])
             this.updateAlert('logind.error.differentMetaVarsWith', {metaVar: `\\${metaVar}`}, 'error')
           } else {
