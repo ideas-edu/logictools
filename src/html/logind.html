@@ -199,6 +199,9 @@
 				{{if status === 'incomplete'}}
 					 <span class="badge badge-warning"><i translate-key="logind.case.label.badge.incomplete"></i></span>
 				{{/if}}
+				{{if message}}
+					</br><span translate-key="logind.case.message.{{:message}}" translate-params='{{:messageParams}}'>
+				{{/if}}
 			</td><td>
 			{{if (exerciseComplete === false && border !== 'active')}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
@@ -214,16 +217,16 @@
 		<script id="exercise-active-top-step-template" type="text/x-jsrender">
 			{{if relation !== null || motivation !== null}}
 			<tr class="case-step-row">
-				<td>{{if relation !== null}}
+				<td {{if highlightRelation}}class="highlight-text"{{/if}}>{{if relation !== null}}
 					{{:relation}}
 				{{/if}}</td>
-				<td>{{if motivation !== null}}
+				<td {{if highlightRule}}class="highlight-text"{{/if}}>{{if motivation !== null}}
 					(<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
 				{{/if}}</td>
 			</tr>
 			{{/if}}
 			<tr class="case-step-row">
-				<td colspan="2">
+				<td colspan="2" {{if highlightTerm}}class="highlight-text"{{/if}}>
 					{{:formula}}
 					{{if !isFirst}}
 						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
@@ -234,16 +237,16 @@
 		<script id="exercise-active-bottom-step-template" type="text/x-jsrender">
 			{{if relation !== null || motivation !== null}}
 			<tr class="case-step-row">
-				<td>{{if relation !== null}}
+				<td {{if highlightRelation}}class="highlight-text"{{/if}}>{{if relation !== null}}
 					{{:relation}}
 				{{/if}}</td>
-				<td>{{if motivation !== null}}
+				<td {{if highlightRule}}class="highlight-text"{{/if}}>{{if motivation !== null}}
 					(<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
 				{{/if}}</td>
 			</tr>
 			{{/if}}
 			<tr class="case-step-row">
-				<td colspan="2">
+				<td colspan="2" {{if highlightTerm}}class="highlight-text"{{/if}}>
 					{{:formula}}
 					{{if !isLast}}
 						<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-step"><i class='fas fa-times'></i></button>
@@ -258,10 +261,10 @@
 				<tr class="border-middle-{{:border}}">
 			{{/if}}
 			<!-- <td>{{:relation}}{{if relation === null && !isFirst}}={{/if}}</td> -->
-			<td>{{:relation}}</td>
-			<td>{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}</td>
+			<td {{if highlightRelation}}class="highlight-text"{{/if}}>{{:relation}}</td>
+			<td {{if highlightTerm}}class="highlight-text"{{/if}}>{{if isEmptyFormula}}<i class="placeholder-text">formula</i>{{else}}{{:formula}}{{/if}}</td>
 			<!-- <td>{{if motivation !== null}}({{:motivation}}){{else !isFirst}}(?){{/if}}</td> -->
-			<td>{{if motivation !== null}}
+			<td {{if highlightRule}}class="highlight-text"{{/if}}>{{if motivation !== null}}
 				(<span translate-key="rule.logic.propositional.logind.{{:motivation}}" translate-params='{{:motivationParams}}'></span>)
 			{{/if}}</td>
 			</tr>

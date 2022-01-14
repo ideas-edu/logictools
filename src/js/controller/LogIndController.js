@@ -120,7 +120,7 @@ export class LogIndController extends ExerciseController {
     for (const motivation of this.motivationOptions) {
       const option = document.createElement('option')
       option.value = motivation
-      if (this.baseMotivations.includes(motivation)) {
+      if ([].concat(this.baseMotivations).concat(this.exercise.motivations).includes(motivation)) {
         translateElement(option, `rule.logic.propositional.logind.${motivation}`)
       } else {
         translateElement(option, 'rule.logic.propositional.logind.definition', { function: motivation })
@@ -203,7 +203,7 @@ export class LogIndController extends ExerciseController {
         hideButton: true
       })
     }
-    this.motivationOptions = [].concat(this.baseMotivations)
+    this.motivationOptions = [].concat(this.baseMotivations).concat(this.exercise.motivations)
     for (const term of this.exercise.language) {
       switch (term) {
         case 'NEGATION':
@@ -246,6 +246,7 @@ export class LogIndController extends ExerciseController {
       })
       this.motivationOptions.push(term)
     }
+
     this.assumptionPopoverTop.options.characters = this.characterOptions
     this.assumptionPopoverTop.setContent()
     this.assumptionPopoverBottom.options.characters = this.characterOptions
@@ -674,6 +675,7 @@ export class LogIndController extends ExerciseController {
 
         this.updateAlert('logind.error.incorrect', null, 'error')
         break
+      case 'detour':
       case 'expected':
       case 'correct':
         this.doNextStep({ formula: term })
@@ -861,17 +863,25 @@ export class LogIndController extends ExerciseController {
     }
     let border = null
     let status = null
+    let message = null
+    let messageParams = null
     if (this.exercise.activeCase !== null && _case.identifier === this.exercise.activeCase.identifier) {
       border = 'active'
       status = 'active'
     } else {
       status = _case.status
     }
+    if (_case.type === 'hypothesis') {
+      message = 'hypothesis'
+      messageParams = JSON.stringify({ title: _case.getFormattedIdentifier() })
+    }
 
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
       exerciseComplete: this.exerciseComplete,
+      message: message,
+      messageParams: messageParams,
       type: _case.type,
       status: status,
       steps: newSteps
@@ -934,13 +944,16 @@ export class LogIndController extends ExerciseController {
 
     let motivation = step.rule
     let motivationParams = {}
-    if (step.rule !== null && !this.baseMotivations.includes(step.rule)) {
+    if (step.rule !== null && ![].concat(this.baseMotivations).concat(this.exercise.motivations).includes(step.rule)) {
       motivationParams = { function: motivation }
       motivation = 'definition'
     }
 
     const exerciseStepHtml = stepTemplate.render({
       border: border,
+      highlightRelation: step.highlightRelation,
+      highlightTerm: step.highlightTerm,
+      highlightRule: step.highlightRule,
       isEmptyFormula: step.term === '',
       isFirst: step.number === 0,
       isTopStep: step.isTopStep,
@@ -1131,10 +1144,16 @@ export class LogIndController extends ExerciseController {
     for (const _case of this.exercise.cases.hypotheses) {
       this.insertCase(_case)
     }
+    if (this.exercise.baseCasesStatus === 'complete' && this.exercise.cases.hypotheses.length === 0) {
+      this.insertCaseMessage('no_hypotheses')
+    }
 
     this.insertCaseHeader('inductiveSteps', this.exercise.inductiveStepsStatus)
     for (const _case of this.exercise.cases.inductiveSteps) {
       this.insertCase(_case)
+    }
+    if (this.exercise.hypothesesStatus === 'complete' && this.exercise.cases.inductiveSteps.length === 0) {
+      this.insertCaseMessage('no_inductive_steps')
     }
 
     this.disableUI(false)

@@ -385,7 +385,10 @@
         "inductiveStep": "Case $${{title}}$$"
       },
       "message": {
-        "no_base_case": "You have no base cases."
+        "hypothesis": "Assume that for any given $${{title}}$$:",
+        "no_base_case": "You have no base cases.",
+        "no_hypotheses": "You have no hypotheses.",
+        "no_inductive_steps": "You have no inductive steps."
       }
     },
     "completed": "The exercise is finished.",
@@ -423,7 +426,7 @@
       "message": {
         "begin": {
           "baseCase": "<i>Formulate the base case</i>",
-          "hypothesis": "<i>Formulate the induction hypothesis</i>",
+          "hypothesis": "<i>Formulate the induction hypothesis. Assume that:</i>",
           "inductiveStep": "<i>Formulate the inductive case</i>"
         },
         "prove": "<i>Prove</i>: $${{formula}}$$"
@@ -505,7 +508,8 @@
           "min": "Definition min",
           "set": "Set rule",
           "subst": "Definition substitution",
-          "union": "Definition union"
+          "union": "Definition union",
+          "valab": "valAB"
         },
         "notfalse": "T-rule not F",
         "nottrue": "F-rule not T",
