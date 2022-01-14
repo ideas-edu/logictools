@@ -651,7 +651,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('too many basecases')) {
-          this.setErrorLocation(null)
+          this.clearErrors()
           this.updateAlert('logind.error.tooManyBasecases', null, 'error')
           break
         }
