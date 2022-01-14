@@ -621,7 +621,7 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('different metavars')) {
           this.setErrorLocation(['formula-bottom', 'formula-top'])
-          this.updateAlert('logind.error.differentMetavars', null, 'error')
+          this.updateAlert('logind.error.checkDifferentMetavars', null, 'error')
           break
         }
         if (term.includes('lost metavars')) {

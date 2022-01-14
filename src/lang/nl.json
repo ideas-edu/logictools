@@ -394,7 +394,7 @@
     "completed": "De uitwerking is compleet",
     "error": {
       "caseNotRecognized": "Dit is geen correct geval",
-      "differentMetavars": "Gebruik steeds dezelfde metavariabelen in dit inductieve geval.",
+      "checkDifferentMetavars": "Gebruik steeds dezelfde metavariabelen in dit inductieve geval.",
       "differentMetaVars": "In het linker- en rechterdeel van de inductiehypothese moet dezelfde variabele voorkomen.",
       "differentMetaVarsWith": "Gebruik dezelfde metavariabele in de eerste en tweede expressie van de inductiehypothese, dus een $${{metaVar}}$$ in de tweede expressie",
       "doubleCase": "Je hebt al een geval $${{case}}$$, voor elk connectief in de taal moet je precies 1 geval bewijzen.",
