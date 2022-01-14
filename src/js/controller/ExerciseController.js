@@ -313,8 +313,8 @@ export class ExerciseController {
   // Highlights the location of an error
   setErrorLocation (elementIds) {
     this.clearErrors()
-    if(typeof elementIds === 'string') {
-      elementIds = [elementIds];
+    if (typeof elementIds === 'string') {
+      elementIds = [elementIds]
     }
     for (const elementId of elementIds) {
       document.getElementById(elementId).classList.add('error')

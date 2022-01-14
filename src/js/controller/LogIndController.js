@@ -16,7 +16,7 @@ import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
 import { LogIndExercise } from '../model/logind/exercise.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
-import { convertM2H, unicodeToAscii, unicodeToLatex, asciiToUnicode } from '../model/logind/step.js'
+import { unicodeToAscii, unicodeToLatex, asciiToUnicode } from '../model/logind/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
 import { translateElement, translateElementPlaceholder, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
@@ -24,7 +24,6 @@ import { translateElement, translateElementPlaceholder, translateChildren, loadL
 const $ = jsrender(null)
 
 const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -372,7 +371,7 @@ export class LogIndController extends ExerciseController {
   validateFormula () {
     if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
       try {
-        let term = document.getElementById('formula-top').value
+        const term = document.getElementById('formula-top').value
         unicodeToAscii(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-top')
@@ -382,7 +381,7 @@ export class LogIndController extends ExerciseController {
     }
     if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
       try {
-        let term = document.getElementById('formula-bottom').value
+        const term = document.getElementById('formula-bottom').value
         unicodeToAscii(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-bottom')
@@ -504,7 +503,7 @@ export class LogIndController extends ExerciseController {
       case 'notequiv':
         if (term.includes('invalid instantiation for top expr')) {
           this.setErrorLocation('formula-top')
-          this.updateAlert('logind.error.invalidTopExpr', null , 'error')
+          this.updateAlert('logind.error.invalidTopExpr', null, 'error')
           break
         }
         if (term.includes('invalid instantiation for bottom expr')) {
@@ -532,7 +531,7 @@ export class LogIndController extends ExerciseController {
           const resultLatex = unicodeToLatex(result, this.exercise.definitions.concat(DEFINITIONS))
 
           this.setErrorLocation('formula-bottom')
-          this.updateAlert('logind.error.wrongResultIh', {result: resultLatex}, 'error')
+          this.updateAlert('logind.error.wrongResultIh', { result: resultLatex }, 'error')
           break
         }
         if (term.includes('similar-expr')) {
@@ -554,14 +553,14 @@ export class LogIndController extends ExerciseController {
           const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1])
 
           this.setErrorLocation(this.proofDirection === 'up' ? 'motivation-bottom' : 'motivation-top')
-          this.updateAlert('logind.error.wrongMotivation', {motivation: motivation}, 'error')
+          this.updateAlert('logind.error.wrongMotivation', { motivation: motivation }, 'error')
           break
         }
         if (term.includes('missing motivation')) {
           const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1])
 
           this.setErrorLocation(this.proofDirection === 'up' ? 'motivation-bottom' : 'motivation-top')
-          this.updateAlert('logind.error.missingMotivation', {motivation: motivation}, 'error')
+          this.updateAlert('logind.error.missingMotivation', { motivation: motivation }, 'error')
           break
         }
         if (term.includes('miscalculation')) {
@@ -571,9 +570,9 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('different meta vars in hypothesis')) {
           if (term.includes('IHStep')) {
-            const metaVar = term.split('\"')[1]
+            const metaVar = term.split('"')[1]
             this.setErrorLocation(['formula-bottom', 'formula-top'])
-            this.updateAlert('logind.error.differentMetaVarsWith', {metaVar: `\\${metaVar}`}, 'error')
+            this.updateAlert('logind.error.differentMetaVarsWith', { metaVar: `\\${metaVar}` }, 'error')
           } else {
             this.setErrorLocation(['formula-bottom', 'formula-top'])
             this.updateAlert('logind.error.differentMetaVars', null, 'error')
@@ -586,18 +585,18 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('is applicable, however the result is')) {
-          const motivation = this.getMotivationKey(term.split('"')[term.split('"').length-2])
+          const motivation = this.getMotivationKey(term.split('"')[term.split('"').length - 2])
           const result = asciiToUnicode(term.split(':')[term.split(':').length - 1], this.exercise.definitions.concat(DEFINITIONS))
           const resultLatex = unicodeToLatex(result, this.exercise.definitions.concat(DEFINITIONS))
 
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
-          this.updateAlert('logind.error.wrongResult', {result: resultLatex, motivation: motivation }, 'error')
+          this.updateAlert('logind.error.wrongResult', { result: resultLatex, motivation: motivation }, 'error')
           break
         }
         if (term.includes('connective not in language')) {
           const connective = term.split('"')[1]
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
-          this.updateAlert('logind.error.noConnective', {connective: connective}, 'error')
+          this.updateAlert('logind.error.noConnective', { connective: connective }, 'error')
           break
         }
         if (term.includes('invalid composed base case')) {
@@ -636,9 +635,9 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('not in induction hypothesis')) {
-          const metaVar = term.split(':')[term.split(':').length - 1].split(" ")[0]
+          const metaVar = term.split(':')[term.split(':').length - 1].split(' ')[0]
           this.setErrorLocation(['formula-bottom', 'formula-top'])
-          this.updateAlert('logind.error.notInInductionHypotheses', {metaVar: `\\${metaVar}`}, 'error')
+          this.updateAlert('logind.error.notInInductionHypotheses', { metaVar: `\\${metaVar}` }, 'error')
           break
         }
         if (term.includes('incorrect IHdefinition: invalid instantiation for top expr in hypothesis')) {
@@ -657,7 +656,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('double case')) {
-          const _case = term.split(':')[1].split(" ")[2]
+          const _case = term.split(':')[1].split(' ')[2]
           let caseLatex = null
           switch (_case) {
             case 'NEGATION':
@@ -691,7 +690,7 @@ export class LogIndController extends ExerciseController {
 
   getMotivationKey (motivation) {
     if (this.baseMotivations.includes(motivation)) {
-      return`rule.logic.propositional.logind.${motivation}`
+      return `rule.logic.propositional.logind.${motivation}`
     }
     return {
       key: 'rule.logic.propositional.logind.definition',
