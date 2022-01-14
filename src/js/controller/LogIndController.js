@@ -580,6 +580,11 @@ export class LogIndController extends ExerciseController {
           }
           break
         }
+        if (term.includes('no meta var in hypothesis')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.noMetaVar', null, 'error')
+          break
+        }
         if (term.includes('is applicable, however the result is')) {
           const motivation = this.getMotivationKey(term.split('"')[term.split('"').length-2])
           const result = asciiToUnicode(term.split(':')[term.split(':').length - 1], this.exercise.definitions.concat(DEFINITIONS))

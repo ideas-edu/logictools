@@ -411,6 +411,7 @@
       "missingMotivation": "De motivatie ontbreekt, de correcte motivatie is [[motivation]]",
       "noConnective": "Het connectief $${{connective}}$$ zit niet in de taal",
       "noInductionHypotheses": "Formuleer de inductiehypothse voor je aan de inductieve gevallen begint",
+      "noMetaVar": "Gebruik variabelen $$\\phi$$ of $$\\psi$$ in de inductiehypothese",
       "notInInductionHypotheses": "De metavariabele $${{metaVar}}$$ komt niet voor in de inductiehypothese; formuleer deze eerst voor $${{metaVar}}$$ of kies een andere metavariabele.",
       "notInstantiation": "De eerste en laatste regel van het deelbewijs vormen geen correcte instantie van de stelling",
       "similarExpr": "Je hebt de expressie niet gewijzigd.",
