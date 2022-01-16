@@ -651,5 +651,6 @@
     },
     "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": "Prove Logical Equivalence"
-  }
+  },
+  "welcome": "All interaction with this tool is logged completely anonymously. This data can be used for research purposes."
 }

@@ -47,9 +47,12 @@ class MainFrameController {
     // Set up tools/help menu chosen in config
     for (const tool of Object.values(config.tools)) {
       const tabItem = document.createElement('li')
-      tabItem.classList = ['nav-item']
-      tabItem.innerHTML = `<a class="nav-link" data-toggle="tab" href="#container-${tool.code}" tool-code="${tool.code}" id="tab-${tool.code}" translate-key="main.tabTitle.${tool.code}"></a>`
-      document.getElementById('myTabs').appendChild(tabItem)
+
+      if (!tool.hidden) {
+        tabItem.classList = ['nav-item']
+        tabItem.innerHTML = `<a class="nav-link" data-toggle="tab" href="#container-${tool.code}" tool-code="${tool.code}" id="tab-${tool.code}" translate-key="main.tabTitle.${tool.code}"></a>`
+        document.getElementById('myTabs').appendChild(tabItem)
+      }
 
       const containerItem = document.createElement('div')
       containerItem.setAttribute('id', `container-${tool.code}`)
@@ -94,6 +97,9 @@ class MainFrameController {
       }
     }
     if (tool === null) {
+      document.getElementById('container-welcome').classList.add('active')
+      selectTool('welcome', 'welcome.html')
+      console.log('hello')
       return
     }
     for (const entry of urlParams.entries()) {
