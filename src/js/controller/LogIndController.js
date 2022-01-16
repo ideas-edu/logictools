@@ -821,7 +821,11 @@ export class LogIndController extends ExerciseController {
       }
     )
     newExercise.deleteCase(index, type)
-    const onSuccessDiagnose = function(result, resultType) {
+    const onSuccessDiagnose = function (result, resultType) {
+      const onSuccess = function (result) {
+        this.onCheckConstraints(result)
+        this.updateCases()
+      }
       switch (resultType) {
         case 'notequiv':
           this.updateAlert('logind.error.incorrect', null, 'error')
@@ -830,19 +834,14 @@ export class LogIndController extends ExerciseController {
         case 'expected':
         case 'correct':
           this.exercise.deleteCase(index, type)
-          const onSuccess = function (result) {
-            this.onCheckConstraints(result)
-            this.updateCases()
-          }
           this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
           break
       }
     }
-    const onErrorDiagnose = function(result) {
+    const onErrorDiagnose = function (result) {
       this.updateAlert('logind.error.incorrect', null, 'error')
     }
     this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), onSuccessDiagnose.bind(this), onErrorDiagnose.bind(this))
-
   }
 
   editCase (index, type) {
