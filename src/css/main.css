@@ -73,7 +73,8 @@ ul.nav .nav-item:last-child {
 
 #container-dnf iframe#fra-dnf,
 #container-cnf iframe#fra-cnf,
-#container-logeq iframe#fra-logeq {
+#container-logeq iframe#fra-logeq,
+#container-welcome iframe#fra-welcome {
 	min-height: 390px!important;
 }
 

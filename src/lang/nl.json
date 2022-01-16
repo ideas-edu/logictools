@@ -651,5 +651,6 @@
     },
     "solution": "{{beginFormula}} $$\\Leftrightarrow$$ {{endFormula}}",
     "title": "Bewijs Logische Equivalentie"
-  }
+  },
+  "welcome": "Alle interactie met deze tool wordt geheel anoniem gelogd. Deze gegevens kunnen gebruikt worden voor onderzoeksdoeleinden."
 }

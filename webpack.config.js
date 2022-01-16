@@ -65,6 +65,9 @@ module.exports = {
 }
 
 for (const tool of Object.values(config.tools)) {
+  if (tool.bundles === undefined) {
+    continue
+  }
   for (const [identifier, location] of Object.entries(tool.bundles)) {
     module.exports.entry[identifier] = path.join(jsDir, location)
   }
