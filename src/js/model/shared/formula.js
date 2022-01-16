@@ -32,18 +32,20 @@ class Expression {
 }
 
 export class ParenthesisGroup extends Expression {
-  constructor (expression) {
+  constructor (parenthesisLeft, parenthesisRight, expression) {
     super()
     this.expression = expression
+    this.parenthesisLeft = parenthesisLeft
+    this.parenthesisRight = parenthesisRight
     this.setDepth(this.depth)
   }
 
   printUnicode () {
-    return `(${this.expression.printUnicode()})`
+    return `${this.parenthesisLeft}${this.expression.printUnicode()}${this.parenthesisRight}`
   }
 
   printSubStyled () {
-    return `(${this.expression.printStyled()})`
+    return `${this.parenthesisLeft}${this.expression.printStyled()}${this.parenthesisRight}`
   }
 
   length () {
@@ -223,7 +225,9 @@ const baseOptions = {
   implicitAssociativeBinaryOperators: [],
   firstOrderOperators: [],
   implicitPrecendence: [],
-  literals: []
+  literals: [],
+  leftParentheses: ['('], // Index must match the right parenthesis
+  rightParentheses: [')']
 }
 
 function matchesStart (options, string) {
@@ -348,7 +352,9 @@ export class Formula {
         continue
       }
       // Parenthesis
-      if (expressionString[0] === '(') {
+      if (this.options.leftParentheses.includes(expressionString[0])) {
+        const leftParenthesis = expressionString[0]
+        const rightParenthesis = this.options.rightParentheses[this.options.leftParentheses.indexOf(leftParenthesis)]
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
@@ -374,10 +380,10 @@ export class Formula {
             }
             return
           }
-          if (expressionString[i] === '(') {
+          if (expressionString[i] === leftParenthesis) {
             numLeft += 1
           }
-          if (expressionString[i] === ')') {
+          if (expressionString[i] === rightParenthesis) {
             numLeft -= 1
           }
           i++
@@ -393,7 +399,7 @@ export class Formula {
           }
           return
         }
-        leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex))
+        leftExpression = new ParenthesisGroup(leftParenthesis, rightParenthesis, this.parse(expressionString.substring(1, i - 1), contextIndex))
         if (leftExpression.expression instanceof BinaryOperator && this.options.firstOrderOperators.includes(leftExpression.expression.operator)) {
           this.error = {
             message: 'Operator out of order',
@@ -409,7 +415,7 @@ export class Formula {
         continue
       }
       // Parenthesis
-      if (expressionString[0] === ')') {
+      if (this.options.rightParentheses.includes(expressionString[0])) {
         this.error = {
           message: 'Missing open parenthesis',
           key: 'shared.syntaxError.missingOpen',
@@ -454,7 +460,9 @@ export class Formula {
     }
 
     // Parenthesis
-    if (expressionString[0] === '(') {
+    if (this.options.leftParentheses.includes(expressionString[0])) {
+      const leftParenthesis = expressionString[0]
+      const rightParenthesis = this.options.rightParentheses[this.options.leftParentheses.indexOf(leftParenthesis)]
       let i = 1
       let numLeft = 1
       while (numLeft > 0) {
@@ -472,10 +480,10 @@ export class Formula {
             tailString: ''
           }
         }
-        if (expressionString[i] === '(') {
+        if (expressionString[i] === leftParenthesis) {
           numLeft += 1
         }
-        if (expressionString[i] === ')') {
+        if (expressionString[i] === rightParenthesis) {
           numLeft -= 1
         }
         i++
@@ -511,7 +519,7 @@ export class Formula {
       }
 
       return {
-        exp: new ParenthesisGroup(parenthesisContents),
+        exp: new ParenthesisGroup(leftParenthesis, rightParenthesis, parenthesisContents),
         tailString: expressionString.substring(i)
       }
     }
