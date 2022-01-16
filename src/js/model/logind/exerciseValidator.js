@@ -43,7 +43,7 @@ export class LogIndExerciseValidator extends ExerciseValidator {
       if (data.diagnose.state !== undefined) {
         onValidated(data.diagnose.state.context.term, data.diagnose.diagnosetype)
       } else {
-        onValidated(undefined, data.diagnose.diagnosetype)
+        onValidated(data.diagnose.message, data.diagnose.diagnosetype)
       }
     }
 
