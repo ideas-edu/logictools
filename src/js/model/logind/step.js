@@ -112,7 +112,7 @@ export class LogIndStep {
   }
 
   setTerm (term) {
-    this.term = this.asciiToUnicode(term)
+    this.term = this.asciiToUnicode(term).replaceAll(' ', '')
     // This does not match the longest function
     const termAnnotated = this.unicodeToLatex(this.term)
 
@@ -181,7 +181,7 @@ export function convertH2M (str, definitions) {
             break
           case 'del': // infix binary function
             posNewFrom = startParam2 + lenParam2
-            paramsStr = addBracketsIfNeeded(removeBracketsIfPossible(convertH2M(param2, definitions))) + ' ' + '\\' + ' ' + removeBrackets(convertH2M(param1, definitions))
+            paramsStr = '(' + addBracketsIfNeeded(removeBracketsIfPossible(convertH2M(param2, definitions))) + ' ' + '\\' + ' ' + removeBrackets(convertH2M(param1, definitions)) + ')'
             break
           case 'union': // infix binary function
             posNewFrom = startParam2 + lenParam2

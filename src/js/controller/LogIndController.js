@@ -46,8 +46,12 @@ export class LogIndController extends ExerciseController {
     this.ruleKey = null
     this.formulaOptions = {
       unaryOperators: ['¬'],
-      binaryOperators: ['→', ''],
-      literals: ['p', 'q', 'r', 's']
+      binaryOperators: ['→', '∧', '∨', ',', '∪', '+', '-', '⋅', '\\'],
+      ternaryOperators: [{o1: '[', o2: '/', o3: ']'}],
+      literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+      implicitAssociativeBinaryOperators: ['+', '⋅', '∪', ','],
+      leftParentheses: ['(', '{'],
+      rightParentheses: [')', '}']
     }
     this.characterOptions = []
     this.motivationOptions = []
@@ -180,6 +184,9 @@ export class LogIndController extends ExerciseController {
       spaces: 'lr'
     }]
     for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
+      if (this.exercise.definitions.includes(String.fromCharCode(i))) {
+        continue
+      }
       this.characterOptions.push({
         char: String.fromCharCode(i),
         triggers: [String.fromCharCode(i)],
@@ -235,6 +242,7 @@ export class LogIndController extends ExerciseController {
       }
     }
     for (const term of this.exercise.definitions) {
+      this.formulaOptions.unaryOperators.push(term)
       this.characterOptions.push({
         char: term,
         latex: `\\texttt{${term}}`,
@@ -277,8 +285,15 @@ export class LogIndController extends ExerciseController {
   }
 
   validateStep () {
-    if (!this.validateFormula()) {
-      return
+    if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
+      if (!this.validateFormula(document.getElementById('formula-top'), this.exerciseAlert)) {
+        return
+      }
+    }
+    if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
+      if (!this.validateFormula(document.getElementById('formula-bottom'), this.exerciseAlert)) {
+        return
+      }
     }
 
     // Deep copy exercise in case that the step is invalid
@@ -335,7 +350,7 @@ export class LogIndController extends ExerciseController {
         return
       }
       let newStep = null
-      if (document.getElementById('formula-top').value === newExercise.activeCase.bottomSteps[0].term) {
+      if (document.getElementById('formula-top').value.replaceAll(' ', '') === newExercise.activeCase.bottomSteps[0].term.replaceAll(' ', '')) {
         // Close proof
         newStep = newExercise.activeCase.bottomSteps[0]
       } else {
@@ -351,7 +366,7 @@ export class LogIndController extends ExerciseController {
         this.updateAlert('shared.error.noMotivation', null, 'error')
         return
       }
-      if (document.getElementById('formula-bottom').value === newExercise.activeCase.topSteps[newExercise.activeCase.topSteps.length - 1].term) {
+      if (document.getElementById('formula-bottom').value.replaceAll(' ', '') === newExercise.activeCase.topSteps[newExercise.activeCase.topSteps.length - 1].term.replaceAll(' ', '')) {
         // Close proof
         newExercise.activeCase.closeProof(document.getElementById('relation-bottom').value, document.getElementById('motivation-bottom').value)
       } else {
@@ -366,52 +381,52 @@ export class LogIndController extends ExerciseController {
     this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
-  validateFormula () {
-    const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
-      try {
-        let term = document.getElementById('formula-top').value
-        term = term.replaceAll('∧', '&&')
-        term = term.replaceAll('∨', '||')
-        term = term.replaceAll('¬', '~')
-        term = term.replaceAll('→', '->')
-        term = term.replaceAll('⋅', '*')
+  // validateFormula () {
+  //   const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
+  //   if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
+  //     try {
+  //       let term = document.getElementById('formula-top').value
+  //       term = term.replaceAll('∧', '&&')
+  //       term = term.replaceAll('∨', '||')
+  //       term = term.replaceAll('¬', '~')
+  //       term = term.replaceAll('→', '->')
+  //       term = term.replaceAll('⋅', '*')
 
-        term = term.replaceAll('φ', ' phi ')
-        term = term.replaceAll('ψ', ' psi ')
-        term = term.replaceAll('χ', ' chi ')
-        term = term.replaceAll('∪', ' union ')
-        term = term.replaceAll('\\', ' del ')
-        convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
-      } catch {
-        this.setErrorLocation('formula-top')
-        this.updateAlert('logind.error.syntax', null, 'error')
-        return false
-      }
-    }
-    if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
-      try {
-        let term = document.getElementById('formula-bottom').value
-        term = term.replaceAll('∧', '&&')
-        term = term.replaceAll('∨', '||')
-        term = term.replaceAll('¬', '~')
-        term = term.replaceAll('→', '->')
-        term = term.replaceAll('⋅', '*')
+  //       term = term.replaceAll('φ', ' phi ')
+  //       term = term.replaceAll('ψ', ' psi ')
+  //       term = term.replaceAll('χ', ' chi ')
+  //       term = term.replaceAll('∪', ' union ')
+  //       term = term.replaceAll('\\', ' del ')
+  //       convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
+  //     } catch {
+  //       this.setErrorLocation('formula-top')
+  //       this.updateAlert('logind.error.syntax', null, 'error')
+  //       return false
+  //     }
+  //   }
+  //   if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
+  //     try {
+  //       let term = document.getElementById('formula-bottom').value
+  //       term = term.replaceAll('∧', '&&')
+  //       term = term.replaceAll('∨', '||')
+  //       term = term.replaceAll('¬', '~')
+  //       term = term.replaceAll('→', '->')
+  //       term = term.replaceAll('⋅', '*')
 
-        term = term.replaceAll('φ', ' phi ')
-        term = term.replaceAll('ψ', ' psi ')
-        term = term.replaceAll('χ', ' chi ')
-        term = term.replaceAll('∪', ' union ')
-        term = term.replaceAll('\\', ' del ')
-        convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
-      } catch {
-        this.setErrorLocation('formula-bottom')
-        this.updateAlert('logind.error.syntax', null, 'error')
-        return false
-      }
-    }
-    return true
-  }
+  //       term = term.replaceAll('φ', ' phi ')
+  //       term = term.replaceAll('ψ', ' psi ')
+  //       term = term.replaceAll('χ', ' chi ')
+  //       term = term.replaceAll('∪', ' union ')
+  //       term = term.replaceAll('\\', ' del ')
+  //       convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
+  //     } catch {
+  //       this.setErrorLocation('formula-bottom')
+  //       this.updateAlert('logind.error.syntax', null, 'error')
+  //       return false
+  //     }
+  //   }
+  //   return true
+  // }
 
   newCase (type) {
     this.exercise.activeCase = new LogIndCase(this.exercise)
