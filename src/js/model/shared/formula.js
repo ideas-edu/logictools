@@ -378,7 +378,7 @@ export class Formula {
             message: 'Invalid operand',
             key: 'shared.syntaxError.invalidOperand',
             params: {
-              index: contextIndex+1,
+              index: contextIndex + 1,
               length: 0
             }
           }
@@ -389,7 +389,7 @@ export class Formula {
             message: 'Missing operator',
             key: 'shared.syntaxError.missingOperator',
             params: {
-              index: contextIndex+2,
+              index: contextIndex + 2,
               length: 0
             }
           }
@@ -400,7 +400,7 @@ export class Formula {
             message: 'Invalid operand',
             key: 'shared.syntaxError.invalidOperand',
             params: {
-              index: contextIndex+3,
+              index: contextIndex + 3,
               length: 0
             }
           }
@@ -411,7 +411,7 @@ export class Formula {
             message: 'Missing operator',
             key: 'shared.syntaxError.missingOperator',
             params: {
-              index: contextIndex+4,
+              index: contextIndex + 4,
               length: 0
             }
           }
@@ -561,7 +561,7 @@ export class Formula {
           message: 'Invalid operand',
           key: 'shared.syntaxError.invalidOperand',
           params: {
-            index: contextIndex+1,
+            index: contextIndex + 1,
             length: 0
           }
         }
@@ -575,7 +575,7 @@ export class Formula {
           message: 'Missing operator',
           key: 'shared.syntaxError.missingOperator',
           params: {
-            index: contextIndex+2,
+            index: contextIndex + 2,
             length: 0
           }
         }
@@ -589,7 +589,7 @@ export class Formula {
           message: 'Invalid operand',
           key: 'shared.syntaxError.invalidOperand',
           params: {
-            index: contextIndex+3,
+            index: contextIndex + 3,
             length: 0
           }
         }
@@ -603,7 +603,7 @@ export class Formula {
           message: 'Missing operator',
           key: 'shared.syntaxError.missingOperator',
           params: {
-            index: contextIndex+4,
+            index: contextIndex + 4,
             length: 0
           }
         }

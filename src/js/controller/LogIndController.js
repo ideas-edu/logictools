@@ -16,7 +16,6 @@ import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
 import { LogIndExercise } from '../model/logind/exercise.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
-import { convertM2H } from '../model/logind/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
 import { translateElement, translateElementPlaceholder, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
@@ -47,7 +46,7 @@ export class LogIndController extends ExerciseController {
     this.formulaOptions = {
       unaryOperators: ['¬'],
       binaryOperators: ['→', '∧', '∨', ',', '∪', '+', '-', '⋅', '\\'],
-      ternaryOperators: [{o1: '[', o2: '/', o3: ']'}],
+      ternaryOperators: [{ o1: '[', o2: '/', o3: ']' }],
       literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       implicitAssociativeBinaryOperators: ['+', '⋅', '∪', ','],
       leftParentheses: ['(', '{'],
