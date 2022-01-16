@@ -20,6 +20,16 @@ const fOptionsMulti = {
   literals: ['p', 'q', 'r', 's', 'T', 'F']
 }
 
+const fOptionsBrackets = {
+  unaryOperators: ['¬'],
+  binaryOperators: ['∧', '∨', '→', '↔', ',', '+', '-'],
+  implicitAssociativeBinaryOperators: ['∧', '∨', ','],
+  implicitPrecendence: [{ strong: ',', weak: '+' }],
+  literals: ['p', 'q', 'r', 's', 'T', 'F'],
+  leftParentheses: ['(', '{'],
+  rightParentheses: [')', '}']
+}
+
 describe('formulaSyntax', function () {
   describe('errors', function () {
     it('should have error Missing closing parenthesis (nested groups)', function () {
@@ -135,6 +145,11 @@ describe('formulaSyntax', function () {
       assert.equal(formula.error.message, 'Missing open parenthesis')
       assert.equal(formula.error.params.index, 13)
     })
+    it('should have error mixed parentheses', function () {
+      const formula = new Formula('({p)}', fOptionsBrackets)
+      assert.equal(formula.error.message, 'Missing closing parenthesis')
+      assert.equal(formula.error.params.index, 2)
+    })
   })
   describe('success', function () {
     it('should succeed', function () {
@@ -149,6 +164,14 @@ describe('formulaSyntax', function () {
 
     it('should succeed operator with multiple characters', function () {
       const formula = new Formula('func(p)', fOptionsMulti)
+      assert.equal(formula.error, null)
+    })
+    it('should succeed operator with {} parentheses', function () {
+      const formula = new Formula('{p,q}', fOptionsBrackets)
+      assert.equal(formula.error, null)
+    })
+    it('should succeed operator with multiple parentheses', function () {
+      const formula = new Formula('{p+(p-q),q}', fOptionsBrackets)
       assert.equal(formula.error, null)
     })
   })

@@ -32,18 +32,20 @@ class Expression {
 }
 
 export class ParenthesisGroup extends Expression {
-  constructor (expression) {
+  constructor (parenthesisLeft, parenthesisRight, expression) {
     super()
     this.expression = expression
+    this.parenthesisLeft = parenthesisLeft
+    this.parenthesisRight = parenthesisRight
     this.setDepth(this.depth)
   }
 
   printUnicode () {
-    return `(${this.expression.printUnicode()})`
+    return `${this.parenthesisLeft}${this.expression.printUnicode()}${this.parenthesisRight}`
   }
 
   printSubStyled () {
-    return `(${this.expression.printStyled()})`
+    return `${this.parenthesisLeft}${this.expression.printStyled()}${this.parenthesisRight}`
   }
 
   length () {
@@ -101,7 +103,7 @@ export class UnaryOperator extends Expression {
   }
 
   length () {
-    return 1 + this.expression.length()
+    return this.operator.length + this.expression.length()
   }
 
   setDepth (depth) {
@@ -164,6 +166,42 @@ export class BinaryOperator extends Expression {
   }
 }
 
+export class TernaryOperator extends Expression {
+  constructor (operator, e1, e2, e3) {
+    super()
+    this.operator = operator
+    this.e1 = e1
+    this.e2 = e2
+    this.e3 = e3
+    this.setDepth(this.depth)
+  }
+
+  setDepth (depth) {
+    this.depth = depth
+    if (this.e1 !== null) {
+      this.e1.setDepth(this.depth + 1)
+    }
+    if (this.e2 !== null) {
+      this.e2.setDepth(this.depth + 1)
+    }
+    if (this.e3 !== null) {
+      this.e3.setDepth(this.depth + 1)
+    }
+  }
+
+  printUnicode () {
+    return `${this.operator.o1}${this.e1.printUnicode()}${this.operator.o2}${this.e2.printUnicode()}${this.operator.o3}${this.e3.printUnicode()}`
+  }
+
+  printSubStyled () {
+    return `${this.operator.o1}${this.e1.printStyled()}${this.operator.o2}${this.e2.printStyled()}${this.operator.o3}${this.e3.printStyled()}`
+  }
+
+  length () {
+    return 3 + this.e1.length() + this.e2.length() + this.e3.length()
+  }
+}
+
 class FlattenedSummation extends Expression {
   constructor (operator, expressions) {
     super()
@@ -220,10 +258,13 @@ class FlattenedSummation extends Expression {
 const baseOptions = {
   unaryOperators: [],
   binaryOperators: [],
+  ternaryOperators: [],
   implicitAssociativeBinaryOperators: [],
   firstOrderOperators: [],
   implicitPrecendence: [],
-  literals: []
+  literals: [],
+  leftParentheses: ['('], // Index must match the right parenthesis
+  rightParentheses: [')']
 }
 
 function matchesStart (options, string) {
@@ -329,6 +370,61 @@ export class Formula {
         expressionString = rightExpression.tailString
         continue
       }
+      // Ternary
+      if (this.options.ternaryOperators.map(x => x.o1).includes(expressionString[0])) {
+        const operator = this.options.ternaryOperators[this.options.ternaryOperators.map(x => x.o1).indexOf(expressionString[0])]
+        if (!this.options.literals.includes(expressionString[1])) {
+          this.error = {
+            message: 'Invalid operand',
+            key: 'shared.syntaxError.invalidOperand',
+            params: {
+              index: contextIndex + 1,
+              length: 0
+            }
+          }
+          return
+        }
+        if (expressionString[2] !== operator.o2) {
+          this.error = {
+            message: 'Missing operator',
+            key: 'shared.syntaxError.missingOperator',
+            params: {
+              index: contextIndex + 2,
+              length: 0
+            }
+          }
+          return
+        }
+        if (!this.options.literals.includes(expressionString[3])) {
+          this.error = {
+            message: 'Invalid operand',
+            key: 'shared.syntaxError.invalidOperand',
+            params: {
+              index: contextIndex + 3,
+              length: 0
+            }
+          }
+          return
+        }
+        if (expressionString[4] !== operator.o3) {
+          this.error = {
+            message: 'Missing operator',
+            key: 'shared.syntaxError.missingOperator',
+            params: {
+              index: contextIndex + 4,
+              length: 0
+            }
+          }
+          return
+        }
+        const e1 = new Literal(expressionString[1])
+        const e2 = new Literal(expressionString[3])
+        const e3 = this.findFirstExpression(expressionString.substring(5), contextIndex + 5)
+        leftExpression = new TernaryOperator(operator, e1, e2, e3.exp)
+        expressionString = e3.tailString
+        continue
+      }
+
       // Literal
       if (this.options.literals.includes(expressionString[0])) {
         if (leftExpression !== null) {
@@ -348,7 +444,9 @@ export class Formula {
         continue
       }
       // Parenthesis
-      if (expressionString[0] === '(') {
+      if (this.options.leftParentheses.includes(expressionString[0])) {
+        const leftParenthesis = expressionString[0]
+        const rightParenthesis = this.options.rightParentheses[this.options.leftParentheses.indexOf(leftParenthesis)]
         if (leftExpression !== null) {
           this.error = {
             message: 'Missing operator',
@@ -374,10 +472,10 @@ export class Formula {
             }
             return
           }
-          if (expressionString[i] === '(') {
+          if (expressionString[i] === leftParenthesis) {
             numLeft += 1
           }
-          if (expressionString[i] === ')') {
+          if (expressionString[i] === rightParenthesis) {
             numLeft -= 1
           }
           i++
@@ -393,7 +491,7 @@ export class Formula {
           }
           return
         }
-        leftExpression = new ParenthesisGroup(this.parse(expressionString.substring(1, i - 1), contextIndex))
+        leftExpression = new ParenthesisGroup(leftParenthesis, rightParenthesis, this.parse(expressionString.substring(1, i - 1), contextIndex))
         if (leftExpression.expression instanceof BinaryOperator && this.options.firstOrderOperators.includes(leftExpression.expression.operator)) {
           this.error = {
             message: 'Operator out of order',
@@ -409,7 +507,7 @@ export class Formula {
         continue
       }
       // Parenthesis
-      if (expressionString[0] === ')') {
+      if (this.options.rightParentheses.includes(expressionString[0])) {
         this.error = {
           message: 'Missing open parenthesis',
           key: 'shared.syntaxError.missingOpen',
@@ -435,6 +533,18 @@ export class Formula {
   }
 
   findFirstExpression (expressionString, contextIndex) {
+    // Unary
+    if (matchesStart(this.options.unaryOperators, expressionString) !== null) {
+      const op = matchesStart(this.options.unaryOperators, expressionString)
+      const unaryExpression = this.findFirstExpression(expressionString.substring(op.length), contextIndex + op.length)
+      const leftExpression = new UnaryOperator(op, unaryExpression.exp)
+
+      return {
+        exp: leftExpression,
+        tailString: unaryExpression.tailString
+      }
+    }
+
     // Literals
     if (this.options.literals.includes(expressionString[0])) {
       return {
@@ -443,18 +553,78 @@ export class Formula {
       }
     }
 
-    // Unary
-    if (this.options.unaryOperators.includes(expressionString[0])) {
-      const unaryExpression = this.findFirstExpression(expressionString.substring(1), contextIndex + 1)
-      const leftExpression = new UnaryOperator(expressionString[0], unaryExpression.exp)
+    // Ternary
+    if (this.options.ternaryOperators.map(x => x.o1).includes(expressionString[0])) {
+      const operator = this.options.ternaryOperators[this.options.ternaryOperators.map(x => x.o1).indexOf(expressionString[0])]
+      if (!this.options.literals.includes(expressionString[1])) {
+        this.error = {
+          message: 'Invalid operand',
+          key: 'shared.syntaxError.invalidOperand',
+          params: {
+            index: contextIndex + 1,
+            length: 0
+          }
+        }
+        return {
+          exp: null,
+          tailString: ''
+        }
+      }
+      if (expressionString[2] !== operator.o2) {
+        this.error = {
+          message: 'Missing operator',
+          key: 'shared.syntaxError.missingOperator',
+          params: {
+            index: contextIndex + 2,
+            length: 0
+          }
+        }
+        return {
+          exp: null,
+          tailString: ''
+        }
+      }
+      if (!this.options.literals.includes(expressionString[3])) {
+        this.error = {
+          message: 'Invalid operand',
+          key: 'shared.syntaxError.invalidOperand',
+          params: {
+            index: contextIndex + 3,
+            length: 0
+          }
+        }
+        return {
+          exp: null,
+          tailString: ''
+        }
+      }
+      if (expressionString[4] !== operator.o3) {
+        this.error = {
+          message: 'Missing operator',
+          key: 'shared.syntaxError.missingOperator',
+          params: {
+            index: contextIndex + 4,
+            length: 0
+          }
+        }
+        return {
+          exp: null,
+          tailString: ''
+        }
+      }
+      const e1 = new Literal(expressionString[1])
+      const e2 = new Literal(expressionString[3])
+      const e3 = this.findFirstExpression(expressionString.substring(5), contextIndex + 5)
       return {
-        exp: leftExpression,
-        tailString: unaryExpression.tailString
+        exp: new TernaryOperator(operator, e1, e2, e3.exp),
+        tailString: e3.tailString
       }
     }
 
     // Parenthesis
-    if (expressionString[0] === '(') {
+    if (this.options.leftParentheses.includes(expressionString[0])) {
+      const leftParenthesis = expressionString[0]
+      const rightParenthesis = this.options.rightParentheses[this.options.leftParentheses.indexOf(leftParenthesis)]
       let i = 1
       let numLeft = 1
       while (numLeft > 0) {
@@ -472,10 +642,10 @@ export class Formula {
             tailString: ''
           }
         }
-        if (expressionString[i] === '(') {
+        if (expressionString[i] === leftParenthesis) {
           numLeft += 1
         }
-        if (expressionString[i] === ')') {
+        if (expressionString[i] === rightParenthesis) {
           numLeft -= 1
         }
         i++
@@ -511,7 +681,7 @@ export class Formula {
       }
 
       return {
-        exp: new ParenthesisGroup(parenthesisContents),
+        exp: new ParenthesisGroup(leftParenthesis, rightParenthesis, parenthesisContents),
         tailString: expressionString.substring(i)
       }
     }
