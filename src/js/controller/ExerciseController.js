@@ -311,9 +311,14 @@ export class ExerciseController {
   }
 
   // Highlights the location of an error
-  setErrorLocation (elementId) {
+  setErrorLocation (elementIds) {
     this.clearErrors()
-    document.getElementById(elementId).classList.add('error')
+    if (typeof elementIds === 'string') {
+      elementIds = [elementIds]
+    }
+    for (const elementId of elementIds) {
+      document.getElementById(elementId).classList.add('error')
+    }
   }
 
   dismissAlert () {
