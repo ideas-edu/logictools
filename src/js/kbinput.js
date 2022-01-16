@@ -109,7 +109,6 @@ export class FormulaPopover {
       const cursor = this.inputElement.selectionStart
       this.insertText('()')
       setCursor(this.inputElement, cursor + 1)
-      // console.log(this.inputElement.value.substring(0, cursor + 1), this.inputElement.selectionStart, this.inputElement.value.substring(cursor + 1))
     }
     this.onChangeCallback()
     // Keep focus on inputElement after pressing button

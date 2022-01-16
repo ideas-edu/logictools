@@ -48,67 +48,17 @@ export class LogIndStep {
   }
 
   unicodeToLatex (term) {
-    // Give {, }, and \ a reserved characters. Replacing with setminus will conflict with 'min' function definition
-    term = term.replaceAll('{', '@1 ')
-    term = term.replaceAll('}', '@2 ')
-    term = term.replaceAll('\\', '@3')
-
-    for (const functionName of this.case.exercise.definitions.concat(['min', 'max'])) {
-      term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
-    }
-
-    term = term.replaceAll('@1', '\\{ ')
-    term = term.replaceAll('@2', '\\} ')
-    term = term.replaceAll('@3', '\\setminus ')
-
-    term = term.replaceAll('∧', '\\land ')
-    term = term.replaceAll('∨', '\\lor ')
-    term = term.replaceAll('¬', '\\neg ')
-    term = term.replaceAll('→', '\\rightarrow ')
-    term = term.replaceAll('⋅', '\\cdot')
-
-    term = term.replaceAll('φ', '\\phi ')
-    term = term.replaceAll('ψ', '\\psi ')
-    term = term.replaceAll('χ', '\\chi ')
-
-    return term
+    return unicodeToLatex(term, this.case.exercise.definitions.concat(['min', 'max']))
   }
 
   asciiToUnicode (term) {
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertH2M(term, this.case.exercise.definitions.concat(DEFINITIONS))
-
-    term = term.replaceAll('&&', '∧')
-    term = term.replaceAll('||', '∨')
-    term = term.replaceAll('~', '¬')
-    term = term.replaceAll('->', '→')
-    term = term.replaceAll('*', '⋅')
-
-    term = term.replaceAll('phi', 'φ')
-    term = term.replaceAll('psi', 'ψ')
-    term = term.replaceAll('chi', 'χ')
-    term = term.replaceAll('union', '∪')
-
-    return term
+    return asciiToUnicode(term, this.case.exercise.definitions.concat(DEFINITIONS))
   }
 
   unicodeToAscii (term) {
-    term = term.replaceAll('∧', '&&')
-    term = term.replaceAll('∨', '||')
-    term = term.replaceAll('¬', '~')
-    term = term.replaceAll('→', '->')
-    term = term.replaceAll('⋅', '*')
-
-    term = term.replaceAll('φ', ' phi ')
-    term = term.replaceAll('ψ', ' psi ')
-    term = term.replaceAll('χ', ' chi ')
-    term = term.replaceAll('∪', ' union ')
-    term = term.replaceAll('\\', ' del ')
-
     const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-    term = convertM2H(term, this.case.exercise.definitions.concat(DEFINITIONS))
-
-    return term
+    return unicodeToAscii(term, this.case.exercise.definitions.concat(DEFINITIONS))
   }
 
   setTerm (term) {
@@ -120,6 +70,68 @@ export class LogIndStep {
       throwOnError: false
     })
   }
+}
+
+export function unicodeToAscii (term, definitions) {
+  term = term.replaceAll('∧', '&&')
+  term = term.replaceAll('∨', '||')
+  term = term.replaceAll('¬', '~')
+  term = term.replaceAll('→', '->')
+  term = term.replaceAll('⋅', '*')
+
+  term = term.replaceAll('φ', ' phi ')
+  term = term.replaceAll('ψ', ' psi ')
+  term = term.replaceAll('χ', ' chi ')
+  term = term.replaceAll('∪', ' union ')
+  term = term.replaceAll('\\', ' del ')
+
+  term = convertM2H(term, definitions)
+
+  return term
+}
+
+export function unicodeToLatex (term, definitions) {
+  // Give {, }, and \ a reserved characters. Replacing with setminus will conflict with 'min' function definition
+  term = term.replaceAll('{', '@1 ')
+  term = term.replaceAll('}', '@2 ')
+  term = term.replaceAll('\\', '@3')
+
+  for (const functionName of definitions) {
+    term = term.replaceAll(functionName, `\\texttt{${functionName}}`)
+  }
+
+  term = term.replaceAll('@1', '\\{ ')
+  term = term.replaceAll('@2', '\\} ')
+  term = term.replaceAll('@3', '\\setminus ')
+
+  term = term.replaceAll('∧', '\\land ')
+  term = term.replaceAll('∨', '\\lor ')
+  term = term.replaceAll('¬', '\\neg ')
+  term = term.replaceAll('→', '\\rightarrow ')
+  term = term.replaceAll('⋅', '\\cdot')
+
+  term = term.replaceAll('φ', '\\phi ')
+  term = term.replaceAll('ψ', '\\psi ')
+  term = term.replaceAll('χ', '\\chi ')
+
+  return term
+}
+
+export function asciiToUnicode (term, definitions) {
+  term = convertH2M(term, definitions)
+
+  term = term.replaceAll('&&', '∧')
+  term = term.replaceAll('||', '∨')
+  term = term.replaceAll('~', '¬')
+  term = term.replaceAll('->', '→')
+  term = term.replaceAll('*', '⋅')
+
+  term = term.replaceAll('phi', 'φ')
+  term = term.replaceAll('psi', 'ψ')
+  term = term.replaceAll('chi', 'χ')
+  term = term.replaceAll('union', '∪')
+
+  return term
 }
 
 /**
