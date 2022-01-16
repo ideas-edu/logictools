@@ -976,12 +976,37 @@ export class LogIndController extends ExerciseController {
   // ####################################################################
 
   deleteCase (index, type) {
-    this.exercise.deleteCase(index, type)
-    const onSuccess = function (result) {
-      this.onCheckConstraints(result)
-      this.updateCases()
+    // Deep copy exercise in case that the step is invalid
+    const newExercise = new LogIndExercise(
+      this.exercise.getObject(),
+      this.exercise.exerciseType,
+      {
+        titleKey: this.exercise.titleKey,
+        titleParams: this.exercise.titleParams
+      }
+    )
+    newExercise.deleteCase(index, type)
+    const onSuccessDiagnose = function (result, resultType) {
+      const onSuccess = function (result) {
+        this.onCheckConstraints(result)
+        this.updateCases()
+      }
+      switch (resultType) {
+        case 'notequiv':
+          this.updateAlert('logind.error.incorrect', null, 'error')
+          break
+        case 'detour':
+        case 'expected':
+        case 'correct':
+          this.exercise.deleteCase(index, type)
+          this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
+          break
+      }
     }
-    this.exerciseValidator.checkConstraints(this.exercise, onSuccess.bind(this), this.onErrorValidatingStep.bind(this))
+    const onErrorDiagnose = function (result) {
+      this.updateAlert('logind.error.incorrect', null, 'error')
+    }
+    this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), onSuccessDiagnose.bind(this), onErrorDiagnose.bind(this))
   }
 
   editCase (index, type) {
