@@ -16,12 +16,14 @@ import { LogIndExerciseSolver } from '../model/logind/exerciseSolver.js'
 import { LogIndExerciseValidator } from '../model/logind/exerciseValidator.js'
 import { LogIndExercise } from '../model/logind/exercise.js'
 import { LogIndCase } from '../model/logind/stepCollection.js'
-import { convertM2H } from '../model/logind/step.js'
+import { unicodeToAscii, unicodeToLatex, asciiToUnicode } from '../model/logind/step.js'
 import { SyntaxValidator } from '../model/syntaxValidator.js'
 import { ExerciseController } from './ExerciseController.js'
 import { translateElement, translateElementPlaceholder, translateChildren, loadLanguage, hasTranslation } from '../translate.js'
 
 const $ = jsrender(null)
+
+const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -300,11 +302,11 @@ export class LogIndController extends ExerciseController {
         this.exercise.activeCase.type
       )
       // Don't allow a user to restart an existing case
-      if (this.exercise.cases.cases.some(x => x.steps[0].term === document.getElementById('formula-top').value &&
-          x.steps[x.steps.length - 1].term === document.getElementById('formula-bottom').value)) {
-        this.updateAlert('shared.error.caseExists', null, 'error')
-        return
-      }
+      // if (this.exercise.cases.cases.some(x => x.steps[0].term === document.getElementById('formula-top').value &&
+      //     x.steps[x.steps.length - 1].term === document.getElementById('formula-bottom').value)) {
+      //   this.updateAlert('shared.error.caseExists', null, 'error')
+      //   return
+      // }
       let relation = document.getElementById('relation-gap').value
       if (relation === '≤') {
         relation = '<='
@@ -367,22 +369,10 @@ export class LogIndController extends ExerciseController {
   }
 
   validateFormula () {
-    const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
     if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
       try {
-        let term = document.getElementById('formula-top').value
-        term = term.replaceAll('∧', '&&')
-        term = term.replaceAll('∨', '||')
-        term = term.replaceAll('¬', '~')
-        term = term.replaceAll('→', '->')
-        term = term.replaceAll('⋅', '*')
-
-        term = term.replaceAll('φ', ' phi ')
-        term = term.replaceAll('ψ', ' psi ')
-        term = term.replaceAll('χ', ' chi ')
-        term = term.replaceAll('∪', ' union ')
-        term = term.replaceAll('\\', ' del ')
-        convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
+        const term = document.getElementById('formula-top').value
+        unicodeToAscii(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-top')
         this.updateAlert('logind.error.syntax', null, 'error')
@@ -391,19 +381,8 @@ export class LogIndController extends ExerciseController {
     }
     if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
       try {
-        let term = document.getElementById('formula-bottom').value
-        term = term.replaceAll('∧', '&&')
-        term = term.replaceAll('∨', '||')
-        term = term.replaceAll('¬', '~')
-        term = term.replaceAll('→', '->')
-        term = term.replaceAll('⋅', '*')
-
-        term = term.replaceAll('φ', ' phi ')
-        term = term.replaceAll('ψ', ' psi ')
-        term = term.replaceAll('χ', ' chi ')
-        term = term.replaceAll('∪', ' union ')
-        term = term.replaceAll('\\', ' del ')
-        convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
+        const term = document.getElementById('formula-bottom').value
+        unicodeToAscii(term, this.exercise.definitions.concat(DEFINITIONS))
       } catch {
         this.setErrorLocation('formula-bottom')
         this.updateAlert('logind.error.syntax', null, 'error')
@@ -522,6 +501,182 @@ export class LogIndController extends ExerciseController {
   onStepValidated (term, resultType) {
     switch (resultType) {
       case 'notequiv':
+        if (term.includes('invalid instantiation for top expr')) {
+          this.setErrorLocation('formula-top')
+          this.updateAlert('logind.error.invalidTopExpr', null, 'error')
+          break
+        }
+        if (term.includes('invalid instantiation for bottom expr')) {
+          this.setErrorLocation('formula-bottom')
+          this.updateAlert('logind.error.invalidBottomExpr', null, 'error')
+          break
+        }
+        if (term.includes('type does not match theorem')) {
+          this.setErrorLocation('relation-gap')
+          this.updateAlert('logind.error.wrongRelationGap', null, 'error')
+          break
+        }
+        if (term.includes('relation type')) {
+          this.setErrorLocation(this.proofDirection === 'up' ? 'relation-bottom' : 'relation-top')
+          this.updateAlert('logind.error.wrongRelation', null, 'error')
+          break
+        }
+        if (term.includes('incorrect application ih')) {
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.incorrectApplicationIh', null, 'error')
+          break
+        }
+        if (term.includes('the induction hypothesis is applicable')) {
+          const result = asciiToUnicode(term.split(':')[term.split(':').length - 1], this.exercise.definitions.concat(DEFINITIONS))
+          const resultLatex = unicodeToLatex(result, this.exercise.definitions.concat(DEFINITIONS))
+
+          this.setErrorLocation('formula-bottom')
+          this.updateAlert('logind.error.wrongResultIh', { result: resultLatex }, 'error')
+          break
+        }
+        if (term.includes('similar-expr')) {
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.similarExpr', null, 'error')
+          break
+        }
+        if (term.includes('step') && term.includes('check-triple')) {
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.invalidStep', null, 'error')
+          break
+        }
+        if (term.includes('subproof is not an instance of theorem')) {
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.invalidSubproof', null, 'error')
+          break
+        }
+        if (term.includes('wrong motivation')) {
+          const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1])
+
+          this.setErrorLocation(this.proofDirection === 'up' ? 'motivation-bottom' : 'motivation-top')
+          this.updateAlert('logind.error.wrongMotivation', { motivation: motivation }, 'error')
+          break
+        }
+        if (term.includes('missing motivation')) {
+          const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1])
+
+          this.setErrorLocation(this.proofDirection === 'up' ? 'motivation-bottom' : 'motivation-top')
+          this.updateAlert('logind.error.missingMotivation', { motivation: motivation }, 'error')
+          break
+        }
+        if (term.includes('miscalculation')) {
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.miscalculation', null, 'error')
+          break
+        }
+        if (term.includes('different meta vars in hypothesis')) {
+          if (term.includes('IHStep')) {
+            const metaVar = term.split('"')[1]
+            this.setErrorLocation(['formula-bottom', 'formula-top'])
+            this.updateAlert('logind.error.differentMetaVarsWith', { metaVar: `\\${metaVar}` }, 'error')
+          } else {
+            this.setErrorLocation(['formula-bottom', 'formula-top'])
+            this.updateAlert('logind.error.differentMetaVars', null, 'error')
+          }
+          break
+        }
+        if (term.includes('no meta var in hypothesis')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.noMetaVar', null, 'error')
+          break
+        }
+        if (term.includes('is applicable, however the result is')) {
+          const motivation = this.getMotivationKey(term.split('"')[term.split('"').length - 2])
+          const result = asciiToUnicode(term.split(':')[term.split(':').length - 1], this.exercise.definitions.concat(DEFINITIONS))
+          const resultLatex = unicodeToLatex(result, this.exercise.definitions.concat(DEFINITIONS))
+
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.wrongResult', { result: resultLatex, motivation: motivation }, 'error')
+          break
+        }
+        if (term.includes('connective not in language')) {
+          const connective = term.split('"')[1]
+          this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
+          this.updateAlert('logind.error.noConnective', { connective: connective }, 'error')
+          break
+        }
+        if (term.includes('invalid composed base case')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.invalidComposedBaseCase', null, 'error')
+          break
+        }
+        if (term.includes('invalid atoms in inductive case')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.invalidAtomsInInductiveCase', null, 'error')
+          break
+        }
+        if (term.includes('case not recognized')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.caseNotRecognized', null, 'error')
+          break
+        }
+        if (term.includes('not an instantiation')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.notInstantiation', null, 'error')
+          break
+        }
+        if (term.includes('different metavars')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.checkDifferentMetavars', null, 'error')
+          break
+        }
+        if (term.includes('lost metavars')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.lostMetavars', null, 'error')
+          break
+        }
+        if (term.includes('no induction hypotheses')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.noInductionHypotheses', null, 'error')
+          break
+        }
+        if (term.includes('not in induction hypothesis')) {
+          const metaVar = term.split(':')[term.split(':').length - 1].split(' ')[0]
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.notInInductionHypotheses', { metaVar: `\\${metaVar}` }, 'error')
+          break
+        }
+        if (term.includes('incorrect IHdefinition: invalid instantiation for top expr in hypothesis')) {
+          this.setErrorLocation('formula-top')
+          this.updateAlert('logind.error.wrongIHTop', null, 'error')
+          break
+        }
+        if (term.includes('incorrect IHdefinition: invalid instantiation for bottom expr in hypothesis')) {
+          this.setErrorLocation('formula-bottom')
+          this.updateAlert('logind.error.wrongIHBottom', null, 'error')
+          break
+        }
+        if (term.includes('too many basecases')) {
+          this.clearErrors()
+          this.updateAlert('logind.error.tooManyBasecases', null, 'error')
+          break
+        }
+        if (term.includes('double case')) {
+          const _case = term.split(':')[1].split(' ')[2]
+          let caseLatex = null
+          switch (_case) {
+            case 'NEGATION':
+              caseLatex = '\\neg'
+              break
+            case 'OR':
+              caseLatex = '\\lor'
+              break
+            case 'AND':
+              caseLatex = '\\land'
+              break
+            case 'IMPLIES':
+              caseLatex = '\\rightarrow'
+              break
+          }
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.doubleCase', { case: caseLatex }, 'error')
+          break
+        }
+
         this.updateAlert('logind.error.incorrect', null, 'error')
         break
       case 'detour':
@@ -531,6 +686,16 @@ export class LogIndController extends ExerciseController {
         break
     }
     return true
+  }
+
+  getMotivationKey (motivation) {
+    if (this.baseMotivations.includes(motivation)) {
+      return `rule.logic.propositional.logind.${motivation}`
+    }
+    return {
+      key: 'rule.logic.propositional.logind.definition',
+      params: { function: motivation }
+    }
   }
 
   /**
