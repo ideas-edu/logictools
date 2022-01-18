@@ -383,53 +383,6 @@ export class LogIndController extends ExerciseController {
     this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
-  // validateFormula () {
-  //   const DEFINITIONS = ['max', 'min', 'union', 'set', 'del', 'subst']
-  //   if (this.proofDirection === 'begin' || this.proofDirection === 'down') {
-  //     try {
-  //       let term = document.getElementById('formula-top').value
-  //       term = term.replaceAll('∧', '&&')
-  //       term = term.replaceAll('∨', '||')
-  //       term = term.replaceAll('¬', '~')
-  //       term = term.replaceAll('→', '->')
-  //       term = term.replaceAll('⋅', '*')
-
-  //       term = term.replaceAll('φ', ' phi ')
-  //       term = term.replaceAll('ψ', ' psi ')
-  //       term = term.replaceAll('χ', ' chi ')
-  //       term = term.replaceAll('∪', ' union ')
-  //       term = term.replaceAll('\\', ' del ')
-  //       convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
-  //     } catch {
-  //       this.setErrorLocation('formula-top')
-  //       this.updateAlert('logind.error.syntax', null, 'error')
-  //       return false
-  //     }
-  //   }
-  //   if (this.proofDirection === 'begin' || this.proofDirection === 'up') {
-  //     try {
-  //       let term = document.getElementById('formula-bottom').value
-  //       term = term.replaceAll('∧', '&&')
-  //       term = term.replaceAll('∨', '||')
-  //       term = term.replaceAll('¬', '~')
-  //       term = term.replaceAll('→', '->')
-  //       term = term.replaceAll('⋅', '*')
-
-  //       term = term.replaceAll('φ', ' phi ')
-  //       term = term.replaceAll('ψ', ' psi ')
-  //       term = term.replaceAll('χ', ' chi ')
-  //       term = term.replaceAll('∪', ' union ')
-  //       term = term.replaceAll('\\', ' del ')
-  //       convertM2H(term, this.exercise.definitions.concat(DEFINITIONS))
-  //     } catch {
-  //       this.setErrorLocation('formula-bottom')
-  //       this.updateAlert('logind.error.syntax', null, 'error')
-  //       return false
-  //     }
-  //   }
-  //   return true
-  // }
-
   newCase (type) {
     this.exercise.activeCase = new LogIndCase(this.exercise)
     this.exercise.activeCase.type = type
@@ -1031,7 +984,7 @@ export class LogIndController extends ExerciseController {
       }
       switch (resultType) {
         case 'notequiv':
-          this.updateAlert('logind.error.incorrect', null, 'error')
+          this.onStepValidated(result, resultType)
           break
         case 'detour':
         case 'expected':
