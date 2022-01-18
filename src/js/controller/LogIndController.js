@@ -46,7 +46,7 @@ export class LogIndController extends ExerciseController {
     super()
     this.exerciseComplete = false
     this.ruleKey = null
-    this.formulaOptions = {
+    this.baseFormulaOptions = {
       unaryOperators: ['¬', 'min', 'max'],
       binaryOperators: ['→', '∧', '∨', ',', '∪', '+', '-', '⋅', '\\'],
       ternaryOperators: [{ o1: '[', o2: '/', o3: ']' }],
@@ -231,6 +231,7 @@ export class LogIndController extends ExerciseController {
       })
     }
     this.motivationOptions = [].concat(this.baseMotivations).concat(this.exercise.motivations)
+    this.formulaOptions = JSON.parse(JSON.stringify(this.baseFormulaOptions))
     for (const term of this.exercise.definitions) {
       this.formulaOptions.unaryOperators.push(term)
       this.characterOptions.push({
