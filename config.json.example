@@ -115,18 +115,85 @@
         "twoWay": "controller/TwoWayController.js"
       }
     },
+    "LOGAX": {
+      "code": "logax",
+      "source": "test.logax",
+      "url": "logax.html?exerciseType=LOGAX",
+      "exampleExercises": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "randomExercises": true,
+      "inputOwnExercise": true,
+      "displayHintButton": true,
+      "displayNextStepButton": true,
+      "displayDerivationButton": true,
+      "rules": [
+        "logic.propositional.axiomatic.assumption",
+        "logic.propositional.axiomatic.assumption.close",
+        "logic.propositional.axiomatic.axiom-a",
+        "logic.propositional.axiomatic.axiom-a.close",
+        "logic.propositional.axiomatic.axiom-b",
+        "logic.propositional.axiomatic.axiom-b.close",
+        "logic.propositional.axiomatic.axiom-c",
+        "logic.propositional.axiomatic.axiom-c.close",
+        "logic.propositional.axiomatic.modusponens",
+        "logic.propositional.axiomatic.deduction.forward",
+        "logic.propositional.axiomatic.deduction.backward",
+        "logic.propositional.axiomatic.deduction.close",
+        "logic.propositional.axiomatic.goal",
+        "logic.propositional.axiomatic.lemma",
+        "logic.propositional.axiomatic.lemma.close"
+      ],
+      "bundles": {
+        "logax": "controller/LogAxController.js",
+        "logaxSolution": "controller/LogAxSolutionController.js"
+      }
+    },
+    "LOGIND": {
+      "code": "logind",
+      "source": "test.logind",
+      "url": "logind.html?exerciseType=LOGIND",
+      "exampleExercises": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "randomExercises": false,
+      "inputOwnExercise": false,
+      "displayHintButton": true,
+      "displayNextStepButton": true,
+      "displayDerivationButton": true,
+      "rules": [
+        "logic.propositional.logind.baseCase",
+        "logic.propositional.logind.hypothesis",
+        "logic.propositional.logind.inductiveStep"
+      ],
+      "bundles": {
+        "logind": "controller/LogIndController.js",
+        "logindSolution": "controller/LogIndSolutionController.js"
+      }
+    },
     "HELPLOGEX": {
       "code": "helpLogex",
       "url": "helpLogEx.html",
       "bundles": {
-        "help": "controller/HelpController.js"
+        "help": "controller/BaseController.js"
       }
     },
     "HELPLOGAX": {
       "code": "helpLogax",
       "url": "helpLogAx.html",
       "bundles": {
-        "help": "controller/HelpController.js"
+        "help": "controller/BaseController.js"
+      }
+    },
+    "HELPLOGIND": {
+      "code": "helpLogInd",
+      "url": "helpLogInd.html",
+      "bundles": {
+        "help": "controller/BaseController.js"
+      }
+    },
+    "WELCOME": {
+      "hidden": true,
+      "code": "welcome",
+      "url": "welcome.html",
+      "bundles": {
+        "welcome": "controller/BaseController.js"
       }
     }
   },
