@@ -271,6 +271,7 @@ export class LogIndController extends ExerciseController {
   showSolution () {
     const term = this.exercise.getObject()
     term.proofs = {}
+    term.active = null
     window.open(
       `logindsolution.html?formula=${encodeURIComponent(JSON.stringify(term))}&exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
       '_blank',
