@@ -47,7 +47,7 @@ export class LogIndController extends ExerciseController {
     this.exerciseComplete = false
     this.ruleKey = null
     this.formulaOptions = {
-      unaryOperators: ['¬'],
+      unaryOperators: ['¬', 'min', 'max'],
       binaryOperators: ['→', '∧', '∨', ',', '∪', '+', '-', '⋅', '\\'],
       ternaryOperators: [{ o1: '[', o2: '/', o3: ']' }],
       literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
@@ -259,6 +259,7 @@ export class LogIndController extends ExerciseController {
   showSolution () {
     const term = this.exercise.getObject()
     term.proofs = {}
+    term.active = null
     window.open(
       `logindsolution.html?formula=${encodeURIComponent(JSON.stringify(term))}&exerciseType=${this.exercise.type}&controller=${this.exerciseType}`,
       '_blank',
