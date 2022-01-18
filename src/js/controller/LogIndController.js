@@ -184,6 +184,27 @@ export class LogIndController extends ExerciseController {
       latex: '\\cdot',
       triggers: ['*', '∗'],
       spaces: 'lr'
+    },
+    {
+      char: '¬',
+      latex: '\\neg',
+      triggers: ['`', '!']
+    },
+    {
+      char: '∨',
+      latex: '\\lor',
+      triggers: ['|']
+    },
+    {
+      char: '∧',
+      latex: '\\land',
+      triggers: ['&', '^']
+    },
+    {
+      char: '→',
+      latex: '\\rightarrow',
+      triggers: ['>'],
+      spaces: 'lr'
     }]
     for (let i = 'a'.charCodeAt(0); i <= 'z'.charCodeAt(0); i++) {
       if (this.exercise.definitions.includes(String.fromCharCode(i))) {
@@ -210,39 +231,6 @@ export class LogIndController extends ExerciseController {
       })
     }
     this.motivationOptions = [].concat(this.baseMotivations).concat(this.exercise.motivations)
-    for (const term of this.exercise.language) {
-      switch (term) {
-        case 'NEGATION':
-          this.characterOptions.push({
-            char: '¬',
-            latex: '\\neg',
-            triggers: ['`', '!']
-          })
-          break
-        case 'OR':
-          this.characterOptions.push({
-            char: '∨',
-            latex: '\\lor',
-            triggers: ['|']
-          })
-          break
-        case 'AND':
-          this.characterOptions.push({
-            char: '∧',
-            latex: '\\land',
-            triggers: ['&', '^']
-          })
-          break
-        case 'IMPLIES':
-          this.characterOptions.push({
-            char: '→',
-            latex: '\\rightarrow',
-            triggers: ['>'],
-            spaces: 'lr'
-          })
-          break
-      }
-    }
     for (const term of this.exercise.definitions) {
       this.formulaOptions.unaryOperators.push(term)
       this.characterOptions.push({
