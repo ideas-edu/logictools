@@ -47,7 +47,7 @@ export class LogIndController extends ExerciseController {
     this.exerciseComplete = false
     this.ruleKey = null
     this.formulaOptions = {
-      unaryOperators: ['¬'],
+      unaryOperators: ['¬', 'min', 'max'],
       binaryOperators: ['→', '∧', '∨', ',', '∪', '+', '-', '⋅', '\\'],
       ternaryOperators: [{ o1: '[', o2: '/', o3: ']' }],
       literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
