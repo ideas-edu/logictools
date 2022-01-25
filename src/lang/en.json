@@ -267,7 +267,7 @@
       }
     },
     "tabTitle": {
-      "dnf": "Disjunctive Normal Form",
+      "dnf": "Convert to Normal Form",
       "hotKeys": "Hot Keys",
       "logeq": "Logical Equivalence",
       "rules": "Rules",
