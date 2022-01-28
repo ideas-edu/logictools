@@ -472,6 +472,7 @@
     "title": "Bewijzen met volledige inductie"
   },
   "main": {
+    "noMobile": "Dit programma is niet geoptimaliseerd voor beeldschermen met een beperkte breedte.",
     "tabTitle": {
       "cnf": "Conjunctieve Normaalvorm",
       "dnf": "Disjunctieve Normaalvorm",

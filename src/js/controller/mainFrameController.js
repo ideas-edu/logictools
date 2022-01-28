@@ -63,6 +63,11 @@ class MainFrameController {
 
       document.getElementById(`fra-${tool.code}`).onload = () => { translateChildren(document.getElementById(`fra-${tool.code}`).contentWindow.document) }
     }
+
+    // No mobile alert
+    if (window.innerWidth < 990) {
+      document.getElementById('no-mobile-alert-container').style.display = ''
+    }
   }
 
   /**
