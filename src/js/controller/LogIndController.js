@@ -52,6 +52,15 @@ export class LogIndController extends ExerciseController {
       ternaryOperators: [{ o1: '[', o2: '/', o3: ']' }],
       literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       implicitAssociativeBinaryOperators: ['+', '⋅', '∪', ','],
+      implicitPrecendence: [
+        { strong: '⋅', weak: '+' },
+        { strong: '⋅', weak: '-' },
+        { strong: ',', weak: '+' },
+        { strong: ',', weak: '-' },
+        { strong: ',', weak: '⋅' },
+        { strong: ',', weak: '∧' },
+        { strong: ',', weak: '∨' },
+        { strong: ',', weak: '→' }],
       leftParentheses: ['(', '{'],
       rightParentheses: [')', '}']
     }
