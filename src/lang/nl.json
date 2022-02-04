@@ -267,7 +267,7 @@
       }
     },
     "tabTitle": {
-      "dnf": "Disjunctieve Normaalvorm",
+      "dnf": "Omzetten naar Normaalvorm",
       "hotKeys": "Sneltoetsen",
       "logeq": "Logische Equivalentie",
       "rules": "Regels",
