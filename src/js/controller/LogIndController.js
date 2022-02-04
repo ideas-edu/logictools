@@ -670,8 +670,7 @@ export class LogIndController extends ExerciseController {
   }
 
   getMotivationKey (motivation) {
-    console.log(motivation, this.baseMotivations)
-    if (this.baseMotivations.includes(motivation)) {
+    if ([].concat(this.baseMotivations).concat(this.exercise.motivations).includes(motivation)) {
       return `rule.logic.propositional.logind.${motivation}`
     }
     return {
