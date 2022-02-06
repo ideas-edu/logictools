@@ -254,7 +254,7 @@ function findLenHaskellParam (str) {
 function addBracketsIfNeeded (str) {
   if ((str.charAt(0) !== '(') && (str.charAt(0) !== '{')) {
     // eslint-disable-next-line no-useless-escape
-    if (/[\u222a\+\&\|\<\=\>\*\~\-\ ]/.test(str)) str = addBrackets(str.trim())
+    if (/[\u222a\+\&\|\<\=\>\*\~\-\∅\ ]/.test(str)) str = addBrackets(str.trim())
   }
   return str
 }
@@ -328,7 +328,7 @@ export function convertM2H (str, definitions) {
         term = str.substring(startTerm, startTerm + lenTerm)
       } else { // look for nonterm
         // eslint-disable-next-line no-useless-escape
-        reResult = /^[\+\&\|\<\=\>\*\~\-\ ]*/.exec(str.substring(pos))[0] // no brackets
+        reResult = /^[\+\&\|\<\=\>\*\~\-\∅\ ]*/.exec(str.substring(pos))[0] // no brackets
         if (reResult.length === 0) {
           pos = str.length
         }
