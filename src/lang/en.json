@@ -385,6 +385,7 @@
         "inductiveStep": "Case $${{title}}$$"
       },
       "message": {
+        "formula": "$${{formula}}$$",
         "hypothesis": "Assume that for any given $${{title}}$$:",
         "no_base_case": "You have no base cases.",
         "no_hypotheses": "You have no hypotheses.",

@@ -715,6 +715,11 @@ button {
 	height: 52px;
 }
 
+.hide-case, .hide-cases {
+	border: none;
+	background: none;
+}
+
 .logind-body #active-step td {
 	vertical-align: top;
 }

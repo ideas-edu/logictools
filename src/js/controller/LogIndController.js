@@ -64,6 +64,11 @@ export class LogIndController extends ExerciseController {
       leftParentheses: ['(', '{'],
       rightParentheses: [')', '}']
     }
+    this.collapsed = {
+      baseCases: false,
+      hypotheses: false,
+      inductiveSteps: false
+    }
     this.characterOptions = []
     this.motivationOptions = []
     this.baseMotivations = ['calculate', 'ih', 'logic']
@@ -149,6 +154,7 @@ export class LogIndController extends ExerciseController {
     */
   showExercise () {
     this.exerciseComplete = false
+    document.getElementById('exercise-table-header').style.display = 'none'
     document.getElementById('exercise-container').style.display = ''
     document.getElementById('rule-container').style.display = ''
     document.getElementById('completed-rule-container').style.display = 'none'
@@ -167,6 +173,11 @@ export class LogIndController extends ExerciseController {
     })
     this.dismissAlert()
     this.clearErrors()
+    this.collapsed = {
+      baseCases: false,
+      hypotheses: false,
+      inductiveSteps: false
+    }
 
     this.characterOptions = [{
       char: 'φ',
@@ -315,12 +326,6 @@ export class LogIndController extends ExerciseController {
         this.exercise.activeCase.identifier,
         this.exercise.activeCase.type
       )
-      // Don't allow a user to restart an existing case
-      // if (this.exercise.cases.cases.some(x => x.steps[0].term === document.getElementById('formula-top').value &&
-      //     x.steps[x.steps.length - 1].term === document.getElementById('formula-bottom').value)) {
-      //   this.updateAlert('shared.error.caseExists', null, 'error')
-      //   return
-      // }
       let relation = document.getElementById('relation-gap').value
       if (relation === '≤') {
         relation = '<='
@@ -403,10 +408,10 @@ export class LogIndController extends ExerciseController {
               this.exercise.baseCasesStatus = 'notStarted'
               break
             case 'error':
-              if (constraint.message === 'no atom var') {
-                this.exercise.baseCasesStatus = 'notStarted'
-              } else {
+              if (this.exercise.cases.baseCases.length > 0) {
                 this.exercise.baseCasesStatus = 'incomplete'
+              } else {
+                this.exercise.baseCasesStatus = 'notStarted'
               }
               break
             default:
@@ -774,6 +779,12 @@ export class LogIndController extends ExerciseController {
 
     translateChildren(exerciseCaseHeaderDiv.content)
 
+    if (exerciseCaseHeaderDiv.content.querySelector('.hide-cases') !== null) {
+      exerciseCaseHeaderDiv.content.querySelector('.hide-cases').addEventListener('click', function () {
+        this.toggleCase(title)
+      }.bind(this))
+    }
+
     const exerciseCaseTable = document.getElementById('exercise-case-table')
     exerciseCaseTable.appendChild(exerciseCaseHeaderDiv.content)
   }
@@ -789,10 +800,21 @@ export class LogIndController extends ExerciseController {
   }
 
   insertCase (_case) {
+    document.getElementById('exercise-table-header').style.display = ''
+    if (_case.status === 'complete' && !(_case.identifier in this.collapsed)) {
+      this.collapsed[_case.identifier] = true
+    }
+
     const exerciseCaseDiv = document.createElement('template')
     exerciseCaseDiv.innerHTML = this.renderCase(_case)
 
     translateChildren(exerciseCaseDiv.content)
+
+    if (exerciseCaseDiv.content.querySelector('.hide-case') !== null) {
+      exerciseCaseDiv.content.querySelector('.hide-case').addEventListener('click', function () {
+        this.toggleCase(_case.identifier)
+      }.bind(this))
+    }
 
     if (exerciseCaseDiv.content.querySelector('.delete-case') !== null) {
       exerciseCaseDiv.content.querySelector('.delete-case').addEventListener('click', function () {
@@ -873,10 +895,12 @@ export class LogIndController extends ExerciseController {
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
+      collapsed: this.collapsed[_case.identifier],
       exerciseComplete: this.exerciseComplete,
       message: message,
       messageParams: messageParams,
       type: _case.type,
+      proof: JSON.stringify({formula: _case.getProof()}),
       status: status,
       steps: newSteps
     })
@@ -898,6 +922,7 @@ export class LogIndController extends ExerciseController {
     const stepTemplate = $.templates('#exercise-case-header-template')
 
     const exerciseStepHtml = stepTemplate.render({
+      collapsed: this.collapsed[title],
       title: title,
       status: status
     })
@@ -1001,11 +1026,21 @@ export class LogIndController extends ExerciseController {
 
   editCase (index, type) {
     this.exercise.activeCase = this.exercise.getCase(index, type)
+    this.collapsed[this.exercise.activeCase.identifier] = false
 
     this.setProofDirection('down')
     this.updateCases()
     this.updateSteps()
     this.setStep()
+  }
+
+  toggleCase (identifier) {
+    if (!(identifier in this.collapsed)) {
+      this.collapsed[identifier] = true
+    } else {
+      this.collapsed[identifier] = !this.collapsed[identifier]
+    }
+    this.updateCases()
   }
 
   deleteStep (index) {
@@ -1152,27 +1187,33 @@ export class LogIndController extends ExerciseController {
     exerciseStepTable.innerHTML = ''
 
     this.insertCaseHeader('baseCases', this.exercise.baseCasesStatus)
-    for (const _case of this.exercise.cases.baseCases) {
-      this.insertCase(_case)
-    }
-    if (this.exercise.cases.baseCases.length === 0) {
-      this.insertCaseMessage('no_base_case')
+    if (!this.collapsed['baseCases']) {
+      for (const _case of this.exercise.cases.baseCases) {
+        this.insertCase(_case)
+      }
+      if (this.exercise.cases.baseCases.length === 0) {
+        this.insertCaseMessage('no_base_case')
+      }
     }
 
     this.insertCaseHeader('hypotheses', this.exercise.hypothesesStatus)
-    for (const _case of this.exercise.cases.hypotheses) {
-      this.insertCase(_case)
-    }
-    if (this.exercise.baseCasesStatus === 'complete' && this.exercise.cases.hypotheses.length === 0) {
-      this.insertCaseMessage('no_hypotheses')
+    if (!this.collapsed['hypotheses']) {
+      for (const _case of this.exercise.cases.hypotheses) {
+        this.insertCase(_case)
+      }
+      if (this.exercise.baseCasesStatus === 'complete' && this.exercise.cases.hypotheses.length === 0) {
+        this.insertCaseMessage('no_hypotheses')
+      }
     }
 
     this.insertCaseHeader('inductiveSteps', this.exercise.inductiveStepsStatus)
-    for (const _case of this.exercise.cases.inductiveSteps) {
-      this.insertCase(_case)
-    }
-    if (this.exercise.hypothesesStatus === 'complete' && this.exercise.cases.inductiveSteps.length === 0) {
-      this.insertCaseMessage('no_inductive_steps')
+    if (!this.collapsed['inductiveSteps']) {
+      for (const _case of this.exercise.cases.inductiveSteps) {
+        this.insertCase(_case)
+      }
+      if (this.exercise.hypothesesStatus === 'complete' && this.exercise.cases.inductiveSteps.length === 0) {
+        this.insertCaseMessage('no_inductive_steps')
+      }
     }
 
     this.disableUI(false)

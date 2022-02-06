@@ -66,7 +66,8 @@ export class LogIndCase extends StepCollection {
     this.identifier = identifier
     this.type = type
     this.steps = []
-    this.proofRelation = null
+    this.proofRelation = exercise.theorem[1].type
+    this.isCollapsed = false
     if (identifier === undefined) {
       this.identifier = ''
     }
