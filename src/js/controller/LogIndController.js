@@ -517,7 +517,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('the induction hypothesis is applicable')) {
-          const result = asciiToUnicode(term.split(':')[term.split(':').length - 1], this.exercise.definitions.concat(DEFINITIONS))
+          const result = asciiToUnicode(term.split(':')[term.split(':').length - 1].trim(), this.exercise.definitions.concat(DEFINITIONS))
           const resultLatex = unicodeToLatex(result, this.exercise.definitions.concat(DEFINITIONS))
 
           this.setErrorLocation('formula-bottom')
@@ -540,14 +540,14 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('wrong motivation')) {
-          const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1])
+          const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1].trim())
 
           this.setErrorLocation(this.proofDirection === 'up' ? 'motivation-bottom' : 'motivation-top')
           this.updateAlert('logind.error.wrongMotivation', { motivation: motivation }, 'error')
           break
         }
         if (term.includes('missing motivation')) {
-          const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1])
+          const motivation = this.getMotivationKey(term.split(':')[term.split(':').length - 1].trim())
 
           this.setErrorLocation(this.proofDirection === 'up' ? 'motivation-bottom' : 'motivation-top')
           this.updateAlert('logind.error.missingMotivation', { motivation: motivation }, 'error')
@@ -560,7 +560,7 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('different meta vars in hypothesis')) {
           if (term.includes('IHStep')) {
-            const metaVar = term.split('"')[1]
+            const metaVar = term.split('"')[1].trim()
             this.setErrorLocation(['formula-bottom', 'formula-top'])
             this.updateAlert('logind.error.differentMetaVarsWith', { metaVar: `\\${metaVar}` }, 'error')
           } else {
@@ -575,8 +575,8 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('is applicable, however the result is')) {
-          const motivation = this.getMotivationKey(term.split('"')[term.split('"').length - 2])
-          const result = asciiToUnicode(term.split(':')[term.split(':').length - 1], this.exercise.definitions.concat(DEFINITIONS))
+          const motivation = this.getMotivationKey(term.split('"')[term.split('"').length - 2].trim())
+          const result = asciiToUnicode(term.split(':')[term.split(':').length - 1].trim(), this.exercise.definitions.concat(DEFINITIONS))
           const resultLatex = unicodeToLatex(result, this.exercise.definitions.concat(DEFINITIONS))
 
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
@@ -625,7 +625,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('not in induction hypothesis')) {
-          const metaVar = term.split(':')[term.split(':').length - 1].split(' ')[0]
+          const metaVar = term.split(':')[term.split(':').length - 1].split(' ')[0].trim()
           this.setErrorLocation(['formula-bottom', 'formula-top'])
           this.updateAlert('logind.error.notInInductionHypotheses', { metaVar: `\\${metaVar}` }, 'error')
           break
@@ -646,7 +646,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('double case')) {
-          const _case = term.split(':')[1].split(' ')[2]
+          const _case = term.split(':')[1].split(' ')[2].trim()
           let caseLatex = null
           switch (_case) {
             case 'NEGATION':
@@ -679,7 +679,7 @@ export class LogIndController extends ExerciseController {
   }
 
   getMotivationKey (motivation) {
-    if (this.baseMotivations.includes(motivation)) {
+    if ([].concat(this.baseMotivations).concat(this.exercise.motivations).includes(motivation)) {
       return `rule.logic.propositional.logind.${motivation}`
     }
     return {
