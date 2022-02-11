@@ -584,9 +584,24 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('connective not in language')) {
-          const connective = term.split('"')[1]
+          const connective = term.split(':')[3].trim()
+          let connectiveLatex = null
+          switch (connective) {
+            case 'NEGATION':
+              connectiveLatex = '\\neg'
+              break
+            case 'OR':
+              connectiveLatex = '\\lor'
+              break
+            case 'AND':
+              connectiveLatex = '\\land'
+              break
+            case 'IMPLIES':
+              connectiveLatex = '\\rightarrow'
+              break
+          }
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
-          this.updateAlert('logind.error.noConnective', { connective: connective }, 'error')
+          this.updateAlert('logind.error.noConnective', { connective: connectiveLatex }, 'error')
           break
         }
         if (term.includes('invalid composed base case')) {
