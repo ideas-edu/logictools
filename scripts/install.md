@@ -21,7 +21,11 @@ You can use the `scripts/install.sh` script to compile the project to the distri
 ```sh
 $:/git/logictools . scripts/install.sh /www/logictools
 ```
-The compiled source should not be in `/www/logictools`.
+The compiled source should not be in `/www/logictools`. You can set which config you want to use for the distribution you are compiling. By default this is `config.json` but the second argument of command can be used instead.
+```sh
+$:/git/logictools . scripts/install.sh /www/logictools otherConfig.json
+```
+If an alternative config file is used then there can be no `config.json` file present in the directory.
 
 ## Serving tool
 You must now set up your web server to serve the files located in the distribution directory. You will also need to add a `Access-Control-Allow-Origin` header to allow calls to the backend located at [ideas.science.uu.nl](ideas.science.uu.nl). Logictools uses PHP and has been tested using version 7.4, the web server should be configured to use PHP. Here follows an example of how to set up the web server configuration for [NGINX](https://www.nginx.com).
