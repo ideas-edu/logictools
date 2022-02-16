@@ -756,6 +756,17 @@ export class LogIndController extends ExerciseController {
           if (this.proofDirection !== 'up') {
             this.setProofDirection('down')
           }
+          switch (this.exercise.activeCase.type) {
+            case 'baseCase':
+              this.collapsed['baseCases'] = false
+              break
+            case 'hypothesis':
+              this.collapsed['hypotheses'] = false
+              break
+            case 'inductiveStep':
+              this.collapsed['inductiveSteps'] = false
+              break
+          }
           document.getElementById('formula-top').value = this.exercise.activeCase.topSteps[this.exercise.activeCase.topSteps.length - 1].term
           document.getElementById('formula-bottom').value = this.exercise.activeCase.bottomSteps[0].term
         }
