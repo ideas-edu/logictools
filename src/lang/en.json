@@ -121,11 +121,27 @@
     "hotKeys": {
       "and": {
         "input": "$$\\land$$",
-        "keys": "a, &, ^"
+        "keys": {
+          "#": "a, &, ^",
+          "logind": "&, ^"
+        }
+      },
+      "chi": {
+        "input": "$$\\chi$$",
+        "keys": "chi"
       },
       "description": {
         "logax": "The input of p, q, r, and s can be done with or without using the shift key.",
-        "logex": "The input of T, F, p, q, r, and s can be done with or without using the shift key."
+        "logex": "The input of T, F, p, q, r, and s can be done with or without using the shift key.",
+        "logind": "The input of p, q, and r can be done with or without using the shift key."
+      },
+      "dot": {
+        "input": "$$\\cdot$$",
+        "keys": "*"
+      },
+      "empty": {
+        "input": "$$\\emptyset$$",
+        "keys": "empty, leeg"
       },
       "equiv": {
         "input": "$$\\leftrightarrow$$",
@@ -142,19 +158,39 @@
       },
       "hint": {
         "action": "Hint",
-        "keys": "/, ?"
+        "keys": {
+          "#": "/, ?",
+          "logind": "?"
+        }
       },
       "implies": {
         "input": "$$\\rightarrow$$",
-        "keys": "i, ."
+        "keys": {
+          "#": "i, .",
+          "logind": ">"
+        }
       },
       "not": {
         "input": "$$\\neg$$",
-        "keys": "-, n"
+        "keys": {
+          "#": "-, n",
+          "logind": "!, `, ~"
+        }
       },
       "or": {
         "input": "$$\\lor$$",
-        "keys": "o, v, |"
+        "keys": {
+          "#": "o, v, |",
+          "logind": "|"
+        }
+      },
+      "phi": {
+        "input": "$$\\phi$$",
+        "keys": "phi"
+      },
+      "psi": {
+        "input": "$$\\psi$$",
+        "keys": "psi"
       },
       "removeBottomStep": {
         "action": "Remove bottom step",
@@ -180,6 +216,10 @@
       "undo": {
         "action": "Undo",
         "keys": "u"
+      },
+      "union": {
+        "input": "$$\\cup$$",
+        "keys": "union"
       },
       "validateProof": {
         "action": "Validate proof",

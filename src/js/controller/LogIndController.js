@@ -50,7 +50,7 @@ export class LogIndController extends ExerciseController {
       unaryOperators: ['¬', 'min', 'max'],
       binaryOperators: ['→', '∧', '∨', ',', '∪', '+', '-', '⋅', '\\'],
       ternaryOperators: [{ o1: '[', o2: '/', o3: ']' }],
-      literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+      literals: ['p', 'q', 'r', 'φ', 'ψ', 'χ', '∅', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       implicitAssociativeBinaryOperators: ['+', '⋅', '∪', ','],
       implicitPrecendence: [
         { strong: '⋅', weak: '+' },
@@ -171,22 +171,27 @@ export class LogIndController extends ExerciseController {
     this.characterOptions = [{
       char: 'φ',
       latex: '\\phi',
-      triggers: ['ϕ', 'φ']
+      triggers: ['ϕ', 'φ', 'phi']
     },
     {
       char: 'ψ',
       latex: '\\psi',
-      triggers: []
+      triggers: ['psi']
     },
     {
       char: 'χ',
       latex: '\\chi',
-      triggers: []
+      triggers: ['chi']
     },
     {
       char: '∪',
       latex: '\\cup',
-      triggers: []
+      triggers: ['union']
+    },
+    {
+      char: '∅',
+      latex: '\\emptyset',
+      triggers: ['empty', 'leeg']
     },
     {
       char: '⋅',
@@ -197,7 +202,7 @@ export class LogIndController extends ExerciseController {
     {
       char: '¬',
       latex: '\\neg',
-      triggers: ['`', '!']
+      triggers: ['`', '!', '~']
     },
     {
       char: '∨',
@@ -221,7 +226,7 @@ export class LogIndController extends ExerciseController {
       }
       this.characterOptions.push({
         char: String.fromCharCode(i),
-        triggers: [String.fromCharCode(i)],
+        triggers: [String.fromCharCode(i), String.fromCharCode(i).toUpperCase()],
         hideButton: true
       })
     }

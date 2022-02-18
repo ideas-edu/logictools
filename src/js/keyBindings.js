@@ -71,8 +71,10 @@ export class KeyBindings {
     } else {
       // geen ctrl, alt, command of shift bindings
       if (e.keyCode === 191) { // /
-        this.showHint()
-        e.preventDefault()
+        if (this.controller.exerciseType !== 'LOGIND') {
+          this.showHint()
+          e.preventDefault()
+        }
       } else if (e.keyCode === 38) { // arrow up
         if (this.controller.exerciseType !== 'LOGAX') {
           const rule = document.getElementById('rule')
