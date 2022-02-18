@@ -44,8 +44,8 @@
 				<table class="table table-striped">
 					<thead>
 						<tr id="exercise-table-header">
-							<th scope="col" id="header-relation"></th>
-							<th scope="col" id="header-formula" translate-key="shared.header.formula" style="width: 55%"></th>
+							<th scope="col" id="header-relation" style="width: 8%"></th>
+							<th scope="col" id="header-formula" translate-key="shared.header.formula" style="width: 60%"></th>
 							<th scope="col" id="header-motivation" translate-key="shared.header.motivation"></th>
 						</tr>
 					</thead>
@@ -168,7 +168,13 @@
 			BHR+JOL: Some features are disabled by using (&& false)
 			-->
 		<script id="exercise-case-header-template" type="text/x-jsrender">
-			<tr><td colspan="2"><h6 translate-key="logind.case.header.{{:title}}"></h6></td><td><h6><span class="float-right">
+			<tr><td colspan="2">
+				<h6>
+					{{if status !== 'notStarted'}}
+						<button type="button" class="hide-cases"><i class='fas fa-{{if collapsed}}plus{{else}}minus{{/if}}-square'></i></button>
+					{{/if}}
+					<span translate-key="logind.case.header.{{:title}}">
+				</h6></td><td><h6><span class="float-right">
 				{{if status === "complete"}}
 					<span class="badge badge-success"><i class='fas fa-check'></i> <span translate-key="logind.case.label.badge.complete"></span></span>
 					{{/if}}
@@ -189,7 +195,11 @@
 			</td></tr>
 		</script>
 		<script id="exercise-step-template" type="text/x-jsrender">
-			<tr class="border-top-{{:border}}"><td colspan="2"><b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b>
+			<tr class="border-top-{{:border}}"><td colspan="2">
+				{{if status !== 'active'}}
+					<button type="button" class="hide-case"><i class='fas fa-{{if collapsed}}plus{{else}}minus{{/if}}-square'></i></button>
+				{{/if}}
+				<b translate-key="logind.case.label.{{:type}}" translate-params='{{:titleParams}}'></b>
 				{{if status === 'active'}}
 					 <span class="badge badge-primary"><i translate-key="logind.case.label.badge.active"></i></span>
 				{{/if}}
@@ -202,6 +212,7 @@
 				{{if message}}
 					</br><span translate-key="logind.case.message.{{:message}}" translate-params='{{:messageParams}}'>
 				{{/if}}
+
 			</td><td>
 			{{if (exerciseComplete === false && border !== 'active')}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
@@ -209,10 +220,15 @@
 					<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
 				{{/if}}
 			{{/if}}
-			</td></tr>
-			{{for steps}}
-				{{:}}
-			{{/for}}
+			</td>
+			{{if !collapsed}}
+				</tr>
+				{{for steps}}
+					{{:}}
+				{{/for}}
+			{{else}}
+				<tr><td colspan="3"><span translate-key="logind.case.message.formula" translate-params='{{:proof}}'></td></tr>
+			{{/if}}
 		</script>
 		<script id="exercise-active-top-step-template" type="text/x-jsrender">
 			{{if relation !== null || motivation !== null}}

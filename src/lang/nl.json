@@ -425,6 +425,7 @@
         "inductiveStep": "Geval $${{title}}$$"
       },
       "message": {
+        "formula": "$${{formula}}$$",
         "hypothesis": "Neem aan dat voor een willekeurige $${{title}}$$ geldt:",
         "no_base_case": "U heeft geen basisgevallen geschreven.",
         "no_hypotheses": "U heeft geen hypotheses geschreven.",
