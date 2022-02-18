@@ -756,6 +756,7 @@ export class LogIndController extends ExerciseController {
           if (this.proofDirection !== 'up') {
             this.setProofDirection('down')
           }
+          this.collapsed[this.exercise.activeCase.identifier] = false
           switch (this.exercise.activeCase.type) {
             case 'baseCase':
               this.collapsed['baseCases'] = false
