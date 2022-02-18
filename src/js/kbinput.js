@@ -105,7 +105,7 @@ export class FormulaPopover {
   addText (e) {
     this.insertText(e.currentTarget.getAttribute('char'))
     const def = this._findCharDefinition(e.currentTarget.getAttribute('char'))
-    if (def.function) {
+    if (def.item.function) {
       const cursor = this.inputElement.selectionStart
       this.insertText('()')
       setCursor(this.inputElement, cursor + 1)
@@ -268,11 +268,13 @@ export class FormulaPopover {
 
   _doTidy (s) {
     let result = ''
-    for (const i in s) {
-      let c = s.charAt(i)
-      const def = this._findCharDefinition(c)
+    for (let i = 1; i <= s.length; i++) {
+      let sub = s.substring(0, i)
+      // console.log(sub)
+      const def = this._findCharDefinition(sub)
       if (def) {
-        c = def.char
+        result = result.substring(0, result.length - def.replaceString.length + 1)
+        let c = def.item.char
         if (def.spaces === 'lr') {
           c = ' ' + c + ' '
         }
@@ -289,9 +291,13 @@ export class FormulaPopover {
   }
 
   _findCharDefinition (c) {
-    for (const item of this.options.characters) {
-      if (item.char === c || item.triggers.includes(c)) {
-        return item
+    for (let i = c.length; i >= 1; i--) {
+      for (const item of this.options.characters) {
+        let sub = c.substring(c.length - i, c.length)
+        // console.log(sub)
+        if (item.char === sub || item.triggers.includes(sub)) {
+          return {item: item, replaceString: sub}
+        }
       }
     }
   }
