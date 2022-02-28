@@ -74,7 +74,7 @@ class MainFrameController {
 
     for (const entry of urlParams.entries()) {
       if (entry[0].toLowerCase() === 'userid') {
-        LogEXSession.setStudentId(entry[1])
+        LogEXSession.setStudentId(entry[1], config.tools)
         return
       }
     }

@@ -198,6 +198,8 @@ export class ExerciseGenerator {
       onErrorGeneratingExercise()
     } else {
       LogEXSession.setIdentifiers(exerciseId, result.state)
+      LogEXSession.setExerciseType (Object.keys(ExerciseTypes)[Object.values(ExerciseTypes).indexOf(exerciseId)])	
+      LogEXSession.setDifficulty (properties.difficulty) 
       const exercise = new this.Exercise(result.state.context.term, exerciseId, properties)
       onExerciseGenerated(exercise)
     }

@@ -629,6 +629,12 @@
       "unavailable": "No hint available",
       "useRule": "Use <i>[[rule]]</i>."
     },
+    "instruction": {
+      "levelFinished" : "All {{level}}s have been completed. Please select another level!",
+      "typeFinished" : "All exercises of the {{type}} have been completed. Please select another type!",
+      "allFinished" : "All exercises of all types have been completed. Congratulations!",
+      "fillUseridFirst" : "Exercise cannot be determined. Please first log in with your identification number!"
+    },
     "syntaxError": {
       "ambiguougAssoc": "The range of operators is ambiguous at index {{index}}: {{formula}}",
       "emptyParentheses": "The parentheses at index {{index}} are empty: {{formula}}",

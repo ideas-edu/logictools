@@ -629,6 +629,12 @@
       "unavailable": "Geen hint beschikbaar",
       "useRule": "Gebruik <i>[[rule]]</i>."
     },
+    "instruction": {
+      "levelFinished" : "Alle {{level}}n zijn voltooid. Selecteer een ander niveau!!",
+      "typeFinished" : "Alle opgaven van de {{type}} zijn voltooid. Selecteer een ander type!!",
+      "allFinished" : "Alle opgaven van alle types zijn voltooid. Gefeliciteerd!!",
+      "fillUseridFirst" : "Opgave kan niet worden bepaald. Log eerst in met uw identificatienummer!"
+    },
     "syntaxError": {
       "ambiguougAssoc": "Het bereik van de connectieven bij positie {{index}} is dubbelzinnig: {{formula}}",
       "emptyParentheses": "De haakjes bij positie {{index}} zijn leeg: {{formula}}",

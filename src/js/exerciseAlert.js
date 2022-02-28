@@ -1,4 +1,5 @@
 import { translate } from './translate.js'
+import { LogEXSession } from './logEXSession.js'
 
 export class ExerciseAlert {
   constructor (id) {
@@ -27,6 +28,12 @@ export class ExerciseAlert {
         document.getElementById(`${this.id}`).classList = 'alert col-md-12 error-alert'
         break
       case 'complete':
+        let studentProgress = LogEXSession.updateProgressbarValues() // Tel 1 op bij de juiste teller 
+        if (studentProgress !== null) {
+          this.fillProgressbar('easy', studentProgress[0])
+          this.fillProgressbar('medium', studentProgress[1])
+          this.fillProgressbar('difficult', studentProgress[2])
+        }
         document.getElementById(`${this.id}-icon`).innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
         document.getElementById(`${this.id}`).classList = 'alert col-md-12 complete-alert'
         break
@@ -45,5 +52,12 @@ export class ExerciseAlert {
       this.buttonCallback = undefined
       alertButton.style.display = 'none'
     }
+  }
+  
+  fillProgressbar(difficulty, number){
+    let element = `${difficulty}-bar`
+    document.getElementById(element).innerHTML = number
+    document.getElementById(element).setAttribute('area-valuenow', number)
+    document.getElementById(element).style.width = (number * 100 / LogEXSession.getNumberOfExercises(difficulty) ) + '%'
   }
 }

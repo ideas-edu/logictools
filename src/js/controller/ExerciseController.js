@@ -3,6 +3,7 @@ import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { KeyBindings } from '../keyBindings.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
 import { translateElement } from '../translate.js'
+import { LogEXSession } from '../logEXSession.js'
 
 export class ExerciseController {
   constructor () {
@@ -23,6 +24,8 @@ export class ExerciseController {
 
     this.getExerciseType()
     this.config = config.tools[this.exerciseType]
+    console.log('ExerciseController config = ' + this.exerciseType + " " + JSON.stringify(this.config))
+    this.fillProgressbars() 
     this.initializeButtons()
 
     document.getElementById('exercise-alert-button').addEventListener('click', function () {
@@ -68,9 +71,33 @@ export class ExerciseController {
       sParameterName = sURLVariables[i].split('=')
       if (sParameterName[0] === 'exerciseType') {
         this.exerciseType = sParameterName[1]
+        LogEXSession.setExerciseType (sParameterName[1])
         return
       }
     }
+  }
+
+  fillProgressbars(){
+    if (this.config.levelExercises !== undefined) { 
+      if (this.config.levelExercises.active) {
+        let studentProgress = LogEXSession.getProgressbarValues()
+        if (studentProgress !== null) {
+          this.fillProgressbar('easy', studentProgress[0])
+          this.fillProgressbar('medium', studentProgress[1])
+          this.fillProgressbar('difficult', studentProgress[2])
+        }
+      }
+      else {
+        document.getElementById('progressbars').style.display = 'none'
+      }
+    }
+  }
+
+  fillProgressbar(difficulty, number){
+    let element = `${difficulty}-bar`
+    document.getElementById(element).innerHTML = number
+    document.getElementById(element).setAttribute('area-valuenow', number)
+    document.getElementById(element).style.width = (number * 100 / LogEXSession.getNumberOfExercises(difficulty) ) + '%'
   }
 
   /**
@@ -146,6 +173,14 @@ export class ExerciseController {
     this.exampleExercises = this.config.exampleExercises
     const exerciseMenu = document.getElementById('new-exercise-menu')
 
+    // inserts the leveled exercises 
+    if (this.config.levelExercises !== undefined && this.config.levelExercises.active) {
+      exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
+      exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseDifficult" id="generate-exercise-difficult"></a>'
+    }
+
     // inserts the example exercises
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = this.exampleExercises[i] + 1
@@ -174,6 +209,21 @@ export class ExerciseController {
       Use the example exercises
     */
   bindExampleExercises () {
+    //binds the leveled exercises 
+    if (this.config.levelExercises !== undefined && this.config.levelExercises.active) {
+      document.getElementById('generate-exercise-easy').addEventListener('click', function () {
+        this.useLevelExercise({ difficulty: 'easy' })
+      }.bind(this))
+
+      document.getElementById('generate-exercise-normal').addEventListener('click', function () {
+        this.useLevelExercise({ difficulty: 'medium' })
+      }.bind(this))
+
+      document.getElementById('generate-exercise-difficult').addEventListener('click', function () {
+        this.useLevelExercise({ difficulty: 'difficult' })
+      }.bind(this))
+    }
+
     for (let i = 0; i < this.exampleExercises.length; i++) {
       const nr = this.exampleExercises[i]
       const id = 'exercise' + (nr + 1)
@@ -219,6 +269,53 @@ export class ExerciseController {
     properties.titleKey = `shared.exerciseName.${properties.difficulty}`
 
     this.exerciseGenerator.generate(this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+  }
+
+  /**
+        Get a level exercise.
+     */
+  useLevelExercise (properties) { 
+    this.clearErrors()
+    this.disableUI(true)
+    this.setContainer('exercise-container')
+    let exerciseNumber = LogEXSession.getLevelExerciseNumber(this.exerciseType, properties.difficulty) 
+    //let exerciseNumber = LogEXSession.getLevelExerciseNumber(properties.difficulty) 
+  
+    if (exerciseNumber < 0)
+    {
+      switch (exerciseNumber) {
+        case -1:
+          //TODO
+          //let level = translate(`shared.exerciseName.${properties.difficulty}`)
+          //translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: level}) 
+          translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: properties.difficulty}) 
+          break;
+        case -2:
+          //TODO
+          //let type = translate(`main.tabTitle.${this.config.code}`)
+          //translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: type}) 
+          translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: this.exerciseType}) 
+          break;
+        case -3:
+          translateElement(document.getElementById('instruction'), 'shared.instruction.allFinished') 
+          break;
+        case -4:
+            translateElement(document.getElementById('instruction'), 'shared.instruction.fillUseridFirst') 
+      }
+      document.getElementById('exercise-container').style.display = 'none'
+      if (document.getElementById('new-exercise-container')) {
+        document.getElementById('new-exercise-container').style.display = 'none'
+      }
+    }
+    else
+    {
+      properties.titleKey = `shared.exerciseName.${properties.difficulty}`
+      properties.titleParams = {
+        number: exerciseNumber
+      }
+
+      this.exerciseGenerator.example(exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
+    }
   }
 
   /**

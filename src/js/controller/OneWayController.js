@@ -99,6 +99,17 @@ class OneWayController extends LogExController {
   }
 
   /**
+      Get a level exercise.
+    */
+
+  useLevelExercise (properties) { 
+    properties.ruleJustification = document.getElementById('rule-switch').checked
+    properties.stepValidation = document.getElementById('step-validation-switch').checked
+
+    super.useLevelExercise(properties)
+  }
+
+  /**
         Generates an exercise.
      */
   generateExercise (properties) {
