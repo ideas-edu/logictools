@@ -81,7 +81,7 @@
       "code": "logeq",
       "source": "logex",
       "url": "twoway.html?exerciseType=LOGEQ",
-      "exampleExercises": [0, 15, 16, 29, 30],
+      "exampleExercises": [0, 1, 3, 7, 10, 15, 23, 16, 17, 18, 29, 30, 28, 32, 36],
       "randomExercises": true,
       "inputOwnExercise": true,
       "useRuleJustification": true,
