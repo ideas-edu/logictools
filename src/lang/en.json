@@ -553,6 +553,11 @@
     }
   },
   "shared": {
+    "login" : {
+      "title": "Login",
+      "explanation": "Please enter your chosen userid. It must contain at least 13 characters.",
+      "label": "Userid:"
+    },
     "button": {
       "apply": "Apply",
       "changeDirection": "<i class='fas fa-sort'></i> Switch direction",

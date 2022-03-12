@@ -24,7 +24,6 @@ export class ExerciseController {
 
     this.getExerciseType()
     this.config = config.tools[this.exerciseType]
-    console.log('ExerciseController config = ' + this.exerciseType + " " + JSON.stringify(this.config))
     this.fillProgressbars() 
     this.initializeButtons()
 
@@ -174,7 +173,7 @@ export class ExerciseController {
     const exerciseMenu = document.getElementById('new-exercise-menu')
 
     // inserts the leveled exercises 
-    if (this.config.levelExercises !== undefined && this.config.levelExercises.active) {
+      if (this.config.levelExercises !== undefined) {
       exerciseMenu.innerHTML += '<div class="dropdown-divider"></div>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseEasy" id="generate-exercise-easy"></a>'
       exerciseMenu.innerHTML += '<a class="dropdown-item" href="#" translate-key="shared.button.generateExerciseNormal" id="generate-exercise-normal"></a>'
@@ -210,7 +209,7 @@ export class ExerciseController {
     */
   bindExampleExercises () {
     //binds the leveled exercises 
-    if (this.config.levelExercises !== undefined && this.config.levelExercises.active) {
+      if (this.config.levelExercises !== undefined) {
       document.getElementById('generate-exercise-easy').addEventListener('click', function () {
         this.useLevelExercise({ difficulty: 'easy' })
       }.bind(this))
@@ -285,13 +284,13 @@ export class ExerciseController {
     {
       switch (exerciseNumber) {
         case -1:
-          //TODO
+          //TODO Marianne
           //let level = translate(`shared.exerciseName.${properties.difficulty}`)
           //translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: level}) 
           translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: properties.difficulty}) 
           break;
         case -2:
-          //TODO
+          //TODO Marianne
           //let type = translate(`main.tabTitle.${this.config.code}`)
           //translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: type}) 
           translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: this.exerciseType}) 

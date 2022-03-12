@@ -553,6 +553,11 @@
     }
   },
   "shared": {
+    "login" : {
+      "title": "Log in",
+      "explanation": "Geef het door u gekozen userid op. Deze moet uit minimaal 13 tekens bestaan.",
+      "label": "User id:"
+    },
     "button": {
       "apply": "Pas toe",
       "changeDirection": "<i class='fas fa-sort'></i> Wissel richting",

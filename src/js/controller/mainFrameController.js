@@ -11,6 +11,8 @@ import config from '../../../config.json'
 import { LogEXSession } from '../logEXSession.js'
 import { translateChildren, loadLanguage } from '../translate.js'
 
+import { Modal } from 'bootstrap'
+
 function ready (fn) {
   if (document.readyState !== 'loading') {
     fn()
@@ -24,7 +26,22 @@ class MainFrameController {
     document.getElementById('header-title').innerHTML = config.title
     document.getElementById('page-title').innerHTML = config.title
 
-    this.getUserId()
+    // start Login
+    document.getElementById('userid').value = LogEXSession.getStudentId() 
+    var myModal = new Modal(document.getElementById('loginModal'))
+    myModal.show()
+
+    document.getElementById('button-login').addEventListener('click', function () {
+      let userid = document.getElementById('userid').value
+      if (userid.length >= 13) {
+          LogEXSession.setStudentId(userid, config.tools) 
+          myModal.hide()
+      }
+    }.bind(this))
+
+    //this.getUserId() 
+    // Eind Login
+
     this.supportedLanguages = ['en', 'nl']
     document.getElementById('lang-nl').addEventListener('click', function () {
       LogEXSession.setLanguage('nl')

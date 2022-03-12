@@ -88,9 +88,10 @@ export class LogEXSession {
     if (createEntryForUser)		
     {		
       progressArray.push({"studentId": studentId, "typeAantallen": { [this.DNV()]: [0,0,0], [this.CNV()]: [0,0,0], [this.LOGEQ()] : [0,0,0] }})		
-      let DNV = configTools[this.DNV()].levelExercises.active ? configTools[this.DNV()].levelExercises.exercises : null // Bijv. { "easy": [0, 1, 2], "medium": [3, 4, 5], "difficult" : [6, 7, 8] }		
-      let CNV = configTools[this.CNV()].levelExercises.active ? configTools[this.CNV()].levelExercises.exercises : null		
-      let LOGEQ = configTools[this.LOGEQ()].levelExercises.active ? configTools[this.LOGEQ()].levelExercises.exercises : null		
+      let DNV = configTools[this.DNV()].levelExercises !== undefined ? configTools[this.DNV()].levelExercises.exercises : null // Bijv. { "easy": [0, 1, 2], "medium": [3, 4, 5], "difficult" : [6, 7, 8] }		
+      let CNV = configTools[this.CNV()].levelExercises !== undefined ? configTools[this.CNV()].levelExercises.exercises : null		
+      let LOGEQ = configTools[this.LOGEQ()].levelExercises !== undefined ? configTools[this.LOGEQ()].levelExercises.exercises : null	
+
       levelExercisesArray.push({"studentId": studentId, [this.DNV()] : DNV, [this.CNV()]: CNV, [this.LOGEQ()] : LOGEQ})		
     }		
     localStorage.setItem('logex:progressArray', JSON.stringify(progressArray));		
@@ -106,9 +107,6 @@ export class LogEXSession {
       difficult: 2		
     } 
     
-    console.log("updateProgressbarValues = "+ this.getStudentId() + " " + this.getDifficulty())
-    // Leave when difficulty is not known ??? Wat als studentid is not known ???		
-    //if (this.getDifficulty() === 'undefined') {
     if (this.getStudentId() == null || this.getDifficulty() == null) {		
       return null		
     }		
@@ -123,10 +121,6 @@ export class LogEXSession {
     Gets the counter-array which will be used for the progressbars		
   */		
   static getProgressbarValues () { 
-    
-    console.log("updateProgressbarValues = "+ this.getStudentId() + " " + this.getDifficulty())
-
-    //if (this.getDifficulty() === 'undefined') {		
       if (this.getStudentId() == null || this.getDifficulty() == null) {
       return null		
     }		
@@ -143,7 +137,6 @@ export class LogEXSession {
     Else return number of type + level 
   */
     static getLevelExerciseNumber (exerciseType, difficulty) { 
-      console.log("getLevelExerciseNumber = " + exerciseType + " " + difficulty)
       this.setDifficulty (difficulty) 
       this.setExerciseType (exerciseType) 
 
@@ -215,7 +208,6 @@ export class LogEXSession {
       return length
     }
     static setExerciseType (exerciseType) {
-      console.log("setExerciseType = " + exerciseType)
       localStorage.setItem('logex:exerciseType', exerciseType)
     }
     static getExerciseType () {
