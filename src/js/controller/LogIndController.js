@@ -360,13 +360,7 @@ export class LogIndController extends ExerciseController {
         this.updateAlert('shared.error.noMotivation', null, 'error')
         return
       }
-      let newStep = null
-      if (document.getElementById('formula-top').value.replaceAll(' ', '') === newExercise.activeCase.bottomSteps[0].term.replaceAll(' ', '')) {
-        // Close proof
-        newStep = newExercise.activeCase.bottomSteps[0]
-      } else {
-        newStep = newExercise.activeCase.insertTopStep()
-      }
+      let newStep = newExercise.activeCase.insertTopStep()
       newStep.setTerm(document.getElementById('formula-top').value)
       newStep.relation = document.getElementById('relation-top').value
       newStep.rule = document.getElementById('motivation-top').value
@@ -377,16 +371,11 @@ export class LogIndController extends ExerciseController {
         this.updateAlert('shared.error.noMotivation', null, 'error')
         return
       }
-      if (document.getElementById('formula-bottom').value.replaceAll(' ', '') === newExercise.activeCase.topSteps[newExercise.activeCase.topSteps.length - 1].term.replaceAll(' ', '')) {
-        // Close proof
-        newExercise.activeCase.closeProof(document.getElementById('relation-bottom').value, document.getElementById('motivation-bottom').value)
-      } else {
-        const newStep = newExercise.activeCase.insertBottomStep()
-        const nextStep = newExercise.activeCase.steps[newStep.number + 1]
-        newStep.setTerm(document.getElementById('formula-bottom').value)
-        nextStep.relation = document.getElementById('relation-bottom').value
-        nextStep.rule = document.getElementById('motivation-bottom').value
-      }
+      const newStep = newExercise.activeCase.insertBottomStep()
+      const nextStep = newExercise.activeCase.steps[newStep.number + 1]
+      newStep.setTerm(document.getElementById('formula-bottom').value)
+      nextStep.relation = document.getElementById('relation-bottom').value
+      nextStep.rule = document.getElementById('motivation-bottom').value
     }
 
     this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
