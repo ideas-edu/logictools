@@ -184,19 +184,6 @@ export class LogIndCase extends StepCollection {
     return newStep
   }
 
-  closeProof (relation, rule) {
-    const bs = [].concat(this.bottomSteps)
-    for (let index = this.bottomSteps.length - 1; index > 0; index--) {
-      bs[index].isTopStep = true
-      // bs[index].rule = this.bottomSteps[index - 1].rule
-      // bs[index].relation = this.bottomSteps[index - 1].relation
-    }
-
-    bs[0].isTopStep = true
-    bs[0].rule = rule
-    bs[0].relation = relation
-  }
-
   deleteStep (index) {
     if (this.steps[index].isTopStep) {
       this.steps = this.steps.filter(step => !(step.number >= index && step.isTopStep))
