@@ -99,7 +99,6 @@ class MainFrameController {
     if (tool === null) {
       document.getElementById('container-welcome').classList.add('active')
       selectTool('welcome', 'welcome.html')
-      console.log('hello')
       return
     }
     for (const entry of urlParams.entries()) {

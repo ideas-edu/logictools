@@ -326,10 +326,10 @@ export class LogIndController extends ExerciseController {
     if (this.proofDirection === 'begin') {
       newExercise.activeCase = new LogIndCase(
         newExercise,
+        this.exercise.activeCase.type,
         this.exercise.activeCase.getObject(),
         this.exercise.activeCase.index,
-        this.exercise.activeCase.identifier,
-        this.exercise.activeCase.type
+        this.exercise.activeCase.identifier
       )
       let relation = document.getElementById('relation-gap').value
       if (relation === '≤') {
@@ -377,13 +377,11 @@ export class LogIndController extends ExerciseController {
       nextStep.relation = document.getElementById('relation-bottom').value
       nextStep.rule = document.getElementById('motivation-bottom').value
     }
-
     this.exerciseValidator.validateExercise(this.exercise, newExercise.getObject(), this.onStepValidated.bind(this), this.onErrorValidatingStep.bind(this))
   }
 
   newCase (type) {
-    this.exercise.activeCase = new LogIndCase(this.exercise)
-    this.exercise.activeCase.type = type
+    this.exercise.activeCase = new LogIndCase(this.exercise, type)
     this.setProofDirection('begin')
     this.setStep()
     this.updateSteps()
@@ -584,21 +582,7 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('connective not in language')) {
           const connective = term.split(':')[3].trim()
-          let connectiveLatex = null
-          switch (connective) {
-            case 'NEGATION':
-              connectiveLatex = '\\neg'
-              break
-            case 'OR':
-              connectiveLatex = '\\lor'
-              break
-            case 'AND':
-              connectiveLatex = '\\land'
-              break
-            case 'IMPLIES':
-              connectiveLatex = '\\rightarrow'
-              break
-          }
+          let connectiveLatex = this.getOperatorLatex(connective)
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
           this.updateAlert('logind.error.noConnective', { connective: connectiveLatex }, 'error')
           break
@@ -661,23 +645,36 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('double case')) {
           const _case = term.split(':')[1].split(' ')[2].trim()
-          let caseLatex = null
-          switch (_case) {
-            case 'NEGATION':
-              caseLatex = '\\neg'
-              break
-            case 'OR':
-              caseLatex = '\\lor'
-              break
-            case 'AND':
-              caseLatex = '\\land'
-              break
-            case 'IMPLIES':
-              caseLatex = '\\rightarrow'
-              break
-          }
+          let caseLatex = this.getOperatorLatex(_case)
           this.setErrorLocation(['formula-bottom', 'formula-top'])
           this.updateAlert('logind.error.doubleCase', { case: caseLatex }, 'error')
+          break
+        }
+
+        if (term.includes('but basestep')) {
+          const _case = term.split(' ')[2].trim()
+          const identifier = term.split(' ')[5].trim()
+
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.butBasestep', { identifier: identifier, case: `logind.case.type.${_case}` }, 'error')
+          break
+        }
+
+        if (term.includes('but ihstep')) {
+          const _case = term.split(' ')[2].trim()
+          const identifier = term.split(' ')[5].trim()
+
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.butIhstep', { identifier: `\\${identifier}`, case: `logind.case.type.${_case}` }, 'error')
+          break
+        }
+
+        if (term.includes('but inductivestep')) {
+          const _case = term.split(' ')[2].trim()
+          const identifier = term.split(' ')[5].trim()
+
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.butInductivestep', { identifier: this.getOperatorLatex(identifier), case: `logind.case.type.${_case}` }, 'error')
           break
         }
 
@@ -699,6 +696,19 @@ export class LogIndController extends ExerciseController {
     return {
       key: 'rule.logic.propositional.logind.definition',
       params: { function: motivation }
+    }
+  }
+
+  getOperatorLatex(term) {
+    switch (term) {
+      case 'NEGATION':
+        return '\\neg'
+      case 'OR':
+        return '\\lor'
+      case 'AND':
+        return '\\land'
+      case 'IMPLIES':
+        return '\\rightarrow'
     }
   }
 
