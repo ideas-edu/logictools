@@ -38,7 +38,7 @@ class MainFrameController {
           myModal.hide()
       }
     }.bind(this))
-
+    LogEXSession.setLogicgame(config.logicgame) 
     //this.getUserId() 
     // Eind Login
 

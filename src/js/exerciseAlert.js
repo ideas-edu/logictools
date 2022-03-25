@@ -28,11 +28,14 @@ export class ExerciseAlert {
         document.getElementById(`${this.id}`).classList = 'alert col-md-12 error-alert'
         break
       case 'complete':
-        let studentProgress = LogEXSession.updateProgressbarValues() // Tel 1 op bij de juiste teller 
-        if (studentProgress !== null) {
-          this.fillProgressbar('easy', studentProgress[0])
-          this.fillProgressbar('medium', studentProgress[1])
-          this.fillProgressbar('difficult', studentProgress[2])
+        // Difficulty is only set in case of a levelexercise
+        if (LogEXSession.getDifficulty() !== 'undefined') {
+          let studentProgress = LogEXSession.updateProgressbarValues() 
+          if (studentProgress !== null) {
+            this.fillProgressbar('easy', studentProgress[0])
+            this.fillProgressbar('medium', studentProgress[1])
+            this.fillProgressbar('difficult', studentProgress[2])
+          }
         }
         document.getElementById(`${this.id}-icon`).innerHTML = '<i class="fas fa-lg fa-check-circle"></i>'
         document.getElementById(`${this.id}`).classList = 'alert col-md-12 complete-alert'

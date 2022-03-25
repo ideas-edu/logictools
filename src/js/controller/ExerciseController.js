@@ -2,7 +2,7 @@ import config from '../../../config.json'
 import { IdeasServiceProxy } from '../model/ideasServiceProxy.js'
 import { KeyBindings } from '../keyBindings.js'
 import { ExerciseAlert } from '../exerciseAlert.js'
-import { translateElement } from '../translate.js'
+import { translate, translateElement, loadLanguage, hasTranslation } from '../translate.js' 
 import { LogEXSession } from '../logEXSession.js'
 
 export class ExerciseController {
@@ -90,6 +90,9 @@ export class ExerciseController {
         document.getElementById('progressbars').style.display = 'none'
       }
     }
+    else {
+      document.getElementById('progressbars').style.display = 'none'
+    }
   }
 
   fillProgressbar(difficulty, number){
@@ -121,14 +124,21 @@ export class ExerciseController {
       Initializes hint, next step and complete derivation button
    */
   initializeButtons () {
+    let aantal = 0
     if (this.config.displayHintButton) {
+      aantal++
       document.getElementById('show-hint').style.display = ''
     }
     if (this.config.displayNextStepButton) {
+      aantal++
       document.getElementById('show-next-step').style.display = ''
     }
     if (this.config.displayDerivationButton) {
+      aantal++
       document.getElementById('solve-exercise').style.display = ''
+    }
+    if (aantal === 0) {
+      document.getElementById('help-menu').style.display = 'none'
     }
   }
 
@@ -278,22 +288,17 @@ export class ExerciseController {
     this.disableUI(true)
     this.setContainer('exercise-container')
     let exerciseNumber = LogEXSession.getLevelExerciseNumber(this.exerciseType, properties.difficulty) 
-    //let exerciseNumber = LogEXSession.getLevelExerciseNumber(properties.difficulty) 
-  
+ 
     if (exerciseNumber < 0)
     {
       switch (exerciseNumber) {
         case -1:
-          //TODO Marianne
-          //let level = translate(`shared.exerciseName.${properties.difficulty}`)
-          //translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: level}) 
-          translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: properties.difficulty}) 
+          let level = translate(`shared.exerciseName.${properties.difficulty}`)
+          translateElement(document.getElementById('instruction'), 'shared.instruction.levelFinished', {level: level}) 
           break;
         case -2:
-          //TODO Marianne
-          //let type = translate(`main.tabTitle.${this.config.code}`)
-          //translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: type}) 
-          translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: this.exerciseType}) 
+          let type = translate(`main.tabTitle.${this.config.code}`)
+          translateElement(document.getElementById('instruction'), 'shared.instruction.typeFinished', {type: type}) 
           break;
         case -3:
           translateElement(document.getElementById('instruction'), 'shared.instruction.allFinished') 

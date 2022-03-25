@@ -16,7 +16,6 @@ export class IdeasServiceProxy {
     const url = config.backend_url
     input.source = toolConfig.source
     const data = 'input=' + encodeURIComponent(JSON.stringify(input))
-
     const request = new XMLHttpRequest()
 
     request.open('POST', url, true)
@@ -57,6 +56,8 @@ export class IdeasServiceProxy {
 
   // example :: Exercise, Int, UserId -> State
   static example (toolConfig, exerciseId, exerciseNr, userid, onSuccess, onError) {
+    IdeasServiceProxy.extraLog(userid, toolConfig)
+
     const request = {
       service: 'example',
       exerciseid: exerciseId,
@@ -142,7 +143,7 @@ export class IdeasServiceProxy {
 
   // ready:: State -> Boolean
   static finished (toolConfig, state, onSuccess, onError) {
-    state = LogEXSession.applyIdentifiers(state)
+     state = LogEXSession.applyIdentifiers(state)
     const request = {
       service: 'finished',
       state: state
@@ -185,5 +186,17 @@ export class IdeasServiceProxy {
     }
 
     IdeasServiceProxy.post(toolConfig, request, undefined, undefined)
+  }
+
+
+
+  static extraLog(userid, toolConfig) {
+    const requestLog = {
+      service: 'log',
+      userid: userid,
+      requestinfo: config.logicgame
+    }
+
+    IdeasServiceProxy.post(toolConfig, requestLog, undefined, undefined)
   }
 }

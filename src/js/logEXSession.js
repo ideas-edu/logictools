@@ -81,18 +81,19 @@ export class LogEXSession {
     }		
     else		
     {		
-      if (progressArray.find(x => x.studentId === studentId) === undefined){		
+      if (progressArray.find(x => x.studentId === studentId && x.logicgame === this.getLogicgame()) === undefined){		
           createEntryForUser = true;		
       }		
     }		
     if (createEntryForUser)		
     {		
-      progressArray.push({"studentId": studentId, "typeAantallen": { [this.DNV()]: [0,0,0], [this.CNV()]: [0,0,0], [this.LOGEQ()] : [0,0,0] }})		
+      let logicgame = this.getLogicgame()
+      progressArray.push({"studentId": studentId, "logicgame": logicgame, "typeAantallen": { [this.DNV()]: [0,0,0], [this.CNV()]: [0,0,0], [this.LOGEQ()] : [0,0,0] }})		
       let DNV = configTools[this.DNV()].levelExercises !== undefined ? configTools[this.DNV()].levelExercises.exercises : null // Bijv. { "easy": [0, 1, 2], "medium": [3, 4, 5], "difficult" : [6, 7, 8] }		
       let CNV = configTools[this.CNV()].levelExercises !== undefined ? configTools[this.CNV()].levelExercises.exercises : null		
       let LOGEQ = configTools[this.LOGEQ()].levelExercises !== undefined ? configTools[this.LOGEQ()].levelExercises.exercises : null	
 
-      levelExercisesArray.push({"studentId": studentId, [this.DNV()] : DNV, [this.CNV()]: CNV, [this.LOGEQ()] : LOGEQ})		
+      levelExercisesArray.push({"studentId": studentId, "logicgame": logicgame, [this.DNV()] : DNV, [this.CNV()]: CNV, [this.LOGEQ()] : LOGEQ})		
     }		
     localStorage.setItem('logex:progressArray', JSON.stringify(progressArray));		
     localStorage.setItem('logex:levelExercisesArray', JSON.stringify(levelExercisesArray));		
@@ -110,10 +111,10 @@ export class LogEXSession {
     if (this.getStudentId() == null || this.getDifficulty() == null) {		
       return null		
     }		
-    let progressArray = JSON.parse(localStorage.getItem('logex:progressArray')); // TODO : naar methode ?		
-    let studentProgress = progressArray.find(x => x.studentId === this.getStudentId()).typeAantallen[this.getExerciseType()]		
+    let progressArray = JSON.parse(localStorage.getItem('logex:progressArray')); 	
+    let studentProgress = progressArray.find(x => x.studentId === this.getStudentId() && x.logicgame === this.getLogicgame()).typeAantallen[this.getExerciseType()]		
     studentProgress[Difficulties[this.getDifficulty()]]++		
-    localStorage.setItem('logex:progressArray', JSON.stringify(progressArray)); // TODO : naar methode ?		
+    localStorage.setItem('logex:progressArray', JSON.stringify(progressArray)); 	
     this.setLevelExerciseAsFinished()		
     return studentProgress		
   }		
@@ -124,8 +125,8 @@ export class LogEXSession {
       if (this.getStudentId() == null || this.getDifficulty() == null) {
       return null		
     }		
-    let progressArray = JSON.parse(localStorage.getItem('logex:progressArray')); // TODO : naar methode ?		
-    let studentProgress = progressArray.find(x => x.studentId === this.getStudentId()).typeAantallen[this.getExerciseType()]		
+    let progressArray = JSON.parse(localStorage.getItem('logex:progressArray')); 	
+    let studentProgress = progressArray.find(x => x.studentId === this.getStudentId() && x.logicgame === this.getLogicgame()).typeAantallen[this.getExerciseType()]		
     return studentProgress		
   }		
   /**
@@ -146,7 +147,7 @@ export class LogEXSession {
       }
 
       levelExercisesArray = JSON.parse(levelExercisesArray); 
-      let studentExercises = levelExercisesArray.find(x => x.studentId === this.getStudentId())
+      let studentExercises = levelExercisesArray.find(x => x.studentId === this.getStudentId() && x.logicgame === this.getLogicgame())
    
       let dnv = this.DNV()
       let cnv = this.CNV()
@@ -195,7 +196,7 @@ export class LogEXSession {
     */
     static setLevelExerciseAsFinished () {  
       let levelExercisesArray = JSON.parse(localStorage.getItem('logex:levelExercisesArray')); 
-      let studentExercises = levelExercisesArray.find(x => x.studentId === this.getStudentId())
+      let studentExercises = levelExercisesArray.find(x => x.studentId === this.getStudentId() && x.logicgame === this.getLogicgame())
       let index = studentExercises[this.getExerciseType()][this.getDifficulty()].indexOf(parseInt(this.getExerciseNumber()));
       studentExercises[this.getExerciseType()][this.getDifficulty()][index] = -1
       localStorage.setItem('logex:levelExercisesArray', JSON.stringify(levelExercisesArray)); 
@@ -203,7 +204,7 @@ export class LogEXSession {
   
     static getNumberOfExercises(difficulty) {  
       let levelExercisesArray = JSON.parse(localStorage.getItem('logex:levelExercisesArray')); 
-      let studentExercises = levelExercisesArray.find(x => x.studentId === this.getStudentId())
+      let studentExercises = levelExercisesArray.find(x => x.studentId === this.getStudentId()  && x.logicgame === this.getLogicgame())
       let length = studentExercises[this.getExerciseType()][difficulty].length;
       return length
     }
@@ -242,5 +243,11 @@ export class LogEXSession {
     }
     static difficult () {
       return "difficult"
+    }
+    static setLogicgame (logicgame) {
+      localStorage.setItem('logex:logicgame', logicgame)
+    }
+    static getLogicgame () {
+      return localStorage.getItem('logex:logicgame')
     }
 };
