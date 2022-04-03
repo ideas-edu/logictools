@@ -40,8 +40,9 @@ export class LogIndExercise {
       active: null
     }
     if (this.activeCase !== null) {
-      object.active = ''
+      object.active = this.activeCase.identifier
       if (this.activeCase.steps.some((step) => step.term !== '') && ['basestep', 'ihstep', 'inductivestep'].includes(this.activeCase.identifier)) {
+        object.active = ''
         object.proofs[this.activeCase.identifier] = this.activeCase.getObject()
       }
     }
