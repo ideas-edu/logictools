@@ -701,6 +701,18 @@ export class LogIndController extends ExerciseController {
 
   getOperatorLatex(term) {
     switch (term) {
+      case '\"p\"':
+        return 'p'
+      case '\"q\"':
+        return 'q'
+      case '\"r\"':
+        return 'r'
+      case '\"phi\"':
+        return '\\phi'
+      case '\"psi\"':
+        return '\\psi'
+      case '\"chi\"':
+        return '\\chi'
       case 'NEGATION':
         return '\\neg'
       case 'OR':
