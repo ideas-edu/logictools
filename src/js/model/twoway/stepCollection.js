@@ -8,20 +8,31 @@ import { Rules } from '../rules.js'
     @param {ProofStep} baseStep - The first proof step.
  */
 export class TwoWayStepCollection extends StepCollection {
-  constructor (equation) {
+  constructor (exercise, steps) {
     super()
-    this.topSteps = [new TwoWayStep(equation.formula1, undefined, 'top')]
-    this.topSteps[0].number = 1
-    this.bottomSteps = [new TwoWayStep(equation.formula2, undefined, 'bottom')]
-    this.bottomSteps[0].number = 1
+    this.Step = TwoWayStep
+    this.setSteps(exercise, steps)
   }
 
-  /**
-    Gets the current step.
-        @return {OneWayStep} The current step.
-     */
-  getCurrentStep () {
-    return this.topSteps[this.topSteps.length - 1]
+  getObject () {
+    const object = []
+    for (const step of this.steps) {
+      const intermediate = {
+        motivation: step.rule === null ? '<GAP>' : step.rule,
+        type: '<=>'
+      }
+      if (step.isTopStep) {
+        if (step.rule !== null) {
+          object.push(intermediate)
+        }
+        object.push(step.formula)
+      } else {
+        object.push(intermediate)
+        object.push(step.formula)
+      }
+    }
+
+    return object
   }
 
   getCurrentTopStep () {
@@ -32,24 +43,8 @@ export class TwoWayStepCollection extends StepCollection {
     return this.bottomSteps[this.bottomSteps.length - 1]
   }
 
-  /**
-    Gets all the top step.
-        @return {ProofStep[]} The top steps.
-    */
-  getTopSteps () {
-    return this.topSteps
-  }
-
-  /**
-        Gets all the bottom step.
-        @return {ProofStep[]} The bottom steps.
-    */
-  getBottomSteps () {
-    return this.bottomSteps
-  }
-
   isComplete () {
-    return this.topSteps[this.topSteps.length - 1].formula === this.bottomSteps[this.bottomSteps.length - 1].formula
+    return this.bottomSteps.length === 0
   }
 
   /**
@@ -85,10 +80,14 @@ export class TwoWayStepCollection extends StepCollection {
         @param {Number} index - The start index.
      */
   removeTopSteps (index) {
-    this.topSteps = this.topSteps.slice(0, index)
+    this.steps = this.steps.filter(x => !x.isTopStep || x.number < index)
   }
 
   removeBottomSteps (index) {
-    this.bottomSteps = this.bottomSteps.slice(0, index)
+    this.steps[index+1].rule = null
+    this.steps = this.steps.filter(x => x.isTopStep || x.number > index)
+    for (const [index, step] of this.steps.entries()) {
+      step.number = index
+    }
   }
 }

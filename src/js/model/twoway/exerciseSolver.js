@@ -16,16 +16,11 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
   }
 
   _getState (exercise) {
-    const currentTopStep = exercise.steps.topSteps[exercise.steps.topSteps.length - 1]
-    const currentBottomStep = exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1]
-
-    const currentFormula = `${currentTopStep.formula} == ${currentBottomStep.formula}`
-
     const state = {
       exerciseid: exercise.type,
       prefix: exercise.prefix,
       context: {
-        term: currentFormula,
+        term: exercise.steps.getObject(),
         environment: {},
         location: []
       }
@@ -85,17 +80,10 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
         onErrorSolvingNextStep('shared.error.solvingLastStep')
         return
       }
-      const result = data.onefirst.first
-      const equation = new Equation(result.state.context.term)
-      let nextStep
-      if (equation.formula1 === exercise.steps.topSteps[exercise.steps.topSteps.length - 1].formula) { // && equation.formula2 != exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1].formula) {
-        nextStep = new this.Step(equation.formula2, result.step.rule, 'bottom')
-      } else {
-        nextStep = new this.Step(equation.formula1, result.step.rule, 'top')
-      }
-      exercise.prefix = result.state.prefix
-      if (nextStep) {
-        onNextStepSolved(nextStep)
+      const result = data.onefirst.first.state.context.term
+      exercise.prefix = data.onefirst.first.state.prefix
+      if (result) {
+        onNextStepSolved(result)
       }
     }.bind(this)
 
