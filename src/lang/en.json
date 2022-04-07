@@ -430,10 +430,18 @@
         "no_base_case": "You have no base cases.",
         "no_hypotheses": "You have no hypotheses.",
         "no_inductive_steps": "You have no inductive steps."
+      },
+      "type": {
+        "basestep": "a base case",
+        "ihstep": "an induction hypothesis",
+        "inductivestep": "an inductive case"
       }
     },
     "completed": "The exercise is finished.",
     "error": {
+      "butBasestep": "This is not [[case]] but a base case for {{identifier}}",
+      "butIhstep": "This is not [[case]] but an induction hypothesis for $${{identifier}}$$",
+      "butInductivestep": "This is not [[case]] but an inductive case for $${{identifier}}$$",
       "caseNotRecognized": "This is not a correct case.",
       "checkDifferentMetavars": "Use the same metavariables during this inductive case",
       "differentMetaVars": " The same variable should occur in the left hand side and the right hand side of the induction hypothesis.",

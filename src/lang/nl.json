@@ -430,10 +430,18 @@
         "no_base_case": "U heeft geen basisgevallen geschreven.",
         "no_hypotheses": "U heeft geen hypotheses geschreven.",
         "no_inductive_steps": "U heeft geen inductiestappen geschreven."
+      },
+      "type": {
+        "basestep": "basisgeval",
+        "ihstep": "inductiehypothese",
+        "inductivestep": "inductief geval"
       }
     },
     "completed": "De uitwerking is compleet",
     "error": {
+      "butBasestep": "Dit is geen [[case]] maar een basis geval voor {{identifier}}",
+      "butIhstep": "Dit is geen [[case]] maar een inductiehypothese voor $${{identifier}}$$",
+      "butInductivestep": "Dit is geen [[case]] maar een inductief geval $${{identifier}}$$",
       "caseNotRecognized": "Dit is geen correct geval",
       "checkDifferentMetavars": "Gebruik steeds dezelfde metavariabelen in dit inductieve geval.",
       "differentMetaVars": "In het linker- en rechterdeel van de inductiehypothese moet dezelfde variabele voorkomen.",

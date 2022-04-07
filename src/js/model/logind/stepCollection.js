@@ -16,14 +16,14 @@ export class LogIndCaseCollection {
       let j = 0
       let k = 0
       for (const [identifier, _case] of Object.entries(cases)) {
-        if (['p', 'q', 'r', 's'].includes(identifier)) {
-          this.baseCases.push(new LogIndCase(this.exercise, _case, i, identifier, 'baseCase'))
+        if (['basestep', 'p', 'q', 'r', 's'].includes(identifier)) {
+          this.baseCases.push(new LogIndCase(this.exercise, 'baseCase', _case, i, identifier))
           i++
-        } else if (['psi', 'phi', 'chi'].includes(identifier)) {
-          this.hypotheses.push(new LogIndCase(this.exercise, _case, j, identifier, 'hypothesis'))
+        } else if (['ihstep', 'psi', 'phi', 'chi'].includes(identifier)) {
+          this.hypotheses.push(new LogIndCase(this.exercise, 'hypothesis', _case, j, identifier))
           j++
         } else {
-          this.inductiveSteps.push(new LogIndCase(this.exercise, _case, k, identifier, 'inductiveStep'))
+          this.inductiveSteps.push(new LogIndCase(this.exercise, 'inductiveStep', _case, k, identifier))
           k++
         }
       }
@@ -59,7 +59,7 @@ const IDENTIFIERS = {
 }
 
 export class LogIndCase extends StepCollection {
-  constructor (exercise, _case, index, identifier, type) {
+  constructor (exercise, type, _case, index, identifier) {
     super()
     this.Step = LogIndStep
     this.index = index
@@ -68,7 +68,19 @@ export class LogIndCase extends StepCollection {
     this.proofRelation = exercise.theorem[1].type
     this.isCollapsed = false
     if (identifier === undefined) {
-      this.identifier = ''
+      switch (type) {
+        case 'baseCase':
+          this.identifier = 'basestep'
+          break
+        case 'hypothesis':
+          this.identifier = 'ihstep'
+          break
+        case 'inductiveStep':
+          this.identifier = 'inductivestep'
+          break
+        default:
+          this.identifier = ''
+      }
     }
     this.setSteps(exercise, _case)
   }
