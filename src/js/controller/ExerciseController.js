@@ -317,6 +317,7 @@ export class ExerciseController {
       properties.titleParams = {
         number: exerciseNumber
       }
+      properties.stepValidation = true;
 
       this.exerciseGenerator.example(exerciseNumber, this.exerciseType, properties, this.onExerciseGenerated.bind(this), this.onErrorGeneratingExercise.bind(this))
     }
