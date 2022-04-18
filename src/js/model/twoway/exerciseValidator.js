@@ -40,6 +40,10 @@ export class TwoWayExerciseValidator extends ExerciseValidator {
         onErrorValidatingStep()
         return
       }
+      if (data.diagnose.diagnosetype === 'notequiv') {
+        onErrorValidatingStep()
+        return
+      }
       if (data.diagnose.state !== undefined) {
         onValidated(data.diagnose.state.context.term, data.diagnose.diagnosetype)
       } else {

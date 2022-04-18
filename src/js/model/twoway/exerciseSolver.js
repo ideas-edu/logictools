@@ -91,4 +91,28 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
 
     IdeasServiceProxy.onefirst(this.config, state, 'nextStep', onSuccess, onError)
   }
+
+  getHelpForNextStep (exercise, onHelpForNextStepFound, onErrorGettingHelpForNextStep) {
+    const onError = onErrorGettingHelpForNextStep
+    const onSuccess = function (data) {
+      if (data === null || data.error !== undefined || data.onefirst === null) {
+        if (data.error.search(/No step/i) >= 0) {
+          onErrorGettingHelpForNextStep('shared.error.noStepPossible')
+        } else {
+          onErrorGettingHelpForNextStep('shared.error.showingHint')
+        }
+      } else {
+        const result = data.onefirst.first
+        exercise.prefix = result.state.prefix
+        onHelpForNextStepFound({
+          term: result.state.context.term,
+          rule: result.step.rule,
+          stepEnvironment: result.state.context.environment
+        })
+      }
+    }
+
+    const state = this._getState(exercise)
+    IdeasServiceProxy.onefirst(this.config, state, 'Hint: useRule', onSuccess, onError)
+  }
 }

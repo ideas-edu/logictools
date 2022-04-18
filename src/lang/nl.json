@@ -694,6 +694,10 @@
       "bottomUp": "<i class='fas fa-chevron-up'></i> Omhoog",
       "topDown": "<i class='fas fa-chevron-down'></i> Omlaag"
     },
+    "hint": {
+      "useBottomStep": "Voer een achterwaartse stap uit",
+      "useTopStep": "Voer een voorwaartse stap uit"
+    },
     "instruction": {
       "begin": "Selecteer een opgave om mee te beginnen!",
       "create": "Schrijf de formules voor je eigen opgave",

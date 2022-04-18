@@ -694,6 +694,10 @@
       "bottomUp": "<i class='fas fa-chevron-up'></i> Bottom-up",
       "topDown": "<i class='fas fa-chevron-down'></i> Top-down"
     },
+    "hint": {
+      "useBottomStep": "Perform a step backward",
+      "useTopStep": "Perform a step forward"
+    },
     "instruction": {
       "begin": "Select an exercise to get started!",
       "create": "Write the formula for your own exercise",

@@ -260,6 +260,16 @@ class TwoWayController extends LogExController {
         @param {OneWayStep} nextOneWayStep - The next one way step
      */
   onHelpForNextStepFound (nextOneWayStep) {
+    if (nextOneWayStep.stepEnvironment.direction === "0" && this.proofDirection === 'up') {
+      this.updateAlert('twoWay.hint.useTopStep', null, 'hint')
+      return
+    }
+
+    if (nextOneWayStep.stepEnvironment.direction === "1" && this.proofDirection === 'down') {
+      this.updateAlert('twoWay.hint.useBottomStep', null, 'hint')
+      return
+    }
+
     const rule = Rules[nextOneWayStep.rule]
     if (rule !== null) {
       const buttonCallback = function () {
@@ -272,17 +282,37 @@ class TwoWayController extends LogExController {
   }
 
   showNextHint (nextOneWayStep) {
-    const currentTopFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
-    let newFormula
+    let newFormula = null
+    let afterGap = false
+    for (const step of nextOneWayStep.term) {
+      if (step.constructor === String) {
+        newFormula = step
+        if (afterGap) {
+          break
+        }
+      } else {
+        if (step.motivation !== '<GAP>') {
+          continue
+        }
+        if (nextOneWayStep.stepEnvironment.direction === "0") {
+          // new formula is above gap
+          break
+        } else {
+          // new formula is below gap
+          afterGap = true
+          continue
+        }
+      }
+    }
+
+    newFormula = newFormula.replaceAll(' ', '')
     let oldFormula
-    if (nextOneWayStep.formula.split('==')[0].replaceAll(' ', '') === currentTopFormula) {
-      // new bottom step
-      oldFormula = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula.replaceAll(' ', '')
-      newFormula = nextOneWayStep.formula.split('==')[1].replaceAll(' ', '')
-    } else {
+    if (nextOneWayStep.stepEnvironment.direction === "0") {
       // new top step
       oldFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
-      newFormula = nextOneWayStep.formula.split('==')[0].replaceAll(' ', '')
+    } else {
+      // new bottom step
+      oldFormula = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula.replaceAll(' ', '')
     }
     const formulaDiff = showdiff(oldFormula, newFormula, this.formulaOptions).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
@@ -402,61 +432,6 @@ class TwoWayController extends LogExController {
 
     return true
   }
-  // onStepValidated (currentStep) {
-  //   this.clearErrors()
-  //   document.getElementById('formula').value = currentStep.formula
-
-  //   document.getElementById('step-validation-switch').checked = false
-
-  //   let message = null
-  //   let errorLocation = null
-  //   if (!currentStep.isValid && this.exercise.usesStepValidation) {
-  //     message = 'shared.error.wrongStep'
-  //     if (currentStep.isTopStep) {
-  //       this.exercise.steps.topSteps.pop()
-  //     } else {
-  //       this.exercise.steps.bottomSteps.pop()
-  //     }
-
-  //     if (!currentStep.isSyntaxValid) { // Foutieve syntax
-  //       message = 'shared.error.invalidFormula'
-  //       errorLocation = 'formula'
-  //     } else if (currentStep.isSimilar) { // Ongewijzigde formule
-  //       message = 'shared.error.similar'
-  //       errorLocation = 'formula'
-  //     } else if (currentStep.isCorrect) { // Gemaakte stap is juist, maar onduidelijk wat de gebruiker heeft uitgevoerd
-  //       message = 'shared.error.correctNotVal'
-  //       errorLocation = 'formula'
-  //     } else if (currentStep.isBuggy) { // Gemaakte stap is foutief, maar de strategie weet wat er fout is gegaan
-  //       message = `buggyRule.${currentStep.buggyRule}`
-  //       if (!hasTranslation(message)) {
-  //         message = 'shared.error.wrongStep'
-  //       }
-  //       errorLocation = 'formula'
-  //     } else if (!currentStep.isRuleValid) { // De ingegeven regel is niet correct
-  //       message = 'shared.error.wrongRule'
-  //       errorLocation = 'rule'
-  //     } else if (!currentStep.isValid) {
-  //       message = 'shared.error.wrongStep'
-  //       errorLocation = 'formula'
-  //     }
-
-  //     this.disableUI(false) // disableUI(false) moet opgeroepen worden voordat de errorTooltip getoond wordt, anders wordt de tooltip te laag getoond (= hoogte van het wait-icoontje)
-  //     this.setErrorLocation(errorLocation)
-  //     this.updateAlert(message, null, 'error')
-  //   } else {
-  //     this.insertStep(currentStep, true)
-  //     this.exercise.isReady = currentStep.isReady
-
-  //     // bij auto step is formula nog niet goed gevuld
-  //     document.getElementById('formula').value = currentStep.formula
-
-  //     this.disableUI(false)
-
-  //     //    Reset rule value after valid step
-  //     document.getElementById('rule').selectedIndex = 0
-  //   }
-  // }
 
   /**
         Handles the error that the step can not be validated
@@ -469,6 +444,7 @@ class TwoWayController extends LogExController {
 
   setProofDirection (direction) {
     this.proofDirection = direction
+    this.dismissAlert()
     const topBuffer = document.getElementById('empty-top-step')
     const bottomBuffer = document.getElementById('empty-bottom-step')
     const activeStep = document.getElementById('active-step')
