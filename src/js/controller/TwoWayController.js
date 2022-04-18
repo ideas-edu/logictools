@@ -124,7 +124,7 @@ class TwoWayController extends LogExController {
     const formula1 = document.getElementById('new-formula-1').value
     const formula2 = document.getElementById('new-formula-2').value
     const context = {
-      term: `${formula1}==${formula2}`,
+      term: [formula1, {"type": "<=>", "motivation": "<GAP>"}, formula2],
       environment: {},
       location: []
     }
@@ -227,14 +227,6 @@ class TwoWayController extends LogExController {
     this.updateSteps()
 
     return true
-    // if (nextStep.isTopStep) {
-    //   this.exercise.steps.pushTopStep(nextStep)
-    // } else {
-    //   this.exercise.steps.pushBottomStep(nextStep)
-    // }
-
-    // this.insertStep(nextStep, true)
-    // this.disableUI(false)
   }
 
   /**
@@ -452,6 +444,7 @@ class TwoWayController extends LogExController {
     const activeEquiv = document.getElementById('active-equiv')
 
     if (direction === 'down') {
+      this.exercise.direction = '0'
       topBuffer.style.display = 'none'
       bottomBuffer.style.display = ''
       activeStep.style.display = ''
@@ -461,6 +454,7 @@ class TwoWayController extends LogExController {
       this.formulaPopover.previousValue = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula
     }
     if (direction === 'up') {
+      this.exercise.direction = '1'
       topBuffer.style.display = ''
       bottomBuffer.style.display = 'none'
       activeStep.style.display = ''
@@ -475,6 +469,7 @@ class TwoWayController extends LogExController {
       activeStep.style.display = 'none'
     }
     if (direction === null) {
+      this.exercise.direction = undefined
       topBuffer.style.display = 'none'
       bottomBuffer.style.display = ''
       activeStep.style.display = 'none'

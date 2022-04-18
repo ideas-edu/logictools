@@ -26,6 +26,10 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
       }
     }
 
+    if (exercise.direction !== undefined) {
+      state.context.environment.direction = exercise.direction
+    }
+
     return state
   }
 
