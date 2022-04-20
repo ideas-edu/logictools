@@ -581,7 +581,7 @@ export class LogIndController extends ExerciseController {
           break
         }
         if (term.includes('connective not in language')) {
-          const connective = term.split(':')[3].trim()
+          const connective = term.split(':')[term.split(':').length - 1].trim()
           let connectiveLatex = this.getOperatorLatex(connective)
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
           this.updateAlert('logind.error.noConnective', { connective: connectiveLatex }, 'error')
