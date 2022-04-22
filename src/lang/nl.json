@@ -447,6 +447,7 @@
       "differentMetaVars": "In het linker- en rechterdeel van de inductiehypothese moet dezelfde variabele voorkomen.",
       "differentMetaVarsWith": "Gebruik dezelfde metavariabele in de eerste en tweede expressie van de inductiehypothese, dus een $${{metaVar}}$$ in de tweede expressie",
       "doubleCase": "Je hebt al een geval $${{case}}$$, voor elk connectief in de taal moet je precies 1 geval bewijzen.",
+      "doubleIH": " je hebt al een inductiehypothese geformuleerd voor $${{case}}$$.",
       "incorrect": "Er is een fout in het bewijs.",
       "incorrectApplicationIh": "De toepassing van de inductiehypothese is niet correct",
       "invalidAtomsInInductiveCase": "Formuleer de inductieve gevallen niet voor samenstellingen van atomaire formules, gebruik de variabelen uit de inductiehypothese",

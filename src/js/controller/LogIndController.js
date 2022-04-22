@@ -503,7 +503,7 @@ export class LogIndController extends ExerciseController {
           this.updateAlert('logind.error.wrongRelationGap', null, 'error')
           break
         }
-        if (term.includes('relation type')) {
+        if (term.includes('relation type') || term.includes('wrong relation')) {
           this.setErrorLocation(this.proofDirection === 'up' ? 'relation-bottom' : 'relation-top')
           this.updateAlert('logind.error.wrongRelation', null, 'error')
           break
@@ -641,6 +641,13 @@ export class LogIndController extends ExerciseController {
         if (term.includes('too many basecases')) {
           this.clearErrors()
           this.updateAlert('logind.error.tooManyBasecases', null, 'error')
+          break
+        }
+        if (term.includes('double IH')) {
+          const _case = term.split(':')[1].split(' ')[2].trim()
+          let caseLatex = this.getOperatorLatex(_case)
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.doubleIH', { case: caseLatex }, 'error')
           break
         }
         if (term.includes('double case')) {
