@@ -422,12 +422,26 @@ class TwoWayController extends LogExController {
         Handles the event that a step is validated
 
      */
-  onStepValidated (newSet) {
-    this.exercise.steps.setSteps(this.exercise, newSet)
+  onStepValidated (newSet, diagnoseType) {
+    switch (diagnoseType) {
+      case 'notequiv':
+        this.disableUI(false)
+        this.setErrorLocation('validate-step')
+        this.updateAlert('shared.error.notEquivalent', null, 'error')
+        return false
+      case 'correct':
+        this.disableUI(false)
+        this.setErrorLocation('validate-step')
+        this.updateAlert('shared.error.correctNotVal', null, 'error')
+        return false
+      default:
+        this.exercise.steps.setSteps(this.exercise, newSet)
 
-    this.updateSteps()
+        this.updateSteps()
 
-    return true
+        return true
+    }
+
   }
 
   /**
