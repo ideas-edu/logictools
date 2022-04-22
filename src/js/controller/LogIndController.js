@@ -628,12 +628,12 @@ export class LogIndController extends ExerciseController {
           this.updateAlert('logind.error.notInInductionHypotheses', { metaVar: `\\${metaVar}` }, 'error')
           break
         }
-        if (term.includes('incorrect IHdefinition: invalid instantiation for top expr in hypothesis')) {
+        if (term.includes('wrongIHTop')) {
           this.setErrorLocation('formula-top')
           this.updateAlert('logind.error.wrongIHTop', null, 'error')
           break
         }
-        if (term.includes('incorrect IHdefinition: invalid instantiation for bottom expr in hypothesis')) {
+        if (term.includes('wrongIHBottom')) {
           this.setErrorLocation('formula-bottom')
           this.updateAlert('logind.error.wrongIHBottom', null, 'error')
           break
