@@ -40,7 +40,7 @@ export class TwoWayStepCollection extends StepCollection {
   }
 
   getCurrentBottomStep () {
-    return this.bottomSteps[this.bottomSteps.length - 1]
+    return this.bottomSteps[0]
   }
 
   isComplete () {

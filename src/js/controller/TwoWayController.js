@@ -223,6 +223,11 @@ class TwoWayController extends LogExController {
      */
   onNextStepSolved (newSteps) {
     this.exercise.steps.setSteps(this.exercise, newSteps)
+    if (this.proofDirection === 'down') {
+      this.formulaPopover.setText(this.exercise.steps.getCurrentTopStep().formula)
+    } else {
+      this.formulaPopover.setText(this.exercise.steps.getCurrentBottomStep().formula)
+    }
 
     this.updateSteps()
 
@@ -252,12 +257,12 @@ class TwoWayController extends LogExController {
         @param {OneWayStep} nextOneWayStep - The next one way step
      */
   onHelpForNextStepFound (nextOneWayStep) {
-    if (nextOneWayStep.stepEnvironment.direction === "0" && this.proofDirection === 'up') {
+    if (nextOneWayStep.stepEnvironment.direction === "0" && this.proofDirection !== 'down') {
       this.updateAlert('twoWay.hint.useTopStep', null, 'hint')
       return
     }
 
-    if (nextOneWayStep.stepEnvironment.direction === "1" && this.proofDirection === 'down') {
+    if (nextOneWayStep.stepEnvironment.direction === "1" && this.proofDirection !== 'up') {
       this.updateAlert('twoWay.hint.useBottomStep', null, 'hint')
       return
     }
@@ -301,10 +306,10 @@ class TwoWayController extends LogExController {
     let oldFormula
     if (nextOneWayStep.stepEnvironment.direction === "0") {
       // new top step
-      oldFormula = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula.replaceAll(' ', '')
+      oldFormula = this.exercise.steps.getCurrentTopStep().formula.replaceAll(' ', '')
     } else {
       // new bottom step
-      oldFormula = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula.replaceAll(' ', '')
+      oldFormula = this.exercise.steps.getCurrentBottomStep().formula.replaceAll(' ', '')
     }
     const formulaDiff = showdiff(oldFormula, newFormula, this.formulaOptions).printKatexStyled()
     this.updateAlert('shared.hint.full', { rule: Rules[nextOneWayStep.rule], formula: formulaDiff }, 'hint', 'shared.hint.autoStep', this.showNextStep.bind(this))
@@ -395,9 +400,9 @@ class TwoWayController extends LogExController {
 
   getCurrentStep () {
     if (this.proofDirection === 'down') {
-      return this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1]
+      return this.exercise.steps.getCurrentTopStep()
     } else {
-      return this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1]
+      return this.exercise.steps.getCurrentBottomStep()
     }
   }
 
@@ -450,8 +455,8 @@ class TwoWayController extends LogExController {
       activeStep.style.display = ''
       activeArrow.innerHTML = '<i class="fas fa-arrow-down"></i>'
       activeEquiv.style.display = ''
-      this.formulaPopover.setText(this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula)
-      this.formulaPopover.previousValue = this.exercise.steps.topSteps[this.exercise.steps.topSteps.length - 1].formula
+      this.formulaPopover.setText(this.exercise.steps.getCurrentTopStep().formula)
+      this.formulaPopover.previousValue = this.exercise.steps.getCurrentTopStep().formula
     }
     if (direction === 'up') {
       this.exercise.direction = '1'
@@ -460,8 +465,8 @@ class TwoWayController extends LogExController {
       activeStep.style.display = ''
       activeArrow.innerHTML = '<i class="fas fa-arrow-up"></i>'
       activeEquiv.style.display = 'none'
-      this.formulaPopover.setText(this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula)
-      this.formulaPopover.previousValue = this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula
+      this.formulaPopover.setText(this.exercise.steps.getCurrentBottomStep().formula)
+      this.formulaPopover.previousValue = this.exercise.steps.getCurrentBottomStep().formula
     }
     if (direction === 'complete') {
       topBuffer.style.display = 'none'

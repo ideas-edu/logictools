@@ -73,6 +73,8 @@ Rules['logic.propositional.invoroverand'] = distributie
 Rules['logic.propositional.invandoveror'] = distributie
 Rules.distrornot = distributie
 Rules['andoveror.inv.common-literal'] = distributie
+Rules['specialdistrnotr'] = distributie
+
 
 // Dubbele negatie
 Rules['logic.propositional.doublenegation'] = dubbeleNegatie // group id
