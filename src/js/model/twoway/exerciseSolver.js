@@ -73,7 +73,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
-          onErrorSolvingNextStep('shared.error.noStepPossible')
+          onErrorSolvingNextStep('twoWay.error.noStepPossible')
         } else {
           onErrorSolvingNextStep('shared.error.solvingNextStep')
         }
@@ -101,7 +101,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
-          onErrorGettingHelpForNextStep('shared.error.noStepPossible')
+          onErrorGettingHelpForNextStep('twoWay.error.noStepPossible')
         } else {
           onErrorGettingHelpForNextStep('shared.error.showingHint')
         }
