@@ -914,7 +914,7 @@ export class LogIndController extends ExerciseController {
     exerciseStepTable.appendChild(exerciseStep)
   }
 
-  renderCase (_case, canDelete) {
+  renderCase (_case) {
     const stepTemplate = $.templates('#exercise-step-template')
 
     const newSteps = []
@@ -942,9 +942,18 @@ export class LogIndController extends ExerciseController {
       messageParams = JSON.stringify({ title: _case.getFormattedIdentifier() })
     }
 
+    let canDelete = true
+    if (this.exerciseComplete || border === 'active') {
+      canDelete = false
+    }
+    if (_case.type === 'hypothesis' && this.exercise.cases.inductiveSteps.length > 0) {
+      canDelete = false
+    }
+
     const exerciseStepHtml = stepTemplate.render({
       titleParams: JSON.stringify({ title: _case.getFormattedIdentifier() }),
       border: border,
+      canDelete: canDelete,
       collapsed: this.collapsed[_case.identifier],
       exerciseComplete: this.exerciseComplete,
       message: message,
