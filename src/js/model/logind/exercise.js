@@ -169,5 +169,8 @@ export class LogIndExercise {
     }
 
     set.splice(index, 1)
+    if (this.activeCase === undefined) {
+      this.activeCase = null
+    }
   }
 }

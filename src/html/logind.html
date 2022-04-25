@@ -214,7 +214,7 @@
 				{{/if}}
 
 			</td><td>
-			{{if (exerciseComplete === false && border !== 'active')}}
+			{{if (canDelete)}}
 				<button type="button" class="btn btn-outline-secondary btn-sm float-right delete-case"><i class='fas fa-times'></i></button>
 				{{if status !== 'complete'}}
 					<button type="button" class="btn btn-outline-secondary btn-sm float-right edit-case"><i class='fas fa-edit'></i></button>
