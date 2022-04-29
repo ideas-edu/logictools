@@ -107,7 +107,6 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
         }
       } else {
         const result = data.onefirst.first
-        exercise.prefix = result.state.prefix
         onHelpForNextStepFound({
           term: result.state.context.term,
           rule: result.step.rule,

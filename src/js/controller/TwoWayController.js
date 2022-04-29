@@ -455,7 +455,7 @@ class TwoWayController extends LogExController {
 
   setProofDirection (direction) {
     this.proofDirection = direction
-    this.dismissAlert()
+
     const topBuffer = document.getElementById('empty-top-step')
     const bottomBuffer = document.getElementById('empty-bottom-step')
     const activeStep = document.getElementById('active-step')
@@ -463,6 +463,7 @@ class TwoWayController extends LogExController {
     const activeEquiv = document.getElementById('active-equiv')
 
     if (direction === 'down') {
+      this.dismissAlert()
       this.exercise.direction = '0'
       topBuffer.style.display = 'none'
       bottomBuffer.style.display = ''
@@ -473,6 +474,7 @@ class TwoWayController extends LogExController {
       this.formulaPopover.previousValue = this.exercise.steps.getCurrentTopStep().formula
     }
     if (direction === 'up') {
+      this.dismissAlert()
       this.exercise.direction = '1'
       topBuffer.style.display = ''
       bottomBuffer.style.display = 'none'
@@ -488,6 +490,7 @@ class TwoWayController extends LogExController {
       activeStep.style.display = 'none'
     }
     if (direction === null) {
+      this.dismissAlert()
       this.exercise.direction = undefined
       topBuffer.style.display = 'none'
       bottomBuffer.style.display = ''

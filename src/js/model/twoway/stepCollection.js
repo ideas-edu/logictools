@@ -11,6 +11,7 @@ export class TwoWayStepCollection extends StepCollection {
   constructor (exercise, steps) {
     super()
     this.Step = TwoWayStep
+    this.isReady = false
     this.setSteps(exercise, steps)
   }
 
@@ -44,7 +45,7 @@ export class TwoWayStepCollection extends StepCollection {
   }
 
   isComplete () {
-    return this.bottomSteps.length === 0
+    return this.isReady
   }
 
   /**

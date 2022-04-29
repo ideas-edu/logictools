@@ -25,7 +25,10 @@ export class StepCollection {
         } else {
           rule = step.motivation
           relation = step.type
-          if (rule === '<GAP>') {
+          if (rule === '<GAP>' || rule === '<CLOSE>') {
+            if (rule === '<CLOSE>') {
+              this.isReady = true
+            }
             this.proofRelation = relation
             relation = null
             rule = null
