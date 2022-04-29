@@ -28,10 +28,10 @@ const assumption = 'rule.logic.propositional.axiomatic.assumption'
 // Absorptie
 Rules['logic.propositional.absorption'] = absorbtie // group id
 Rules['logic.propositional.absorpor'] = absorbtie
-Rules['absorpor.inv'] = absorbtie
+Rules['logic.propositional.absorpor.inv'] = absorbtie
 Rules['logic.propositional.absorpand'] = absorbtie
-Rules['absorpand.inv'] = absorbtie
-Rules['absorpor-subset'] = absorbtie
+Rules['logic.propositional.absorpand.inv'] = absorbtie
+Rules['logic.propositional.absorpor-subset'] = absorbtie
 
 Rules['logic.propositional.assoc'] = associativiteit
 Rules['logic.propositional.assocand'] = associativiteit
@@ -41,16 +41,16 @@ Rules['logic.propositional.assocor'] = associativiteit
 Rules['logic.propositional.commutativity'] = commutativiteit // group id
 Rules['logic.propositional.command'] = commutativiteit
 Rules['logic.propositional.commor'] = commutativiteit
-Rules['commor.sort'] = commutativiteit
-Rules['command.sort'] = commutativiteit
-Rules['complor.sort'] = commutativiteit
-Rules['compland.sort'] = commutativiteit
-Rules['idempor.sort'] = commutativiteit
-Rules['idempand.sort'] = commutativiteit
-Rules['top-is-and.com'] = commutativiteit
-Rules['top-is-or.com'] = commutativiteit
-Rules['command.common-literal-special'] = commutativiteit
-Rules['command.common-literal'] = commutativiteit
+Rules['logic.propositional.commor.sort'] = commutativiteit
+Rules['logic.propositional.command.sort'] = commutativiteit
+Rules['logic.propositional.complor.sort'] = commutativiteit
+Rules['logic.propositional.compland.sort'] = commutativiteit
+Rules['logic.propositional.idempor.sort'] = commutativiteit
+Rules['logic.propositional.idempand.sort'] = commutativiteit
+Rules['logic.propositional.top-is-and.com'] = commutativiteit
+Rules['logic.propositional.top-is-or.com'] = commutativiteit
+Rules['logic.propositional.command.common-literal-special'] = commutativiteit
+Rules['logic.propositional.command.common-literal'] = commutativiteit
 
 // De Morgan
 Rules['logic.propositional.demorgan'] = deMorgan // group id
@@ -58,8 +58,8 @@ Rules['logic.propositional.demorganor'] = deMorgan
 Rules['logic.propositional.demorganand'] = deMorgan
 Rules['logic.propositional.gendemorganand'] = deMorgan
 Rules['logic.propositional.gendemorganor'] = deMorgan
-Rules.demorganornot = deMorgan
-Rules.demorganandnot = deMorgan
+Rules['logic.propositional.demorganornot'] = deMorgan
+Rules['logic.propositional.demorganandnot'] = deMorgan
 Rules['logic.propositional.invdemorganand'] = deMorgan
 Rules['logic.propositional.invdemorganor'] = deMorgan
 
@@ -71,78 +71,77 @@ Rules['logic.propositional.genandoveror'] = distributie
 Rules['logic.propositional.genoroverand'] = distributie
 Rules['logic.propositional.invoroverand'] = distributie
 Rules['logic.propositional.invandoveror'] = distributie
-Rules.distrornot = distributie
-Rules['andoveror.inv.common-literal'] = distributie
-Rules['specialdistrnotr'] = distributie
-
+Rules['logic.propositional.distrornot'] = distributie
+Rules['logic.propositional.andoveror.inv.common-literal'] = distributie
+Rules['logic.propositional.specialdistrnotr'] = distributie
 
 // Dubbele negatie
 Rules['logic.propositional.doublenegation'] = dubbeleNegatie // group id
 Rules['logic.propositional.notnot'] = dubbeleNegatie
 Rules['logic.propositional.geninvdoublenegand'] = dubbeleNegatie
 Rules['logic.propositional.geninvdoublenegor'] = dubbeleNegatie
-Rules['notnot.inv'] = dubbeleNegatie
+Rules['logic.propositional.notnot.inv'] = dubbeleNegatie
 
 // Equivalantie definitie
 Rules['logic.propositional.equivalence'] = equivalentieDefinitie // group id
 Rules['logic.propositional.defequiv'] = equivalentieDefinitie
-Rules['defequiv.inv'] = equivalentieDefinitie
+Rules['logic.propositional.defequiv.inv'] = equivalentieDefinitie
 
 // False complement
 Rules['logic.propositional.falsecomplement'] = FRegelComplement // group id
 Rules['logic.propositional.compland'] = FRegelComplement
-Rules['compland.inv'] = FRegelComplement
+Rules['logic.propositional.compland.inv'] = FRegelComplement
 
 // False conjunctie
 Rules['logic.propositional.falseconjunction'] = FRegelConjunctie // group id
 Rules['logic.propositional.falsezeroand'] = FRegelConjunctie
-Rules['falsezeroand.inv'] = FRegelConjunctie
+Rules['logic.propositional.falsezeroand.inv'] = FRegelConjunctie
 
 // False disjunctie
 Rules['logic.propositional.falsedisjunction'] = FRegelDisjunctie // group id
 Rules['logic.propositional.falsezeroor'] = FRegelDisjunctie
-Rules['falsezeroor.inv'] = FRegelDisjunctie
+Rules['logic.propositional.falsezeroor.inv'] = FRegelDisjunctie
 
 // Not True
 Rules['logic.propositional.group-nottrue'] = FRegelNietT // group id
 Rules['logic.propositional.nottrue'] = FRegelNietT
-Rules['nottrue.inv'] = FRegelNietT
+Rules['logic.propositional.nottrue.inv'] = FRegelNietT
 
 // Idempotentie
 Rules['logic.propositional.idempotency'] = idempotentie // group id
 Rules['logic.propositional.idempor'] = idempotentie
-Rules['idempor.inv'] = idempotentie
+Rules['logic.propositional.idempor.inv'] = idempotentie
 Rules['logic.propositional.idempand'] = idempotentie
-Rules['idempand.inv'] = idempotentie
+Rules['logic.propositional.idempand.inv'] = idempotentie
 Rules['logic.propositional.invidempor'] = idempotentie
 Rules['logic.propositional.invidempand'] = idempotentie
 
 // Implicatie definitie
 Rules['logic.propositional.implication'] = implicatieDefinitie // group id
 Rules['logic.propositional.defimpl'] = implicatieDefinitie
-Rules['defimpl.inv'] = implicatieDefinitie
+Rules['logic.propositional.defimpl.inv'] = implicatieDefinitie
 
 // True complement
 Rules['logic.propositional.truecomplement'] = TRegelComplement // group id
 Rules['logic.propositional.complor'] = TRegelComplement
-Rules['complor.inv'] = TRegelComplement
-Rules.introcompl = TRegelComplement
+Rules['logic.propositional.complor.inv'] = TRegelComplement
+Rules['logic.propositional.introcompl'] = TRegelComplement
 
 // True conjunctie
 Rules['logic.propositional.trueconjunction'] = TRegelConjunctie // group id
 Rules['logic.propositional.truezeroand'] = TRegelConjunctie
-Rules['truezeroand.inv'] = TRegelConjunctie
-Rules.introtrueleft = TRegelConjunctie
+Rules['logic.propositional.truezeroand.inv'] = TRegelConjunctie
+Rules['logic.propositional.introtrueleft'] = TRegelConjunctie
 
 // True disjunctie
 Rules['logic.propositional.truedisjunction'] = TRegelDisjunctie // group id
 Rules['logic.propositional.truezeroor'] = TRegelDisjunctie
-Rules['truezeroor.inv'] = TRegelDisjunctie
+Rules['logic.propositional.truezeroor.inv'] = TRegelDisjunctie
 
 // Not False
 Rules['logic.propositional.group-notfalse'] = TRegelNietF // group id
 Rules['logic.propositional.notfalse'] = TRegelNietF
-Rules['notfalse.inv'] = TRegelNietF
+Rules['logic.propositional.notfalse.inv'] = TRegelNietF
 
 // ##################
 // LogAx
