@@ -30,7 +30,7 @@ export class TwoWayExerciseValidator extends ExerciseValidator {
     return context
   }
 
-  validateStep (exercise, newStepObject, onValidated, onErrorValidatingStep) {
+  validateStep (exercise, newStepObject, rule, onValidated, onErrorValidatingStep) {
     const onError = onErrorValidatingStep
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined) {
@@ -48,7 +48,7 @@ export class TwoWayExerciseValidator extends ExerciseValidator {
     }
     const state = this.getState(exercise)
     const context = this.getContext(newStepObject)
-    IdeasServiceProxy.diagnose(this.config, state, context, null, onSuccess, onError)
+    IdeasServiceProxy.diagnose(this.config, state, context, rule, onSuccess, onError)
   }
 
 }
