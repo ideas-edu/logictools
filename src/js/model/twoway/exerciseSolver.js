@@ -16,19 +16,18 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
   }
 
   _getState (exercise) {
-    const currentTopStep = exercise.steps.topSteps[exercise.steps.topSteps.length - 1]
-    const currentBottomStep = exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1]
-
-    const currentFormula = `${currentTopStep.formula} == ${currentBottomStep.formula}`
-
     const state = {
       exerciseid: exercise.type,
       prefix: exercise.prefix,
       context: {
-        term: currentFormula,
+        term: exercise.steps.getObject(),
         environment: {},
         location: []
       }
+    }
+
+    if (exercise.direction !== undefined) {
+      state.context.environment.direction = exercise.direction
     }
 
     return state
@@ -74,7 +73,7 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
     const onSuccess = function (data) {
       if (data === null || data.error !== undefined || data.onefirst === null) {
         if (data.error.search(/No step/i) >= 0) {
-          onErrorSolvingNextStep('shared.error.noStepPossible')
+          onErrorSolvingNextStep('twoWay.error.noStepPossible')
         } else {
           onErrorSolvingNextStep('shared.error.solvingNextStep')
         }
@@ -85,22 +84,38 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
         onErrorSolvingNextStep('shared.error.solvingLastStep')
         return
       }
-      const result = data.onefirst.first
-      const equation = new Equation(result.state.context.term)
-      let nextStep
-      if (equation.formula1 === exercise.steps.topSteps[exercise.steps.topSteps.length - 1].formula) { // && equation.formula2 != exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1].formula) {
-        nextStep = new this.Step(equation.formula2, result.step.rule, 'bottom')
-      } else {
-        nextStep = new this.Step(equation.formula1, result.step.rule, 'top')
-      }
-      exercise.prefix = result.state.prefix
-      if (nextStep) {
-        onNextStepSolved(nextStep)
+      const result = data.onefirst.first.state.context.term
+      exercise.prefix = data.onefirst.first.state.prefix
+      if (result) {
+        onNextStepSolved(result)
       }
     }.bind(this)
 
     const state = this._getState(exercise)
 
     IdeasServiceProxy.onefirst(this.config, state, 'nextStep', onSuccess, onError)
+  }
+
+  getHelpForNextStep (exercise, onHelpForNextStepFound, onErrorGettingHelpForNextStep) {
+    const onError = onErrorGettingHelpForNextStep
+    const onSuccess = function (data) {
+      if (data === null || data.error !== undefined || data.onefirst === null) {
+        if (data.error.search(/No step/i) >= 0) {
+          onErrorGettingHelpForNextStep('twoWay.error.noStepPossible')
+        } else {
+          onErrorGettingHelpForNextStep('shared.error.showingHint')
+        }
+      } else {
+        const result = data.onefirst.first
+        onHelpForNextStepFound({
+          term: result.state.context.term,
+          rule: result.step.rule,
+          stepEnvironment: result.state.context.environment
+        })
+      }
+    }
+
+    const state = this._getState(exercise)
+    IdeasServiceProxy.onefirst(this.config, state, 'Hint: useRule', onSuccess, onError)
   }
 }

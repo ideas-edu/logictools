@@ -27,7 +27,8 @@ class Expression {
     }
     const index2 = string.indexOf('\'>', index1)
     const index3 = string.indexOf('</span>', index2)
-    return `${kt(string.substring(0, index1))}<span class='${this.style}'>${kt(string.substring(index2 + 2, index3))}</span>${kt(string.substring(index3 + 7))}`
+    const style = string.substring(index1, index2 + 2)
+    return `${kt(string.substring(0, index1))}${style}${kt(string.substring(index2 + 2, index3))}</span>${kt(string.substring(index3 + 7))}`
   }
 }
 

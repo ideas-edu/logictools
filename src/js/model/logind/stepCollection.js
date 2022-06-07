@@ -61,11 +61,10 @@ const IDENTIFIERS = {
 export class LogIndCase extends StepCollection {
   constructor (exercise, type, _case, index, identifier) {
     super()
-    this.exercise = exercise
+    this.Step = LogIndStep
     this.index = index
     this.identifier = identifier
     this.type = type
-    this.steps = []
     this.proofRelation = exercise.theorem[1].type
     this.isCollapsed = false
     if (identifier === undefined) {
@@ -83,51 +82,7 @@ export class LogIndCase extends StepCollection {
           this.identifier = ''
       }
     }
-
-    if (_case === undefined) {
-      _case = {}
-      return
-    }
-
-    let rule = null
-    let relation = null
-    let number = 0
-    let isTopStep = true
-    let currentStep = null
-    for (const step of _case) {
-      if (isTopStep) {
-        if (step.constructor === String) {
-          this.steps.push(new LogIndStep(this, step, rule, relation, number, isTopStep))
-        } else {
-          rule = step.motivation
-          relation = step.type
-          if (rule === '<GAP>') {
-            this.proofRelation = relation
-            relation = null
-            rule = null
-            isTopStep = false
-          }
-          number += 1
-        }
-      } else {
-        // Bottom step
-        if (step.constructor === String) {
-          currentStep = step
-          this.steps.push(new LogIndStep(this, currentStep, rule, relation, number, isTopStep))
-        } else {
-          rule = step.motivation
-          relation = step.type
-          number += 1
-          currentStep = null
-        }
-      }
-    }
-    // if (!isTopStep && currentStep !== null) {
-    //   this.steps.push(new LogIndStep(this, currentStep, null, null, number, isTopStep))
-    // }
-
-    // this.stepsHistory = [JSON.parse(JSON.stringify(this.steps))]
-    // this.stepsHistoryIndex = 0
+    this.setSteps(exercise, _case)
   }
 
   getObject () {
@@ -169,31 +124,6 @@ export class LogIndCase extends StepCollection {
 
   getFormattedIdentifier () {
     return IDENTIFIERS[this.identifier]
-  }
-
-  get topSteps () {
-    return this.steps.filter(x => x.isTopStep)
-  }
-
-  get bottomSteps () {
-    return this.steps.filter(x => !x.isTopStep)
-  }
-
-  insertTopStep () {
-    const index = this.topSteps.length
-    const newStep = new LogIndStep(this, '', null, index === 0 ? null : null, index, true)
-    this.steps.splice(index, 0, newStep)
-    return newStep
-  }
-
-  insertBottomStep () {
-    for (const bottomStep of this.bottomSteps) {
-      bottomStep.number += 1
-    }
-    const index = this.steps.length - this.bottomSteps.length
-    const newStep = new LogIndStep(this, '', null, this.bottomSteps.length === 0 ? null : null, index, false)
-    this.steps.splice(index, 0, newStep)
-    return newStep
   }
 
   deleteStep (index) {
