@@ -526,6 +526,11 @@ export class LogIndController extends ExerciseController {
           this.updateAlert('logind.error.similarExpr', null, 'error')
           break
         }
+        if (term.includes('no meta var in hypothesis')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.noMetaVar', null, 'error')
+          break
+        }
         if (term.includes('step') && term.includes('check-triple')) {
           this.setErrorLocation(this.proofDirection === 'up' ? 'formula-bottom' : 'formula-top')
           this.updateAlert('logind.error.invalidStep', null, 'error')
@@ -564,11 +569,6 @@ export class LogIndController extends ExerciseController {
             this.setErrorLocation(['formula-bottom', 'formula-top'])
             this.updateAlert('logind.error.differentMetaVars', null, 'error')
           }
-          break
-        }
-        if (term.includes('no meta var in hypothesis')) {
-          this.setErrorLocation(['formula-bottom', 'formula-top'])
-          this.updateAlert('logind.error.noMetaVar', null, 'error')
           break
         }
         if (term.includes('is applicable, however the result is')) {
