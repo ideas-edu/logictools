@@ -223,10 +223,13 @@ class TwoWayController extends LogExController {
      */
   onNextStepSolved (newSteps) {
     this.exercise.steps.setSteps(this.exercise, newSteps)
-    if (this.proofDirection === 'down') {
-      this.formulaPopover.setText(this.exercise.steps.getCurrentTopStep().formula)
-    } else {
-      this.formulaPopover.setText(this.exercise.steps.getCurrentBottomStep().formula)
+
+    if (!this.exercise.isReady) {
+      if (this.proofDirection === 'down') {
+        this.formulaPopover.setText(this.exercise.steps.getCurrentTopStep().formula)
+      } else {
+        this.formulaPopover.setText(this.exercise.steps.getCurrentBottomStep().formula)
+      }
     }
 
     this.updateSteps()
