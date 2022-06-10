@@ -323,7 +323,7 @@ class TwoWayController extends LogExController {
 
      */
   validateStep () {
-    const newFormula = document.getElementById('formula').value
+    const newFormula = document.getElementById('formula').value.replaceAll(' ', '')
 
     const ruleKey = this.getSelectedRuleKey()
     if (ruleKey === null && this.exercise.usesStepValidation) {
@@ -332,13 +332,13 @@ class TwoWayController extends LogExController {
       return false
     }
 
-    if (this.proofDirection === 'down' && newFormula === this.exercise.steps.getCurrentTopStep().formula) {
+    if (this.proofDirection === 'down' && newFormula === this.exercise.steps.getCurrentTopStep().formula.replaceAll(' ', '')) {
       this.setErrorLocation('formula')
       this.updateAlert('shared.error.notChanged', null, 'error')
       return false
     }
 
-    if (this.proofDirection === 'up' && newFormula === this.exercise.steps.getCurrentBottomStep().formula) {
+    if (this.proofDirection === 'up' && newFormula === this.exercise.steps.getCurrentBottomStep().formula.replaceAll(' ', '')) {
       this.setErrorLocation('formula')
       this.updateAlert('shared.error.notChanged', null, 'error')
       return false
