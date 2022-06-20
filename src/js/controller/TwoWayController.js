@@ -432,6 +432,11 @@ class TwoWayController extends LogExController {
         this.setErrorLocation('validate-step')
         this.updateAlert('shared.error.notEquivalent', null, 'error')
         return false
+      case 'wrongrule':
+        this.disableUI(false)
+        this.setErrorLocation('rule')
+        this.updateAlert('shared.error.wrongRule', null, 'error')
+        return false
       case 'correct':
         this.disableUI(false)
         this.setErrorLocation('validate-step')
