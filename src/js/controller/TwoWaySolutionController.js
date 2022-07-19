@@ -65,7 +65,7 @@ class TwoWaySolutionController extends LogExSolutionController {
     for (const step of this.exercise.steps.topSteps) {
       this.insertStep(step, step.number !== 0)
     }
-    for (const step of this.exercise.steps.bottomSteps.reverse()) {
+    for (const step of this.exercise.steps.bottomSteps) {
       this.insertStep(step, step.number !== this.exercise.steps.steps.length - 1)
     }
   }
