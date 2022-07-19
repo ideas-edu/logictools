@@ -43,7 +43,7 @@ export class TwoWayExerciseValidator extends ExerciseValidator {
       if (data.diagnose.state !== undefined) {
         onValidated(data.diagnose.state.context.term, data.diagnose.diagnosetype)
       } else {
-        onValidated(data.diagnose.message, data.diagnose.diagnosetype)
+        onValidated(data.diagnose.rule, data.diagnose.diagnosetype)
       }
     }
     const state = this.getState(exercise)
