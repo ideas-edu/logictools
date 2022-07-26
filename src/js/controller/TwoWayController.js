@@ -59,6 +59,11 @@ class TwoWayController extends LogExController {
     this.proofDirection = null
     this.newFormulaPopover1 = null
     this.newFormulaPopover2 = null
+
+    document.getElementById('complete-exercise').addEventListener('click', function () {
+      this.completeSolution()
+    }.bind(this))
+
   }
 
   /**
@@ -209,8 +214,24 @@ class TwoWayController extends LogExController {
   }
 
   showSolution () {
-    window.open('twowaysolution.html?formula=' + this.exercise.equation.getText() + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+    const term = [
+      this.exercise.steps.topSteps[0].formula,
+      {
+        motivation: '<GAP>',
+        type: '<=>'
+      },
+      this.exercise.steps.bottomSteps[this.exercise.steps.bottomSteps.length - 1].formula,
+    ]
+    window.open('twowaysolution.html?formula=' + encodeURIComponent(JSON.stringify(term)) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
   }
+
+  completeSolution () {
+    window.open('twowaysolution.html?formula=' + encodeURIComponent(JSON.stringify(this.exercise.steps.getObject())) + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+  }
+
+  // showSolution () {
+  //   window.open('twowaysolution.html?formula=' + this.exercise.steps.getTaskId() + '&exerciseType=' + this.exercise.type + '&controller=' + this.exerciseType, '_blank', 'location=no,width=1020,height=600,status=no,toolbar=no')
+  // }
 
   showNextStep () {
     this.disableUI(true)
@@ -436,6 +457,15 @@ class TwoWayController extends LogExController {
         this.disableUI(false)
         this.setErrorLocation('rule')
         this.updateAlert('shared.error.wrongRule', null, 'error')
+        return false
+      case 'buggy':
+        this.disableUI(false)
+        this.setErrorLocation('formula')
+        var message = `buggyRule.${newSet}`
+        if (!hasTranslation(message)) {
+          message = 'shared.error.wrongStep'
+        }
+        this.updateAlert(message, null, 'error')
         return false
       case 'correct':
         this.disableUI(false)

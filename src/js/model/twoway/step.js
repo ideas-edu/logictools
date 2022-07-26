@@ -4,7 +4,6 @@ import katex from 'katex'
     @constructor
     @param {string} equationText - The text of the equation.
     @param {string} rule - The rule that is used in this step.
-    @property {Equation} equation The equation.
     @property {string} rule The applied rule.
     @property {Boolean} isTopStep True if the step is applied to the top formula, false otherwise.
     @property {Boolean} isBottomStep True if the step is applied to the bottom formula, false otherwise.
