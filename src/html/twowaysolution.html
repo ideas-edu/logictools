@@ -37,21 +37,23 @@
         </div>
 
         <script id="exercise-step-template" type="text/x-jsrender">
-            <td scope="row">
+            <td scope="row" class="col-direction">
                 {{if topStep && !basis}}
                     <i class='fas fa-arrow-down'></i>
                 {{/if}}
                 {{if bottomStep && !basis}}
                     <i class='fas fa-arrow-up'></i>
                 {{/if}}
-                {{:arrow}}
+                {{if !(topStep && basis)}}
+                    {{:arrow}}
+                {{/if}}
             </td>
-            <td>
+            <td class="col-formula">
                 <span class="twoway-formula">{{:formula}}</span>
             </td>
-            <td>
-                {{if rule }}
-                    <span>{{>rule}}</span>
+            <td class="col-actions">
+                {{if ruleJustification && rule }}
+                    <span class="step-rule" translate-key="{{:ruleKey}}">{{>rule}}</span>
                 {{/if}}
             </td>
         </script>

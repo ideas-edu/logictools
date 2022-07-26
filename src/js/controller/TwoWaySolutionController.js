@@ -48,51 +48,55 @@ class TwoWaySolutionController extends LogExSolutionController {
   }
 
   /**
+        Solves the exercise
+     */
+  solveExercise () {
+    const term = JSON.parse(this.getFormula())
+    this.exercise = new this.ExerciseType(term, this.exerciseType, false, false)
+    this.exerciseSolver.solve(this.exercise, this.onExerciseSolved.bind(this), this.onErrorSolvingExercise.bind(this))
+  }
+
+  /**
         Handles the event that an exercise is solved
         @param {TwoWayStepCollection} solution - The solution
      */
   onExerciseSolved (solution) {
-    this.exercise = solution
-
-    for (let i = 0; i < solution.topSteps.length; i++) {
-      this.insertStep(solution.topSteps[i], false)
+    this.exercise.steps.setSteps(this.exercise, solution)
+    for (const step of this.exercise.steps.topSteps) {
+      this.insertStep(step, step.number !== 0)
     }
-
-    // for (let i = solution.bottomSteps.length - 1; i >= 0; i--) {
-    for (let i = 0; i < solution.bottomSteps.length; i++) {
-      this.insertStep(solution.bottomSteps[i], false)
+    for (const step of this.exercise.steps.bottomSteps) {
+      this.insertStep(step, step.number !== this.exercise.steps.steps.length - 1)
     }
-    const arrow = katex.renderToString('\\Leftrightarrow', {
-      throwOnError: false
-    })
-    const message = solution.topSteps[0].formulaKatex + ' ' + arrow + ' ' + solution.bottomSteps[0].formulaKatex
-
-    this.updateAlert(message, 'complete')
   }
 
   renderStep (step) {
     let rule = ''
     let arrow = null
-    if (step.rule !== undefined) {
-      rule = translate(Rules[step.rule])
-    }
-
     const stepTemplate = $.templates('#exercise-step-template')
-
-    if (step.number > 1 || step.isBottomStep) {
-      arrow = katex.renderToString('\\Leftrightarrow', {
-        throwOnError: false
-      })
+    const ruleKey = Rules[step.rule]
+    if (step.rule !== null) {
+      rule = translate(ruleKey)
     }
+
+    arrow = katex.renderToString('\\Leftrightarrow', {
+      throwOnError: false
+    })
 
     const exerciseStepHtml = stepTemplate.render({
       rule: rule,
+      ruleKey: ruleKey,
       formula: step.formulaKatex,
-      basis: step === this.exercise.topSteps[0] || step === this.exercise.bottomSteps[0],
+      canDelete: false,
       topStep: step.isTopStep,
-      bottomStep: step.isBottomStep,
-      arrow: arrow
+      bottomStep: !step.isTopStep,
+      basis: step === this.exercise.steps.topSteps[0] || step === this.exercise.steps.bottomSteps[0],
+      step: step.number,
+      arrow: arrow,
+      stepValidation: true,
+      ruleJustification: true
     })
+
     return exerciseStepHtml
   }
 }

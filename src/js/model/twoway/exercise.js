@@ -1,12 +1,7 @@
-import { Equation } from './equation.js'
 import { TwoWayStepCollection } from './stepCollection.js'
 
 /**
     Represents a two way exercise.
-    @constructor
-    @param {string} equationText - The text of the equation.
-    @property {Equation} equation The equation.
-    @property {ProofStepCollection} steps The collection of proof steps.
  */
 export class TwoWayExercise {
   constructor (steps, exerciseType, properties) {

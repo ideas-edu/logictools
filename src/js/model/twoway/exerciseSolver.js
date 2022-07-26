@@ -2,7 +2,6 @@ import { IdeasServiceProxy } from '../ideasServiceProxy.js'
 import { ExerciseSolver } from '../shared/exerciseSolver.js'
 import { TwoWayStepCollection } from './stepCollection.js'
 import { TwoWayStep } from './step.js'
-import { Equation } from './equation.js'
 
 /**
     TwoWayExerciseSolver is responsible for solving Two way exercises.
@@ -42,18 +41,12 @@ export class TwoWayExerciseSolver extends ExerciseSolver {
       }
       const steps = new this.StepCollection(exercise.equation)
       const ds = data.derivation.derivation.derivationsteps
-      for (const i in ds) {
-        const step = ds[i]
-        if (step.context.term.split('==')[0] === steps.topSteps[steps.topSteps.length - 1].formula) { // && equation.formula2 != exercise.steps.bottomSteps[exercise.steps.bottomSteps.length - 1].formula) {
-          const nextStep = new this.Step(step.context.term.split('==')[1], step.step.rule, 'bottom')
-          steps.pushBottomStep(nextStep)
-        } else {
-          const nextStep = new this.Step(step.context.term.split('==')[0], step.step.rule, 'top')
-          steps.pushTopStep(nextStep)
-        }
-      }
+      const last = ds[ds.length - 1]
+      // for (const step of last.context.term) {
+      //   steps.push(new this.Step(step))
+      // }
 
-      onExerciseSolved(steps)
+      onExerciseSolved(last.context.term)
     }.bind(this)
 
     const state = this._getState(exercise)
