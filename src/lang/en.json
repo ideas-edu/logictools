@@ -439,6 +439,7 @@
     },
     "completed": "The exercise is finished.",
     "error": {
+      "baseStepNotRecognized": "This is not a correct instantiation of a base case",
       "butBasestep": "This is not [[case]] but a base case for {{identifier}}",
       "butIhstep": "This is not [[case]] but an induction hypothesis for $${{identifier}}$$",
       "butInductivestep": "This is not [[case]] but an inductive case for $${{identifier}}$$",
@@ -448,6 +449,7 @@
       "differentMetaVarsWith": "Use the same metavariable in the first and second expression of the induction hypothesis, so $${{metaVar}}$$ in the second expression.",
       "doubleCase": "There is already a case $${{case}}$$, you need to prove exactly one case for each connective in the language.",
       "doubleIH": "You already formulated an induction hypothesis for $${{case}}$$.",
+      "ihNotRecognized": "This is not a correct induction hypothesis",
       "incorrect": "The proof contains an error.",
       "incorrectApplicationIh": "The application of the induction hypothesis is not correct.",
       "invalidAtomsInInductiveCase": "Do not formulate inductive cases for compositions of atomic formulae, use the variables from the induction hypothesis.",
