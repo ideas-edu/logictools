@@ -452,6 +452,7 @@
       "ihNotRecognized": "This is not a correct induction hypothesis",
       "incorrect": "The proof contains an error.",
       "incorrectApplicationIh": "The application of the induction hypothesis is not correct.",
+      "inductiveStepNotRecognized": "This is not a correct instantiation of an inductive step",
       "invalidAtomsInInductiveCase": "Do not formulate inductive cases for compositions of atomic formulae, use the variables from the induction hypothesis.",
       "invalidBottomExpr": "The last expression of the subproof is not a  correct instantiation of the right hand side of the theorem.",
       "invalidComposedBaseCase": "Only atomic cases belong to the base cases, composed formulae belong to the inductive cases.",

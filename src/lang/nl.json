@@ -452,6 +452,7 @@
       "ihNotRecognized": "Dit is geen correcte inductiehypothese",
       "incorrect": "Er is een fout in het bewijs.",
       "incorrectApplicationIh": "De toepassing van de inductiehypothese is niet correct",
+      "inductiveStepNotRecognized": "Dit is geen correcte instantiatie van een inductiestap",
       "invalidAtomsInInductiveCase": "Formuleer de inductieve gevallen niet voor samenstellingen van atomaire formules, gebruik de variabelen uit de inductiehypothese",
       "invalidBottomExpr": "De laatste expressie van het deelbewijs is geen correcte instantie van de rechterkant van de stelling",
       "invalidComposedBaseCase": "Alleen atomaire gevallen horen tot de basisgevallen, samengestelde formules komen in de inductiestap aan bod",

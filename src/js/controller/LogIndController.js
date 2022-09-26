@@ -609,7 +609,12 @@ export class LogIndController extends ExerciseController {
         }
         if (term.includes('not ihstep (not recognized)')) {
           this.setErrorLocation(['formula-bottom', 'formula-top'])
-          this.updateAlert('logind.error.IHNotRecognized', null, 'error')
+          this.updateAlert('logind.error.ihNotRecognized', null, 'error')
+          break
+        }
+        if (term.includes('not inductivestep (not recognized)')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.inductiveStepNotRecognized', null, 'error')
           break
         }
         if (term.includes('not an instantiation')) {
