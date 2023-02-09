@@ -90,7 +90,7 @@
             "inv": "Idempotency does not apply to implications, only to conjunctions and disjunctions."
           },
           "implelim": {
-           "#":"You have applied implication definition incorrectly.",
+           "#":"You have applied implication definition incorrectly, mind the place of the negation.",
            "inv": "This is not correct, mind the place of the negation or the disjunction."
           },
           "implelim1": "The rule for implication definition uses a disjunction instead of a conjunction.",
