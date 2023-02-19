@@ -51,6 +51,7 @@ Rules['logic.propositional.top-is-and.com'] = commutativiteit
 Rules['logic.propositional.top-is-or.com'] = commutativiteit
 Rules['logic.propositional.command.common-literal-special'] = commutativiteit
 Rules['logic.propositional.command.common-literal'] = commutativiteit
+Rules['logic.propositional.absorpor-subset-sort'] = commutativiteit
 
 // De Morgan
 Rules['logic.propositional.demorgan'] = deMorgan // group id
