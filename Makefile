@@ -3,7 +3,7 @@
 # git clone https://github.com/ideas-edu/logictools.git
 
 logex:
-        scripts/install.sh /var/www/bas2 config-logex.json;
+	scripts/install.sh /var/www/bas2 config-logex.json;
 
 logax:
-        scripts/install.sh /var/www/bas3 config-logax.json;
+	scripts/install.sh /var/www/bas3 config-logax.json;
