@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 outputPath="$1"
 config=${2-config.json}
 
