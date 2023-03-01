@@ -4,3 +4,6 @@
 
 logex:
         scripts/install.sh /var/www/bas2 config-logex.json;
+
+logax:
+        scripts/install.sh /var/www/bas3 config-logax.json;
