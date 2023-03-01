@@ -90,7 +90,7 @@
             "inv": "Idempotentie geldt niet voor implicaties, alleen voor conjuncties en disjuncties."
           },
           "implelim": {
-           "#": "U heeft implicatie eliminatie niet correct toegepast.",
+           "#": "U heeft implicatie eliminatie niet correct toegepast, let op de plaats van de negatie",
            "inv": "Deze herschrijving naar een implicatie is niet correct, let op de plaats van de negatie of de disjunctie."
           },
           "implelim1": "In de regel voor implicatie eliminatie staat een disjunctie en geen conjunctie.",
