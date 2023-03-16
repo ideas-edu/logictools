@@ -4,10 +4,13 @@
 # ln -s /var/www/assets/video video
 
 logex:
-	scripts/install.sh /var/www/bas2 config-logex.json;
+	scripts/install.sh /var/www/logex config-logex.json;
+	ln -s /var/www/assets/video /var/www/logex/assets/video;
 
 logax:
-	scripts/install.sh /var/www/bas3 config-logax.json;
+	scripts/install.sh /var/www/logax config-logax.json;
+	ln -s /var/www/assets/video /var/www/logax/assets/video;
 
 logind:
-	scripts/install.sh /var/www/bas4 config-logind.json;
+	scripts/install.sh /var/www/logind config-logind.json;
+	ln -s /var/www/assets/video /var/www/logind/assets/video;
