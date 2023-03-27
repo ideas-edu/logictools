@@ -63,6 +63,7 @@ Rules['logic.propositional.demorganornot'] = deMorgan
 Rules['logic.propositional.demorganandnot'] = deMorgan
 Rules['logic.propositional.invdemorganand'] = deMorgan
 Rules['logic.propositional.invdemorganor'] = deMorgan
+Rules['logic.propositional.specialdemorgan'] = deMorgan
 
 // Distributie
 Rules['logic.propositional.distribution'] = distributie
