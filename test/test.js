@@ -1,6 +1,7 @@
 import { describe, it } from 'mocha'
 import { IdeasServiceProxy } from '../src/js/model/ideasServiceProxy.js'
-import { XMLHttpRequest } from 'xhr2'
+import pkg from 'xhr2';
+const { XMLHttpRequest } = pkg;
 import { assert } from 'chai'
 
 global.XMLHttpRequest = XMLHttpRequest
