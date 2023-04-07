@@ -795,6 +795,7 @@ button {
 .help-body #help-video-3 video,
 .help-body video{
 	width: 100%;
+	padding-bottom: 0.1px;
 	border:1px solid #e5e5e5;
 }
 
