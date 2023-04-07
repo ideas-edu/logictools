@@ -602,6 +602,21 @@ export class LogIndController extends ExerciseController {
           this.updateAlert('logind.error.caseNotRecognized', null, 'error')
           break
         }
+        if (term.includes('not basestep (not recognized)')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.baseStepNotRecognized', null, 'error')
+          break
+        }
+        if (term.includes('not ihstep (not recognized)')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.ihNotRecognized', null, 'error')
+          break
+        }
+        if (term.includes('not inductivestep (not recognized)')) {
+          this.setErrorLocation(['formula-bottom', 'formula-top'])
+          this.updateAlert('logind.error.inductiveStepNotRecognized', null, 'error')
+          break
+        }
         if (term.includes('not an instantiation')) {
           this.setErrorLocation(['formula-bottom', 'formula-top'])
           this.updateAlert('logind.error.notInstantiation', null, 'error')

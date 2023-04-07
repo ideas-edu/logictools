@@ -439,6 +439,7 @@
     },
     "completed": "De uitwerking is compleet",
     "error": {
+      "baseStepNotRecognized": "Dit is geen correcte instantiatie van een basisstap",
       "butBasestep": "Dit is geen [[case]] maar een basis geval voor {{identifier}}",
       "butIhstep": "Dit is geen [[case]] maar een inductiehypothese voor $${{identifier}}$$",
       "butInductivestep": "Dit is geen [[case]] maar een inductief geval $${{identifier}}$$",
@@ -448,8 +449,10 @@
       "differentMetaVarsWith": "Gebruik dezelfde metavariabele in de eerste en tweede expressie van de inductiehypothese, dus een $${{metaVar}}$$ in de tweede expressie",
       "doubleCase": "Je hebt al een geval $${{case}}$$, voor elk connectief in de taal moet je precies 1 geval bewijzen.",
       "doubleIH": " je hebt al een inductiehypothese geformuleerd voor $${{case}}$$.",
+      "ihNotRecognized": "Dit is geen correcte inductiehypothese",
       "incorrect": "Er is een fout in het bewijs.",
       "incorrectApplicationIh": "De toepassing van de inductiehypothese is niet correct",
+      "inductiveStepNotRecognized": "Dit is geen correcte instantiatie van een inductiestap",
       "invalidAtomsInInductiveCase": "Formuleer de inductieve gevallen niet voor samenstellingen van atomaire formules, gebruik de variabelen uit de inductiehypothese",
       "invalidBottomExpr": "De laatste expressie van het deelbewijs is geen correcte instantie van de rechterkant van de stelling",
       "invalidComposedBaseCase": "Alleen atomaire gevallen horen tot de basisgevallen, samengestelde formules komen in de inductiestap aan bod",
